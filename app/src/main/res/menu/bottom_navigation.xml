@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/portfolioItem"
+        android:icon="@drawable/ic_portfolio"
+        android:iconTint="@color/white"
+        android:title="Portfolio" />
+    <item
+        android:id="@+id/calendarItem"
+        android:icon="@drawable/ic_portfolio"
+        android:iconTint="@color/white"
+        android:title="Calendar" />
+    <item
+        android:id="@+id/newsItem"
+        android:icon="@drawable/ic_portfolio"
+        android:iconTint="@color/white"
+        android:title="News" />
+</menu>
