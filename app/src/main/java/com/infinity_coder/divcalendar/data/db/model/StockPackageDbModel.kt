@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.infinity_coder.divcalendar.data.db.model.StockPackageDbModel.Companion.TABLE_NAME
-import com.infinity_coder.divcalendar.data.network.model.ShortStockNetworkModel
 
 @Entity(tableName = TABLE_NAME)
 data class StockPackageDbModel(
@@ -15,18 +14,14 @@ data class StockPackageDbModel(
     @ColumnInfo(name = COLUMN_NAME)
     val name: String,
 
-    val count: Int
+    var count: Int = 0,
+
+    var totalPrice: Float = 0f
 ) {
     companion object {
         const val TABLE_NAME = "StockPackage"
 
         const val COLUMN_SEC_ID = "sec_id"
         const val COLUMN_NAME = "name"
-
-        fun from(shortStock: ShortStockNetworkModel) = StockPackageDbModel(
-            secid = shortStock.secid,
-            name = shortStock.name,
-            count = 0
-        )
     }
 }

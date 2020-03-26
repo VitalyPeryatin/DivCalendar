@@ -8,12 +8,12 @@
         android:title="Portfolio" />
     <item
         android:id="@+id/calendarItem"
-        android:icon="@drawable/ic_portfolio"
+        android:icon="@drawable/ic_calendar"
         android:iconTint="@color/white"
         android:title="Calendar" />
     <item
         android:id="@+id/newsItem"
-        android:icon="@drawable/ic_portfolio"
+        android:icon="@drawable/ic_news"
         android:iconTint="@color/white"
         android:title="News" />
 </menu>
