@@ -81,13 +81,6 @@ dependencies {
     // CircleImageView
     implementation "de.hdodenhof:circleimageview:3.0.1"
 
-    // Navigation
-    def nav_version = "2.2.1"
-    implementation "androidx.navigation:navigation-fragment:$nav_version"
-    implementation "androidx.navigation:navigation-ui:$nav_version"
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-
     // Tests
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test:runner:1.2.0'
