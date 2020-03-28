@@ -28,6 +28,11 @@ android {
         experimental = true
     }
 
+    allprojects {
+        repositories {
+            maven { url 'https://jitpack.io' }
+        }
+    }
 }
 
 dependencies {
@@ -84,6 +89,9 @@ dependencies {
 
     // CircleImageView
     implementation "de.hdodenhof:circleimageview:3.0.1"
+
+    //delegate adapter https://github.com/Liverm0r/DelegateAdapters
+    implementation "com.github.liverm0r:delegateadapters:v2.03"
 
     // Tests
     testImplementation 'junit:junit:4.13'

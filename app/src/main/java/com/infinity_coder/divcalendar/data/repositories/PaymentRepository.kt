@@ -5,10 +5,11 @@ import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
 object PaymentRepository {
 
     suspend fun loadAllPayments():List<PaymentNetworkModel>{
+
         val mockData = mutableListOf<PaymentNetworkModel>()
 
         for(i in 0 until 12){
-            for(j in 0 until 25){
+            for(j in 1 until 5){
                 mockData.add(
                     PaymentNetworkModel(
                         "Яндекс",
