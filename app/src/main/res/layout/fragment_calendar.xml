@@ -21,7 +21,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/payments_recycler_view"
+        android:id="@+id/calendar_payments_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/calendar_app_bar_layout"/>
