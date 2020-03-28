@@ -9,17 +9,17 @@
     android:layout_marginEnd="16sp">
 
     <TextView
-        android:id="@+id/footer_payment_monthly_income_label"
+        android:id="@+id/footerPaymentMonthlyIncomeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Доход за месяц:"/>
 
     <TextView
-        android:id="@+id/footer_payment_monthly_income"
+        android:id="@+id/footerPaymentMonthlyIncome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/footer_payment_monthly_income_label"
-        android:layout_alignTop="@id/footer_payment_monthly_income_label"
+        android:layout_toEndOf="@id/footerPaymentMonthlyIncomeLabel"
+        android:layout_alignTop="@id/footerPaymentMonthlyIncomeLabel"
         android:layout_marginStart="4dp"/>
 
 </RelativeLayout>

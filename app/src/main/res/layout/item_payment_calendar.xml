@@ -12,7 +12,7 @@
     android:background="@android:color/white">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/payment_logo"
+        android:id="@+id/paymentLogo"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@android:color/black"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/payment_name"
+        android:id="@+id/paymentName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -28,59 +28,59 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:text="МТС"
-        app:layout_constraintBottom_toBottomOf="@+id/payment_logo"
+        app:layout_constraintBottom_toBottomOf="@+id/paymentLogo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/payment_logo"
-        app:layout_constraintTop_toTopOf="@+id/payment_logo" />
+        app:layout_constraintStart_toEndOf="@+id/paymentLogo"
+        app:layout_constraintTop_toTopOf="@+id/paymentLogo" />
 
     <TextView
-        android:id="@+id/payment_count_label"
+        android:id="@+id/paymentCountLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Акции:"
-        app:layout_constraintStart_toStartOf="@+id/payment_logo"
-        app:layout_constraintTop_toBottomOf="@+id/payment_logo" />
+        app:layout_constraintStart_toStartOf="@+id/paymentLogo"
+        app:layout_constraintTop_toBottomOf="@+id/paymentLogo" />
 
     <TextView
-        android:id="@+id/payment_count"
+        android:id="@+id/paymentCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
         android:text="10"
-        app:layout_constraintBottom_toBottomOf="@+id/payment_count_label"
-        app:layout_constraintStart_toEndOf="@+id/payment_count_label"
-        app:layout_constraintTop_toTopOf="@+id/payment_count_label" />
+        app:layout_constraintBottom_toBottomOf="@+id/paymentCountLabel"
+        app:layout_constraintStart_toEndOf="@+id/paymentCountLabel"
+        app:layout_constraintTop_toTopOf="@+id/paymentCountLabel" />
 
     <TextView
-        android:id="@+id/payment_dividends_label"
+        android:id="@+id/paymentDividendsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="Доход:"
-        app:layout_constraintStart_toStartOf="@+id/payment_count_label"
-        app:layout_constraintTop_toBottomOf="@+id/payment_count_label" />
+        app:layout_constraintStart_toStartOf="@+id/paymentCountLabel"
+        app:layout_constraintTop_toBottomOf="@+id/paymentCountLabel" />
 
     <TextView
-        android:id="@+id/payment_dividends"
+        android:id="@+id/paymentDividends"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
         android:text="+28.01P"
-        app:layout_constraintBottom_toBottomOf="@+id/payment_dividends_label"
-        app:layout_constraintStart_toEndOf="@+id/payment_dividends_label"
-        app:layout_constraintTop_toTopOf="@+id/payment_dividends_label" />
+        app:layout_constraintBottom_toBottomOf="@+id/paymentDividendsLabel"
+        app:layout_constraintStart_toEndOf="@+id/paymentDividendsLabel"
+        app:layout_constraintTop_toTopOf="@+id/paymentDividendsLabel" />
 
     <TextView
-        android:id="@+id/payment_date"
+        android:id="@+id/paymentDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="14.01.2020"
-        app:layout_constraintBottom_toBottomOf="@+id/payment_dividends"
+        app:layout_constraintBottom_toBottomOf="@+id/paymentDividends"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/payment_dividends" />
+        app:layout_constraintTop_toTopOf="@+id/paymentDividends" />
 </androidx.constraintlayout.widget.ConstraintLayout>

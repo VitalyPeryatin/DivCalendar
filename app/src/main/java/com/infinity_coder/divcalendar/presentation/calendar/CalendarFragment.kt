@@ -31,17 +31,12 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     }
 
     private fun initUI() {
-        initCalendarToolbar()
-        initPaymentsRecyclerView()
-    }
+        calendarToolbar.run {
+            setTitle(R.string.calendar_title)
+            (activity as AppCompatActivity).setActionBar(this)
+        }
 
-    private fun initCalendarToolbar() {
-        calendar_toolbar.setTitle(R.string.calendar_title)
-        (activity as AppCompatActivity).setActionBar(calendar_toolbar)
-    }
-
-    private fun initPaymentsRecyclerView() {
-        calendar_payments_recycler_view.run {
+        calendarPaymentsRecyclerView.run {
             layoutManager = LinearLayoutManager(context)
             adapter = DiffUtilCompositeAdapter.Builder()
                 .add(DividerAdapter)
@@ -55,13 +50,13 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     private fun updateState(state: State) {
         when (state) {
             is State.Progress -> {
-                calendar_progress_bar.visibilityGone(true)
-                calendar_payments_recycler_view.visibilityGone(false)
+                calendarProgressBar.visibilityGone(true)
+                calendarPaymentsRecyclerView.visibilityGone(false)
             }
             is State.Data<*> -> {
-                calendar_progress_bar.visibilityGone(false)
-                calendar_payments_recycler_view.visibilityGone(true)
-                (calendar_payments_recycler_view.adapter as DiffUtilCompositeAdapter).swapData(state.data as List<IComparableItem>)
+                calendarProgressBar.visibilityGone(false)
+                calendarPaymentsRecyclerView.visibilityGone(true)
+                (calendarPaymentsRecyclerView.adapter as DiffUtilCompositeAdapter).swapData(state.data as List<IComparableItem>)
             }
             is State.Error -> {
 

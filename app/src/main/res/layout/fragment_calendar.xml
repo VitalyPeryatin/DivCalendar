@@ -5,13 +5,13 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/calendar_app_bar_layout"
+        android:id="@+id/calendarAppBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/calendar_toolbar"
+            android:id="@+id/calendarToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
@@ -21,16 +21,16 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/calendar_payments_recycler_view"
+        android:id="@+id/calendarPaymentsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/calendar_app_bar_layout"
+        android:layout_below="@id/calendarAppBarLayout"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:clipToPadding="false"/>
 
     <ProgressBar
-        android:id="@+id/calendar_progress_bar"
+        android:id="@+id/calendarProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"/>

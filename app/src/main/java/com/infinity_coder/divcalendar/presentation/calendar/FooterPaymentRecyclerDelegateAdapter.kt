@@ -15,7 +15,7 @@ class FooterPaymentRecyclerDelegateAdapter : KDelegateAdapter<FooterPaymentVM>()
 
     override fun onBind(item: FooterPaymentVM, viewHolder: KViewHolder) {
         viewHolder.run {
-            footer_payment_monthly_income.text = item.income
+            footerPaymentMonthlyIncome.text = item.income
         }
     }
 }

@@ -5,10 +5,6 @@ import android.widget.ImageView
 import com.squareup.picasso.Picasso
 
 fun View.visibilityGone(show:Boolean){
-    if(show && visibility == View.VISIBLE) return
-
-    if(!show && visibility == View.GONE) return
-
     visibility = if(show) View.VISIBLE else View.GONE
 }
 

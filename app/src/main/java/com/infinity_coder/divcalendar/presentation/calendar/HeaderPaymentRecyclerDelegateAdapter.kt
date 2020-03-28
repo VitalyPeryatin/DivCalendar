@@ -15,7 +15,7 @@ class HeaderPaymentRecyclerDelegateAdapter : KDelegateAdapter<HeaderPaymentVM>()
 
     override fun onBind(item: HeaderPaymentVM, viewHolder: KViewHolder) {
         viewHolder.run {
-            header_payment_month.text = item.name
+            headerPaymentMonth.text = item.name
         }
     }
 }

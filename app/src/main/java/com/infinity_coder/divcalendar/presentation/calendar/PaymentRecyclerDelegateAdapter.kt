@@ -16,11 +16,11 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentVM>() {
 
     override fun onBind(item: PaymentVM, viewHolder: KViewHolder) {
         viewHolder.run {
-            payment_name.text = item.name
-            payment_count.text = item.count
-            payment_date.text = item.date
-            payment_dividends.text = item.dividends
-            payment_logo.loadImg(item.logo)
+            paymentName.text = item.name
+            paymentCount.text = item.count
+            paymentDate.text = item.date
+            paymentDividends.text = item.dividends
+            paymentLogo.loadImg(item.logo)
         }
     }
 }
