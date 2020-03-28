@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/footer_payment_monthly_income_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Доход за месяц:"/>
+
+    <TextView
+        android:id="@+id/footer_payment_monthly_income"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/footer_payment_monthly_income_label"
+        android:layout_alignTop="@id/footer_payment_monthly_income_label"
+        android:layout_marginStart="4dp"
+        android:text="327.70Р"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorSecondary"/>
+</RelativeLayout>
