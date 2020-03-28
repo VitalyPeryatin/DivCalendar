@@ -1,7 +1,6 @@
 package com.infinity_coder.divcalendar.presentation.calendar
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -13,7 +12,6 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation._common.visibilityGone
-import com.infinity_coder.divcalendar.presentation.global.VerticalItemDecoration
 import com.infinity_coder.divcalendar.presentation.mappers.PaymentMapperViewModel
 import kotlinx.android.synthetic.main.fragment_calendar.*
 
@@ -32,17 +30,17 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         viewModel.state.observe(viewLifecycleOwner, Observer(this::updateState))
     }
 
-    private fun initUI(){
+    private fun initUI() {
         initCalendarToolbar()
         initPaymentsRecyclerView()
     }
 
-    private fun initCalendarToolbar(){
+    private fun initCalendarToolbar() {
         calendar_toolbar.setTitle(R.string.calendar_title)
         (activity as AppCompatActivity).setActionBar(calendar_toolbar)
     }
 
-    private fun initPaymentsRecyclerView(){
+    private fun initPaymentsRecyclerView() {
         calendar_payments_recycler_view.run {
             layoutManager = LinearLayoutManager(context)
             adapter = DiffUtilCompositeAdapter.Builder()
@@ -54,8 +52,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         }
     }
 
-    private fun updateState(state:State){
-        when(state){
+    private fun updateState(state: State) {
+        when (state) {
             is State.Progress -> {
                 calendar_progress_bar.visibilityGone(true)
                 calendar_payments_recycler_view.visibilityGone(false)

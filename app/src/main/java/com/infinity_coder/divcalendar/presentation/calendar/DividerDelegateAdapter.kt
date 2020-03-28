@@ -10,12 +10,11 @@ object DividerAdapter : KDelegateAdapter<DividerItem>() {
     override fun isForViewType(items: MutableList<*>, position: Int): Boolean =
         items[position] == DividerItem
 
-    override fun onBind(item: DividerItem, viewHolder: KViewHolder) {
-        //do nothing
-    }
+    override fun onBind(item: DividerItem, viewHolder: KViewHolder) {}
 }
 
 object DividerItem: IComparableItem {
     override fun id(): Any = this
+
     override fun content(): Any = this
 }

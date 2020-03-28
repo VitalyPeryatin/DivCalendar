@@ -18,5 +18,4 @@ class HeaderPaymentRecyclerDelegateAdapter : KDelegateAdapter<HeaderPaymentVM>()
             header_payment_month.text = item.name
         }
     }
-
 }

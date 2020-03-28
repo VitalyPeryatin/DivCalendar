@@ -1,6 +1,5 @@
 package com.infinity_coder.divcalendar.presentation.calendar
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,13 +9,13 @@ import com.infinity_coder.divcalendar.presentation.mappers.PaymentMapperViewMode
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class CalendarViewModel : ViewModel(){
+class CalendarViewModel : ViewModel() {
 
     private val _state = MutableLiveData<State>()
-    val state:LiveData<State>
+    val state: LiveData<State>
         get() = _state
 
-    var paymentMapperViewModel:PaymentMapperViewModel? = null
+    var paymentMapperViewModel: PaymentMapperViewModel? = null
 
     init {
         loadAllPayments()
@@ -28,4 +27,5 @@ class CalendarViewModel : ViewModel(){
         val payments = PaymentRepository.loadAllPayments()
         _state.postValue(State.Data(paymentMapperViewModel!!.mapPaymentsToViewModels(payments)))
     }
+
 }

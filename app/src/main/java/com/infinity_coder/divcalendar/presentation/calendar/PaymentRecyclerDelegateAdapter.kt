@@ -6,7 +6,7 @@ import com.infinity_coder.divcalendar.presentation._common.loadImg
 import com.infinity_coder.divcalendar.presentation.models.PaymentVM
 import kotlinx.android.synthetic.main.item_payment_calendar.*
 
-class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentVM>(){
+class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentVM>() {
 
     override fun getLayoutId() = R.layout.item_payment_calendar
 

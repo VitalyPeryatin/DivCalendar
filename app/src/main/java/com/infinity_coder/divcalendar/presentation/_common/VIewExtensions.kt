@@ -14,7 +14,7 @@ fun View.visibilityGone(show:Boolean){
 
 fun ImageView.loadImg(imageUrl: String, placeholderRes: Int? = null) {
     Picasso.get().load(imageUrl).apply {
-        placeholderRes?.let {placeholder(it) }
+        placeholderRes?.let { placeholder(it) }
         fit().into(this@loadImg)
     }
 }
