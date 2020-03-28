@@ -12,7 +12,7 @@
         android:id="@+id/footerPaymentMonthlyIncomeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Доход за месяц:"/>
+        android:text="@string/monthly_income_label"/>
 
     <TextView
         android:id="@+id/footerPaymentMonthlyIncome"

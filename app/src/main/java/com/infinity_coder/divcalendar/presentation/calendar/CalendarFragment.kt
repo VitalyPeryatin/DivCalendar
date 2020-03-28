@@ -12,8 +12,8 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation._common.visibilityGone
-import com.infinity_coder.divcalendar.presentation.mappers.PaymentMapperViewModel
 import kotlinx.android.synthetic.main.fragment_calendar.*
+import kotlinx.android.synthetic.main.layout_loading.*
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
@@ -26,7 +26,6 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
-        viewModel.paymentMapperViewModel = PaymentMapperViewModel(requireContext())
         viewModel.state.observe(viewLifecycleOwner, Observer(this::updateState))
     }
 
@@ -39,7 +38,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         calendarPaymentsRecyclerView.run {
             layoutManager = LinearLayoutManager(context)
             adapter = DiffUtilCompositeAdapter.Builder()
-                .add(DividerAdapter)
+                .add(DividerAdapter())
                 .add(HeaderPaymentRecyclerDelegateAdapter())
                 .add(PaymentRecyclerDelegateAdapter())
                 .add(FooterPaymentRecyclerDelegateAdapter())
@@ -50,11 +49,11 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     private fun updateState(state: State) {
         when (state) {
             is State.Progress -> {
-                calendarProgressBar.visibilityGone(true)
+                loadingProgressBar.visibilityGone(true)
                 calendarPaymentsRecyclerView.visibilityGone(false)
             }
             is State.Data<*> -> {
-                calendarProgressBar.visibilityGone(false)
+                loadingProgressBar.visibilityGone(false)
                 calendarPaymentsRecyclerView.visibilityGone(true)
                 (calendarPaymentsRecyclerView.adapter as DiffUtilCompositeAdapter).swapData(state.data as List<IComparableItem>)
             }

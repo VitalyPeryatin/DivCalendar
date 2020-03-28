@@ -1,35 +1,15 @@
 <resources>
     <string name="app_name">DivCalendar</string>
 
+    <!--error-->
+    <string name="error">ОЙ! Что-то пошло не так</string>
+    <string name="error_refresh">ПОВТОРИТЬ</string>
+    <string name="error_network">Проверьте соединение с интернетом или немного подождите</string>
+
+    <!--calendar screen-->
     <string name="calendar_title">Календарь</string>
+    <string name="monthly_income_label">Доход за месяц:</string>
+    <string name="count_stocks_label">Акций:</string>
+    <string name="dividends_label">Доход:</string>
 
-    <string-array name="months_genitive">
-        <item>Января</item>
-        <item>Февраля</item>
-        <item>Марта</item>
-        <item>Апреля</item>
-        <item>Мая</item>
-        <item>Июня</item>
-        <item>Июля</item>
-        <item>Августа</item>
-        <item>Сентября</item>
-        <item>Октября</item>
-        <item>Ноября</item>
-        <item>Декабря</item>
-    </string-array>
-
-    <string-array name="months_nominative_case">
-        <item>Январь</item>
-        <item>Февраль</item>
-        <item>Март</item>
-        <item>Апрель</item>
-        <item>Май</item>
-        <item>Июнь</item>
-        <item>Июль</item>
-        <item>Август</item>
-        <item>Сентябрь</item>
-        <item>Октябрь</item>
-        <item>Ноябрь</item>
-        <item>Декабрь</item>
-    </string-array>
 </resources>

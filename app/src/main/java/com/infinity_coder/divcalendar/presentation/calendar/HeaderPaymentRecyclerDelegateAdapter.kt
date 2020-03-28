@@ -2,20 +2,20 @@ package com.infinity_coder.divcalendar.presentation.calendar
 
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.presentation.models.HeaderPaymentVM
+import com.infinity_coder.divcalendar.presentation.models.HeaderPaymentPresentationModel
 import kotlinx.android.synthetic.main.item_header_payment_calendar.*
 
-class HeaderPaymentRecyclerDelegateAdapter : KDelegateAdapter<HeaderPaymentVM>() {
+class HeaderPaymentRecyclerDelegateAdapter : KDelegateAdapter<HeaderPaymentPresentationModel>() {
 
     override fun getLayoutId() = R.layout.item_header_payment_calendar
 
     override fun isForViewType(items: MutableList<*>, position: Int): Boolean {
-        return items[position] is HeaderPaymentVM
+        return items[position] is HeaderPaymentPresentationModel
     }
 
-    override fun onBind(item: HeaderPaymentVM, viewHolder: KViewHolder) {
+    override fun onBind(item: HeaderPaymentPresentationModel, viewHolder: KViewHolder) {
         viewHolder.run {
-            headerPaymentMonth.text = item.name
+            headerPaymentMonth.text = headerPaymentMonth.context.resources.getStringArray(R.array.months_nominative_case)[item.month]
         }
     }
 }
