@@ -37,7 +37,7 @@ class PortfolioFragment : Fragment() {
         stocksRecyclerView.layoutManager = LinearLayoutManager(context)
         stocksRecyclerView.adapter = StockRecyclerAdapter()
 
-        portfolioToolbar.title = "Portfolio"
+        portfolioToolbar.title = context!!.resources.getString(R.string.portfolio)
         val parentActivity = (activity as AppCompatActivity)
         parentActivity.setActionBar(portfolioToolbar)
 
