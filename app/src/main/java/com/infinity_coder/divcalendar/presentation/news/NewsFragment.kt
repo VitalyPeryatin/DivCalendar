@@ -37,6 +37,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         newsRecyclerView.adapter = adapter
 
         viewModel.getNewsPostsLiveData().observe(viewLifecycleOwner, Observer(this::updateNewsPosts))
+        viewModel.getStateLiveData().observe(viewLifecycleOwner, Observer(this::updateState))
         viewModel.loadNewsPosts()
     }
 
@@ -47,5 +48,45 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     fun openNewsArticle(post: PostDbModel) {
         val intent = NewsPostActivity.getIntent(context!!, post.id)
         context?.startActivity(intent)
+    }
+
+    private fun updateState(state: Int) {
+        when (state) {
+            NewsViewModel.VIEW_STATE_NEWS_CONTENT -> showContent()
+
+            NewsViewModel.VIEW_STATE_NEWS_LOADING -> showLoading()
+
+            NewsViewModel.VIEW_STATE_NEWS_EMPTY -> showEmptyLayout()
+
+            NewsViewModel.VIEW_STATE_NEWS_NO_NETWORK -> showNoNetworkLayout()
+        }
+    }
+
+    private fun showContent() {
+        contentLayout.visibility = View.VISIBLE
+        noNetworkLayout.visibility = View.GONE
+        emptyLayout.visibility = View.GONE
+        loadingLayout.visibility = View.GONE
+    }
+
+    private fun showLoading() {
+        contentLayout.visibility = View.GONE
+        noNetworkLayout.visibility = View.GONE
+        emptyLayout.visibility = View.GONE
+        loadingLayout.visibility = View.VISIBLE
+    }
+
+    private fun showEmptyLayout() {
+        contentLayout.visibility = View.GONE
+        noNetworkLayout.visibility = View.GONE
+        emptyLayout.visibility = View.VISIBLE
+        loadingLayout.visibility = View.GONE
+    }
+
+    private fun showNoNetworkLayout() {
+        contentLayout.visibility = View.GONE
+        noNetworkLayout.visibility = View.VISIBLE
+        emptyLayout.visibility = View.GONE
+        loadingLayout.visibility = View.GONE
     }
 }
