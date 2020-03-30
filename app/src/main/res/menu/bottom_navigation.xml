@@ -5,15 +5,15 @@
         android:id="@+id/portfolioItem"
         android:icon="@drawable/ic_portfolio"
         android:iconTint="@color/white"
-        android:title="Portfolio" />
+        android:title="@string/portfolio" />
     <item
         android:id="@+id/calendarItem"
         android:icon="@drawable/ic_calendar"
         android:iconTint="@color/white"
-        android:title="Calendar" />
+        android:title="@string/calendar" />
     <item
         android:id="@+id/newsItem"
         android:icon="@drawable/ic_news"
         android:iconTint="@color/white"
-        android:title="News" />
+        android:title="@string/news" />
 </menu>

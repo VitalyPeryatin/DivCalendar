@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DivCalendar</string>
+
+    <string name="portfolio">Портфель</string>
+    <string name="calendar">Календарь</string>
+    <string name="news">Новости</string>
+    <string name="add">Добавить</string>
+    <string name="enter_request">Введите запрос</string>
+    <string name="no_connection">Нет интернет соединения</string>
+    <string name="empty_list">Список пуст</string>
+</resources>
