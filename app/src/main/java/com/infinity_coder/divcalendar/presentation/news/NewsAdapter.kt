@@ -9,7 +9,7 @@ import com.infinity_coder.divcalendar.data.db.model.PostDbModel
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_post.*
 
-class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     private var newsPosts: List<PostDbModel> = listOf()
 

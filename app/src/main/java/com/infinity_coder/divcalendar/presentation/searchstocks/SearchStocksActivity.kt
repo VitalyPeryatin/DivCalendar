@@ -28,7 +28,10 @@ class SearchStocksActivity : AppCompatActivity(), AddStockBottomDialog.OnClickLi
     private val stockClickListener = object : StockRecyclerAdapter.OnClickListener {
         override fun onClick(stock: ShortStockNetworkModel) {
             addStockDialog = AddStockBottomDialog.newInstance(stock)
-            addStockDialog?.show(supportFragmentManager.beginTransaction(), AddStockBottomDialog::class.toString())
+            addStockDialog?.show(
+                supportFragmentManager.beginTransaction(),
+                AddStockBottomDialog::class.toString()
+            )
         }
     }
 

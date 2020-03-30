@@ -6,7 +6,6 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.loadImg
 import com.infinity_coder.divcalendar.presentation.models.PaymentPresentationModel
 import kotlinx.android.synthetic.main.item_payment_calendar.*
-import kotlin.Int
 
 class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel>() {
 

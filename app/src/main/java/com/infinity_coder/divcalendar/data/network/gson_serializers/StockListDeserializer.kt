@@ -9,7 +9,11 @@ import java.lang.reflect.Type
 
 class StockListDeserializer : JsonDeserializer<ShortStockList> {
 
-    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): ShortStockList {
+    override fun deserialize(
+        json: JsonElement?,
+        typeOfT: Type?,
+        context: JsonDeserializationContext?
+    ): ShortStockList {
 
         val shortStockList = ShortStockList()
         if (json == null) return ShortStockList()

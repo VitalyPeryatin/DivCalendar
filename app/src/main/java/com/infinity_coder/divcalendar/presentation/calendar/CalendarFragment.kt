@@ -12,7 +12,6 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import kotlinx.android.synthetic.main.fragment_calendar.*
-import kotlin.Int
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 

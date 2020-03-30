@@ -4,12 +4,12 @@ import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
 
 data class PaymentPresentationModel(
-    val name:String,
-    val logo:String,
-    val count:String,
-    val dividends:String,
-    val date:String
-): IComparableItem {
+    val name: String,
+    val logo: String,
+    val count: String,
+    val dividends: String,
+    val date: String
+) : IComparableItem {
 
     companion object {
         fun from(groupPayment: Pair<String, List<PaymentNetworkModel>>) =

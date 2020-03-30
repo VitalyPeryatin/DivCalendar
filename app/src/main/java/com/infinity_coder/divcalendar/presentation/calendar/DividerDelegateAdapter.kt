@@ -3,7 +3,6 @@ package com.infinity_coder.divcalendar.presentation.calendar
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.R
-import kotlin.Int
 
 class DividerAdapter : KDelegateAdapter<DividerItem>() {
 
@@ -16,7 +15,7 @@ class DividerAdapter : KDelegateAdapter<DividerItem>() {
 
 }
 
-object DividerItem: IComparableItem {
+object DividerItem : IComparableItem {
     override fun id(): Any = this
 
     override fun content(): Any = this

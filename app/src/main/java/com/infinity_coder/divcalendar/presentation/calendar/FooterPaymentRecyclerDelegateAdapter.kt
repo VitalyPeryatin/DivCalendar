@@ -4,7 +4,6 @@ import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation.models.FooterPaymentPresentationModel
 import kotlinx.android.synthetic.main.item_footer_payment_calendar.*
-import kotlin.Int
 
 class FooterPaymentRecyclerDelegateAdapter : KDelegateAdapter<FooterPaymentPresentationModel>() {
 
