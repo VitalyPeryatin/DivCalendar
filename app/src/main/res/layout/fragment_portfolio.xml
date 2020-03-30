@@ -10,22 +10,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/stocksRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:id="@+id/stocksRecyclerView"
         android:clipToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/portfolioToolbar"
-        tools:listitem="@layout/item_stock_portfolio"/>
+        tools:listitem="@layout/item_stock_portfolio" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addStockButton"

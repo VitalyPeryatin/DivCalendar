@@ -4,6 +4,7 @@ import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation.models.FooterPaymentPresentationModel
 import kotlinx.android.synthetic.main.item_footer_payment_calendar.*
+import kotlin.Int
 
 class FooterPaymentRecyclerDelegateAdapter : KDelegateAdapter<FooterPaymentPresentationModel>() {
 
@@ -14,8 +15,7 @@ class FooterPaymentRecyclerDelegateAdapter : KDelegateAdapter<FooterPaymentPrese
     }
 
     override fun onBind(item: FooterPaymentPresentationModel, viewHolder: KViewHolder) {
-        viewHolder.run {
-            footerPaymentMonthlyIncome.text = item.income
-        }
+        viewHolder.footerPaymentMonthlyIncome.text = item.income
     }
+
 }

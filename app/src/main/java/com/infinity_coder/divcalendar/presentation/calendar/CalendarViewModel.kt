@@ -15,22 +15,28 @@ import kotlinx.coroutines.launch
 
 class CalendarViewModel : ViewModel() {
 
-    private val _state = MutableLiveData<State>()
-    val state: LiveData<State>
+    private val _state = MutableLiveData<Int>()
+    val state: LiveData<Int>
         get() = _state
+
+    private val _payments = MutableLiveData<List<IComparableItem>>()
+    val payments: LiveData<List<IComparableItem>>
+        get() = _payments
 
     init {
         loadAllPayments()
     }
 
     private fun loadAllPayments() = viewModelScope.launch {
-        _state.postValue(State.Progress)
+        _state.postValue(VIEW_STATE_CALENDAR_LOADING)
+        // TODO: Удалить задержку, когда будем получать реальные данные
         delay(2000L)
         val payments = PaymentRepository.loadAllPayments()
-        _state.postValue(State.Data(mapPaymentsToPresentationModels(payments)))
+        _payments.postValue(mapPaymentsToPresentationModels(payments))
+        _state.postValue(VIEW_STATE_CALENDAR_CONTENT)
     }
 
-    private fun mapPaymentsToPresentationModels(payments: List<PaymentNetworkModel>):List<IComparableItem> {
+    private fun mapPaymentsToPresentationModels(payments: List<PaymentNetworkModel>): List<IComparableItem> {
         val items = mutableListOf<IComparableItem>()
         val groupMonth = payments.groupBy { it.date.split("-")[1] }.toList()
         for (i in groupMonth.indices) {
@@ -42,5 +48,12 @@ class CalendarViewModel : ViewModel() {
             }
         }
         return items
+    }
+
+    companion object {
+        const val VIEW_STATE_CALENDAR_LOADING = 1
+        const val VIEW_STATE_CALENDAR_CONTENT = 2
+        const val VIEW_STATE_CALENDAR_EMPTY = 3
+        const val VIEW_STATE_CALENDAR_NO_NETWORK = 4
     }
 }

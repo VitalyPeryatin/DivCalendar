@@ -9,6 +9,7 @@
     <color name="colorActive">#0075EE</color>
 
     <color name="white">#ffffff</color>
-    <color name="black">#000000</color>
-
+    <color name="black">#202020</color>
+    <color name="grey">#6f6f6f</color>
+    <color name="separator">#bfbfbf</color>
 </resources>

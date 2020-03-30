@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/calendarAppBarLayout"
@@ -25,14 +25,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/calendarAppBarLayout"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
         android:clipToPadding="false"/>
 
     <include
+        android:id="@+id/loadingLayout"
         layout="@layout/layout_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/calendarAppBarLayout"/>
+        android:visibility="gone"
+        tools:visibility="gone" />
+
+    <include
+        android:id="@+id/emptyLayout"
+        layout="@layout/layout_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="gone" />
+
+    <include
+        android:id="@+id/noNetworkLayout"
+        layout="@layout/layout_no_network"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="gone" />
 
 </RelativeLayout>

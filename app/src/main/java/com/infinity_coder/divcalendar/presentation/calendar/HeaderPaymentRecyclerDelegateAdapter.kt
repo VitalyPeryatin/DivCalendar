@@ -4,6 +4,7 @@ import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation.models.HeaderPaymentPresentationModel
 import kotlinx.android.synthetic.main.item_header_payment_calendar.*
+import kotlin.Int
 
 class HeaderPaymentRecyclerDelegateAdapter : KDelegateAdapter<HeaderPaymentPresentationModel>() {
 
@@ -18,4 +19,5 @@ class HeaderPaymentRecyclerDelegateAdapter : KDelegateAdapter<HeaderPaymentPrese
             headerPaymentMonth.text = headerPaymentMonth.context.resources.getStringArray(R.array.months_nominative_case)[item.month]
         }
     }
+
 }

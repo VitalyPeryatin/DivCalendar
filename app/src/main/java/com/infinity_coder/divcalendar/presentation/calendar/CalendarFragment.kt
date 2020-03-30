@@ -11,9 +11,8 @@ import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
-import com.infinity_coder.divcalendar.presentation._common.visibilityGone
 import kotlinx.android.synthetic.main.fragment_calendar.*
-import kotlinx.android.synthetic.main.layout_loading.*
+import kotlin.Int
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
@@ -26,12 +25,14 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
+
         viewModel.state.observe(viewLifecycleOwner, Observer(this::updateState))
+        viewModel.payments.observe(viewLifecycleOwner, Observer(this::updatePayments))
     }
 
     private fun initUI() {
         calendarToolbar.run {
-            setTitle(R.string.calendar_title)
+            setTitle(R.string.calendar)
             (activity as AppCompatActivity).setActionBar(this)
         }
 
@@ -46,20 +47,47 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         }
     }
 
-    private fun updateState(state: State) {
-        when (state) {
-            is State.Progress -> {
-                loadingProgressBar.visibilityGone(true)
-                calendarPaymentsRecyclerView.visibilityGone(false)
-            }
-            is State.Data<*> -> {
-                loadingProgressBar.visibilityGone(false)
-                calendarPaymentsRecyclerView.visibilityGone(true)
-                (calendarPaymentsRecyclerView.adapter as DiffUtilCompositeAdapter).swapData(state.data as List<IComparableItem>)
-            }
-            is State.Error -> {
+    private fun updatePayments(payments: List<IComparableItem>) {
+        (calendarPaymentsRecyclerView.adapter as DiffUtilCompositeAdapter).swapData(payments)
+    }
 
-            }
+    private fun updateState(state: Int) {
+        when (state) {
+            CalendarViewModel.VIEW_STATE_CALENDAR_LOADING -> showLoading()
+
+            CalendarViewModel.VIEW_STATE_CALENDAR_CONTENT -> showContent()
+
+            CalendarViewModel.VIEW_STATE_CALENDAR_EMPTY -> showEmptyLayout()
+
+            CalendarViewModel.VIEW_STATE_CALENDAR_NO_NETWORK -> showNoNetworkLayout()
         }
+    }
+
+    private fun showContent() {
+        calendarPaymentsRecyclerView.visibility = View.VISIBLE
+        noNetworkLayout.visibility = View.GONE
+        emptyLayout.visibility = View.GONE
+        loadingLayout.visibility = View.GONE
+    }
+
+    private fun showLoading() {
+        calendarPaymentsRecyclerView.visibility = View.GONE
+        noNetworkLayout.visibility = View.GONE
+        emptyLayout.visibility = View.GONE
+        loadingLayout.visibility = View.VISIBLE
+    }
+
+    private fun showEmptyLayout() {
+        calendarPaymentsRecyclerView.visibility = View.GONE
+        noNetworkLayout.visibility = View.GONE
+        emptyLayout.visibility = View.VISIBLE
+        loadingLayout.visibility = View.GONE
+    }
+
+    private fun showNoNetworkLayout() {
+        calendarPaymentsRecyclerView.visibility = View.GONE
+        noNetworkLayout.visibility = View.VISIBLE
+        emptyLayout.visibility = View.GONE
+        loadingLayout.visibility = View.GONE
     }
 }
