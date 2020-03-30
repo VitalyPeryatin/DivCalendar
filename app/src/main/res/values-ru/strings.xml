@@ -11,6 +11,8 @@
     <string name="empty_list">Список пуст</string>
 
     <!--calendar screen-->
+    <string name="payout_chart">График выплат</string>
+    <string name="annual_income">Годовой доход:</string>
     <string name="monthly_income_label">Доход за месяц:</string>
     <string name="count_stocks_label">Акций:</string>
     <string name="dividends_label">Доход:</string>
