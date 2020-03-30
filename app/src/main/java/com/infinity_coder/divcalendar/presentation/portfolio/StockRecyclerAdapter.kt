@@ -30,7 +30,8 @@ class StockRecyclerAdapter : RecyclerView.Adapter<StockRecyclerAdapter.StockView
         notifyDataSetChanged()
     }
 
-    class StockViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+    class StockViewHolder(override val containerView: View) :
+        RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bind(stockPackage: StockPackageDbModel) {
             nameTextView.text = stockPackage.name
             countTextView.text = stockPackage.count.toString()

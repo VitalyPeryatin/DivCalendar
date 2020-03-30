@@ -11,24 +11,21 @@ import kotlinx.coroutines.launch
 
 class NewsViewModel : ViewModel() {
 
-    private val newsPosts = MutableLiveData<List<PostDbModel>>()
-    private val state = MutableLiveData<Int>(VIEW_STATE_NEWS_CONTENT)
+    private val _newsPosts = MutableLiveData<List<PostDbModel>>()
+    val newsPost: LiveData<List<PostDbModel>>
+        get() = _newsPosts
 
-    fun getNewsPostsLiveData(): LiveData<List<PostDbModel>> {
-        return newsPosts
-    }
-
-    fun getStateLiveData(): LiveData<Int> {
-        return state
-    }
+    private val _state = MutableLiveData<Int>(VIEW_STATE_NEWS_CONTENT)
+    val state: LiveData<Int>
+        get() = _state
 
     fun loadNewsPosts() = viewModelScope.launch {
-        state.postValue(VIEW_STATE_NEWS_LOADING)
+        _state.postValue(VIEW_STATE_NEWS_LOADING)
         // TODO: Удалить задержку, когда будем получать реальные данные
         delay(1000L)
         val posts = NewsPostsRepository.getPosts()
-        newsPosts.postValue(posts)
-        state.postValue(VIEW_STATE_NEWS_CONTENT)
+        _newsPosts.postValue(posts)
+        _state.postValue(VIEW_STATE_NEWS_CONTENT)
     }
 
     companion object {

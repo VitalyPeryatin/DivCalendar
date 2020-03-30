@@ -36,8 +36,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
         newsRecyclerView.adapter = adapter
 
-        viewModel.getNewsPostsLiveData().observe(viewLifecycleOwner, Observer(this::updateNewsPosts))
-        viewModel.getStateLiveData().observe(viewLifecycleOwner, Observer(this::updateState))
+        viewModel.newsPost.observe(viewLifecycleOwner, Observer(this::updateNewsPosts))
+        viewModel.state.observe(viewLifecycleOwner, Observer(this::updateState))
         viewModel.loadNewsPosts()
     }
 
