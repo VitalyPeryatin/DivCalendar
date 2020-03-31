@@ -2,11 +2,11 @@ package com.infinity_coder.divcalendar.data.repositories
 
 import androidx.lifecycle.LiveData
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
-import com.infinity_coder.divcalendar.data.db.model.StockPackageDbModel
+import com.infinity_coder.divcalendar.data.db.model.SecPackageDbModel
 import com.infinity_coder.divcalendar.data.network.RetrofitService
 import com.infinity_coder.divcalendar.data.network.model.ShortStockNetworkModel
 
-object StockRepository {
+object SecRepository {
 
     private val stockDao = DivCalendarDatabase.roomDatabase.stockDao
     private val moexApi = RetrofitService.moexApi
@@ -15,11 +15,11 @@ object StockRepository {
         return moexApi.getStocks().stocks
     }
 
-    fun loadAllStockPackages(): LiveData<List<StockPackageDbModel>> {
+    fun loadAllStockPackages(): LiveData<List<SecPackageDbModel>> {
         return stockDao.getAllStockPackageLiveData()
     }
 
-    suspend fun appendStockPackage(newStockPackage: StockPackageDbModel) {
+    suspend fun appendStockPackage(newStockPackage: SecPackageDbModel) {
         var stockPackage = stockDao.getStockPackage(newStockPackage.secid)
         if (stockPackage == null) {
             stockPackage = newStockPackage

@@ -1,15 +1,15 @@
-package com.infinity_coder.divcalendar.presentation.searchstocks
+package com.infinity_coder.divcalendar.presentation.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.infinity_coder.divcalendar.data.db.model.StockPackageDbModel
+import com.infinity_coder.divcalendar.data.db.model.SecPackageDbModel
 import com.infinity_coder.divcalendar.data.network.model.ShortStockNetworkModel
-import com.infinity_coder.divcalendar.data.repositories.StockRepository
+import com.infinity_coder.divcalendar.data.repositories.SecRepository
 import kotlinx.coroutines.launch
 
-class SearchStocksViewModel : ViewModel() {
+class SearchSecViewModel : ViewModel() {
 
     private val filteredStocksLiveData = MutableLiveData<List<ShortStockNetworkModel>>()
 
@@ -23,8 +23,8 @@ class SearchStocksViewModel : ViewModel() {
         return filteredStocksLiveData
     }
 
-    fun appendStockPackage(stockPackage: StockPackageDbModel) = viewModelScope.launch {
-        StockRepository.appendStockPackage(stockPackage)
+    fun appendStockPackage(stockPackage: SecPackageDbModel) = viewModelScope.launch {
+        SecRepository.appendStockPackage(stockPackage)
     }
 
     fun requestStocksByQuery(query: String) {
@@ -40,7 +40,7 @@ class SearchStocksViewModel : ViewModel() {
     }
 
     private fun loadAllStock() = viewModelScope.launch {
-        val stocks = StockRepository.loadAllStocks()
+        val stocks = SecRepository.loadAllStocks()
         allStocks = stocks
     }
 

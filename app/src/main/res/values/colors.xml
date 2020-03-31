@@ -12,4 +12,6 @@
     <color name="black">#202020</color>
     <color name="grey">#6f6f6f</color>
     <color name="separator">#bfbfbf</color>
+
+    <color name="background">#ffffff</color>
 </resources>

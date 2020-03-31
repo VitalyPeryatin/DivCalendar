@@ -27,7 +27,7 @@
         app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
 
     <TextView
-        android:id="@+id/priceTextView"
+        android:id="@+id/yearIncomeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -37,7 +37,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/dividendsPercentTextView"
+        android:id="@+id/yearYieldTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -46,5 +46,5 @@
         android:text="13.72% в год"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/priceTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/yearIncomeTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

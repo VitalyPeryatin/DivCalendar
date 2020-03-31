@@ -3,10 +3,10 @@ package com.infinity_coder.divcalendar.data.db.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.infinity_coder.divcalendar.data.db.model.StockPackageDbModel.Companion.TABLE_NAME
+import com.infinity_coder.divcalendar.data.db.model.SecPackageDbModel.Companion.TABLE_NAME
 
 @Entity(tableName = TABLE_NAME)
-data class StockPackageDbModel(
+data class SecPackageDbModel(
     @PrimaryKey
     @ColumnInfo(name = COLUMN_SEC_ID)
     val secid: String,

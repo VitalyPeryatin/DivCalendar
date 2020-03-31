@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/nameTextView"
@@ -12,7 +13,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/roboto_medium"
-        android:text="TextView"
+        tools:text="Северсталь"
         android:textColor="@android:color/black"
         android:textSize="@dimen/font_normal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,21 +28,21 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/roboto"
-        android:text="TextView"
+        tools:text="Total price: 122321.45₽"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
+        android:id="@+id/priceInputLayout"
         android:theme="@style/TextInputTheme"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:hint="Цена акции"
-        app:layout_constraintEnd_toStartOf="@+id/textInputLayout2"
+        android:hint="@string/price"
+        app:layout_constraintEnd_toStartOf="@+id/countInputLayout"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/totalPriceTextView">
@@ -55,17 +56,17 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout2"
+        android:id="@+id/countInputLayout"
         android:theme="@style/TextInputTheme"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:hint="Кол-во акций"
+        android:hint="@string/count"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textInputLayout"
+        app:layout_constraintStart_toEndOf="@+id/priceInputLayout"
         app:layout_constraintTop_toBottomOf="@+id/totalPriceTextView">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -93,5 +94,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/priceInputLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

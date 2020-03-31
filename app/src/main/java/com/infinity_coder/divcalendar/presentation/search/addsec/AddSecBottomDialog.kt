@@ -1,5 +1,6 @@
-package com.infinity_coder.divcalendar.presentation.searchstocks
+package com.infinity_coder.divcalendar.presentation.search.addsec
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -11,28 +12,29 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.db.model.StockPackageDbModel
+import com.infinity_coder.divcalendar.data.db.model.SecPackageDbModel
 import com.infinity_coder.divcalendar.data.network.model.ShortStockNetworkModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
+import com.infinity_coder.divcalendar.presentation._common.shake
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import kotlinx.android.synthetic.main.bottom_dialog_add_stock.*
 
-class AddStockBottomDialog : BottomDialog() {
+class AddSecBottomDialog : BottomDialog() {
 
     private var clickListener: OnClickListener? = null
 
     private lateinit var stock: ShortStockNetworkModel
 
-    private val viewModel: AddStockViewModel by lazy {
+    private val viewModel: AddSecViewModel by lazy {
         viewModel {
-            AddStockViewModel()
+            AddSecViewModel()
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle)
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
 
         stock = ShortStockNetworkModel(
             secid = arguments!!.getString(ARGUMENT_SEC_ID, ""),
@@ -58,11 +60,16 @@ class AddStockBottomDialog : BottomDialog() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        nameTextView.text = stock.name
+        initUI()
 
-        viewModel.getTotalStockPriceLiveData().observe(viewLifecycleOwner, Observer {
-            totalPriceTextView.text = "Total price: $it₽"
-        })
+        viewModel.getTotalStockPriceLiveData().observe(viewLifecycleOwner, Observer(this::setTotalPrice))
+        viewModel.secPackage.observe(viewLifecycleOwner, Observer(this::addSecPackage))
+        viewModel.shakePriceEditText.observe(viewLifecycleOwner, Observer { shakePriceEditText() })
+        viewModel.shakeCountEditText.observe(viewLifecycleOwner, Observer { shakeCountEditText() })
+    }
+
+    private fun initUI() {
+        nameTextView.text = stock.name
 
         priceEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -72,7 +79,8 @@ class AddStockBottomDialog : BottomDialog() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.setStockPrice(s.toString().toFloat())
+                val price = s.toString().toFloatOrNull() ?: 0f
+                viewModel.setSecurityPrice(price)
             }
         })
 
@@ -83,16 +91,33 @@ class AddStockBottomDialog : BottomDialog() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.setStockCount(s.toString().toInt())
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, symCount: Int) {
+                val securitiesCount = s.toString().toIntOrNull() ?: 0
+                viewModel.setStockCount(securitiesCount)
             }
-
         })
 
         addStockButton.setOnClickListener {
-            val stockPackage = viewModel.getStockPackage()
-            clickListener?.onAddStockPackageClick(stockPackage)
+            viewModel.addSecPackage()
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setTotalPrice(price: Float?) {
+        if (price == null) return
+        totalPriceTextView.text = resources.getString(R.string.total_price, price) + getString(R.string.currency_rub)
+    }
+
+    private fun addSecPackage(secPackage: SecPackageDbModel) {
+        clickListener?.onAddSecPackageClick(secPackage)
+    }
+
+    private fun shakePriceEditText() {
+        priceEditText.shake(SHAKE_AMPLITUDE)
+    }
+
+    private fun shakeCountEditText() {
+        countEditText.shake(SHAKE_AMPLITUDE)
     }
 
     companion object {
@@ -100,8 +125,11 @@ class AddStockBottomDialog : BottomDialog() {
         private const val ARGUMENT_SEC_ID = "sec_id"
         private const val ARGUMENT_NAME = "stock_name"
 
-        fun newInstance(stock: ShortStockNetworkModel): AddStockBottomDialog {
-            val dialog = AddStockBottomDialog()
+        private const val SHAKE_AMPLITUDE = 8f
+
+        fun newInstance(stock: ShortStockNetworkModel): AddSecBottomDialog {
+            val dialog =
+                AddSecBottomDialog()
             dialog.arguments = bundleOf(
                 ARGUMENT_SEC_ID to stock.secid,
                 ARGUMENT_NAME to stock.name
@@ -112,7 +140,7 @@ class AddStockBottomDialog : BottomDialog() {
 
     interface OnClickListener {
 
-        fun onAddStockPackageClick(stockPackage: StockPackageDbModel)
+        fun onAddSecPackageClick(stockPackage: SecPackageDbModel)
 
     }
 }
