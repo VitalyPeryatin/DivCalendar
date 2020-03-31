@@ -23,6 +23,10 @@ class CalendarViewModel : ViewModel() {
     val payments: LiveData<List<IComparableItem>>
         get() = _payments
 
+    private val _dataChart = MutableLiveData<List<Pair<Int,List<PaymentPresentationModel>>>>()
+    val dataChart: LiveData<List<Pair<Int,List<PaymentPresentationModel>>>>
+        get() = _dataChart
+
     init {
         loadAllPayments()
     }
@@ -33,6 +37,7 @@ class CalendarViewModel : ViewModel() {
         delay(2000L)
         val payments = PaymentRepository.loadAllPayments()
         _payments.postValue(mapPaymentsToPresentationModels(payments))
+        _dataChart.postValue(mapPaymentsToDataForChart(payments))
         _state.postValue(VIEW_STATE_CALENDAR_CONTENT)
     }
 
@@ -48,6 +53,14 @@ class CalendarViewModel : ViewModel() {
             }
         }
         return items
+    }
+
+    private fun mapPaymentsToDataForChart(payments: List<PaymentNetworkModel>):List<Pair<Int,List<PaymentPresentationModel>>>{
+        return payments.groupBy { it.date.split("-")[1] }.toList().map {
+            val key = it.first.toInt()
+            val value = PaymentPresentationModel.from(it)
+            Pair(key,value)
+        }
     }
 
     companion object {

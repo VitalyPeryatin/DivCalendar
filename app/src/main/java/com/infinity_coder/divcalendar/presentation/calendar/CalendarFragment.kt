@@ -16,6 +16,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
+import com.infinity_coder.divcalendar.presentation.models.PaymentPresentationModel
 import kotlinx.android.synthetic.main.fragment_calendar.*
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
@@ -32,6 +33,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
         viewModel.state.observe(viewLifecycleOwner, Observer(this::updateState))
         viewModel.payments.observe(viewLifecycleOwner, Observer(this::updatePayments))
+        viewModel.dataChart.observe(viewLifecycleOwner, Observer(this::updateChart))
     }
 
     private fun initUI() {
@@ -53,11 +55,10 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
     private fun updatePayments(payments: List<IComparableItem>) {
         (calendarPaymentsRecyclerView.adapter as DiffUtilCompositeAdapter).swapData(payments)
-        updateChart()
     }
 
-    private fun updateChart(){
-        val set = BarDataSet(dataValues(), "BarDataSet")
+    private fun updateChart(dataChart:List<Pair<Int,List<PaymentPresentationModel>>>){
+        val set = BarDataSet(dataValues(dataChart), "BarDataSet")
         val  data = BarData(set);
         data.barWidth = 0.8f
 
@@ -84,8 +85,11 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         }
     }
 
-    private fun dataValues():List<BarEntry>{
+    private fun dataValues(dataChart:List<Pair<Int,List<PaymentPresentationModel>>>):List<BarEntry>{
         val entries = mutableListOf<BarEntry>()
+        dataChart.forEach {
+            entries.add(BarEntry(it.first.toFloat(),it.second.map { payment->payment.dividends.toFloat() }.toTypedArray()))
+        }
         for(i in 0 until 12){
            entries.add(BarEntry(i.toFloat(),10+10*i.toFloat()))
         }
