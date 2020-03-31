@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.network.model.ShortSecurityNetworkModel
+import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_security_search.*
 
@@ -39,6 +40,8 @@ class SecurityRecyclerAdapter(
         fun bind(security: ShortSecurityNetworkModel) {
             nameTextView.text = security.name
             tickerTextView.text = security.secid
+            val securityColor = SecurityTypeDelegate.getColor(containerView.context, security.type)
+            securityTypeView.setBackgroundColor(securityColor)
 
             containerView.setOnClickListener {
                 clickListener?.onClick(security)

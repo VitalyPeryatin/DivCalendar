@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.network.model.ShortSecurityNetworkModel
-import com.infinity_coder.divcalendar.data.repositories.SecurityRepository
+import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import kotlinx.coroutines.launch
 
 class SearchSecurityViewModel : ViewModel() {
@@ -17,12 +17,14 @@ class SearchSecurityViewModel : ViewModel() {
 
     private var allSecurities: List<ShortSecurityNetworkModel> = emptyList()
 
+    private val portfolioInteractor = PortfolioInteractor()
+
     init {
         loadAllSecurities()
     }
 
     fun appendSecurityPackage(securityPackage: SecurityPackageDbModel) = viewModelScope.launch {
-        SecurityRepository.appendSecurityPackage(securityPackage)
+        portfolioInteractor.appendSecurityPackage(securityPackage)
     }
 
     fun requestSecuritiesByQuery(query: String) {
@@ -38,7 +40,7 @@ class SearchSecurityViewModel : ViewModel() {
     }
 
     private fun loadAllSecurities() = viewModelScope.launch {
-        val securities = SecurityRepository.loadAllSecurities()
+        val securities = portfolioInteractor.loadAllSecurities()
         allSecurities = securities
     }
 

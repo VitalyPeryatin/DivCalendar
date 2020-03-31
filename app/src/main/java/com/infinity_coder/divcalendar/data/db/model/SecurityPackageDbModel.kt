@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel.Companion.TABLE_NAME
+import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
 
 @Entity(tableName = TABLE_NAME)
 data class SecurityPackageDbModel(
@@ -21,7 +22,10 @@ data class SecurityPackageDbModel(
     var totalPrice: Float = 0f,
 
     @ColumnInfo(name = COLUMN_YEAR_YIELD)
-    var yearYield: Float = 0f
+    var yearYield: Float = 0f,
+
+    @ColumnInfo(name = COLUMN_TYPE)
+    var type: String = SecurityTypeDelegate.SEC_TYP_STOCK
 ) {
     companion object {
         const val TABLE_NAME = "SecPackage"
@@ -31,5 +35,6 @@ data class SecurityPackageDbModel(
         const val COLUMN_COUNT = "count"
         const val COLUMN_TOTAL_PRICE = "total_price"
         const val COLUMN_YEAR_YIELD = "year_yield"
+        const val COLUMN_TYPE = "type"
     }
 }

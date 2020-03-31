@@ -5,7 +5,7 @@ import androidx.room.*
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 
 @Dao
-abstract class SecurityDao {
+abstract class PortfolioDao {
 
     @Query("SELECT * FROM ${SecurityPackageDbModel.TABLE_NAME} WHERE ${SecurityPackageDbModel.COLUMN_SEC_ID}=:secid LIMIT 1")
     abstract suspend fun getSecurityPackage(secid: String): SecurityPackageDbModel?

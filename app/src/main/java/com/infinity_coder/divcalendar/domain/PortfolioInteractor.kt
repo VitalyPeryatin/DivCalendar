@@ -1,40 +1,35 @@
-package com.infinity_coder.divcalendar.data.repositories
+package com.infinity_coder.divcalendar.domain
 
 import androidx.lifecycle.LiveData
-import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import com.infinity_coder.divcalendar.data.network.RetrofitService
 import com.infinity_coder.divcalendar.data.network.model.ShortSecurityNetworkModel
+import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
 
-object SecurityRepository {
-
-    private val securityDao = DivCalendarDatabase.roomDatabase.securityDao
-    private val moexApi = RetrofitService.moexApi
-
+class PortfolioInteractor {
     suspend fun loadAllSecurities(): List<ShortSecurityNetworkModel> {
-        return moexApi.getSecurities().securities
+        return PortfolioRepository.loadAllSecurities()
     }
 
     fun loadAllSecurityPackages(): LiveData<List<SecurityPackageDbModel>> {
-        return securityDao.getAllSecuritiesPackageLiveData()
+        return PortfolioRepository.loadAllSecurityPackages()
     }
 
     suspend fun changeSecurityPackage(securityPackage: SecurityPackageDbModel) {
         if (securityPackage.count <= 0) {
-            securityDao.deleteSecurityPackage(securityPackage)
+            PortfolioRepository.deleteSecurityPackage(securityPackage)
         } else {
-            securityDao.addSecurityPackage(securityPackage)
+            PortfolioRepository.addSecurityPackage(securityPackage)
         }
     }
 
     suspend fun appendSecurityPackage(newSecurityPackage: SecurityPackageDbModel) {
-        var securitiesPackage = securityDao.getSecurityPackage(newSecurityPackage.secid)
+        var securitiesPackage = PortfolioRepository.getSecurityPackage(newSecurityPackage.secid)
         if (securitiesPackage == null) {
             securitiesPackage = newSecurityPackage
         } else {
             securitiesPackage.count += newSecurityPackage.count
             securitiesPackage.totalPrice += newSecurityPackage.totalPrice
         }
-        securityDao.addSecurityPackage(securitiesPackage)
+        PortfolioRepository.addSecurityPackage(securitiesPackage)
     }
 }
