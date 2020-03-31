@@ -10,9 +10,9 @@
     <string name="empty_list">Empty list</string>
 
     <!--calendar screen-->
+    <string name="payout_chart">Payout chart</string>
+    <string name="annual_income">Annual income: %1$.2f₽</string>
     <string name="monthly_income_label">Monthly income:</string>
     <string name="count_stocks_label">Amount stock:</string>
     <string name="dividends_label">Income:</string>
-    <string name="payout_chart">Payout chart</string>
-    <string name="annual_income">Annual income:</string>
 </resources>

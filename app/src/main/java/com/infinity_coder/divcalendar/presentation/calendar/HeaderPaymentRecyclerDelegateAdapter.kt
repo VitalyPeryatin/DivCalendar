@@ -16,7 +16,7 @@ class HeaderPaymentRecyclerDelegateAdapter : KDelegateAdapter<HeaderPaymentPrese
     override fun onBind(item: HeaderPaymentPresentationModel, viewHolder: KViewHolder) {
         viewHolder.run {
             headerPaymentMonth.text =
-                headerPaymentMonth.context.resources.getStringArray(R.array.months_nominative_case)[item.month]
+                headerPaymentMonth.context.resources.getStringArray(R.array.months_nominative_case)[item.month - 1]
         }
     }
 

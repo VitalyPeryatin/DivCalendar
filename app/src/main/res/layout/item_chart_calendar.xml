@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/chartTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
+            android:textSize="@dimen/font_normal"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/black"
+            android:text="@string/payout_chart"/>
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_below="@id/chartTitle"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"/>
+
+        <TextView
+            android:id="@+id/annualIncome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/chart"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="16dp"
+            android:textSize="@dimen/font_small_small"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/black"
+            android:text="@string/annual_income"/>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
