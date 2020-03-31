@@ -12,15 +12,16 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
-import com.infinity_coder.divcalendar.presentation.search.SearchSecActivity
+import com.infinity_coder.divcalendar.presentation.portfolio.changepackage.ChangePackageBottomDialog
+import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
 import kotlinx.android.synthetic.main.fragment_portfolio.*
 
-class PortfolioFragment : Fragment() {
+class PortfolioFragment : Fragment(), ChangePackageBottomDialog.OnClickListener {
+
+    private var changePackageDialog: ChangePackageBottomDialog? = null
 
     private val viewModel: PortfolioViewModel by lazy {
-        viewModel {
-            PortfolioViewModel()
-        }
+        viewModel { PortfolioViewModel() }
     }
 
     override fun onCreateView(
@@ -35,22 +36,38 @@ class PortfolioFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         securitiesRecyclerView.layoutManager = LinearLayoutManager(context)
-        securitiesRecyclerView.adapter = SecurityRecyclerAdapter()
+        securitiesRecyclerView.adapter = SecurityRecyclerAdapter(getOnItemClickListener())
 
         portfolioToolbar.title = context!!.resources.getString(R.string.portfolio)
         val parentActivity = (activity as AppCompatActivity)
         parentActivity.setActionBar(portfolioToolbar)
 
-        viewModel.getSecsLiveData().observe(viewLifecycleOwner, Observer(this::setSecurities))
+        viewModel.getSecuritiesLiveData().observe(viewLifecycleOwner, Observer(this::setSecurities))
 
         addSecurityButton.setOnClickListener {
-            val intent = SearchSecActivity.getIntent(context!!)
+            val intent = SearchSecurityActivity.getIntent(context!!)
             startActivity(intent)
         }
+    }
+
+    private fun getOnItemClickListener() = object : SecurityRecyclerAdapter.OnItemClickListener {
+        override fun onItemClick(securityPackage: SecurityPackageDbModel) {
+            openChangePackageDialog(securityPackage)
+        }
+    }
+
+    private fun openChangePackageDialog(securityPackage: SecurityPackageDbModel) {
+        changePackageDialog = ChangePackageBottomDialog.newInstance(securityPackage)
+        changePackageDialog?.show(childFragmentManager, ChangePackageBottomDialog::class.toString())
     }
 
     private fun setSecurities(securities: List<SecurityPackageDbModel>) {
         val adapter = securitiesRecyclerView.adapter as? SecurityRecyclerAdapter
         adapter?.setSecurities(securities)
+    }
+
+    override fun onChangePackageClick(securityPackage: SecurityPackageDbModel) {
+        viewModel.changeSecurityPackage(securityPackage)
+        changePackageDialog?.dismiss()
     }
 }

@@ -1,23 +1,23 @@
-package com.infinity_coder.divcalendar.presentation.search.addsec
+package com.infinity_coder.divcalendar.presentation.search.addsecurity
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.ShortSecNetworkModel
+import com.infinity_coder.divcalendar.data.network.model.ShortSecurityNetworkModel
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
 
-class AddSecViewModel : ViewModel() {
+class AddSecurityViewModel : ViewModel() {
 
     private val _securityPackage = MutableLiveData<SecurityPackageDbModel>()
-    val secPackage: LiveData<SecurityPackageDbModel>
+    val securityPackage: LiveData<SecurityPackageDbModel>
         get() = _securityPackage
 
     val shakePriceEditText = LiveEvent<Void?>()
     val shakeCountEditText = LiveEvent<Void?>()
 
     private val securityTotalPriceLiveData = MutableLiveData<Float>(0f)
-    private lateinit var security: ShortSecNetworkModel
+    private lateinit var security: ShortSecurityNetworkModel
 
     private var price: Float = 0f
     private var count: Int = 0
@@ -36,13 +36,16 @@ class AddSecViewModel : ViewModel() {
         securityTotalPriceLiveData.postValue(price * count)
     }
 
-    fun setSecurity(security: ShortSecNetworkModel) {
+    fun setSecurity(security: ShortSecurityNetworkModel) {
         this.security = security
     }
 
-    private fun getSecurityPackage(): SecurityPackageDbModel {
-        return SecurityPackageDbModel(security.secid, security.name, count, price)
-    }
+    private fun getSecurityPackage() = SecurityPackageDbModel(
+        secid = security.secid,
+        name = security.name,
+        count = count,
+        totalPrice = price * count
+    )
 
     fun addSecurityPackage() {
         when {

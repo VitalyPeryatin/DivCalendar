@@ -5,15 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.network.model.ShortSecNetworkModel
+import com.infinity_coder.divcalendar.data.network.model.ShortSecurityNetworkModel
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_security_search.*
 
-class SecRecyclerAdapter(
+class SecurityRecyclerAdapter(
     private var clickListener: OnClickListener? = null
-) : RecyclerView.Adapter<SecRecyclerAdapter.SecurityViewHolder>() {
+) : RecyclerView.Adapter<SecurityRecyclerAdapter.SecurityViewHolder>() {
 
-    private var securities: List<ShortSecNetworkModel> = emptyList()
+    private var securities: List<ShortSecurityNetworkModel> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SecurityViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -27,7 +27,7 @@ class SecRecyclerAdapter(
         holder.bind(securities[position])
     }
 
-    fun setSecurities(securities: List<ShortSecNetworkModel>) {
+    fun setSecurities(securities: List<ShortSecurityNetworkModel>) {
         this.securities = securities
         notifyDataSetChanged()
     }
@@ -36,7 +36,7 @@ class SecRecyclerAdapter(
         override val containerView: View,
         private var clickListener: OnClickListener?
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
-        fun bind(security: ShortSecNetworkModel) {
+        fun bind(security: ShortSecurityNetworkModel) {
             nameTextView.text = security.name
             tickerTextView.text = security.secid
 
@@ -47,6 +47,6 @@ class SecRecyclerAdapter(
     }
 
     interface OnClickListener {
-        fun onClick(security: ShortSecNetworkModel)
+        fun onClick(security: ShortSecurityNetworkModel)
     }
 }

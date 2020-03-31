@@ -4,7 +4,7 @@ import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.infinity_coder.divcalendar.data.network.model.ShortSecList
-import com.infinity_coder.divcalendar.data.network.model.ShortSecNetworkModel
+import com.infinity_coder.divcalendar.data.network.model.ShortSecurityNetworkModel
 import java.lang.reflect.Type
 
 class SecListDeserializer : JsonDeserializer<ShortSecList> {
@@ -26,7 +26,7 @@ class SecListDeserializer : JsonDeserializer<ShortSecList> {
 
         for (dataElement in dataList) {
             val data = dataElement.asJsonArray
-            val security = ShortSecNetworkModel(
+            val security = ShortSecurityNetworkModel(
                 secid = data[1].asString,
                 name = data[2].asString
             )

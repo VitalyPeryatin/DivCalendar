@@ -20,32 +20,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/totalPriceTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        android:fontFamily="@font/roboto"
-        tools:text="Total price: 122321.45₽"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/priceInputLayout"
-        android:theme="@style/TextInputTheme"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:hint="@string/price"
+        android:hint="@string/cost"
+        android:theme="@style/TextInputTheme"
         app:layout_constraintEnd_toStartOf="@+id/countInputLayout"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/totalPriceTextView">
+        app:layout_constraintTop_toBottomOf="@+id/nameTextView">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/priceEditText"
@@ -57,17 +44,17 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/countInputLayout"
-        android:theme="@style/TextInputTheme"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/count"
+        android:theme="@style/TextInputTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/priceInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/totalPriceTextView">
+        app:layout_constraintTop_toBottomOf="@+id/nameTextView">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/countEditText"
@@ -78,21 +65,42 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/addSecurityButton"
+        android:id="@+id/changePackageButton"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
         android:background="@drawable/bg_button_active_primary"
         android:fontFamily="@font/roboto"
-        android:text="@string/add"
+        android:text="@string/change"
         android:textAllCaps="false"
         android:textColor="@color/white"
+        android:textSize="@dimen/font_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priceInputLayout" />
+
+    <TextView
+        android:id="@+id/deletePackageButton"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/bg_button_transparent_red"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        android:text="@string/delete_entire_package"
+        android:textColor="@color/red"
         android:textSize="@dimen/font_small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/priceInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/changePackageButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

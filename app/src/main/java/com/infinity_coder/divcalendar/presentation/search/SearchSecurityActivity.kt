@@ -11,23 +11,23 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.ShortSecNetworkModel
-import com.infinity_coder.divcalendar.presentation.search.addsec.AddSecurityBottomDialog
+import com.infinity_coder.divcalendar.data.network.model.ShortSecurityNetworkModel
+import com.infinity_coder.divcalendar.presentation._common.viewModel
+import com.infinity_coder.divcalendar.presentation.search.addsecurity.AddSecurityBottomDialog
 import kotlinx.android.synthetic.main.activity_search_secs.*
 
-class SearchSecActivity : AppCompatActivity(), AddSecurityBottomDialog.OnClickListener {
+class SearchSecurityActivity : AppCompatActivity(), AddSecurityBottomDialog.OnClickListener {
 
-    val viewModel: SearchSecViewModel by lazy { SearchSecViewModel() }
+    val viewModel: SearchSecurityViewModel by lazy {
+        viewModel { SearchSecurityViewModel() }
+    }
 
     private var addSecurityDialog: AddSecurityBottomDialog? = null
 
-    private val secClickListener = object : SecRecyclerAdapter.OnClickListener {
-        override fun onClick(security: ShortSecNetworkModel) {
+    private val secClickListener = object : SecurityRecyclerAdapter.OnClickListener {
+        override fun onClick(security: ShortSecurityNetworkModel) {
             addSecurityDialog = AddSecurityBottomDialog.newInstance(security)
-            addSecurityDialog?.show(
-                supportFragmentManager.beginTransaction(),
-                AddSecurityBottomDialog::class.toString()
-            )
+            addSecurityDialog?.show(supportFragmentManager, AddSecurityBottomDialog::class.toString())
         }
     }
 
@@ -43,7 +43,7 @@ class SearchSecActivity : AppCompatActivity(), AddSecurityBottomDialog.OnClickLi
 
     private fun initUI() {
         securitiesRecyclerView.layoutManager = LinearLayoutManager(this)
-        securitiesRecyclerView.adapter = SecRecyclerAdapter(secClickListener)
+        securitiesRecyclerView.adapter = SecurityRecyclerAdapter(secClickListener)
 
         backButton.setOnClickListener {
             onBackPressed()
@@ -75,14 +75,9 @@ class SearchSecActivity : AppCompatActivity(), AddSecurityBottomDialog.OnClickLi
 
     }
 
-    private fun setSecurities(securities: List<ShortSecNetworkModel>) {
-        val adapter = securitiesRecyclerView.adapter as? SecRecyclerAdapter
+    private fun setSecurities(securities: List<ShortSecurityNetworkModel>) {
+        val adapter = securitiesRecyclerView.adapter as? SecurityRecyclerAdapter
         adapter?.setSecurities(securities)
-    }
-
-    override fun onAddSecPackageClick(securityPackage: SecurityPackageDbModel) {
-        viewModel.appendSecurityPackage(securityPackage)
-        dismissAddSecurityDialog()
     }
 
     private fun dismissAddSecurityDialog() {
@@ -92,7 +87,12 @@ class SearchSecActivity : AppCompatActivity(), AddSecurityBottomDialog.OnClickLi
 
     companion object {
         fun getIntent(context: Context): Intent {
-            return Intent(context, SearchSecActivity::class.java)
+            return Intent(context, SearchSecurityActivity::class.java)
         }
+    }
+
+    override fun onAddSecPackageClick(securityPackage: SecurityPackageDbModel) {
+        viewModel.appendSecurityPackage(securityPackage)
+        dismissAddSecurityDialog()
     }
 }

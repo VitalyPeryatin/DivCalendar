@@ -24,4 +24,7 @@
     <!--portfolio -->
     <string name="sec_count">%1$d шт.</string>
     <string name="yield_in_year">%1$.2f\%% в год</string>
+    <string name="change">Изменить пакет</string>
+    <string name="delete_entire_package">Удалить весь пакет</string>
+    <string name="cost">Стоимость</string>
 </resources>

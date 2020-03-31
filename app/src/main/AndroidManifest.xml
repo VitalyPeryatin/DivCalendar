@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.search.SearchSecActivity"
+        <activity android:name=".presentation.search.SearchSecurityActivity"
             android:windowSoftInputMode="adjustPan"
             android:launchMode="singleTask">
 

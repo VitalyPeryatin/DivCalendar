@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.infinity_coder.divcalendar.data.db.model.ShortSecurityDbModel.Companion.TABLE_NAME
-import com.infinity_coder.divcalendar.data.network.model.ShortSecNetworkModel
+import com.infinity_coder.divcalendar.data.network.model.ShortSecurityNetworkModel
 
 @Entity(tableName = TABLE_NAME)
 data class ShortSecurityDbModel(
@@ -21,7 +21,7 @@ data class ShortSecurityDbModel(
         const val COLUMN_SEC_ID = "sec_id"
         const val COLUMN_NAME = "name"
 
-        fun from(shortSecurity: ShortSecNetworkModel) = ShortSecurityDbModel(
+        fun from(shortSecurity: ShortSecurityNetworkModel) = ShortSecurityDbModel(
             secid = shortSecurity.secid,
             name = shortSecurity.name
         )

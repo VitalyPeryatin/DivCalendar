@@ -5,17 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.ShortSecNetworkModel
+import com.infinity_coder.divcalendar.data.network.model.ShortSecurityNetworkModel
 import com.infinity_coder.divcalendar.data.repositories.SecurityRepository
 import kotlinx.coroutines.launch
 
-class SearchSecViewModel : ViewModel() {
+class SearchSecurityViewModel : ViewModel() {
 
-    private val _filteredSecuritiesLiveData = MutableLiveData<List<ShortSecNetworkModel>>()
-    val filteredSecuritiesLiveData: LiveData<List<ShortSecNetworkModel>>
+    private val _filteredSecuritiesLiveData = MutableLiveData<List<ShortSecurityNetworkModel>>()
+    val filteredSecuritiesLiveData: LiveData<List<ShortSecurityNetworkModel>>
         get() = _filteredSecuritiesLiveData
 
-    private var allSecurities: List<ShortSecNetworkModel> = emptyList()
+    private var allSecurities: List<ShortSecurityNetworkModel> = emptyList()
 
     init {
         loadAllSecurities()

@@ -1,6 +1,5 @@
-package com.infinity_coder.divcalendar.presentation.search.addsec
+package com.infinity_coder.divcalendar.presentation.portfolio.changepackage
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -13,22 +12,20 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.ShortSecNetworkModel
+import com.infinity_coder.divcalendar.data.network.model.ShortSecurityNetworkModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.shake
 import com.infinity_coder.divcalendar.presentation._common.viewModel
-import kotlinx.android.synthetic.main.bottom_dialog_add_security.*
+import kotlinx.android.synthetic.main.bottom_dialog_remove_security.*
 
-class AddSecurityBottomDialog : BottomDialog() {
+class ChangePackageBottomDialog : BottomDialog() {
 
     private var clickListener: OnClickListener? = null
 
-    private lateinit var security: ShortSecNetworkModel
+    private lateinit var security: ShortSecurityNetworkModel
 
-    private val viewModel: AddSecViewModel by lazy {
-        viewModel {
-            AddSecViewModel()
-        }
+    private val viewModel: ChangePackageViewModel by lazy {
+        viewModel { ChangePackageViewModel() }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +33,7 @@ class AddSecurityBottomDialog : BottomDialog() {
 
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
 
-        security = ShortSecNetworkModel(
+        security = ShortSecurityNetworkModel(
             secid = arguments!!.getString(ARGUMENT_SEC_ID, ""),
             name = arguments!!.getString(ARGUMENT_NAME, "")
         )
@@ -46,14 +43,15 @@ class AddSecurityBottomDialog : BottomDialog() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.bottom_dialog_add_security, container, false)
+        return inflater.inflate(R.layout.bottom_dialog_remove_security, container, false)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (context is OnClickListener) {
-            clickListener = context
+        val parentFragment = parentFragment
+        if (parentFragment is OnClickListener) {
+            clickListener = parentFragment
         }
     }
 
@@ -62,8 +60,7 @@ class AddSecurityBottomDialog : BottomDialog() {
 
         initUI()
 
-        viewModel.getTotalSecurityPriceLiveData().observe(viewLifecycleOwner, Observer(this::setTotalPrice))
-        viewModel.secPackage.observe(viewLifecycleOwner, Observer(this::addSecPackage))
+        viewModel.changeSecurityPackage.observe(viewLifecycleOwner, Observer(this::changePackage))
         viewModel.shakePriceEditText.observe(viewLifecycleOwner, Observer { shakePriceEditText() })
         viewModel.shakeCountEditText.observe(viewLifecycleOwner, Observer { shakeCountEditText() })
     }
@@ -80,7 +77,7 @@ class AddSecurityBottomDialog : BottomDialog() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val price = s.toString().toFloatOrNull() ?: 0f
-                viewModel.setSecurityPrice(price)
+                viewModel.setPackageCost(price)
             }
         })
 
@@ -93,23 +90,21 @@ class AddSecurityBottomDialog : BottomDialog() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, symCount: Int) {
                 val securitiesCount = s.toString().toIntOrNull() ?: 0
-                viewModel.setSecurityCount(securitiesCount)
+                viewModel.setPackageCount(securitiesCount)
             }
         })
 
-        addSecurityButton.setOnClickListener {
-            viewModel.addSecurityPackage()
+        changePackageButton.setOnClickListener {
+            viewModel.changePackage()
+        }
+
+        deletePackageButton.setOnClickListener {
+            viewModel.removePackage()
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun setTotalPrice(price: Float?) {
-        if (price == null) return
-        totalPriceTextView.text = resources.getString(R.string.total_price, price) + getString(R.string.currency_rub)
-    }
-
-    private fun addSecPackage(secPackage: SecurityPackageDbModel) {
-        clickListener?.onAddSecPackageClick(secPackage)
+    private fun changePackage(securityPackage: SecurityPackageDbModel) {
+        clickListener?.onChangePackageClick(securityPackage)
     }
 
     private fun shakePriceEditText() {
@@ -127,8 +122,8 @@ class AddSecurityBottomDialog : BottomDialog() {
 
         private const val SHAKE_AMPLITUDE = 8f
 
-        fun newInstance(security: ShortSecNetworkModel): AddSecurityBottomDialog {
-            val dialog = AddSecurityBottomDialog()
+        fun newInstance(security: SecurityPackageDbModel): ChangePackageBottomDialog {
+            val dialog = ChangePackageBottomDialog()
             dialog.arguments = bundleOf(
                 ARGUMENT_SEC_ID to security.secid,
                 ARGUMENT_NAME to security.name
@@ -138,8 +133,6 @@ class AddSecurityBottomDialog : BottomDialog() {
     }
 
     interface OnClickListener {
-
-        fun onAddSecPackageClick(securityPackage: SecurityPackageDbModel)
-
+        fun onChangePackageClick(securityPackage: SecurityPackageDbModel)
     }
 }
