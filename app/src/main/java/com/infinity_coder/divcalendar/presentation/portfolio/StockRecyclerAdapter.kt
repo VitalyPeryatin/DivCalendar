@@ -32,10 +32,14 @@ class StockRecyclerAdapter : RecyclerView.Adapter<StockRecyclerAdapter.StockView
 
     class StockViewHolder(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
+
+        private val resources = containerView.resources
+
         fun bind(stockPackage: SecPackageDbModel) {
             nameTextView.text = stockPackage.name
-            countTextView.text = stockPackage.count.toString()
-            yearIncomeTextView.text = stockPackage.totalPrice.toString()
+            countTextView.text = resources.getString(R.string.sec_count, stockPackage.count)
+            totalPriceTextView.text = resources.getString(R.string.value_currency_rub, stockPackage.totalPrice)
+            yearYieldTextView.text = resources.getString(R.string.yield_in_year, stockPackage.yearYield)
         }
     }
 }
