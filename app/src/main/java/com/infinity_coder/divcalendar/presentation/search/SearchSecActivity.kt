@@ -17,9 +17,9 @@ import kotlinx.android.synthetic.main.activity_search_secs.*
 
 class SearchSecActivity : AppCompatActivity(), AddSecBottomDialog.OnClickListener {
 
-    private var addStockDialog: AddSecBottomDialog? = null
-
     val viewModel: SearchSecViewModel by lazy { SearchSecViewModel() }
+
+    private var addStockDialog: AddSecBottomDialog? = null
 
     private val stockClickListener = object : SecRecyclerAdapter.OnClickListener {
         override fun onClick(stock: ShortStockNetworkModel) {
@@ -49,7 +49,7 @@ class SearchSecActivity : AppCompatActivity(), AddSecBottomDialog.OnClickListene
             onBackPressed()
         }
 
-        closeButton.setOnClickListener {
+        clearButton.setOnClickListener {
             queryEditText.text.clear()
         }
         queryEditText.addTextChangedListener(getQueryTextWatcher())
@@ -60,9 +60,9 @@ class SearchSecActivity : AppCompatActivity(), AddSecBottomDialog.OnClickListene
             if (s == null) return
 
             if (s.isNotEmpty()) {
-                closeButton.visibility = View.VISIBLE
+                clearButton.visibility = View.VISIBLE
             } else {
-                closeButton.visibility = View.GONE
+                clearButton.visibility = View.GONE
             }
         }
 
@@ -80,12 +80,6 @@ class SearchSecActivity : AppCompatActivity(), AddSecBottomDialog.OnClickListene
         adapter?.setStocks(stocks)
     }
 
-    companion object {
-        fun getIntent(context: Context): Intent {
-            return Intent(context, SearchSecActivity::class.java)
-        }
-    }
-
     override fun onAddSecPackageClick(stockPackage: SecPackageDbModel) {
         viewModel.appendStockPackage(stockPackage)
         dismissAddStockDialog()
@@ -94,5 +88,11 @@ class SearchSecActivity : AppCompatActivity(), AddSecBottomDialog.OnClickListene
     private fun dismissAddStockDialog() {
         addStockDialog?.dismiss()
         addStockDialog = null
+    }
+
+    companion object {
+        fun getIntent(context: Context): Intent {
+            return Intent(context, SearchSecActivity::class.java)
+        }
     }
 }
