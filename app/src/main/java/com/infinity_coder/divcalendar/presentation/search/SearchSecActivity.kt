@@ -17,9 +17,9 @@ import kotlinx.android.synthetic.main.activity_search_stocks.*
 
 class SearchSecActivity : AppCompatActivity(), AddSecBottomDialog.OnClickListener {
 
-    private var addStockDialog: AddSecBottomDialog? = null
-
     val viewModel: SearchSecViewModel by lazy { SearchSecViewModel() }
+
+    private var addStockDialog: AddSecBottomDialog? = null
 
     private val stockClickListener = object : SecRecyclerAdapter.OnClickListener {
         override fun onClick(stock: ShortStockNetworkModel) {
@@ -80,12 +80,6 @@ class SearchSecActivity : AppCompatActivity(), AddSecBottomDialog.OnClickListene
         adapter?.setStocks(stocks)
     }
 
-    companion object {
-        fun getIntent(context: Context): Intent {
-            return Intent(context, SearchSecActivity::class.java)
-        }
-    }
-
     override fun onAddSecPackageClick(stockPackage: SecPackageDbModel) {
         viewModel.appendStockPackage(stockPackage)
         dismissAddStockDialog()
@@ -94,5 +88,11 @@ class SearchSecActivity : AppCompatActivity(), AddSecBottomDialog.OnClickListene
     private fun dismissAddStockDialog() {
         addStockDialog?.dismiss()
         addStockDialog = null
+    }
+
+    companion object {
+        fun getIntent(context: Context): Intent {
+            return Intent(context, SearchSecActivity::class.java)
+        }
     }
 }
