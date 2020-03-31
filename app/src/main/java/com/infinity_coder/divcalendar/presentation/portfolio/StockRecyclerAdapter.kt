@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecPackageDbModel
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_stock_portfolio.*
+import kotlinx.android.synthetic.main.item_sec_portfolio.*
 
 class StockRecyclerAdapter : RecyclerView.Adapter<StockRecyclerAdapter.StockViewHolder>() {
 
@@ -15,7 +15,7 @@ class StockRecyclerAdapter : RecyclerView.Adapter<StockRecyclerAdapter.StockView
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_stock_portfolio, parent, false)
+        val view = inflater.inflate(R.layout.item_sec_portfolio, parent, false)
         return StockViewHolder(view)
     }
 

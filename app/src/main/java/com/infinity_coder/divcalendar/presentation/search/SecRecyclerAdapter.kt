@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.network.model.ShortStockNetworkModel
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_stock_search.*
+import kotlinx.android.synthetic.main.item_sec_search.*
 
 class SecRecyclerAdapter(
     private var clickListener: OnClickListener? = null
@@ -17,7 +17,7 @@ class SecRecyclerAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_stock_search, parent, false)
+        val view = inflater.inflate(R.layout.item_sec_search, parent, false)
         return StockViewHolder(view, clickListener)
     }
 
