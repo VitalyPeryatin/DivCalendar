@@ -1,7 +1,6 @@
 package com.infinity_coder.divcalendar.presentation.main
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.infinity_coder.divcalendar.R
@@ -10,8 +9,6 @@ import com.infinity_coder.divcalendar.presentation.calendar.CalendarFragment
 import com.infinity_coder.divcalendar.presentation.news.NewsFragment
 import com.infinity_coder.divcalendar.presentation.portfolio.PortfolioFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,15 +35,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             return@setOnNavigationItemSelectedListener true
-        }
-    }
-
-    private fun sendRequest() {
-        GlobalScope.launch {
-            val stocks = api.getStocks().stocks.toList()
-            // val result = JsoupService.getStock("sibn")
-            // Log.d("DivCalendar", result)
-            Log.d("DivCalendar", stocks.toString())
         }
     }
 

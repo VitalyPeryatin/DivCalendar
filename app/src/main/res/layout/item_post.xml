@@ -18,7 +18,7 @@
         android:layout_height="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bg_button_active" />
+        app:srcCompat="@drawable/bg_button_active_primary" />
 
     <TextView
         android:id="@+id/authorTextView"

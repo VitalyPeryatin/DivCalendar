@@ -1,6 +1,5 @@
-package com.infinity_coder.divcalendar.presentation.search.addsec
+package com.infinity_coder.divcalendar.presentation.portfolio.changepackage
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -12,23 +11,21 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.db.model.SecPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.ShortStockNetworkModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import com.infinity_coder.divcalendar.data.network.model.ShortSecurityNetworkModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.shake
 import com.infinity_coder.divcalendar.presentation._common.viewModel
-import kotlinx.android.synthetic.main.bottom_dialog_add_stock.*
+import kotlinx.android.synthetic.main.bottom_dialog_remove_security.*
 
-class AddSecBottomDialog : BottomDialog() {
+class ChangePackageBottomDialog : BottomDialog() {
 
     private var clickListener: OnClickListener? = null
 
-    private lateinit var stock: ShortStockNetworkModel
+    private lateinit var security: ShortSecurityNetworkModel
 
-    private val viewModel: AddSecViewModel by lazy {
-        viewModel {
-            AddSecViewModel()
-        }
+    private val viewModel: ChangePackageViewModel by lazy {
+        viewModel { ChangePackageViewModel() }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,24 +33,25 @@ class AddSecBottomDialog : BottomDialog() {
 
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
 
-        stock = ShortStockNetworkModel(
+        security = ShortSecurityNetworkModel(
             secid = arguments!!.getString(ARGUMENT_SEC_ID, ""),
             name = arguments!!.getString(ARGUMENT_NAME, "")
         )
-        viewModel.setStock(stock)
+        viewModel.setSecurity(security)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.bottom_dialog_add_stock, container, false)
+        return inflater.inflate(R.layout.bottom_dialog_remove_security, container, false)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (context is OnClickListener) {
-            clickListener = context
+        val parentFragment = parentFragment
+        if (parentFragment is OnClickListener) {
+            clickListener = parentFragment
         }
     }
 
@@ -62,14 +60,13 @@ class AddSecBottomDialog : BottomDialog() {
 
         initUI()
 
-        viewModel.getTotalStockPriceLiveData().observe(viewLifecycleOwner, Observer(this::setTotalPrice))
-        viewModel.secPackage.observe(viewLifecycleOwner, Observer(this::addSecPackage))
+        viewModel.changeSecurityPackage.observe(viewLifecycleOwner, Observer(this::changePackage))
         viewModel.shakePriceEditText.observe(viewLifecycleOwner, Observer { shakePriceEditText() })
         viewModel.shakeCountEditText.observe(viewLifecycleOwner, Observer { shakeCountEditText() })
     }
 
     private fun initUI() {
-        nameTextView.text = stock.name
+        nameTextView.text = security.name
 
         priceEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -80,7 +77,7 @@ class AddSecBottomDialog : BottomDialog() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val price = s.toString().toFloatOrNull() ?: 0f
-                viewModel.setSecurityPrice(price)
+                viewModel.setPackageCost(price)
             }
         })
 
@@ -93,23 +90,21 @@ class AddSecBottomDialog : BottomDialog() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, symCount: Int) {
                 val securitiesCount = s.toString().toIntOrNull() ?: 0
-                viewModel.setStockCount(securitiesCount)
+                viewModel.setPackageCount(securitiesCount)
             }
         })
 
-        addStockButton.setOnClickListener {
-            viewModel.addSecPackage()
+        changePackageButton.setOnClickListener {
+            viewModel.changePackage()
+        }
+
+        deletePackageButton.setOnClickListener {
+            viewModel.removePackage()
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun setTotalPrice(price: Float?) {
-        if (price == null) return
-        totalPriceTextView.text = resources.getString(R.string.total_price, price) + getString(R.string.currency_rub)
-    }
-
-    private fun addSecPackage(secPackage: SecPackageDbModel) {
-        clickListener?.onAddSecPackageClick(secPackage)
+    private fun changePackage(securityPackage: SecurityPackageDbModel) {
+        clickListener?.onChangePackageClick(securityPackage)
     }
 
     private fun shakePriceEditText() {
@@ -123,24 +118,21 @@ class AddSecBottomDialog : BottomDialog() {
     companion object {
 
         private const val ARGUMENT_SEC_ID = "sec_id"
-        private const val ARGUMENT_NAME = "stock_name"
+        private const val ARGUMENT_NAME = "sec_name"
 
         private const val SHAKE_AMPLITUDE = 8f
 
-        fun newInstance(stock: ShortStockNetworkModel): AddSecBottomDialog {
-            val dialog =
-                AddSecBottomDialog()
+        fun newInstance(security: SecurityPackageDbModel): ChangePackageBottomDialog {
+            val dialog = ChangePackageBottomDialog()
             dialog.arguments = bundleOf(
-                ARGUMENT_SEC_ID to stock.secid,
-                ARGUMENT_NAME to stock.name
+                ARGUMENT_SEC_ID to security.secid,
+                ARGUMENT_NAME to security.name
             )
             return dialog
         }
     }
 
     interface OnClickListener {
-
-        fun onAddSecPackageClick(stockPackage: SecPackageDbModel)
-
+        fun onChangePackageClick(securityPackage: SecurityPackageDbModel)
     }
 }

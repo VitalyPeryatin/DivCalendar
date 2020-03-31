@@ -78,14 +78,14 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/addStockButton"
+        android:id="@+id/addSecurityButton"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
-        android:background="@drawable/bg_button_active"
+        android:background="@drawable/bg_button_active_primary"
         android:fontFamily="@font/roboto"
         android:text="@string/add"
         android:textAllCaps="false"
