@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.db.model.SecPackageDbModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.search.SearchSecActivity
@@ -34,25 +34,23 @@ class PortfolioFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        stocksRecyclerView.layoutManager = LinearLayoutManager(context)
-        stocksRecyclerView.adapter = StockRecyclerAdapter()
+        securitiesRecyclerView.layoutManager = LinearLayoutManager(context)
+        securitiesRecyclerView.adapter = SecurityRecyclerAdapter()
 
         portfolioToolbar.title = context!!.resources.getString(R.string.portfolio)
         val parentActivity = (activity as AppCompatActivity)
         parentActivity.setActionBar(portfolioToolbar)
 
-        viewModel.getStocksLiveData().observe(viewLifecycleOwner, Observer {
-            setStocks(it)
-        })
+        viewModel.getSecsLiveData().observe(viewLifecycleOwner, Observer(this::setSecurities))
 
-        addStockButton.setOnClickListener {
+        addSecurityButton.setOnClickListener {
             val intent = SearchSecActivity.getIntent(context!!)
             startActivity(intent)
         }
     }
 
-    private fun setStocks(stocks: List<SecPackageDbModel>) {
-        val adapter = stocksRecyclerView.adapter as? StockRecyclerAdapter
-        adapter?.setStocks(stocks)
+    private fun setSecurities(securities: List<SecurityPackageDbModel>) {
+        val adapter = securitiesRecyclerView.adapter as? SecurityRecyclerAdapter
+        adapter?.setSecurities(securities)
     }
 }

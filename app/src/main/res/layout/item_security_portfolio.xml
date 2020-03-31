@@ -73,7 +73,7 @@
             tools:text="30 000 шт" />
 
         <TextView
-            android:id="@+id/yearIncomeTextView"
+            android:id="@+id/totalPriceTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -101,7 +101,7 @@
             android:textSize="@dimen/font_small_small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/yearIncomeTextView"
+            app:layout_constraintTop_toBottomOf="@+id/totalPriceTextView"
             app:layout_constraintVertical_chainStyle="packed" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

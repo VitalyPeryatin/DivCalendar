@@ -4,44 +4,42 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.infinity_coder.divcalendar.data.db.model.SecPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.ShortStockNetworkModel
-import com.infinity_coder.divcalendar.data.repositories.SecRepository
+import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import com.infinity_coder.divcalendar.data.network.model.ShortSecNetworkModel
+import com.infinity_coder.divcalendar.data.repositories.SecurityRepository
 import kotlinx.coroutines.launch
 
 class SearchSecViewModel : ViewModel() {
 
-    private val filteredStocksLiveData = MutableLiveData<List<ShortStockNetworkModel>>()
+    private val _filteredSecuritiesLiveData = MutableLiveData<List<ShortSecNetworkModel>>()
+    val filteredSecuritiesLiveData: LiveData<List<ShortSecNetworkModel>>
+        get() = _filteredSecuritiesLiveData
 
-    private var allStocks: List<ShortStockNetworkModel> = emptyList()
+    private var allSecurities: List<ShortSecNetworkModel> = emptyList()
 
     init {
-        loadAllStock()
+        loadAllSecurities()
     }
 
-    fun getFilteredStocksLiveData(): LiveData<List<ShortStockNetworkModel>> {
-        return filteredStocksLiveData
+    fun appendSecurityPackage(securityPackage: SecurityPackageDbModel) = viewModelScope.launch {
+        SecurityRepository.appendSecurityPackage(securityPackage)
     }
 
-    fun appendStockPackage(stockPackage: SecPackageDbModel) = viewModelScope.launch {
-        SecRepository.appendStockPackage(stockPackage)
-    }
-
-    fun requestStocksByQuery(query: String) {
+    fun requestSecuritiesByQuery(query: String) {
         if (query.isBlank()) {
-            filteredStocksLiveData.postValue(emptyList())
+            _filteredSecuritiesLiveData.postValue(emptyList())
             return
         }
 
-        val filteredStocks = allStocks.filter {
+        val filteredSecurities = allSecurities.filter {
             it.name.contains(query) || it.secid.contains(query)
         }.take(20)
-        filteredStocksLiveData.postValue(filteredStocks)
+        _filteredSecuritiesLiveData.postValue(filteredSecurities)
     }
 
-    private fun loadAllStock() = viewModelScope.launch {
-        val stocks = SecRepository.loadAllStocks()
-        allStocks = stocks
+    private fun loadAllSecurities() = viewModelScope.launch {
+        val securities = SecurityRepository.loadAllSecurities()
+        allSecurities = securities
     }
 
 }

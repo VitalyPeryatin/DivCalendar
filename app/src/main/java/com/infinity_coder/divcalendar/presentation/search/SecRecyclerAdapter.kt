@@ -5,48 +5,48 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.network.model.ShortStockNetworkModel
+import com.infinity_coder.divcalendar.data.network.model.ShortSecNetworkModel
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_sec_search.*
+import kotlinx.android.synthetic.main.item_security_search.*
 
 class SecRecyclerAdapter(
     private var clickListener: OnClickListener? = null
-) : RecyclerView.Adapter<SecRecyclerAdapter.StockViewHolder>() {
+) : RecyclerView.Adapter<SecRecyclerAdapter.SecurityViewHolder>() {
 
-    private var stockList: List<ShortStockNetworkModel> = emptyList()
+    private var securities: List<ShortSecNetworkModel> = emptyList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SecurityViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_sec_search, parent, false)
-        return StockViewHolder(view, clickListener)
+        val view = inflater.inflate(R.layout.item_security_search, parent, false)
+        return SecurityViewHolder(view, clickListener)
     }
 
-    override fun getItemCount(): Int = stockList.size
+    override fun getItemCount(): Int = securities.size
 
-    override fun onBindViewHolder(holder: StockViewHolder, position: Int) {
-        holder.bind(stockList[position])
+    override fun onBindViewHolder(holder: SecurityViewHolder, position: Int) {
+        holder.bind(securities[position])
     }
 
-    fun setStocks(stocks: List<ShortStockNetworkModel>) {
-        this.stockList = stocks
+    fun setSecurities(securities: List<ShortSecNetworkModel>) {
+        this.securities = securities
         notifyDataSetChanged()
     }
 
-    class StockViewHolder(
+    class SecurityViewHolder(
         override val containerView: View,
         private var clickListener: OnClickListener?
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
-        fun bind(stock: ShortStockNetworkModel) {
-            nameTextView.text = stock.name
-            tickerTextView.text = stock.secid
+        fun bind(security: ShortSecNetworkModel) {
+            nameTextView.text = security.name
+            tickerTextView.text = security.secid
 
             containerView.setOnClickListener {
-                clickListener?.onClick(stock)
+                clickListener?.onClick(security)
             }
         }
     }
 
     interface OnClickListener {
-        fun onClick(stock: ShortStockNetworkModel)
+        fun onClick(security: ShortSecNetworkModel)
     }
 }

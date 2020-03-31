@@ -3,22 +3,22 @@ package com.infinity_coder.divcalendar.data.network.gson_serializers
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
-import com.infinity_coder.divcalendar.data.network.model.ShortStockList
-import com.infinity_coder.divcalendar.data.network.model.ShortStockNetworkModel
+import com.infinity_coder.divcalendar.data.network.model.ShortSecList
+import com.infinity_coder.divcalendar.data.network.model.ShortSecNetworkModel
 import java.lang.reflect.Type
 
-class StockListDeserializer : JsonDeserializer<ShortStockList> {
+class SecListDeserializer : JsonDeserializer<ShortSecList> {
 
     override fun deserialize(
         json: JsonElement?,
         typeOfT: Type?,
         context: JsonDeserializationContext?
-    ): ShortStockList {
+    ): ShortSecList {
 
-        val shortStockList = ShortStockList()
-        if (json == null) return ShortStockList()
+        val shortSecurityList = ShortSecList()
+        if (json == null) return ShortSecList()
 
-        val stockList = shortStockList.stocks
+        val securityList = shortSecurityList.securities
 
         val securities = json.asJsonObject.get("quotedsecurities").asJsonObject
         val dataList = securities.get("data").asJsonArray
@@ -26,13 +26,13 @@ class StockListDeserializer : JsonDeserializer<ShortStockList> {
 
         for (dataElement in dataList) {
             val data = dataElement.asJsonArray
-            val stock = ShortStockNetworkModel(
+            val security = ShortSecNetworkModel(
                 secid = data[1].asString,
                 name = data[2].asString
             )
-            stockList.add(stock)
+            securityList.add(security)
         }
 
-        return shortStockList
+        return shortSecurityList
     }
 }

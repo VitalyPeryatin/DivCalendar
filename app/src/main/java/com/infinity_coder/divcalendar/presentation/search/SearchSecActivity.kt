@@ -10,23 +10,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.db.model.SecPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.ShortStockNetworkModel
-import com.infinity_coder.divcalendar.presentation.search.addsec.AddSecBottomDialog
+import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import com.infinity_coder.divcalendar.data.network.model.ShortSecNetworkModel
+import com.infinity_coder.divcalendar.presentation.search.addsec.AddSecurityBottomDialog
 import kotlinx.android.synthetic.main.activity_search_secs.*
 
-class SearchSecActivity : AppCompatActivity(), AddSecBottomDialog.OnClickListener {
+class SearchSecActivity : AppCompatActivity(), AddSecurityBottomDialog.OnClickListener {
 
     val viewModel: SearchSecViewModel by lazy { SearchSecViewModel() }
 
-    private var addStockDialog: AddSecBottomDialog? = null
+    private var addSecurityDialog: AddSecurityBottomDialog? = null
 
-    private val stockClickListener = object : SecRecyclerAdapter.OnClickListener {
-        override fun onClick(stock: ShortStockNetworkModel) {
-            addStockDialog = AddSecBottomDialog.newInstance(stock)
-            addStockDialog?.show(
+    private val secClickListener = object : SecRecyclerAdapter.OnClickListener {
+        override fun onClick(security: ShortSecNetworkModel) {
+            addSecurityDialog = AddSecurityBottomDialog.newInstance(security)
+            addSecurityDialog?.show(
                 supportFragmentManager.beginTransaction(),
-                AddSecBottomDialog::class.toString()
+                AddSecurityBottomDialog::class.toString()
             )
         }
     }
@@ -37,13 +37,13 @@ class SearchSecActivity : AppCompatActivity(), AddSecBottomDialog.OnClickListene
 
         initUI()
 
-        viewModel.requestStocksByQuery("")
-        viewModel.getFilteredStocksLiveData().observe(this, Observer(this::setStocks))
+        viewModel.requestSecuritiesByQuery("")
+        viewModel.filteredSecuritiesLiveData.observe(this, Observer(this::setSecurities))
     }
 
     private fun initUI() {
-        stocksRecyclerView.layoutManager = LinearLayoutManager(this)
-        stocksRecyclerView.adapter = SecRecyclerAdapter(stockClickListener)
+        securitiesRecyclerView.layoutManager = LinearLayoutManager(this)
+        securitiesRecyclerView.adapter = SecRecyclerAdapter(secClickListener)
 
         backButton.setOnClickListener {
             onBackPressed()
@@ -70,24 +70,24 @@ class SearchSecActivity : AppCompatActivity(), AddSecBottomDialog.OnClickListene
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            viewModel.requestStocksByQuery(s.toString())
+            viewModel.requestSecuritiesByQuery(s.toString())
         }
 
     }
 
-    private fun setStocks(stocks: List<ShortStockNetworkModel>) {
-        val adapter = stocksRecyclerView.adapter as? SecRecyclerAdapter
-        adapter?.setStocks(stocks)
+    private fun setSecurities(securities: List<ShortSecNetworkModel>) {
+        val adapter = securitiesRecyclerView.adapter as? SecRecyclerAdapter
+        adapter?.setSecurities(securities)
     }
 
-    override fun onAddSecPackageClick(stockPackage: SecPackageDbModel) {
-        viewModel.appendStockPackage(stockPackage)
-        dismissAddStockDialog()
+    override fun onAddSecPackageClick(securityPackage: SecurityPackageDbModel) {
+        viewModel.appendSecurityPackage(securityPackage)
+        dismissAddSecurityDialog()
     }
 
-    private fun dismissAddStockDialog() {
-        addStockDialog?.dismiss()
-        addStockDialog = null
+    private fun dismissAddSecurityDialog() {
+        addSecurityDialog?.dismiss()
+        addSecurityDialog = null
     }
 
     companion object {

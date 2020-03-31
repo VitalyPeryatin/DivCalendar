@@ -50,7 +50,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/stocksRecyclerView"
+        android:id="@+id/securitiesRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
@@ -60,5 +60,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        tools:listitem="@layout/item_sec_search" />
+        tools:listitem="@layout/item_security_search" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,48 +3,48 @@ package com.infinity_coder.divcalendar.presentation.search.addsec
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.infinity_coder.divcalendar.data.db.model.SecPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.ShortStockNetworkModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import com.infinity_coder.divcalendar.data.network.model.ShortSecNetworkModel
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
 
 class AddSecViewModel : ViewModel() {
 
-    private val _secPackage = MutableLiveData<SecPackageDbModel>()
-    val secPackage: LiveData<SecPackageDbModel>
-        get() = _secPackage
+    private val _securityPackage = MutableLiveData<SecurityPackageDbModel>()
+    val secPackage: LiveData<SecurityPackageDbModel>
+        get() = _securityPackage
 
     val shakePriceEditText = LiveEvent<Void?>()
     val shakeCountEditText = LiveEvent<Void?>()
 
-    private val stockTotalPriceLiveData = MutableLiveData<Float>(0f)
-    private lateinit var stock: ShortStockNetworkModel
+    private val securityTotalPriceLiveData = MutableLiveData<Float>(0f)
+    private lateinit var security: ShortSecNetworkModel
 
     private var price: Float = 0f
     private var count: Int = 0
 
-    fun getTotalStockPriceLiveData(): LiveData<Float?> {
-        return stockTotalPriceLiveData
+    fun getTotalSecurityPriceLiveData(): LiveData<Float?> {
+        return securityTotalPriceLiveData
     }
 
     fun setSecurityPrice(price: Float) {
         this.price = price
-        stockTotalPriceLiveData.postValue(price * count)
+        securityTotalPriceLiveData.postValue(price * count)
     }
 
-    fun setStockCount(count: Int) {
+    fun setSecurityCount(count: Int) {
         this.count = count
-        stockTotalPriceLiveData.postValue(price * count)
+        securityTotalPriceLiveData.postValue(price * count)
     }
 
-    fun setStock(stock: ShortStockNetworkModel) {
-        this.stock = stock
+    fun setSecurity(security: ShortSecNetworkModel) {
+        this.security = security
     }
 
-    private fun getStockPackage(): SecPackageDbModel {
-        return SecPackageDbModel(stock.secid, stock.name, count, price)
+    private fun getSecurityPackage(): SecurityPackageDbModel {
+        return SecurityPackageDbModel(security.secid, security.name, count, price)
     }
 
-    fun addSecPackage() {
+    fun addSecurityPackage() {
         when {
             price <= 0 -> {
                 shakePriceEditText.postValue(null)
@@ -53,8 +53,8 @@ class AddSecViewModel : ViewModel() {
                 shakeCountEditText.postValue(null)
             }
             else -> {
-                val stockPackage = getStockPackage()
-                _secPackage.postValue(stockPackage)
+                val securityPackage = getSecurityPackage()
+                _securityPackage.postValue(securityPackage)
             }
         }
     }
