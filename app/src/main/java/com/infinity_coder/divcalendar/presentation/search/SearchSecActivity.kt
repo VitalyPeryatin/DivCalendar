@@ -49,7 +49,7 @@ class SearchSecActivity : AppCompatActivity(), AddSecBottomDialog.OnClickListene
             onBackPressed()
         }
 
-        closeButton.setOnClickListener {
+        clearButton.setOnClickListener {
             queryEditText.text.clear()
         }
         queryEditText.addTextChangedListener(getQueryTextWatcher())
@@ -60,9 +60,9 @@ class SearchSecActivity : AppCompatActivity(), AddSecBottomDialog.OnClickListene
             if (s == null) return
 
             if (s.isNotEmpty()) {
-                closeButton.visibility = View.VISIBLE
+                clearButton.visibility = View.VISIBLE
             } else {
-                closeButton.visibility = View.GONE
+                clearButton.visibility = View.GONE
             }
         }
 
