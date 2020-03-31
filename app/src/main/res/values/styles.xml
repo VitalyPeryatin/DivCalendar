@@ -10,9 +10,14 @@
         <item name="android:textColorSecondary">@color/grey</item>
     </style>
 
-    <style name="DialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+    <style name="BottomDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetModalStyleSmallCorners</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="BottomSheetModalStyleSmallCorners" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet</item>
     </style>
 
     <style name="TextInputTheme">

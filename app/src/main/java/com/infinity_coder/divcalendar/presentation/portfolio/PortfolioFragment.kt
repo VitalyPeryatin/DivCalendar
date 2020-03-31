@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.db.model.StockPackageDbModel
+import com.infinity_coder.divcalendar.data.db.model.SecPackageDbModel
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
-import com.infinity_coder.divcalendar.presentation.searchstocks.SearchStocksActivity
+import com.infinity_coder.divcalendar.presentation.search.SearchSecActivity
 import kotlinx.android.synthetic.main.fragment_portfolio.*
 
 class PortfolioFragment : Fragment() {
@@ -46,12 +46,12 @@ class PortfolioFragment : Fragment() {
         })
 
         addStockButton.setOnClickListener {
-            val intent = SearchStocksActivity.getIntent(context!!)
+            val intent = SearchSecActivity.getIntent(context!!)
             startActivity(intent)
         }
     }
 
-    private fun setStocks(stocks: List<StockPackageDbModel>) {
+    private fun setStocks(stocks: List<SecPackageDbModel>) {
         val adapter = stocksRecyclerView.adapter as? StockRecyclerAdapter
         adapter?.setStocks(stocks)
     }

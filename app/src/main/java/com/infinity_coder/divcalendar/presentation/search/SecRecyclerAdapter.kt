@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation.searchstocks
+package com.infinity_coder.divcalendar.presentation.search
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +9,9 @@ import com.infinity_coder.divcalendar.data.network.model.ShortStockNetworkModel
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_stock_search.*
 
-class StockRecyclerAdapter(
+class SecRecyclerAdapter(
     private var clickListener: OnClickListener? = null
-) : RecyclerView.Adapter<StockRecyclerAdapter.StockViewHolder>() {
+) : RecyclerView.Adapter<SecRecyclerAdapter.StockViewHolder>() {
 
     private var stockList: List<ShortStockNetworkModel> = emptyList()
 
