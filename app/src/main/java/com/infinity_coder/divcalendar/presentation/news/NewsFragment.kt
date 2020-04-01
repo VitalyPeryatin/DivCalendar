@@ -10,7 +10,7 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.PostDbModel
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
-import com.infinity_coder.divcalendar.presentation.newspost.NewsPostActivity
+import com.infinity_coder.divcalendar.presentation.browser.BrowserActivity
 import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -33,11 +33,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         parentActivity.setActionBar(newsToolbar)
 
         newsRecyclerView.layoutManager = LinearLayoutManager(context)
-        adapter.onItemClickListener = object : NewsAdapter.NewsItemClickListener {
-            override fun onClick(post: PostDbModel) {
-                openNewsArticle(post)
-            }
-        }
+        adapter.onItemClickListener = getItemClickListener()
         newsRecyclerView.adapter = adapter
 
         viewModel.newsPost.observe(viewLifecycleOwner, Observer(this::updateNewsPosts))
@@ -45,13 +41,18 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         viewModel.loadNewsPosts()
     }
 
+    private fun getItemClickListener() = object : NewsAdapter.NewsItemClickListener {
+        override fun onClick(post: PostDbModel) {
+            openNewsArticle(post)
+        }
+    }
+
     private fun updateNewsPosts(posts: List<PostDbModel>) {
         adapter.setPosts(posts)
     }
 
     fun openNewsArticle(post: PostDbModel) {
-        val intent = NewsPostActivity.getIntent(context!!, post.id)
-        context?.startActivity(intent)
+        BrowserActivity.openActivity(context!!, post.link)
     }
 
     private fun updateState(state: Int) {

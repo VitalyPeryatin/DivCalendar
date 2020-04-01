@@ -6,14 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.PostDbModel
+import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_post.*
 
-class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+
+class NewsAdapter(
+    var onItemClickListener: NewsItemClickListener? = null
+) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     private var newsPosts: List<PostDbModel> = listOf()
-
-    var onItemClickListener: NewsItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -39,9 +41,10 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bind(post: PostDbModel, isLastItem: Boolean = false) {
             titleTextView.text = post.title
-            authorTextView.text = post.source
-            descriptionTextView.text = post.text
+            tickerTextView.text = post.ticker
+            textTextView.text = post.text
             timeAgoTextView.text = post.date
+            SimpleGlide.loadSVG(containerView, post.logo, logoImageView)
 
             postItemLayout.setOnClickListener {
                 onItemClickListener?.onClick(post)

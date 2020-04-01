@@ -14,14 +14,14 @@ data class PostDbModel(
     @ColumnInfo(name = COLUMN_TEXT)
     var text: String = "",
 
-    @ColumnInfo(name = COLUMN_POSTER)
-    var poster: String = "",
+    @ColumnInfo(name = COLUMN_LOGO)
+    var logo: String = "",
+
+    @ColumnInfo(name = COLUMN_TICKER)
+    var ticker: String = "",
 
     @ColumnInfo(name = COLUMN_DATE)
     var date: String = "",
-
-    @ColumnInfo(name = COLUMN_SOURCE)
-    var source: String = "",
 
     @ColumnInfo(name = COLUMN_LINK)
     var link: String = ""
@@ -37,17 +37,17 @@ data class PostDbModel(
         const val COLUMN_ID = "id"
         const val COLUMN_TITLE = "title"
         const val COLUMN_TEXT = "text"
-        const val COLUMN_POSTER = "poster"
+        const val COLUMN_LOGO = "logo"
+        const val COLUMN_TICKER = "ticker"
         const val COLUMN_DATE = "date"
-        const val COLUMN_SOURCE = "source"
         const val COLUMN_LINK = "link"
 
         fun from(post: PostNetworkModel) = PostDbModel(
             title = post.title,
             text = post.text,
-            poster = post.poster,
+            logo = post.logo,
+            ticker = post.ticker,
             date = post.date,
-            source = post.source,
             link = post.link
         )
 
