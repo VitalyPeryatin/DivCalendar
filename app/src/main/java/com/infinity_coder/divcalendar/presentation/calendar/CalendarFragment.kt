@@ -46,16 +46,15 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     }
 
     private fun getChartAdapter(): ChartPaymentRecyclerDelegateAdapter {
-        return ChartPaymentRecyclerDelegateAdapter().apply {
-            onItemClickListener =
-                object : ChartPaymentRecyclerDelegateAdapter.ChartItemClickListener {
-                    override fun onClick(numberMonth: Int) {
-                        calendarPaymentsRecyclerView.smoothScrollToPosition(
-                            viewModel.getPositionMonth(numberMonth)
-                        )
-                    }
-                }
+        val adapter = ChartPaymentRecyclerDelegateAdapter()
+        adapter.onItemClickListener = object : ChartPaymentRecyclerDelegateAdapter.ChartItemClickListener {
+            override fun onClick(numberMonth: Int) {
+                calendarPaymentsRecyclerView.smoothScrollToPosition(
+                    viewModel.getPositionMonth(numberMonth)
+                )
+            }
         }
+        return adapter
     }
 
     private fun updatePayments(payments: List<IComparableItem>) {

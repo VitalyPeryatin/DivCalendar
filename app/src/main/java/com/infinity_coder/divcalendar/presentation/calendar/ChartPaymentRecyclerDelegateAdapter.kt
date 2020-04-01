@@ -87,7 +87,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         return monthlyPayments.map {
             val month = it.first.toFloat()
             val dividends = it.second.map { payment -> payment.dividends.toFloat() }.toFloatArray()
-            BarEntry(month, dividends)
+            return@map BarEntry(month, dividends)
         }
     }
 
