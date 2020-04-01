@@ -47,13 +47,14 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
     private fun getChartAdapter(): ChartPaymentRecyclerDelegateAdapter {
         val adapter = ChartPaymentRecyclerDelegateAdapter()
-        adapter.onItemClickListener = object : ChartPaymentRecyclerDelegateAdapter.ChartItemClickListener {
-            override fun onClick(numberMonth: Int) {
-                calendarPaymentsRecyclerView.smoothScrollToPosition(
-                    viewModel.getPositionMonth(numberMonth)
-                )
+        adapter.onItemClickListener =
+            object : ChartPaymentRecyclerDelegateAdapter.ChartItemClickListener {
+                override fun onClick(numberMonth: Int) {
+                    calendarPaymentsRecyclerView.smoothScrollToPosition(
+                        viewModel.getPositionMonth(numberMonth)
+                    )
+                }
             }
-        }
         return adapter
     }
 
