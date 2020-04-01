@@ -9,7 +9,10 @@ import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.SearchInteractor
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class SearchSecurityViewModel : ViewModel() {
@@ -47,7 +50,6 @@ class SearchSecurityViewModel : ViewModel() {
                     .flowOn(Dispatchers.IO)
                     .onStart { _state.postValue(VIEW_STATE_SEARCH_SECURITY_LOADING) }
                     .onEach(this@SearchSecurityViewModel::collectSearchSecurities)
-                    .catch { _state.postValue(VIEW_STATE_SEARCH_SECURITY_NO_NETWORK) }
                     .launchIn(viewModelScope)
             } catch (e: Exception) {
                 _state.postValue(VIEW_STATE_SEARCH_SECURITY_NO_NETWORK)
