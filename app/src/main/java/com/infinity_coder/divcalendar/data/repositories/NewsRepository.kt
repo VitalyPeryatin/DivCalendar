@@ -36,12 +36,68 @@ object NewsRepository {
         return flowOf(
             listOf(
                 PostNetworkModel(
-                    title = "Заголовок",
-                    text = "Текст",
-                    poster = "",
-                    date = "",
-                    source = "",
-                    link = ""
+                    title = "Обзор стратегий FINTARGET.RU",
+                    text = "На  рынки продолжает поступать негатив относительно состояния мировой экономики, под большим давлением акции банков. В российской экономике возможен шквал банкротств и невозвраты кредитов. Сбербанк одна...",
+                    logo = "https://s3-symbol-logo.tradingview.com/mts--big.svg",
+                    ticker = "NLMK",
+                    date = "12.02.2020",
+                    link = "https://bcs-express.ru/novosti-i-analitika/daidzhest-strategii-fintarget"
+                ),
+                PostNetworkModel(
+                    title = "Обзор стратегий FINTARGET.RU",
+                    text = "На  рынки продолжает поступать негатив относительно состояния мировой экономики, под большим давлением акции банков. В российской экономике возможен шквал банкротств и невозвраты кредитов. Сбербанк одна...",
+                    logo = "https://s3-symbol-logo.tradingview.com/mts--big.svg",
+                    ticker = "NLMK",
+                    date = "12.02.2020",
+                    link = "https://bcs-express.ru/novosti-i-analitika/daidzhest-strategii-fintarget"
+                ),
+                PostNetworkModel(
+                    title = "Обзор стратегий FINTARGET.RU",
+                    text = "На  рынки продолжает поступать негатив относительно состояния мировой экономики, под большим давлением акции банков. В российской экономике возможен шквал банкротств и невозвраты кредитов. Сбербанк одна...",
+                    logo = "https://s3-symbol-logo.tradingview.com/mts--big.svg",
+                    ticker = "NLMK",
+                    date = "12.02.2020",
+                    link = "https://bcs-express.ru/novosti-i-analitika/daidzhest-strategii-fintarget"
+                ),
+                PostNetworkModel(
+                    title = "Обзор стратегий FINTARGET.RU",
+                    text = "На  рынки продолжает поступать негатив относительно состояния мировой экономики, под большим давлением акции банков. В российской экономике возможен шквал банкротств и невозвраты кредитов. Сбербанк одна...",
+                    logo = "https://s3-symbol-logo.tradingview.com/mts--big.svg",
+                    ticker = "NLMK",
+                    date = "12.02.2020",
+                    link = "https://bcs-express.ru/novosti-i-analitika/daidzhest-strategii-fintarget"
+                ),
+                PostNetworkModel(
+                    title = "Обзор стратегий FINTARGET.RU",
+                    text = "На  рынки продолжает поступать негатив относительно состояния мировой экономики, под большим давлением акции банков. В российской экономике возможен шквал банкротств и невозвраты кредитов. Сбербанк одна...",
+                    logo = "https://s3-symbol-logo.tradingview.com/mts--big.svg",
+                    ticker = "NLMK",
+                    date = "12.02.2020",
+                    link = "https://bcs-express.ru/novosti-i-analitika/daidzhest-strategii-fintarget"
+                ),
+                PostNetworkModel(
+                    title = "Обзор стратегий FINTARGET.RU",
+                    text = "На  рынки продолжает поступать негатив относительно состояния мировой экономики, под большим давлением акции банков. В российской экономике возможен шквал банкротств и невозвраты кредитов. Сбербанк одна...",
+                    logo = "https://s3-symbol-logo.tradingview.com/mts--big.svg",
+                    ticker = "NLMK",
+                    date = "12.02.2020",
+                    link = "https://bcs-express.ru/novosti-i-analitika/daidzhest-strategii-fintarget"
+                ),
+                PostNetworkModel(
+                    title = "Обзор стратегий FINTARGET.RU",
+                    text = "На  рынки продолжает поступать негатив относительно состояния мировой экономики, под большим давлением акции банков. В российской экономике возможен шквал банкротств и невозвраты кредитов. Сбербанк одна...",
+                    logo = "https://s3-symbol-logo.tradingview.com/mts--big.svg",
+                    ticker = "DFSF",
+                    date = "12.02.2020",
+                    link = "https://bcs-express.ru/novosti-i-analitika/daidzhest-strategii-fintarget"
+                ),
+                PostNetworkModel(
+                    title = "Обзор стратегий FINTARGET.RU",
+                    text = "На  рынки продолжает поступать негатив относительно состояния мировой экономики, под большим давлением акции банков. В российской экономике возможен шквал банкротств и невозвраты кредитов. Сбербанк одна...",
+                    logo = "https://s3-symbol-logo.tradingview.com/mts--big.svg",
+                    ticker = "NLMK",
+                    date = "12.02.2020",
+                    link = "https://bcs-express.ru/novosti-i-analitika/daidzhest-strategii-fintarget"
                 )
             )
         )

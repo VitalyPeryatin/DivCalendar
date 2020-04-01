@@ -9,14 +9,14 @@ data class PostNetworkModel(
     @SerializedName("text")
     var text: String = "",
 
-    @SerializedName("poster")
-    var poster: String = "",
+    @SerializedName("logo")
+    var logo: String = "",
+
+    @SerializedName("ticker")
+    var ticker: String = "",
 
     @SerializedName("date")
     var date: String = "",
-
-    @SerializedName("source")
-    var source: String = "",
 
     @SerializedName("link")
     var link: String = ""
