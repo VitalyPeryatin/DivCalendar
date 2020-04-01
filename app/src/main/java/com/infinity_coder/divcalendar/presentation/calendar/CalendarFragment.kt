@@ -38,7 +38,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             layoutManager = LinearLayoutManager(context)
             adapter = DiffUtilCompositeAdapter.Builder()
                 .add(getChartAdapter())
-                .add(DividerAdapter())
+                .add(DividerDelegateAdapter())
                 .add(HeaderPaymentRecyclerDelegateAdapter())
                 .add(PaymentRecyclerDelegateAdapter())
                 .add(FooterPaymentRecyclerDelegateAdapter())

@@ -1,22 +1,16 @@
 package com.infinity_coder.divcalendar.presentation.calendar.adapters
 
 import com.example.delegateadapter.delegate.KDelegateAdapter
-import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.presentation.calendar.models.DividerPresentationModel
 
-class DividerAdapter : KDelegateAdapter<DividerItem>() {
+class DividerDelegateAdapter : KDelegateAdapter<DividerPresentationModel>() {
 
-    override fun getLayoutId() = R.layout.item_divider
+    override fun getLayoutId() = R.layout.item_divider_calendar
 
     override fun isForViewType(items: MutableList<*>, position: Int): Boolean =
-        items[position] == DividerItem
+        items[position] == DividerPresentationModel
 
-    override fun onBind(item: DividerItem, viewHolder: KViewHolder) {}
+    override fun onBind(item: DividerPresentationModel, viewHolder: KViewHolder) {}
 
-}
-
-object DividerItem : IComparableItem {
-    override fun id(): Any = this
-
-    override fun content(): Any = this
 }

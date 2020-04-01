@@ -10,11 +10,7 @@ import androidx.palette.graphics.Palette
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
 import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
-import com.infinity_coder.divcalendar.presentation.calendar.adapters.DividerItem
-import com.infinity_coder.divcalendar.presentation.calendar.models.ChartPresentationModel
-import com.infinity_coder.divcalendar.presentation.calendar.models.FooterPaymentPresentationModel
-import com.infinity_coder.divcalendar.presentation.calendar.models.HeaderPaymentPresentationModel
-import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
+import com.infinity_coder.divcalendar.presentation.calendar.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -60,7 +56,7 @@ class CalendarViewModel : ViewModel() {
             items.addAll(PaymentPresentationModel.from(groupMonth[i]))
             items.add(FooterPaymentPresentationModel.from(groupMonth[i]))
             if (i != groupMonth.size - 1) {
-                items.add(DividerItem)
+                items.add(DividerPresentationModel)
             }
         }
         return items
