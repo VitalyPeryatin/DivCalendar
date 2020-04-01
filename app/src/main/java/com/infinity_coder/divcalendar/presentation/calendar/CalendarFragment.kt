@@ -38,18 +38,20 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         calendarPaymentsRecyclerView.run {
             layoutManager = LinearLayoutManager(context)
             adapter = DiffUtilCompositeAdapter.Builder()
-                .add(ChartPaymentRecyclerDelegateAdapter {
-                    calendarPaymentsRecyclerView.smoothScrollToPosition(
-                        viewModel.getPositionMonth(
-                            it
-                        )
-                    )
-                })
+                .add(getChartAdapter())
                 .add(DividerAdapter())
                 .add(HeaderPaymentRecyclerDelegateAdapter())
                 .add(PaymentRecyclerDelegateAdapter())
                 .add(FooterPaymentRecyclerDelegateAdapter())
                 .build()
+        }
+    }
+
+    private fun getChartAdapter():ChartPaymentRecyclerDelegateAdapter {
+        return ChartPaymentRecyclerDelegateAdapter {
+            calendarPaymentsRecyclerView.smoothScrollToPosition(
+                viewModel.getPositionMonth(it)
+            )
         }
     }
 

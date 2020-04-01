@@ -16,11 +16,12 @@ import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
 import com.infinity_coder.divcalendar.presentation.models.ChartPresentationModel
 import kotlinx.android.synthetic.main.item_chart_calendar.*
 
-class ChartPaymentRecyclerDelegateAdapter(
-    private val clickListener: (numberMonth: Int) -> Unit
-) : KDelegateAdapter<ChartPresentationModel>(), OnChartValueSelectedListener {
+class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationModel>(), OnChartValueSelectedListener {
+
+    var onItemClickListener:ChartItemClickListener? = null
 
     private var monthlyPayments: List<Pair<Int, List<PaymentNetworkModel>>>? = null
+    private var chart:BarChart? = null
 
     override fun getLayoutId() = R.layout.item_chart_calendar
 
@@ -30,6 +31,8 @@ class ChartPaymentRecyclerDelegateAdapter(
 
     override fun onBind(item: ChartPresentationModel, viewHolder: KViewHolder) {
         monthlyPayments = item.monthlyPayments
+        chart = viewHolder.chart
+
         viewHolder.run {
             chart.onBindChart(item)
             annualIncome.text =
@@ -37,13 +40,18 @@ class ChartPaymentRecyclerDelegateAdapter(
         }
     }
 
-    override fun onNothingSelected() {}
+    override fun onNothingSelected() {
+    }
 
-    override fun onValueSelected(e: Entry?, h: Highlight?) {
-        if (e != null && monthlyPayments != null) {
-            val monthly = monthlyPayments!!.find { it.first == e.x.toInt() }!!
-            clickListener.invoke(monthly.first)
-        }
+    override fun onValueSelected(entry: Entry?, highlight: Highlight?) {
+        if(entry == null || monthlyPayments == null) return
+
+        val firstPayment = monthlyPayments
+            ?.find { it.first == entry.x.toInt() }
+            ?.first ?: return
+
+        onItemClickListener?.onClick(firstPayment)
+        chart?.highlightValues(null)
     }
 
     private fun BarChart.onBindChart(item: ChartPresentationModel) {
@@ -75,16 +83,14 @@ class ChartPaymentRecyclerDelegateAdapter(
     }
 
     private fun createBarEntries(monthlyPayments: List<Pair<Int, List<PaymentNetworkModel>>>): List<BarEntry> {
-        val entries = mutableListOf<BarEntry>()
-        monthlyPayments.forEach {
-            entries.add(
-                BarEntry(
-                    it.first.toFloat(),
-                    it.second.map { payment -> payment.dividends.toFloat() }.toFloatArray()
-                )
-            )
+        return monthlyPayments.map {
+            val month = it.first.toFloat()
+            val dividends = it.second.map { payment -> payment.dividends.toFloat() }.toFloatArray()
+            BarEntry(month,dividends)
         }
-        return entries
     }
 
+    interface ChartItemClickListener{
+        fun onClick(numberMonth: Int)
+    }
 }
