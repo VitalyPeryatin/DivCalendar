@@ -14,8 +14,7 @@
     <FrameLayout
         android:id="@+id/calendarContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/calendarAppBarLayout">
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/calendarPaymentsRecyclerView"
