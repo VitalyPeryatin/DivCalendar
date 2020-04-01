@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
 import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
+import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_security_search.*
 
@@ -42,6 +43,10 @@ class SecurityRecyclerAdapter(
             tickerTextView.text = security.ticker
             val securityColor = SecurityTypeDelegate.getColor(containerView.context, security.type)
             securityTypeView.setBackgroundColor(securityColor)
+            typeTextView.text = security.type
+            exchangeTextView.text = security.exchange
+            yearYieldTextView.text = containerView.context.getString(R.string.yield_in_year, security.yield)
+            SimpleGlide.loadSVG(containerView, security.logo, logoImageView)
 
             containerView.setOnClickListener {
                 clickListener?.onClick(security)
