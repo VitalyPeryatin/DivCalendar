@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.ShortSecurityNetworkModel
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.search.addsecurity.AddSecurityBottomDialog
 import kotlinx.android.synthetic.main.activity_search_securities.*
@@ -25,7 +25,7 @@ class SearchSecurityActivity : AppCompatActivity(), AddSecurityBottomDialog.OnCl
     private var addSecurityDialog: AddSecurityBottomDialog? = null
 
     private val secClickListener = object : SecurityRecyclerAdapter.OnClickListener {
-        override fun onClick(security: ShortSecurityNetworkModel) {
+        override fun onClick(security: SecurityNetworkModel) {
             addSecurityDialog = AddSecurityBottomDialog.newInstance(security)
             addSecurityDialog?.show(
                 supportFragmentManager,
@@ -40,8 +40,10 @@ class SearchSecurityActivity : AppCompatActivity(), AddSecurityBottomDialog.OnCl
 
         initUI()
 
-        viewModel.requestSecuritiesByQuery("")
-        viewModel.filteredSecuritiesLiveData.observe(this, Observer(this::setSecurities))
+        viewModel.searchedSecurities.observe(this, Observer(this::setSecurities))
+        viewModel.state.observe(this, Observer(this::setState))
+        viewModel.securityType.observe(this, Observer(this::setSecurityType))
+        viewModel.market.observe(this, Observer(this::setMarket))
     }
 
     private fun initUI() {
@@ -73,12 +75,12 @@ class SearchSecurityActivity : AppCompatActivity(), AddSecurityBottomDialog.OnCl
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            viewModel.requestSecuritiesByQuery(s.toString())
+            viewModel.search(s.toString())
         }
 
     }
 
-    private fun setSecurities(securities: List<ShortSecurityNetworkModel>) {
+    private fun setSecurities(securities: List<SecurityNetworkModel>) {
         val adapter = securitiesRecyclerView.adapter as? SecurityRecyclerAdapter
         adapter?.setSecurities(securities)
     }
@@ -88,14 +90,76 @@ class SearchSecurityActivity : AppCompatActivity(), AddSecurityBottomDialog.OnCl
         addSecurityDialog = null
     }
 
-    companion object {
-        fun getIntent(context: Context): Intent {
-            return Intent(context, SearchSecurityActivity::class.java)
+    private fun setState(state: Int) {
+        when (state) {
+            SearchSecurityViewModel.VIEW_STATE_SEARCH_SECURITY_CONTENT -> showContent()
+
+            SearchSecurityViewModel.VIEW_STATE_SEARCH_SECURITY_LOADING -> showLoading()
+
+            SearchSecurityViewModel.VIEW_STATE_SEARCH_SECURITY_EMPTY -> showEmptyLayout()
+
+            SearchSecurityViewModel.VIEW_STATE_SEARCH_SECURITY_NO_NETWORK -> showNoNetwork()
+
+            SearchSecurityViewModel.VIEW_STATE_SEARCH_SECURITY_START_SEARCH -> showStartSearchLayout()
         }
+    }
+
+    private fun showContent() {
+        contentLayout.visibility = View.VISIBLE
+        noNetworkLayout.visibility = View.GONE
+        emptyLayout.visibility = View.GONE
+        loadingLayout.visibility = View.GONE
+        startSearchLayout.visibility = View.GONE
+    }
+
+    private fun showLoading() {
+        contentLayout.visibility = View.GONE
+        noNetworkLayout.visibility = View.GONE
+        emptyLayout.visibility = View.GONE
+        loadingLayout.visibility = View.VISIBLE
+        startSearchLayout.visibility = View.GONE
+    }
+
+    private fun showEmptyLayout() {
+        contentLayout.visibility = View.GONE
+        noNetworkLayout.visibility = View.GONE
+        emptyLayout.visibility = View.VISIBLE
+        loadingLayout.visibility = View.GONE
+        startSearchLayout.visibility = View.GONE
+    }
+
+    private fun showNoNetwork() {
+        contentLayout.visibility = View.GONE
+        noNetworkLayout.visibility = View.VISIBLE
+        emptyLayout.visibility = View.GONE
+        loadingLayout.visibility = View.GONE
+        startSearchLayout.visibility = View.GONE
+    }
+
+    private fun showStartSearchLayout() {
+        contentLayout.visibility = View.GONE
+        noNetworkLayout.visibility = View.GONE
+        emptyLayout.visibility = View.GONE
+        loadingLayout.visibility = View.GONE
+        startSearchLayout.visibility = View.VISIBLE
     }
 
     override fun onAddSecPackageClick(securityPackage: SecurityPackageDbModel) {
         viewModel.appendSecurityPackage(securityPackage)
         dismissAddSecurityDialog()
+    }
+
+    private fun setSecurityType(type: String) {
+
+    }
+
+    private fun setMarket(market: String) {
+
+    }
+
+    companion object {
+        fun getIntent(context: Context): Intent {
+            return Intent(context, SearchSecurityActivity::class.java)
+        }
     }
 }

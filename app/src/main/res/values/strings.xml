@@ -29,6 +29,9 @@
     <string name="total_price">Total price: %1$.2f</string>
     <string name="count">Count</string>
     <string name="price">Price</string>
+    <string name="start_search">Start searching</string>
+    <string name="stocks">Stocks</string>
+    <string name="bonds">Bonds</string>
 
     <!--portfolio -->
     <string name="sec_count">%1$d pcs.</string>

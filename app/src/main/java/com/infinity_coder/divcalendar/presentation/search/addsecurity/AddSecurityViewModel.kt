@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.ShortSecurityNetworkModel
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
 
 class AddSecurityViewModel : ViewModel() {
@@ -17,7 +17,7 @@ class AddSecurityViewModel : ViewModel() {
     val shakeCountEditText = LiveEvent<Void?>()
 
     private val securityTotalPriceLiveData = MutableLiveData<Float>(0f)
-    private lateinit var security: ShortSecurityNetworkModel
+    private lateinit var security: SecurityNetworkModel
 
     private var price: Float = 0f
     private var count: Int = 0
@@ -36,12 +36,12 @@ class AddSecurityViewModel : ViewModel() {
         securityTotalPriceLiveData.postValue(price * count)
     }
 
-    fun setSecurity(security: ShortSecurityNetworkModel) {
+    fun setSecurity(security: SecurityNetworkModel) {
         this.security = security
     }
 
     private fun getSecurityPackage() = SecurityPackageDbModel(
-        secid = security.secid,
+        secid = security.ticker,
         name = security.name,
         count = count,
         totalPrice = price * count

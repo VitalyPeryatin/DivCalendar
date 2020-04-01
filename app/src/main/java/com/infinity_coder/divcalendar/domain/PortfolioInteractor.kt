@@ -2,13 +2,9 @@ package com.infinity_coder.divcalendar.domain
 
 import androidx.lifecycle.LiveData
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.ShortSecurityNetworkModel
 import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
 
 class PortfolioInteractor {
-    suspend fun loadAllSecurities(): List<ShortSecurityNetworkModel> {
-        return PortfolioRepository.loadAllSecurities()
-    }
 
     fun loadAllSecurityPackages(): LiveData<List<SecurityPackageDbModel>> {
         return PortfolioRepository.loadAllSecurityPackages()
