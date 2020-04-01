@@ -7,8 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.infinity_coder.divcalendar.data.db.model.PostDbModel
 import com.infinity_coder.divcalendar.domain.NewsInteractor
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
@@ -30,7 +31,8 @@ class NewsViewModel : ViewModel() {
             newsInteractor.getPosts()
                 .flowOn(Dispatchers.IO)
                 .onStart { _state.postValue(VIEW_STATE_NEWS_LOADING) }
-                .collect(this@NewsViewModel::collectPosts)
+                .onEach(this@NewsViewModel::collectPosts)
+                .launchIn(viewModelScope)
         } catch (e: Exception) {
             _state.postValue(VIEW_STATE_NEWS_NO_NETWORK)
         }

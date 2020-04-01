@@ -43,13 +43,22 @@ class SecurityRecyclerAdapter(
             tickerTextView.text = security.ticker
             val securityColor = SecurityTypeDelegate.getColor(containerView.context, security.type)
             securityTypeView.setBackgroundColor(securityColor)
-            typeTextView.text = security.type
+            typeTextView.text = getSecurityTypeText(security.type)
             exchangeTextView.text = security.exchange
             yearYieldTextView.text = containerView.context.getString(R.string.yield_in_year, security.yield)
             SimpleGlide.loadSVG(containerView, security.logo, logoImageView)
 
             containerView.setOnClickListener {
                 clickListener?.onClick(security)
+            }
+        }
+
+        private fun getSecurityTypeText(type: String): String {
+            val resources = containerView.context.resources
+            return when (type) {
+                SecurityTypeDelegate.SECURITY_TYPE_STOCK -> resources.getString(R.string.stocks)
+                SecurityTypeDelegate.SECURITY_TYPE_BOND -> resources.getString(R.string.bonds)
+                else -> resources.getString(R.string.stocks)
             }
         }
     }

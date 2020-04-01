@@ -23,6 +23,8 @@
     <string name="count">Количество</string>
     <string name="price">Цена</string>
     <string name="start_search">Начните поиск</string>
+    <string name="stocks">Акции</string>
+    <string name="bonds">Облигации</string>
 
     <!--portfolio -->
     <string name="sec_count">%1$d шт.</string>

@@ -8,6 +8,7 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.SearchInteractor
+import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -25,7 +26,7 @@ class SearchSecurityViewModel : ViewModel() {
     val state: LiveData<Int>
         get() = _state
 
-    private val _securityType = MutableLiveData<String>(SECURITY_TYPE_STOCK)
+    private val _securityType = MutableLiveData<String>(SecurityTypeDelegate.SECURITY_TYPE_STOCK)
     val securityType: LiveData<String>
         get() = _securityType
 
@@ -75,9 +76,6 @@ class SearchSecurityViewModel : ViewModel() {
         const val VIEW_STATE_SEARCH_SECURITY_EMPTY = 3
         const val VIEW_STATE_SEARCH_SECURITY_NO_NETWORK = 4
         const val VIEW_STATE_SEARCH_SECURITY_START_SEARCH = 5
-
-        private const val SECURITY_TYPE_STOCK = "stock"
-        private const val SECURITY_TYPE_BOND = "bond"
 
         private const val SECURITY_MARKET_RUSSIAN = "russian"
         private const val SECURITY_MARKET_FOREIGN = "foreign"

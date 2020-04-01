@@ -6,7 +6,7 @@ import com.infinity_coder.divcalendar.R
 object SecurityTypeDelegate {
 
     const val SECURITY_TYPE_STOCK = "stock"
-    private const val SECURITY_TYPE_BOND = "bond"
+    const val SECURITY_TYPE_BOND = "bond"
 
     @Suppress("DEPRECATION")
     fun getColor(context: Context, securityType: String): Int {
