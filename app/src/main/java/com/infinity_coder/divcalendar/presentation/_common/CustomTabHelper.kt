@@ -8,7 +8,8 @@ import android.net.Uri
 
 object CustomTabHelper {
 
-    private const val ACTION_CUSTOM_TABS_CONNECTION = "android.support.customtabs.action.CustomTabsService"
+    private const val ACTION_CUSTOM_TABS_CONNECTION =
+        "android.support.customtabs.action.CustomTabsService"
 
     private const val STABLE_PACKAGE = "com.android.chrome"
     private const val BETA_PACKAGE = "com.chrome.beta"
@@ -89,7 +90,8 @@ object CustomTabHelper {
     private fun hasSpecializedHandlerIntents(packageManager: PackageManager): Boolean {
         val linkIntent = getLinkIntent()
         try {
-            val handlers = packageManager.queryIntentActivities(linkIntent, PackageManager.GET_RESOLVED_FILTER)
+            val handlers =
+                packageManager.queryIntentActivities(linkIntent, PackageManager.GET_RESOLVED_FILTER)
             if (handlers.size == 0) {
                 return false
             }

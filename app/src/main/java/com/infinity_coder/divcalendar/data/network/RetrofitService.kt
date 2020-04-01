@@ -16,7 +16,6 @@ object RetrofitService {
 
     private fun provideRetrofitClient(okHttpClient: OkHttpClient) = Retrofit.Builder()
         .baseUrl(DIV_CALENDAR_URL)
-        //.addCallAdapterFactory(CoroutineCallAdapterFactory())
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
         .build()
