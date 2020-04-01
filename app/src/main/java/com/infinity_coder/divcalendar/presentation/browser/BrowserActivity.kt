@@ -35,8 +35,8 @@ class BrowserActivity : AppCompatActivity() {
                 val toolbarColor = context.getColorExt(R.color.background)
 
                 val customTabsIntent = CustomTabsIntent.Builder()
-                        .setToolbarColor(toolbarColor)
-                        .build()
+                    .setToolbarColor(toolbarColor)
+                    .build()
 
                 customTabsIntent.intent.`package` = packageNameToUse
                 customTabsIntent.launchUrl(context, uri)
