@@ -4,20 +4,27 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.infinity_coder.divcalendar.data.db.model.PostDbModel.Companion.TABLE_NAME
+import com.infinity_coder.divcalendar.data.network.model.PostNetworkModel
 
 @Entity(tableName = TABLE_NAME)
 data class PostDbModel(
     @ColumnInfo(name = COLUMN_TITLE)
     var title: String = "",
 
-    @ColumnInfo(name = COLUMN_AUTHOR)
-    var author: String = "",
+    @ColumnInfo(name = COLUMN_TEXT)
+    var text: String = "",
 
-    @ColumnInfo(name = COLUMN_PAYLOAD)
-    var payload: String = "",
+    @ColumnInfo(name = COLUMN_POSTER)
+    var poster: String = "",
 
     @ColumnInfo(name = COLUMN_DATE)
-    var date: String = ""
+    var date: String = "",
+
+    @ColumnInfo(name = COLUMN_SOURCE)
+    var source: String = "",
+
+    @ColumnInfo(name = COLUMN_LINK)
+    var link: String = ""
 ) {
 
     @PrimaryKey(autoGenerate = true)
@@ -29,8 +36,21 @@ data class PostDbModel(
 
         const val COLUMN_ID = "id"
         const val COLUMN_TITLE = "title"
-        const val COLUMN_AUTHOR = "author"
-        const val COLUMN_PAYLOAD = "payload"
-        const val COLUMN_DATE = "release_date"
+        const val COLUMN_TEXT = "text"
+        const val COLUMN_POSTER = "poster"
+        const val COLUMN_DATE = "date"
+        const val COLUMN_SOURCE = "source"
+        const val COLUMN_LINK = "link"
+
+        fun from(post: PostNetworkModel) = PostDbModel(
+            title = post.title,
+            text = post.text,
+            poster = post.poster,
+            date = post.date,
+            source = post.source,
+            link = post.link
+        )
+
+        fun from(posts: List<PostNetworkModel>) = posts.map { from(it) }
     }
 }

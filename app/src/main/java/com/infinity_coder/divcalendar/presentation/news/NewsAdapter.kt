@@ -39,8 +39,8 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bind(post: PostDbModel, isLastItem: Boolean = false) {
             titleTextView.text = post.title
-            authorTextView.text = post.author
-            descriptionTextView.text = post.payload
+            authorTextView.text = post.source
+            descriptionTextView.text = post.text
             timeAgoTextView.text = post.date
 
             postItemLayout.setOnClickListener {
