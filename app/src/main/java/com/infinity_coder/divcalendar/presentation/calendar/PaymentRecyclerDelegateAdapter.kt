@@ -18,9 +18,11 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
     override fun onBind(item: PaymentPresentationModel, viewHolder: KViewHolder) {
         viewHolder.run {
             paymentName.text = item.name
-            paymentCount.text = item.count
+            paymentCount.text =
+                paymentCount.context.getString(R.string.count_securities, item.count)
             paymentDate.text = paymentDate.context.getDate(item.date)
-            paymentDividends.text = item.dividends
+            paymentDividends.text =
+                paymentDividends.context.getString(R.string.dividends, item.dividends)
             paymentLogo.loadImg(item.logo)
         }
     }

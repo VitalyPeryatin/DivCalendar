@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.infinity_coder.divcalendar.data.db.model.PostDbModel
 
 @Dao
-abstract class PostDao {
+abstract class NewsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertPosts(posts: List<PostDbModel>)

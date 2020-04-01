@@ -41,56 +41,28 @@
             tools:text="МТС"/>
 
         <TextView
-            android:id="@+id/paymentCountLabel"
+            android:id="@+id/paymentCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:textSize="@dimen/font_small"
             android:fontFamily="@font/roboto_medium"
             android:textColor="?android:textColorSecondary"
-            android:text="@string/count_stocks_label"
+            android:text="@string/count_securities"
             app:layout_constraintStart_toStartOf="@+id/paymentLogo"
             app:layout_constraintTop_toBottomOf="@+id/paymentLogo" />
 
         <TextView
-            android:id="@+id/paymentCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:textSize="@dimen/font_small"
-            android:fontFamily="@font/roboto_medium"
-            android:textColor="@color/colorAccent"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/paymentCountLabel"
-            app:layout_constraintStart_toEndOf="@+id/paymentCountLabel"
-            app:layout_constraintTop_toTopOf="@+id/paymentCountLabel"
-            tools:text="10"/>
-
-        <TextView
-            android:id="@+id/paymentDividendsLabel"
+            android:id="@+id/paymentDividends"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textSize="@dimen/font_small"
             android:fontFamily="@font/roboto_medium"
             android:textColor="?android:textColorSecondary"
-            android:text="@string/dividends_label"
-            app:layout_constraintStart_toStartOf="@+id/paymentCountLabel"
-            app:layout_constraintTop_toBottomOf="@+id/paymentCountLabel" />
-
-        <TextView
-            android:id="@+id/paymentDividends"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:textSize="@dimen/font_small"
-            android:fontFamily="@font/roboto_medium"
-            android:textColor="@color/colorAccent"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/paymentDividendsLabel"
-            app:layout_constraintStart_toEndOf="@+id/paymentDividendsLabel"
-            app:layout_constraintTop_toTopOf="@+id/paymentDividendsLabel"
-            tools:text="+28.01P"/>
+            android:text="@string/dividends"
+            app:layout_constraintStart_toStartOf="@+id/paymentCount"
+            app:layout_constraintTop_toBottomOf="@+id/paymentCount" />
 
         <TextView
             android:id="@+id/paymentDate"

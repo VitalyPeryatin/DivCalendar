@@ -14,7 +14,13 @@ class FooterPaymentRecyclerDelegateAdapter : KDelegateAdapter<FooterPaymentPrese
     }
 
     override fun onBind(item: FooterPaymentPresentationModel, viewHolder: KViewHolder) {
-        viewHolder.footerPaymentMonthlyIncome.text = item.income
+        viewHolder.run {
+            footerPaymentMonthlyIncome.text =
+                footerPaymentMonthlyIncome.context.getString(
+                    R.string.monthly_income_label,
+                    item.income
+                )
+        }
     }
 
 }

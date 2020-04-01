@@ -16,12 +16,13 @@ import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
 import com.infinity_coder.divcalendar.presentation.models.ChartPresentationModel
 import kotlinx.android.synthetic.main.item_chart_calendar.*
 
-class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationModel>(), OnChartValueSelectedListener {
+class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationModel>(),
+    OnChartValueSelectedListener {
 
-    var onItemClickListener:ChartItemClickListener? = null
+    var onItemClickListener: ChartItemClickListener? = null
 
     private var monthlyPayments: List<Pair<Int, List<PaymentNetworkModel>>>? = null
-    private var chart:BarChart? = null
+    private var chart: BarChart? = null
 
     override fun getLayoutId() = R.layout.item_chart_calendar
 
@@ -44,7 +45,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
     }
 
     override fun onValueSelected(entry: Entry?, highlight: Highlight?) {
-        if(entry == null || monthlyPayments == null) return
+        if (entry == null || monthlyPayments == null) return
 
         val firstPayment = monthlyPayments
             ?.find { it.first == entry.x.toInt() }
@@ -86,11 +87,11 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         return monthlyPayments.map {
             val month = it.first.toFloat()
             val dividends = it.second.map { payment -> payment.dividends.toFloat() }.toFloatArray()
-            BarEntry(month,dividends)
+            BarEntry(month, dividends)
         }
     }
 
-    interface ChartItemClickListener{
+    interface ChartItemClickListener {
         fun onClick(numberMonth: Int)
     }
 }

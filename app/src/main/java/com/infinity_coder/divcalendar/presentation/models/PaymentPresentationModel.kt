@@ -6,8 +6,8 @@ import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
 data class PaymentPresentationModel(
     val name: String,
     val logo: String,
-    val count: String,
-    val dividends: String,
+    val count: Int,
+    val dividends: Double,
     val date: String
 ) : IComparableItem {
 
@@ -17,8 +17,8 @@ data class PaymentPresentationModel(
                 PaymentPresentationModel(
                     name = it.name,
                     logo = it.logo,
-                    count = it.count.toString(),
-                    dividends = "${it.dividends}₽",
+                    count = it.count,
+                    dividends = it.dividends,
                     date = it.date
                 )
             }

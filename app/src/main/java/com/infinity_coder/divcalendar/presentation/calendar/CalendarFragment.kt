@@ -16,9 +16,7 @@ import kotlinx.android.synthetic.main.fragment_calendar.*
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
     private val viewModel: CalendarViewModel by lazy {
-        viewModel {
-            CalendarViewModel()
-        }
+        viewModel { CalendarViewModel() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,11 +45,16 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         }
     }
 
-    private fun getChartAdapter():ChartPaymentRecyclerDelegateAdapter {
-        return ChartPaymentRecyclerDelegateAdapter {
-            calendarPaymentsRecyclerView.smoothScrollToPosition(
-                viewModel.getPositionMonth(it)
-            )
+    private fun getChartAdapter(): ChartPaymentRecyclerDelegateAdapter {
+        return ChartPaymentRecyclerDelegateAdapter().apply {
+            onItemClickListener =
+                object : ChartPaymentRecyclerDelegateAdapter.ChartItemClickListener {
+                    override fun onClick(numberMonth: Int) {
+                        calendarPaymentsRecyclerView.smoothScrollToPosition(
+                            viewModel.getPositionMonth(numberMonth)
+                        )
+                    }
+                }
         }
     }
 
