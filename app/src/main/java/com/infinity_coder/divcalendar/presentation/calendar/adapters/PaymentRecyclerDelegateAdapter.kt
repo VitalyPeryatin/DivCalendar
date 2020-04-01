@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation.calendar
+package com.infinity_coder.divcalendar.presentation.calendar.adapters
 
 import android.content.Context
 import com.example.delegateadapter.delegate.KDelegateAdapter

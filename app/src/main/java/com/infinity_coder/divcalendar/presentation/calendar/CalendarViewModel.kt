@@ -10,6 +10,7 @@ import androidx.palette.graphics.Palette
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
 import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
+import com.infinity_coder.divcalendar.presentation.calendar.adapters.DividerItem
 import com.infinity_coder.divcalendar.presentation.calendar.models.ChartPresentationModel
 import com.infinity_coder.divcalendar.presentation.calendar.models.FooterPaymentPresentationModel
 import com.infinity_coder.divcalendar.presentation.calendar.models.HeaderPaymentPresentationModel

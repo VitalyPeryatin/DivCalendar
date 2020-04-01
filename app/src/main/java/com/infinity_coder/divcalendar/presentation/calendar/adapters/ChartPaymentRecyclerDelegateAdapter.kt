@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation.calendar
+package com.infinity_coder.divcalendar.presentation.calendar.adapters
 
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.github.mikephil.charting.charts.BarChart
