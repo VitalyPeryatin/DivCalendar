@@ -19,9 +19,11 @@
     <string name="value_currency_eur" translatable="false">%1$.2f€</string>
 
     <!--calendar screen-->
-    <string name="monthly_income_label">Monthly income:</string>
-    <string name="count_securities_label">Amount securities:</string>
-    <string name="dividends_label">Income:</string>
+    <string name="payout_chart">Payout chart</string>
+    <string name="annual_income">Annual income: %1$.2f₽</string>
+    <string name="monthly_income_label">Monthly income: %1$.2f₽</string>
+    <string name="count_securities">Amount securities: %d</string>
+    <string name="dividends">Income: %1$.2f₽</string>
 
     <!-- search -->
     <string name="total_price">Total price: %1$.2f</string>

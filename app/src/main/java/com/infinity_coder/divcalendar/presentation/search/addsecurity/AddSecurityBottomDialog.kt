@@ -60,7 +60,8 @@ class AddSecurityBottomDialog : BottomDialog() {
 
         initUI()
 
-        viewModel.getTotalSecurityPriceLiveData().observe(viewLifecycleOwner, Observer(this::setTotalPrice))
+        viewModel.getTotalSecurityPriceLiveData()
+            .observe(viewLifecycleOwner, Observer(this::setTotalPrice))
         viewModel.securityPackage.observe(viewLifecycleOwner, Observer(this::addSecPackage))
         viewModel.shakePriceEditText.observe(viewLifecycleOwner, Observer { shakePriceEditText() })
         viewModel.shakeCountEditText.observe(viewLifecycleOwner, Observer { shakeCountEditText() })
@@ -103,7 +104,8 @@ class AddSecurityBottomDialog : BottomDialog() {
     @SuppressLint("SetTextI18n")
     private fun setTotalPrice(price: Float?) {
         if (price == null) return
-        totalPriceTextView.text = resources.getString(R.string.total_price, price) + getString(R.string.currency_rub)
+        totalPriceTextView.text =
+            resources.getString(R.string.total_price, price) + getString(R.string.currency_rub)
     }
 
     private fun addSecPackage(secPackage: SecurityPackageDbModel) {

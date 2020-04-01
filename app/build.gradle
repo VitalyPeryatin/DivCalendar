@@ -85,6 +85,8 @@ dependencies {
 
     // Picasso
     implementation "com.squareup.picasso:picasso:2.71828"
+    // Цвета
+    implementation 'androidx.palette:palette:1.0.0'
 
     // Firebase
     implementation "com.google.firebase:firebase-core:17.2.3"
@@ -97,6 +99,9 @@ dependencies {
 
     //delegate adapter https://github.com/Liverm0r/DelegateAdapters
     implementation "com.github.liverm0r:delegateadapters:v2.03"
+
+    //Графики и диаграммы https://github.com/PhilJay/MPAndroidChart
+    implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
 
     // Tests
     testImplementation 'junit:junit:4.13'

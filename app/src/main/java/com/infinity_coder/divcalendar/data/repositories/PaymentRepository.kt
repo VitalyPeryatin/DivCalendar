@@ -14,6 +14,20 @@ object PaymentRepository {
                 "2020-01-04"
             ),
             PaymentNetworkModel(
+                "Яндекс",
+                "https://s0.rbk.ru/emitent_pics/resized/80x80_crop/images/20/74/3c2996c034c70685ec736cd563e55dd6.png",
+                15,
+                174.05,
+                "2020-03-04"
+            ),
+            PaymentNetworkModel(
+                "Яндекс",
+                "https://s0.rbk.ru/emitent_pics/resized/80x80_crop/images/20/74/3c2996c034c70685ec736cd563e55dd6.png",
+                15,
+                174.05,
+                "2020-08-04"
+            ),
+            PaymentNetworkModel(
                 "Berkshire Hathaway",
                 "https://s0.rbk.ru/emitent_pics/resized/80x80_crop/images/17/27/ea801305f1b36bbaa63f4ed481522fed.png",
                 30,

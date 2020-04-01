@@ -12,9 +12,11 @@
     <string name="empty_list">Список пуст</string>
 
     <!--calendar screen-->
-    <string name="monthly_income_label">Доход за месяц:</string>
-    <string name="count_securities_label">Акций:</string>
-    <string name="dividends_label">Доход:</string>
+    <string name="payout_chart">График выплат</string>
+    <string name="annual_income">Годовой доход: %1$.2f₽</string>
+    <string name="monthly_income_label">Доход за месяц: %1$.2f₽</string>
+    <string name="count_securities">Акций: %d</string>
+    <string name="dividends">Доход: %1$.2f₽</string>
 
     <!-- search -->
     <string name="total_price">Стоимость: %1$.2f</string>

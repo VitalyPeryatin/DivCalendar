@@ -27,7 +27,10 @@ class SearchSecurityActivity : AppCompatActivity(), AddSecurityBottomDialog.OnCl
     private val secClickListener = object : SecurityRecyclerAdapter.OnClickListener {
         override fun onClick(security: ShortSecurityNetworkModel) {
             addSecurityDialog = AddSecurityBottomDialog.newInstance(security)
-            addSecurityDialog?.show(supportFragmentManager, AddSecurityBottomDialog::class.toString())
+            addSecurityDialog?.show(
+                supportFragmentManager,
+                AddSecurityBottomDialog::class.toString()
+            )
         }
     }
 

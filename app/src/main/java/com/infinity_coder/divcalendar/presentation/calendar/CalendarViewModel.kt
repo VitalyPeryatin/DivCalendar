@@ -1,17 +1,21 @@
 package com.infinity_coder.divcalendar.presentation.calendar
 
+import android.graphics.BitmapFactory
+import android.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.palette.graphics.Palette
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
 import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
-import com.infinity_coder.divcalendar.presentation.models.FooterPaymentPresentationModel
-import com.infinity_coder.divcalendar.presentation.models.HeaderPaymentPresentationModel
-import com.infinity_coder.divcalendar.presentation.models.PaymentPresentationModel
-import kotlinx.coroutines.delay
+import com.infinity_coder.divcalendar.presentation.calendar.models.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.InputStream
+import java.net.URL
 
 class CalendarViewModel : ViewModel() {
 
@@ -27,27 +31,69 @@ class CalendarViewModel : ViewModel() {
         loadAllPayments()
     }
 
+    fun getPositionMonth(numberMonth: Int): Int {
+        return _payments.value!!.indexOfFirst {
+            it is FooterPaymentPresentationModel && it.id == numberMonth
+        }
+    }
+
     private fun loadAllPayments() = viewModelScope.launch {
         _state.postValue(VIEW_STATE_CALENDAR_LOADING)
         // TODO: Удалить задержку, когда будем получать реальные данные
-        delay(2000L)
-        val payments = PaymentRepository.loadAllPayments()
-        _payments.postValue(mapPaymentsToPresentationModels(payments))
+        val payments = withContext(Dispatchers.IO) {
+            mapPaymentsToPresentationModels(PaymentRepository.loadAllPayments())
+        }
+        _payments.postValue(payments)
         _state.postValue(VIEW_STATE_CALENDAR_CONTENT)
     }
 
-    private fun mapPaymentsToPresentationModels(payments: List<PaymentNetworkModel>): List<IComparableItem> {
+    private suspend fun mapPaymentsToPresentationModels(payments: List<PaymentNetworkModel>): List<IComparableItem> {
         val items = mutableListOf<IComparableItem>()
+        items.add(mapPaymentsToChartPresentationModel(payments))
         val groupMonth = payments.groupBy { it.date.split("-")[1] }.toList()
         for (i in groupMonth.indices) {
             items.add(HeaderPaymentPresentationModel.from(groupMonth[i]))
             items.addAll(PaymentPresentationModel.from(groupMonth[i]))
             items.add(FooterPaymentPresentationModel.from(groupMonth[i]))
             if (i != groupMonth.size - 1) {
-                items.add(DividerItem)
+                items.add(DividerPresentationModel)
             }
         }
         return items
+    }
+
+    private suspend fun mapPaymentsToChartPresentationModel(payments: List<PaymentNetworkModel>): ChartPresentationModel {
+        val annualIncome = payments.sumByDouble { it.dividends }
+        val groupPayments = payments.groupBy { it.date.split("-")[1] }
+            .toList()
+            .sortedBy {
+                it.first
+            }
+            .map {
+                Pair(it.first.toInt(), it.second)
+            }
+        val color = mutableListOf<Int>().apply {
+            groupPayments.forEach {
+                it.second.forEach { payment ->
+                    this.add(getColor(payment.logo))
+                }
+            }
+        }
+        return ChartPresentationModel(
+            annualIncome.toString(),
+            groupPayments,
+            color
+        )
+    }
+
+    private fun getColor(url: String): Int {
+        return try {
+            val inputStream: InputStream = URL(url).openStream()
+            val image = BitmapFactory.decodeStream(inputStream)
+            Palette.from(image).generate().getDominantColor(0)
+        } catch (e: Exception) {
+            Color.BLACK
+        }
     }
 
     companion object {

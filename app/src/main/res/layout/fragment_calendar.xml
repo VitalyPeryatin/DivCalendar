@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,12 +12,19 @@
         android:layout_height="wrap_content"
         style="?attr/toolbarStyle"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/calendarPaymentsRecyclerView"
+    <FrameLayout
+        android:id="@+id/calendarContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        tools:listitem="@layout/item_payment_calendar" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/calendarPaymentsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            tools:listitem="@layout/item_payment_calendar"/>
+
+    </FrameLayout>
 
     <include
         android:id="@+id/loadingLayout"

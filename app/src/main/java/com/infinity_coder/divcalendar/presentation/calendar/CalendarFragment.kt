@@ -11,6 +11,7 @@ import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
+import com.infinity_coder.divcalendar.presentation.calendar.adapters.*
 import kotlinx.android.synthetic.main.fragment_calendar.*
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
@@ -36,12 +37,27 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         calendarPaymentsRecyclerView.run {
             layoutManager = LinearLayoutManager(context)
             adapter = DiffUtilCompositeAdapter.Builder()
-                .add(DividerAdapter())
+                .add(getChartAdapter())
+                .add(DividerDelegateAdapter())
                 .add(HeaderPaymentRecyclerDelegateAdapter())
                 .add(PaymentRecyclerDelegateAdapter())
                 .add(FooterPaymentRecyclerDelegateAdapter())
                 .build()
         }
+    }
+
+    private fun getChartAdapter(): ChartPaymentRecyclerDelegateAdapter {
+        val adapter =
+            ChartPaymentRecyclerDelegateAdapter()
+        adapter.onItemClickListener =
+            object : ChartPaymentRecyclerDelegateAdapter.ChartItemClickListener {
+                override fun onClick(numberMonth: Int) {
+                    calendarPaymentsRecyclerView.smoothScrollToPosition(
+                        viewModel.getPositionMonth(numberMonth)
+                    )
+                }
+            }
+        return adapter
     }
 
     private fun updatePayments(payments: List<IComparableItem>) {
@@ -61,28 +77,28 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     }
 
     private fun showContent() {
-        calendarPaymentsRecyclerView.visibility = View.VISIBLE
+        calendarContent.visibility = View.VISIBLE
         noNetworkLayout.visibility = View.GONE
         emptyLayout.visibility = View.GONE
         loadingLayout.visibility = View.GONE
     }
 
     private fun showLoading() {
-        calendarPaymentsRecyclerView.visibility = View.GONE
+        calendarContent.visibility = View.GONE
         noNetworkLayout.visibility = View.GONE
         emptyLayout.visibility = View.GONE
         loadingLayout.visibility = View.VISIBLE
     }
 
     private fun showEmptyLayout() {
-        calendarPaymentsRecyclerView.visibility = View.GONE
+        calendarContent.visibility = View.GONE
         noNetworkLayout.visibility = View.GONE
         emptyLayout.visibility = View.VISIBLE
         loadingLayout.visibility = View.GONE
     }
 
     private fun showNoNetworkLayout() {
-        calendarPaymentsRecyclerView.visibility = View.GONE
+        calendarContent.visibility = View.GONE
         noNetworkLayout.visibility = View.VISIBLE
         emptyLayout.visibility = View.GONE
         loadingLayout.visibility = View.GONE

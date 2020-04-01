@@ -44,12 +44,15 @@ class SecurityRecyclerAdapter(
             securityPortfolioCardLayout.setOnClickListener {
                 onClickListener?.onItemClick(securityPackage)
             }
-            val securityColor = SecurityTypeDelegate.getColor(containerView.context, securityPackage.type)
+            val securityColor =
+                SecurityTypeDelegate.getColor(containerView.context, securityPackage.type)
             securityTypeView.setBackgroundColor(securityColor)
             nameTextView.text = securityPackage.name
             countTextView.text = resources.getString(R.string.sec_count, securityPackage.count)
-            totalPriceTextView.text = resources.getString(R.string.value_currency_rub, securityPackage.totalPrice)
-            yearYieldTextView.text = resources.getString(R.string.yield_in_year, securityPackage.yearYield)
+            totalPriceTextView.text =
+                resources.getString(R.string.value_currency_rub, securityPackage.totalPrice)
+            yearYieldTextView.text =
+                resources.getString(R.string.yield_in_year, securityPackage.yearYield)
         }
     }
 

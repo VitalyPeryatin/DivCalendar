@@ -11,7 +11,7 @@ object SecurityTypeDelegate {
     @Suppress("DEPRECATION")
     fun getColor(context: Context, securityType: String): Int {
 
-        val colorId = when(securityType) {
+        val colorId = when (securityType) {
             SEC_TYP_STOCK -> R.color.typeRusStockColor
             SEC_TYP_BOND -> R.color.typeRusBondColor
             else -> R.color.typeRusStockColor
