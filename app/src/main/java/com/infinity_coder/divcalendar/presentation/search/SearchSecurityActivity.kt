@@ -14,7 +14,7 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.network.model.ShortSecurityNetworkModel
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.search.addsecurity.AddSecurityBottomDialog
-import kotlinx.android.synthetic.main.activity_search_secs.*
+import kotlinx.android.synthetic.main.activity_search_securities.*
 
 class SearchSecurityActivity : AppCompatActivity(), AddSecurityBottomDialog.OnClickListener {
 
@@ -33,7 +33,7 @@ class SearchSecurityActivity : AppCompatActivity(), AddSecurityBottomDialog.OnCl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search_secs)
+        setContentView(R.layout.activity_search_securities)
 
         initUI()
 
