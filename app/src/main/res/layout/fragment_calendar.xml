@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/calendarAppBarLayout"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/calendarToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/calendarToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"/>
-
-    </com.google.android.material.appbar.AppBarLayout>
+        style="?attr/toolbarStyle"/>
 
     <FrameLayout
         android:id="@+id/calendarContent"
@@ -30,7 +21,8 @@
             android:id="@+id/calendarPaymentsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"/>
+            android:clipToPadding="false"
+            tools:listitem="@layout/item_payment_calendar"/>
 
     </FrameLayout>
 
@@ -58,4 +50,4 @@
         android:visibility="gone"
         tools:visibility="gone" />
 
-</RelativeLayout>
+</LinearLayout>

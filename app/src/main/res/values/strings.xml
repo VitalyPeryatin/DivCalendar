@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">DivCalendar</string>
 
+    <!-- common -->
     <string name="portfolio">Portfolio</string>
     <string name="calendar">Calendar</string>
     <string name="news">News</string>
@@ -9,10 +10,30 @@
     <string name="no_connection">No connection</string>
     <string name="empty_list">Empty list</string>
 
+    <string name="currency_rub" translatable="false">₽</string>
+    <string name="currency_usd" translatable="false">$</string>
+    <string name="currency_eur" translatable="false">€</string>
+
+    <string name="value_currency_rub" translatable="false">%1$.2f₽</string>
+    <string name="value_currency_usd" translatable="false">%1$.2f$</string>
+    <string name="value_currency_eur" translatable="false">%1$.2f€</string>
+
     <!--calendar screen-->
     <string name="payout_chart">Payout chart</string>
     <string name="annual_income">Annual income: %1$.2f₽</string>
     <string name="monthly_income_label">Monthly income:</string>
-    <string name="count_stocks_label">Amount stock:</string>
+    <string name="count_securities_label">Amount securities:</string>
     <string name="dividends_label">Income:</string>
+
+    <!-- search -->
+    <string name="total_price">Total price: %1$.2f</string>
+    <string name="count">Count</string>
+    <string name="price">Price</string>
+
+    <!--portfolio -->
+    <string name="sec_count">%1$d pcs.</string>
+    <string name="yield_in_year">%1$.2f\%% in year</string>
+    <string name="change">Change package</string>
+    <string name="delete_entire_package">Delete entire package</string>
+    <string name="cost">Cost</string>
 </resources>

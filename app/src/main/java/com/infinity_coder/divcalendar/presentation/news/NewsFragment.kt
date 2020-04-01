@@ -12,7 +12,11 @@ import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.newspost.NewsPostActivity
 import kotlinx.android.synthetic.main.fragment_news.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private val adapter = NewsAdapter()

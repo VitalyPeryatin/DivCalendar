@@ -9,18 +9,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.db.model.StockPackageDbModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
-import com.infinity_coder.divcalendar.presentation.searchstocks.SearchStocksActivity
+import com.infinity_coder.divcalendar.presentation.portfolio.changepackage.ChangePackageBottomDialog
+import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
 import kotlinx.android.synthetic.main.fragment_portfolio.*
 
-class PortfolioFragment : Fragment() {
+class PortfolioFragment : Fragment(), ChangePackageBottomDialog.OnClickListener {
+
+    private var changePackageDialog: ChangePackageBottomDialog? = null
 
     private val viewModel: PortfolioViewModel by lazy {
-        viewModel {
-            PortfolioViewModel()
-        }
+        viewModel { PortfolioViewModel() }
     }
 
     override fun onCreateView(
@@ -34,25 +35,39 @@ class PortfolioFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        stocksRecyclerView.layoutManager = LinearLayoutManager(context)
-        stocksRecyclerView.adapter = StockRecyclerAdapter()
+        securitiesRecyclerView.layoutManager = LinearLayoutManager(context)
+        securitiesRecyclerView.adapter = SecurityRecyclerAdapter(getOnItemClickListener())
 
         portfolioToolbar.title = context!!.resources.getString(R.string.portfolio)
         val parentActivity = (activity as AppCompatActivity)
         parentActivity.setActionBar(portfolioToolbar)
 
-        viewModel.getStocksLiveData().observe(viewLifecycleOwner, Observer {
-            setStocks(it)
-        })
+        viewModel.getSecuritiesLiveData().observe(viewLifecycleOwner, Observer(this::setSecurities))
 
-        addStockButton.setOnClickListener {
-            val intent = SearchStocksActivity.getIntent(context!!)
+        addSecurityButton.setOnClickListener {
+            val intent = SearchSecurityActivity.getIntent(context!!)
             startActivity(intent)
         }
     }
 
-    private fun setStocks(stocks: List<StockPackageDbModel>) {
-        val adapter = stocksRecyclerView.adapter as? StockRecyclerAdapter
-        adapter?.setStocks(stocks)
+    private fun getOnItemClickListener() = object : SecurityRecyclerAdapter.OnItemClickListener {
+        override fun onItemClick(securityPackage: SecurityPackageDbModel) {
+            openChangePackageDialog(securityPackage)
+        }
+    }
+
+    private fun openChangePackageDialog(securityPackage: SecurityPackageDbModel) {
+        changePackageDialog = ChangePackageBottomDialog.newInstance(securityPackage)
+        changePackageDialog?.show(childFragmentManager, ChangePackageBottomDialog::class.toString())
+    }
+
+    private fun setSecurities(securities: List<SecurityPackageDbModel>) {
+        val adapter = securitiesRecyclerView.adapter as? SecurityRecyclerAdapter
+        adapter?.setSecurities(securities)
+    }
+
+    override fun onChangePackageClick(securityPackage: SecurityPackageDbModel) {
+        viewModel.changeSecurityPackage(securityPackage)
+        changePackageDialog?.dismiss()
     }
 }

@@ -5,10 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinity_coder.divcalendar.data.db.model.PostDbModel
-import com.infinity_coder.divcalendar.data.repositories.NewsPostsRepository
-import kotlinx.coroutines.delay
+import com.infinity_coder.divcalendar.domain.NewsInteractor
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
+
+@FlowPreview
+@ExperimentalCoroutinesApi
 class NewsViewModel : ViewModel() {
 
     private val _newsPosts = MutableLiveData<List<PostDbModel>>()
@@ -19,13 +28,25 @@ class NewsViewModel : ViewModel() {
     val state: LiveData<Int>
         get() = _state
 
+
+    private val newsInteractor = NewsInteractor()
+
     fun loadNewsPosts() = viewModelScope.launch {
-        _state.postValue(VIEW_STATE_NEWS_LOADING)
-        // TODO: Удалить задержку, когда будем получать реальные данные
-        delay(1000L)
-        val posts = NewsPostsRepository.getPosts()
+        newsInteractor.getPosts()
+            .flowOn(Dispatchers.IO)
+            .onStart { _state.postValue(VIEW_STATE_NEWS_LOADING) }
+            .catch { _state.postValue(VIEW_STATE_NEWS_NO_NETWORK) }
+            .collect(this@NewsViewModel::collectPosts)
+    }
+
+    private suspend fun collectPosts(posts: List<PostDbModel>) {
         _newsPosts.postValue(posts)
-        _state.postValue(VIEW_STATE_NEWS_CONTENT)
+
+        if (posts.isNullOrEmpty()) {
+            _state.postValue(VIEW_STATE_NEWS_EMPTY)
+        } else {
+            _state.postValue(VIEW_STATE_NEWS_CONTENT)
+        }
     }
 
     companion object {
