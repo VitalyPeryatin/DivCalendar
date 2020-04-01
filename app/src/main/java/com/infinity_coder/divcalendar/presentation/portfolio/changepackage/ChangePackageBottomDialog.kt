@@ -12,7 +12,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.ShortSecurityNetworkModel
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.shake
 import com.infinity_coder.divcalendar.presentation._common.viewModel
@@ -22,7 +22,7 @@ class ChangePackageBottomDialog : BottomDialog() {
 
     private var clickListener: OnClickListener? = null
 
-    private lateinit var security: ShortSecurityNetworkModel
+    private lateinit var security: SecurityNetworkModel
 
     private val viewModel: ChangePackageViewModel by lazy {
         viewModel { ChangePackageViewModel() }
@@ -33,8 +33,8 @@ class ChangePackageBottomDialog : BottomDialog() {
 
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
 
-        security = ShortSecurityNetworkModel(
-            secid = arguments!!.getString(ARGUMENT_SEC_ID, ""),
+        security = SecurityNetworkModel(
+            ticker = arguments!!.getString(ARGUMENT_SEC_ID, ""),
             name = arguments!!.getString(ARGUMENT_NAME, "")
         )
         viewModel.setSecurity(security)

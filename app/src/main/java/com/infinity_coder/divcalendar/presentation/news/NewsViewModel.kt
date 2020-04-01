@@ -7,17 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.infinity_coder.divcalendar.data.db.model.PostDbModel
 import com.infinity_coder.divcalendar.domain.NewsInteractor
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
-
-@FlowPreview
-@ExperimentalCoroutinesApi
 class NewsViewModel : ViewModel() {
 
     private val _newsPosts = MutableLiveData<List<PostDbModel>>()
@@ -32,11 +27,15 @@ class NewsViewModel : ViewModel() {
     private val newsInteractor = NewsInteractor()
 
     fun loadNewsPosts() = viewModelScope.launch {
-        newsInteractor.getPosts()
-            .flowOn(Dispatchers.IO)
-            .onStart { _state.postValue(VIEW_STATE_NEWS_LOADING) }
-            .catch { _state.postValue(VIEW_STATE_NEWS_NO_NETWORK) }
-            .collect(this@NewsViewModel::collectPosts)
+        try {
+            newsInteractor.getPosts()
+                .flowOn(Dispatchers.IO)
+                .onStart { _state.postValue(VIEW_STATE_NEWS_LOADING) }
+                .catch { _state.postValue(VIEW_STATE_NEWS_NO_NETWORK) }
+                .collect(this@NewsViewModel::collectPosts)
+        } catch (e: Exception) {
+            _state.postValue(VIEW_STATE_NEWS_NO_NETWORK)
+        }
     }
 
     private suspend fun collectPosts(posts: List<PostDbModel>) {

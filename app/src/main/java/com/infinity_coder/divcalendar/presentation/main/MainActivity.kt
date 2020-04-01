@@ -4,15 +4,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.network.RetrofitService
 import com.infinity_coder.divcalendar.presentation.calendar.CalendarFragment
 import com.infinity_coder.divcalendar.presentation.news.NewsFragment
 import com.infinity_coder.divcalendar.presentation.portfolio.PortfolioFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
-    private val api = RetrofitService.moexApi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
