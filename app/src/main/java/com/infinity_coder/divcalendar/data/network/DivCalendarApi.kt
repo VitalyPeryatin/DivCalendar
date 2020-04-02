@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface DivCalendarApi {
-    @GET("/search")
+    @GET("search/")
     suspend fun searchSecurities(
         @Query("q") query: String,
         @Query("type") type: String,

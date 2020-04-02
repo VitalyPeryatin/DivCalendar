@@ -32,6 +32,8 @@
     <string name="start_search">Start searching</string>
     <string name="stocks">Stocks</string>
     <string name="bonds">Bonds</string>
+    <string name="russian">Russian</string>
+    <string name="foreign">Foreign</string>
 
     <!--portfolio -->
     <string name="sec_count">%1$d pcs.</string>

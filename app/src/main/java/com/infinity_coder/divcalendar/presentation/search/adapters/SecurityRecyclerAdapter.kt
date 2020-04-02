@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation.search
+package com.infinity_coder.divcalendar.presentation.search.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +20,10 @@ class SecurityRecyclerAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SecurityViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_security_search, parent, false)
-        return SecurityViewHolder(view, clickListener)
+        return SecurityViewHolder(
+            view,
+            clickListener
+        )
     }
 
     override fun getItemCount(): Int = securities.size
