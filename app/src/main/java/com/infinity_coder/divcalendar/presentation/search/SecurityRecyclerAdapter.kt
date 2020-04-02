@@ -40,7 +40,7 @@ class SecurityRecyclerAdapter(
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bind(security: SecurityNetworkModel) {
             nameTextView.text = security.name
-            tickerTextView.text = security.ticker
+            sourceTextView.text = security.ticker
             val securityColor = SecurityTypeDelegate.getColor(containerView.context, security.type)
             securityTypeView.setBackgroundColor(securityColor)
             typeTextView.text = getSecurityTypeText(security.type)

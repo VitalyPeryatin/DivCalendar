@@ -1,6 +1,7 @@
 package com.infinity_coder.divcalendar.presentation.news
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -52,6 +53,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun updateState(state: Int) {
+        Log.d("StateError",state.toString())
         when (state) {
             NewsViewModel.VIEW_STATE_NEWS_CONTENT -> showContent()
 
@@ -60,6 +62,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             NewsViewModel.VIEW_STATE_NEWS_EMPTY -> showEmptyLayout()
 
             NewsViewModel.VIEW_STATE_NEWS_NO_NETWORK -> showNoNetworkLayout()
+
+            NewsViewModel.VIEW_STATE_NEWS_EMPTY_SECURITIES -> showEmptySecuritiesLayout()
         }
     }
 
@@ -68,6 +72,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         noNetworkLayout.visibility = View.GONE
         emptyLayout.visibility = View.GONE
         loadingLayout.visibility = View.GONE
+        emptySecuritiesLayout.visibility = View.GONE
     }
 
     private fun showLoading() {
@@ -75,6 +80,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         noNetworkLayout.visibility = View.GONE
         emptyLayout.visibility = View.GONE
         loadingLayout.visibility = View.VISIBLE
+        emptySecuritiesLayout.visibility = View.GONE
     }
 
     private fun showEmptyLayout() {
@@ -82,6 +88,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         noNetworkLayout.visibility = View.GONE
         emptyLayout.visibility = View.VISIBLE
         loadingLayout.visibility = View.GONE
+        emptySecuritiesLayout.visibility = View.GONE
     }
 
     private fun showNoNetworkLayout() {
@@ -89,5 +96,14 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         noNetworkLayout.visibility = View.VISIBLE
         emptyLayout.visibility = View.GONE
         loadingLayout.visibility = View.GONE
+        emptySecuritiesLayout.visibility = View.GONE
+    }
+
+    private fun showEmptySecuritiesLayout(){
+        contentLayout.visibility = View.GONE
+        noNetworkLayout.visibility = View.GONE
+        emptyLayout.visibility = View.GONE
+        loadingLayout.visibility = View.GONE
+        emptySecuritiesLayout.visibility = View.VISIBLE
     }
 }

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.PostDbModel
-import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
+import com.infinity_coder.divcalendar.presentation._common.loadImg
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_post.*
 
@@ -41,10 +41,10 @@ class NewsAdapter(
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bind(post: PostDbModel, isLastItem: Boolean = false) {
             titleTextView.text = post.title
-            tickerTextView.text = post.ticker
+            sourceTextView.text = post.source
             textTextView.text = post.text
             timeAgoTextView.text = post.date
-            SimpleGlide.loadSVG(containerView, post.logo, logoImageView)
+            logoImageView.loadImg(post.logo)
 
             postItemLayout.setOnClickListener {
                 onItemClickListener?.onClick(post)

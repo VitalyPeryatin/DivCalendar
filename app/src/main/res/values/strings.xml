@@ -9,6 +9,7 @@
     <string name="enter_request">Enter your request</string>
     <string name="no_connection">No connection</string>
     <string name="empty_list">Empty list</string>
+    <string name="empty_securities">You don\'t have securities.\nAdd security to your portfolio!</string>
 
     <string name="currency_rub" translatable="false">₽</string>
     <string name="currency_usd" translatable="false">$</string>

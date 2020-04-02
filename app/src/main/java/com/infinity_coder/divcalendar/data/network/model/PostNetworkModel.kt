@@ -9,11 +9,11 @@ data class PostNetworkModel(
     @SerializedName("text")
     var text: String = "",
 
-    @SerializedName("logo")
+    @SerializedName("poster")
     var logo: String = "",
 
-    @SerializedName("ticker")
-    var ticker: String = "",
+    @SerializedName("source")
+    var source: String = "",
 
     @SerializedName("date")
     var date: String = "",

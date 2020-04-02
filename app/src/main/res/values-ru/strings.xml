@@ -10,6 +10,7 @@
     <string name="enter_request">Введите запрос</string>
     <string name="no_connection">Нет интернет соединения</string>
     <string name="empty_list">Список пуст</string>
+    <string name="empty_securities">У вас нет ни одной ценной бумаги.\nДобавьте ценную бумагу себе в портфель!</string>
 
     <!--calendar screen-->
     <string name="payout_chart">График выплат</string>
