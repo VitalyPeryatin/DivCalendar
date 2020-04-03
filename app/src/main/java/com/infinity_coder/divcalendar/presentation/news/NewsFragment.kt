@@ -67,7 +67,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun showContent() {
-        Log.d("History","showContent")
+        Log.d("History", "showContent")
         contentLayout.visibility = View.VISIBLE
         noNetworkLayout.visibility = View.GONE
         emptyLayout.visibility = View.GONE
@@ -76,7 +76,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun showLoading() {
-        Log.d("History","loading")
+        Log.d("History", "loading")
         contentLayout.visibility = View.GONE
         noNetworkLayout.visibility = View.GONE
         emptyLayout.visibility = View.GONE
@@ -85,7 +85,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun showEmptyLayout() {
-        Log.d("History","empty")
+        Log.d("History", "empty")
         contentLayout.visibility = View.GONE
         noNetworkLayout.visibility = View.GONE
         emptyLayout.visibility = View.VISIBLE
@@ -101,7 +101,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         emptySecuritiesLayout.visibility = View.GONE
     }
 
-    private fun showEmptySecuritiesLayout(){
+    private fun showEmptySecuritiesLayout() {
         contentLayout.visibility = View.GONE
         noNetworkLayout.visibility = View.GONE
         emptyLayout.visibility = View.GONE

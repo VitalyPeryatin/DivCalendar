@@ -18,6 +18,6 @@ interface DivCalendarApi {
 
     @POST("/posts/")
     suspend fun fetchPosts(
-        @Body body:HashMap<String,Any>
+        @Body body: HashMap<String, Any>
     ): List<PostNetworkModel>
 }

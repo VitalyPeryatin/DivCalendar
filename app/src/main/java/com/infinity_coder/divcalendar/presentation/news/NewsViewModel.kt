@@ -1,6 +1,5 @@
 package com.infinity_coder.divcalendar.presentation.news
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -46,10 +45,10 @@ class NewsViewModel : ViewModel() {
         }
     }
 
-    private fun handleError(error:Throwable){
-        if(error is EmptySecuritiesException){
+    private fun handleError(error: Throwable) {
+        if (error is EmptySecuritiesException) {
             _state.postValue(VIEW_STATE_NEWS_EMPTY_SECURITIES)
-        }else {
+        } else {
             _state.postValue(VIEW_STATE_NEWS_NO_NETWORK)
         }
     }

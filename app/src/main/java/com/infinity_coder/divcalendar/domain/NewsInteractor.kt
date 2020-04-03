@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.map
 
 class NewsInteractor {
     suspend fun getPosts(): Flow<List<PostDbModel>> =
-        NewsRepository.getPosts(50,0)
+        NewsRepository.getPosts(50, 0)
             .map { posts -> posts.filter { LinkDelegate.isValidURL(it.link) } }
 }

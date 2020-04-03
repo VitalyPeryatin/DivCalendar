@@ -6,10 +6,10 @@ import com.infinity_coder.divcalendar.data.db.model.PostDbModel
 import com.infinity_coder.divcalendar.data.exceptions.EmptySecuritiesException
 import com.infinity_coder.divcalendar.data.network.RetrofitService
 import com.infinity_coder.divcalendar.data.network.model.PostNetworkModel
-import kotlinx.coroutines.Delay
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 object NewsRepository {
 
@@ -19,27 +19,27 @@ object NewsRepository {
     private val divCalendarApi = RetrofitService.divCalendarApi
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun getPosts(limit:Int, offset:Int): Flow<List<PostDbModel>> = flow {
-        try{
+    suspend fun getPosts(limit: Int, offset: Int): Flow<List<PostDbModel>> = flow {
+        try {
             emit(getPostsFromNetworkAndSaveToDB(limit, offset))
-        }catch (e:Exception){
-            if(e is EmptySecuritiesException){
+        } catch (e: Exception) {
+            if (e is EmptySecuritiesException) {
                 throw e
-            }else{
+            } else {
                 val postsFromDatabase = getPostsFromDatabase()
-                if(postsFromDatabase.isEmpty()){
+                if (postsFromDatabase.isEmpty()) {
                     throw e
-                }else{
+                } else {
                     emit(getPostsFromDatabase())
                 }
             }
         }
     }
 
-    private suspend fun getPostsFromDatabase(): List<PostDbModel>{
-        Log.d("History","start fetch data from  database")
+    private suspend fun getPostsFromDatabase(): List<PostDbModel> {
+        Log.d("History", "start fetch data from  database")
         delay(3000)
-        Log.d("History","end fetch data from database")
+        Log.d("History", "end fetch data from database")
         return newsDao.getPosts()
     }
 
@@ -57,7 +57,7 @@ object NewsRepository {
     private suspend fun getPostsFromNetwork(limit: Int, offset: Int): List<PostNetworkModel> {
         val securities = portfolioDao.getAllSecuritiesPackage().map { it.secid }
 
-        if(securities.isEmpty())
+        if (securities.isEmpty())
             throw EmptySecuritiesException()
 
         val body = hashMapOf(
