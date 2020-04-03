@@ -20,7 +20,7 @@ object SecurityTypeDelegate {
         return context.getColorExt(colorId)
     }
 
-    private fun getTitle(context: Context, type: String): String {
+    fun getTitle(context: Context, type: String): String {
         return when (type) {
             SECURITY_TYPE_STOCK -> context.resources.getString(R.string.stocks)
             SECURITY_TYPE_BOND -> context.resources.getString(R.string.bonds)

@@ -7,7 +7,7 @@ import com.infinity_coder.divcalendar.presentation._common.SecurityMarketDelegat
 
 class SearchSecurityViewModel : ViewModel() {
 
-    private val _marketLiveData = MutableLiveData(SECURITY_MARKET_RUSSIAN)
+    private val _marketLiveData = MutableLiveData(SecurityMarketDelegate.SECURITY_MARKET_RUSSIAN)
     val marketLiveData: LiveData<String>
         get() = _marketLiveData
 
@@ -22,10 +22,4 @@ class SearchSecurityViewModel : ViewModel() {
     fun setMarket(market: String) {
         _marketLiveData.value = market
     }
-
-    companion object {
-        private const val SECURITY_MARKET_RUSSIAN = "russian"
-        private const val SECURITY_MARKET_FOREIGN = "foreign"
-    }
-
 }
