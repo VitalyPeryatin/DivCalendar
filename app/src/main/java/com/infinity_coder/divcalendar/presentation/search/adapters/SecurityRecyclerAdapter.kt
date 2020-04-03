@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation.search
+package com.infinity_coder.divcalendar.presentation.search.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +20,10 @@ class SecurityRecyclerAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SecurityViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_security_search, parent, false)
-        return SecurityViewHolder(view, clickListener)
+        return SecurityViewHolder(
+            view,
+            clickListener
+        )
     }
 
     override fun getItemCount(): Int = securities.size
@@ -43,22 +46,13 @@ class SecurityRecyclerAdapter(
             sourceTextView.text = security.ticker
             val securityColor = SecurityTypeDelegate.getColor(containerView.context, security.type)
             securityTypeView.setBackgroundColor(securityColor)
-            typeTextView.text = getSecurityTypeText(security.type)
+            typeTextView.text = SecurityTypeDelegate.getTitle(containerView.context, security.type)
             exchangeTextView.text = security.exchange
             yearYieldTextView.text = containerView.context.getString(R.string.yield_in_year, security.yield)
             SimpleGlide.loadSVG(containerView, security.logo, logoImageView)
 
             containerView.setOnClickListener {
                 clickListener?.onClick(security)
-            }
-        }
-
-        private fun getSecurityTypeText(type: String): String {
-            val resources = containerView.context.resources
-            return when (type) {
-                SecurityTypeDelegate.SECURITY_TYPE_STOCK -> resources.getString(R.string.stocks)
-                SecurityTypeDelegate.SECURITY_TYPE_BOND -> resources.getString(R.string.bonds)
-                else -> resources.getString(R.string.stocks)
             }
         }
     }

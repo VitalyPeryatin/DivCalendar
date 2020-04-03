@@ -9,11 +9,10 @@ import com.infinity_coder.divcalendar.R
 
 object SimpleGlide {
     fun loadSVG(context: Context?, url: String, target: ImageView) {
-        GlideToVectorYou
-            .init()
-            .with(context)
-            .setPlaceHolder(R.drawable.logo_placeholder, R.drawable.logo_placeholder)
-            .load(Uri.parse(url), target)
+        GlideToVectorYou().apply {
+            with(context)
+            setPlaceHolder(R.drawable.logo_placeholder, R.drawable.logo_placeholder)
+        }.load(Uri.parse(url), target)
     }
 
     fun loadSVG(view: View, url: String, target: ImageView) {

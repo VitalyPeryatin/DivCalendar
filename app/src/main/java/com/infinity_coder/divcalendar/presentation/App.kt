@@ -7,6 +7,7 @@ class App : Application() {
         super.onCreate()
 
         instance = this
+        registerActivityLifecycleCallbacks(AppActivityLifecycleCallbacks())
     }
 
     companion object {

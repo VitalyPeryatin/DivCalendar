@@ -8,10 +8,8 @@ import com.infinity_coder.divcalendar.data.db.model.PostDbModel
 import com.infinity_coder.divcalendar.data.exceptions.EmptySecuritiesException
 import com.infinity_coder.divcalendar.domain.NewsInteractor
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class NewsViewModel : ViewModel() {
@@ -20,22 +18,21 @@ class NewsViewModel : ViewModel() {
     val newsPost: LiveData<List<PostDbModel>>
         get() = _newsPosts
 
-    private val _state = MutableLiveData(VIEW_STATE_NEWS_CONTENT)
+    private val _state = MutableLiveData<Int>(VIEW_STATE_NEWS_CONTENT)
     val state: LiveData<Int>
         get() = _state
 
+
     private val newsInteractor = NewsInteractor()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     fun loadNewsPosts() = viewModelScope.launch {
-        try {
-            newsInteractor.getPosts()
-                .flowOn(Dispatchers.IO)
-                .onStart { _state.postValue(VIEW_STATE_NEWS_LOADING) }
-                .onEach(this@NewsViewModel::collectPosts)
-                .launchIn(viewModelScope)
-        } catch (e: Exception) {
-            handleError(e)
-        }
+        newsInteractor.getPosts()
+            .flowOn(Dispatchers.IO)
+            .onStart { _state.postValue(VIEW_STATE_NEWS_LOADING) }
+            .onEach(this@NewsViewModel::collectPosts)
+            .catch { handleError(it) }
+            .launchIn(viewModelScope)
     }
 
     private suspend fun collectPosts(posts: List<PostDbModel>) {
@@ -48,7 +45,7 @@ class NewsViewModel : ViewModel() {
         }
     }
 
-    private fun handleError(error:Exception){
+    private fun handleError(error:Throwable){
         if(error is EmptySecuritiesException){
             _state.postValue(VIEW_STATE_NEWS_EMPTY_SECURITIES)
         }else {

@@ -35,5 +35,9 @@
         <item name="android:elevation">4dp</item>
     </style>
 
+    <style name="BaseTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="fontFamily">@font/roboto_medium</item>
+    </style>
+
 
 </resources>

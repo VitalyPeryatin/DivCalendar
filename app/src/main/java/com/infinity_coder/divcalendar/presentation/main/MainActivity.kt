@@ -15,7 +15,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        showFragment(PortfolioFragment())
+        if (savedInstanceState == null) {
+            showFragment(PortfolioFragment())
+        }
 
         bottomNavigationView.setOnNavigationItemSelectedListener {
 

@@ -26,6 +26,8 @@
     <string name="start_search">Начните поиск</string>
     <string name="stocks">Акции</string>
     <string name="bonds">Облигации</string>
+    <string name="russian">Российские</string>
+    <string name="foreign">Зарубежные</string>
 
     <!--portfolio -->
     <string name="sec_count">%1$d шт.</string>

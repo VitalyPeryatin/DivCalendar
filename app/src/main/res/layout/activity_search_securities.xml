@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -14,6 +12,7 @@
         android:background="@color/colorPrimary"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -49,54 +48,33 @@
             app:srcCompat="@drawable/ic_close" />
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/contentLayout"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:background="@color/background"
+        app:tabSelectedTextColor="@color/colorAccent"
+        app:tabTextColor="?android:textColorSecondary"
+        app:tabTextAppearance="@style/BaseTabTextAppearance" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/securitiesRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingTop="2dp"
-            android:paddingBottom="10dp"
-            tools:listitem="@layout/item_security_search" />
-
-    </FrameLayout>
-
-    <include
-        android:id="@+id/loadingLayout"
-        layout="@layout/layout_loading"
+    <com.creageek.segmentedbutton.SegmentedButton
+        android:id="@+id/segmentedButton"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="gone" />
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="horizontal"
+        app:segmentHeight="36dp"
+        app:segmentFont="@font/roboto"
+        app:segmentFontChecked="@font/roboto"
+        app:textColor="@color/colorAccent"
+        app:segmentColorChecked="@color/colorAccent"
+        app:borderColor="@color/colorAccent"
+        app:cornerRadius="8dp" />
 
-    <include
-        android:id="@+id/emptyLayout"
-        layout="@layout/layout_empty"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="gone" />
-
-    <include
-        android:id="@+id/noNetworkLayout"
-        layout="@layout/layout_no_network"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="gone" />
-
-    <include
-        android:id="@+id/startSearchLayout"
-        layout="@layout/layout_start_search"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="gone" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
