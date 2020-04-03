@@ -5,12 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinity_coder.divcalendar.data.db.model.PostDbModel
-import com.infinity_coder.divcalendar.data.exceptions.EmptySecuritiesException
 import com.infinity_coder.divcalendar.domain.NewsInteractor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class NewsViewModel : ViewModel() {
 
@@ -46,7 +46,7 @@ class NewsViewModel : ViewModel() {
     }
 
     private fun handleError(error: Throwable) {
-        if (error is EmptySecuritiesException) {
+        if (error is HttpException) {
             _state.postValue(VIEW_STATE_NEWS_EMPTY_SECURITIES)
         } else {
             _state.postValue(VIEW_STATE_NEWS_NO_NETWORK)
