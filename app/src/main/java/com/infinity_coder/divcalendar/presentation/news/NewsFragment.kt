@@ -53,7 +53,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun updateState(state: Int) {
-        Log.d("StateError",state.toString())
         when (state) {
             NewsViewModel.VIEW_STATE_NEWS_CONTENT -> showContent()
 
@@ -68,6 +67,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun showContent() {
+        Log.d("History","showContent")
         contentLayout.visibility = View.VISIBLE
         noNetworkLayout.visibility = View.GONE
         emptyLayout.visibility = View.GONE
@@ -76,6 +76,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun showLoading() {
+        Log.d("History","loading")
         contentLayout.visibility = View.GONE
         noNetworkLayout.visibility = View.GONE
         emptyLayout.visibility = View.GONE
@@ -84,6 +85,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun showEmptyLayout() {
+        Log.d("History","empty")
         contentLayout.visibility = View.GONE
         noNetworkLayout.visibility = View.GONE
         emptyLayout.visibility = View.VISIBLE

@@ -1,10 +1,12 @@
 package com.infinity_coder.divcalendar.data.repositories
 
+import android.util.Log
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.PostDbModel
 import com.infinity_coder.divcalendar.data.exceptions.EmptySecuritiesException
 import com.infinity_coder.divcalendar.data.network.RetrofitService
 import com.infinity_coder.divcalendar.data.network.model.PostNetworkModel
+import kotlinx.coroutines.Delay
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -18,12 +20,28 @@ object NewsRepository {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getPosts(limit:Int, offset:Int): Flow<List<PostDbModel>> = flow {
-        emit(getPostsFromDatabase())
-        emit(getPostsFromNetworkAndSaveToDB(limit, offset))
-    }.distinctUntilChanged()
+        try{
+            emit(getPostsFromNetworkAndSaveToDB(limit, offset))
+        }catch (e:Exception){
+            if(e is EmptySecuritiesException){
+                throw e
+            }else{
+                val postsFromDatabase = getPostsFromDatabase()
+                if(postsFromDatabase.isEmpty()){
+                    throw e
+                }else{
+                    emit(getPostsFromDatabase())
+                }
+            }
+        }
+    }
 
-    private suspend fun getPostsFromDatabase(): List<PostDbModel> =
-        newsDao.getPosts()
+    private suspend fun getPostsFromDatabase(): List<PostDbModel>{
+        Log.d("History","start fetch data from  database")
+        delay(3000)
+        Log.d("History","end fetch data from database")
+        return newsDao.getPosts()
+    }
 
     private suspend fun getPostsFromNetworkAndSaveToDB(limit: Int, offset: Int): List<PostDbModel> {
         val dbPosts = getPostsFromNetwork(limit, offset).map { PostDbModel.from(it) }
