@@ -42,6 +42,13 @@ object PaymentRepository {
                 "2020-05-11"
             ),
             PaymentNetworkModel(
+                "MTC",
+                "https://s3-symbol-logo.tradingview.com/mts--big.svg",
+                5,
+                123.1,
+                "2020-04-11"
+            ),
+            PaymentNetworkModel(
                 "Welltower",
                 "https://s0.rbk.ru/emitent_pics/resized/80x80_crop/images/50/95/f1e15de0b09ae756330dcb3577957279.png",
                 14,

@@ -3,6 +3,7 @@ package com.infinity_coder.divcalendar.presentation.calendar.adapters
 import android.content.Context
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import com.infinity_coder.divcalendar.presentation._common.loadImg
 import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
 import kotlinx.android.synthetic.main.item_payment_calendar.*
@@ -23,7 +24,7 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
             paymentDate.text = paymentDate.context.getDate(item.date)
             paymentDividends.text =
                 paymentDividends.context.getString(R.string.dividends, item.dividends)
-            paymentLogo.loadImg(item.logo)
+            SimpleGlide.loadImage(paymentLogo,item.logo,paymentLogo)
         }
     }
 

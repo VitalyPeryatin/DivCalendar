@@ -44,7 +44,7 @@ class NewsAdapter(
             tickerTextView.text = post.ticker
             textTextView.text = post.text
             timeAgoTextView.text = post.date
-            SimpleGlide.loadSVG(containerView, post.logo, logoImageView)
+            SimpleGlide.loadImage(containerView, post.logo, logoImageView)
 
             postItemLayout.setOnClickListener {
                 onItemClickListener?.onClick(post)
