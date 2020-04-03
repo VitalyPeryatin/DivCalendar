@@ -9,27 +9,10 @@ import com.infinity_coder.divcalendar.presentation.search.securitylist.SearchSec
 class SearchSecurityPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
 
     private val securityTypes = SecurityTypeDelegate.securityTypes
-    private val securityListFragments = generateSearchListFragments()
 
     override fun getItemCount(): Int = securityTypes.size
 
     override fun createFragment(position: Int): Fragment {
-        return securityListFragments[position]
-    }
-
-    private fun generateSearchListFragments(): List<SearchSecurityListFragment> {
-        return MutableList(securityTypes.size, this::generateSearchListFragment)
-    }
-
-    private fun generateSearchListFragment(position: Int): SearchSecurityListFragment {
         return SearchSecurityListFragment.newInstance(securityTypes[position])
-    }
-
-    fun executeQuery(query: String) {
-        securityListFragments.forEach { it.executeQuery(query) }
-    }
-
-    fun updateMarket() {
-        securityListFragments.forEach { it.updateMarket() }
     }
 }

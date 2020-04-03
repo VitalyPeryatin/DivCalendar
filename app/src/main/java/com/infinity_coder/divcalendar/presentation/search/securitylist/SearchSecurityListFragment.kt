@@ -12,6 +12,7 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
+import com.infinity_coder.divcalendar.presentation.search.SearchSecurityViewModel
 import com.infinity_coder.divcalendar.presentation.search.adapters.SecurityRecyclerAdapter
 import com.infinity_coder.divcalendar.presentation.search.addsecurity.AddSecurityBottomDialog
 import com.infinity_coder.divcalendar.presentation.search.securitylist.SearchSecurityListViewModel.Companion.VIEW_STATE_SEARCH_SECURITY_CONTENT
@@ -25,13 +26,13 @@ import kotlinx.android.synthetic.main.fragment_search_security_list.*
 class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_list),
     AddSecurityBottomDialog.OnClickListener {
 
+    private lateinit var parentViewModel: SearchSecurityViewModel
     private val viewModel: SearchSecurityListViewModel by lazy {
         viewModel { SearchSecurityListViewModel() }
     }
 
     private var addSecurityDialog: AddSecurityBottomDialog? = null
     private lateinit var parentActivity: SearchSecurityActivity
-    private var lastQuery = ""
 
     private val secClickListener = object : SecurityRecyclerAdapter.OnClickListener {
         override fun onClick(security: SecurityNetworkModel) {
@@ -47,44 +48,58 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
         super.onAttach(context)
 
         parentActivity = context as SearchSecurityActivity
+        parentViewModel = parentActivity.viewModel
         viewModel.securityType = arguments!!.getString(SECURITY_TYPE_ARGUMENT, "")
-        viewModel.search("", parentActivity.getCurrentMarket())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initUI()
+
         showStartSearchLayout()
 
-        securitiesRecyclerView.layoutManager = LinearLayoutManager(context)
-        securitiesRecyclerView.adapter = SecurityRecyclerAdapter(secClickListener)
-
+        parentViewModel.queryLiveData.observe(viewLifecycleOwner, Observer(this::updateQuery))
+        parentViewModel.marketLiveData.observe(viewLifecycleOwner, Observer(this::updateMarket))
         viewModel.searchedSecurities.observe(viewLifecycleOwner, Observer(this::setSecurities))
         viewModel.state.observe(viewLifecycleOwner, Observer(this::setState))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        searchIfResumed(getCurrentQuery(), getCurrentMarket())
+    }
+
+    private fun initUI() {
+        securitiesRecyclerView.layoutManager = LinearLayoutManager(context)
+        securitiesRecyclerView.adapter = SecurityRecyclerAdapter(secClickListener)
+    }
+
+    private fun updateQuery(query: String) {
+        searchIfResumed(query, getCurrentMarket())
+    }
+
+    private fun updateMarket(market: String) {
+        searchIfResumed(getCurrentQuery(), market)
+    }
+
+    private fun searchIfResumed(query: String, market: String) {
+        if (isResumed) {
+            viewModel.search(query, market)
+        }
+    }
+
+    private fun getCurrentMarket(): String {
+        return parentViewModel.marketLiveData.value ?: ""
+    }
+
+    private fun getCurrentQuery(): String {
+        return parentViewModel.queryLiveData.value ?: ""
     }
 
     override fun onAddSecPackageClick(securityPackage: SecurityPackageDbModel) {
         viewModel.appendSecurityPackage(securityPackage)
         dismissAddSecurityDialog()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        viewModel.search(lastQuery, parentActivity.getCurrentMarket())
-    }
-
-    fun executeQuery(query: String) {
-        lastQuery = query
-        if (isResumed) {
-            viewModel.search(query, parentActivity.getCurrentMarket())
-        }
-    }
-
-    fun updateMarket() {
-        if (isResumed) {
-            viewModel.search(market = parentActivity.getCurrentMarket())
-        }
     }
 
     private fun setSecurities(securities: List<SecurityNetworkModel>) {
