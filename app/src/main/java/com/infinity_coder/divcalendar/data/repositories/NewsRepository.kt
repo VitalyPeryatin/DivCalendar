@@ -22,8 +22,7 @@ object NewsRepository {
         newsDao.getPosts()
 
     private suspend fun getPostsFromNetworkAndSaveToDB(): List<PostDbModel> {
-        val networkPosts = getPostsFromNetwork()
-        val dbPosts = PostDbModel.from(networkPosts)
+        val dbPosts = getPostsFromNetwork().map { PostDbModel.from(it) }
         savePostToDatabase(dbPosts)
         return dbPosts
     }

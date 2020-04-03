@@ -18,7 +18,7 @@ class SearchSecurityPagerAdapter(activity: FragmentActivity) : FragmentStateAdap
     }
 
     private fun generateSearchListFragments(): List<SearchSecurityListFragment> {
-        return MutableList(securityTypes.size) { position -> generateSearchListFragment(position) }
+        return MutableList(securityTypes.size, this::generateSearchListFragment)
     }
 
     private fun generateSearchListFragment(position: Int): SearchSecurityListFragment {
