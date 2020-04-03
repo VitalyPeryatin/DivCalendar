@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.bottom_dialog_add_security.*
 
 class AddSecurityBottomDialog : BottomDialog() {
 
-    private var clickListener: OnClickListener? = null
+    private var clickListener: OnDialogClickListener? = null
 
     private lateinit var security: SecurityNetworkModel
 
@@ -51,7 +51,10 @@ class AddSecurityBottomDialog : BottomDialog() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (context is OnClickListener) {
+        val parentFragment = parentFragment
+        if (parentFragment is OnDialogClickListener) {
+            clickListener = parentFragment
+        } else if (context is OnDialogClickListener) {
             clickListener = context
         }
     }
@@ -138,9 +141,7 @@ class AddSecurityBottomDialog : BottomDialog() {
         }
     }
 
-    interface OnClickListener {
-
+    interface OnDialogClickListener {
         fun onAddSecPackageClick(securityPackage: SecurityPackageDbModel)
-
     }
 }

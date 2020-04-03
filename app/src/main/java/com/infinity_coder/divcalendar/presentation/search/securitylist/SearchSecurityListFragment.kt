@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_portfolio.securitiesRecyclerView
 import kotlinx.android.synthetic.main.fragment_search_security_list.*
 
 class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_list),
-    AddSecurityBottomDialog.OnClickListener {
+    AddSecurityBottomDialog.OnDialogClickListener {
 
     private lateinit var parentViewModel: SearchSecurityViewModel
     private val viewModel: SearchSecurityListViewModel by lazy {
