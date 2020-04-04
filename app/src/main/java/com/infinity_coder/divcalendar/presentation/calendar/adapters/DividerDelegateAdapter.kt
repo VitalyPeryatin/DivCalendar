@@ -12,5 +12,4 @@ class DividerDelegateAdapter : KDelegateAdapter<DividerPresentationModel>() {
         items[position] == DividerPresentationModel
 
     override fun onBind(item: DividerPresentationModel, viewHolder: KViewHolder) {}
-
 }

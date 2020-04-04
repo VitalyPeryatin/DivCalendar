@@ -42,7 +42,7 @@ object NewsRepository {
 
     private suspend fun getPostsFromNetwork(limit: Int, offset: Int): List<PostNetworkModel> {
         val securities = portfolioDao.getSecurityPackages().map { it.secid }
-        val body = BodyPostNetworkModel(securities,limit,offset)
+        val body = BodyPostNetworkModel(securities, limit, offset)
         return divCalendarApi.fetchPosts(body)
     }
 }

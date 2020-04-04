@@ -81,5 +81,4 @@ class SearchSecurityListViewModel : ViewModel() {
 
         private const val MIN_QUERY_LENGTH = 3
     }
-
 }

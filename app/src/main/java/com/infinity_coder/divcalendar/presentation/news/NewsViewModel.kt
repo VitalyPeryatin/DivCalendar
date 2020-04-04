@@ -22,7 +22,6 @@ class NewsViewModel : ViewModel() {
     val state: LiveData<Int>
         get() = _state
 
-
     private val newsInteractor = NewsInteractor()
 
     @OptIn(ExperimentalCoroutinesApi::class)

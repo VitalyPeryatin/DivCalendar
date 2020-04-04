@@ -11,7 +11,7 @@ class NewsInteractor {
         NewsRepository.getPosts(DEFAULT_LIMIT, DEFAULT_OFFSET)
             .map { posts -> posts.filter { LinkDelegate.isValidURL(it.link) } }
 
-    companion object{
+    companion object {
         private const val DEFAULT_LIMIT = 50
         private const val DEFAULT_OFFSET = 0
     }
