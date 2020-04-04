@@ -11,7 +11,12 @@ object SearchRepository {
     private val divCalendarApi = RetrofitService.divCalendarApi
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun search(query: String,  type: String, market: String, limit: Int): Flow<List<SecurityNetworkModel>> = flow {
+    suspend fun search(
+        query: String,
+        type: String,
+        market: String,
+        limit: Int
+    ): Flow<List<SecurityNetworkModel>> = flow {
         emit(divCalendarApi.searchSecurities(query, type, market, limit))
     }
 }

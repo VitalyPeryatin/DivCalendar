@@ -6,7 +6,12 @@ import kotlinx.coroutines.flow.Flow
 
 class SearchInteractor {
 
-    suspend fun search(query: String, type: String, market: String, limit: Int = DEFAULT_LIMIT): Flow<List<SecurityNetworkModel>> =
+    suspend fun search(
+        query: String,
+        type: String,
+        market: String,
+        limit: Int = DEFAULT_LIMIT
+    ): Flow<List<SecurityNetworkModel>> =
         SearchRepository.search(query, type, market, limit)
 
     companion object {

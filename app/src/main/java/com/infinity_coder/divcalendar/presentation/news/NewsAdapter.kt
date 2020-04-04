@@ -41,7 +41,7 @@ class NewsAdapter(
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bind(post: PostDbModel, isLastItem: Boolean = false) {
             titleTextView.text = post.title
-            tickerTextView.text = post.ticker
+            sourceTextView.text = post.source
             textTextView.text = post.text
             timeAgoTextView.text = post.date
             SimpleGlide.loadImage(containerView, post.logo, logoImageView)

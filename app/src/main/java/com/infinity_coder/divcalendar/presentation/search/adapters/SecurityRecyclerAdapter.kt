@@ -43,12 +43,13 @@ class SecurityRecyclerAdapter(
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bind(security: SecurityNetworkModel) {
             nameTextView.text = security.name
-            tickerTextView.text = security.ticker
+            sourceTextView.text = security.ticker
             val securityColor = SecurityTypeDelegate.getColor(containerView.context, security.type)
             securityTypeView.setBackgroundColor(securityColor)
             typeTextView.text = SecurityTypeDelegate.getTitle(containerView.context, security.type)
             exchangeTextView.text = security.exchange
-            yearYieldTextView.text = containerView.context.getString(R.string.yield_in_year, security.yield)
+            yearYieldTextView.text =
+                containerView.context.getString(R.string.yield_in_year, security.yield)
             SimpleGlide.loadImage(containerView, security.logo, logoImageView)
 
             containerView.setOnClickListener {
