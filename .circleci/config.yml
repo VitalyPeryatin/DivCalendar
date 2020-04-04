@@ -54,4 +54,3 @@ workflows:
             branches:
               only:
                 - circleci-project-setup
-              pull_request: true
