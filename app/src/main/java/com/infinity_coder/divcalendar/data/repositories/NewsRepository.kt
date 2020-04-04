@@ -21,11 +21,7 @@ object NewsRepository {
         emit(getPostsFromNetworkAndSaveToDB(limit, offset))
     }.catch {
         val postsFromDatabase = getPostsFromDatabase()
-        if (postsFromDatabase.isEmpty()) {
-            throw it
-        } else {
-            emit(getPostsFromDatabase())
-        }
+        emitIf(postsFromDatabase, it) { postsFromDatabase.isNotEmpty() }
     }
 
     private suspend fun getPostsFromDatabase(): List<PostDbModel> {
