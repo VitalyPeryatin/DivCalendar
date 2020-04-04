@@ -30,8 +30,8 @@ jobs:
             - ~/.gradle
           key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Run Detekt & Ktlint
-          command: ./gradlew detektAll
+          name: Run Ktlint
+          command: ./gradlew ktlintCheck
       - run:
           name: Run Lint
           command: ./gradlew lintDebug
