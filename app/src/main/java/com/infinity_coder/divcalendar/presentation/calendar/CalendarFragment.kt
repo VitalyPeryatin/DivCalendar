@@ -13,8 +13,13 @@ import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.calendar.adapters.*
 import kotlinx.android.synthetic.main.fragment_calendar.*
+import kotlin.properties.Delegates
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
+
+    private var currentState by Delegates.observable(
+        CalendarViewModel.VIEW_STATE_CALENDAR_CONTENT, { _, old, new -> changeViewState(new, old) }
+    )
 
     private val viewModel: CalendarViewModel by lazy {
         viewModel { CalendarViewModel() }
@@ -65,42 +70,22 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     }
 
     private fun updateState(state: Int) {
-        when (state) {
-            CalendarViewModel.VIEW_STATE_CALENDAR_LOADING -> showLoading()
+        currentState = state
+    }
 
-            CalendarViewModel.VIEW_STATE_CALENDAR_CONTENT -> showContent()
-
-            CalendarViewModel.VIEW_STATE_CALENDAR_EMPTY -> showEmptyLayout()
-
-            CalendarViewModel.VIEW_STATE_CALENDAR_NO_NETWORK -> showNoNetworkLayout()
+    private fun changeViewState(newState: Int, oldState: Int) {
+        when (oldState) {
+            CalendarViewModel.VIEW_STATE_CALENDAR_CONTENT -> calendarContent.visibility = View.GONE
+            CalendarViewModel.VIEW_STATE_CALENDAR_LOADING -> loadingLayout.visibility = View.GONE
+            CalendarViewModel.VIEW_STATE_CALENDAR_EMPTY -> emptyLayout.visibility = View.GONE
+            CalendarViewModel.VIEW_STATE_CALENDAR_NO_NETWORK -> noNetworkLayout.visibility = View.GONE
         }
-    }
 
-    private fun showContent() {
-        calendarContent.visibility = View.VISIBLE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.GONE
-    }
-
-    private fun showLoading() {
-        calendarContent.visibility = View.GONE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.VISIBLE
-    }
-
-    private fun showEmptyLayout() {
-        calendarContent.visibility = View.GONE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.VISIBLE
-        loadingLayout.visibility = View.GONE
-    }
-
-    private fun showNoNetworkLayout() {
-        calendarContent.visibility = View.GONE
-        noNetworkLayout.visibility = View.VISIBLE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.GONE
+        when (newState) {
+            CalendarViewModel.VIEW_STATE_CALENDAR_CONTENT -> calendarContent.visibility = View.VISIBLE
+            CalendarViewModel.VIEW_STATE_CALENDAR_LOADING -> loadingLayout.visibility = View.VISIBLE
+            CalendarViewModel.VIEW_STATE_CALENDAR_EMPTY -> emptyLayout.visibility = View.VISIBLE
+            CalendarViewModel.VIEW_STATE_CALENDAR_NO_NETWORK -> noNetworkLayout.visibility = View.VISIBLE
+        }
     }
 }

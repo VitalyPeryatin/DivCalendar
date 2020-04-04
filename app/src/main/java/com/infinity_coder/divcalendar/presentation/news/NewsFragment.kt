@@ -12,8 +12,13 @@ import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.browser.BrowserActivity
 import kotlinx.android.synthetic.main.fragment_news.*
+import kotlin.properties.Delegates
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
+
+    private var currentState by Delegates.observable(
+        NewsViewModel.VIEW_STATE_NEWS_EMPTY, { _, old, new -> changeViewState(new, old) }
+    )
 
     private val adapter = NewsAdapter()
 
@@ -52,42 +57,22 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun updateState(state: Int) {
-        when (state) {
-            NewsViewModel.VIEW_STATE_NEWS_CONTENT -> showContent()
+        currentState = state
+    }
 
-            NewsViewModel.VIEW_STATE_NEWS_LOADING -> showLoading()
-
-            NewsViewModel.VIEW_STATE_NEWS_EMPTY -> showEmptyLayout()
-
-            NewsViewModel.VIEW_STATE_NEWS_NO_NETWORK -> showNoNetworkLayout()
+    private fun changeViewState(newState: Int, oldState: Int) {
+        when (oldState) {
+            NewsViewModel.VIEW_STATE_NEWS_CONTENT -> contentLayout.visibility = View.GONE
+            NewsViewModel.VIEW_STATE_NEWS_LOADING -> loadingLayout.visibility = View.GONE
+            NewsViewModel.VIEW_STATE_NEWS_EMPTY -> emptyLayout.visibility = View.GONE
+            NewsViewModel.VIEW_STATE_NEWS_NO_NETWORK -> noNetworkLayout.visibility = View.GONE
         }
-    }
 
-    private fun showContent() {
-        contentLayout.visibility = View.VISIBLE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.GONE
-    }
-
-    private fun showLoading() {
-        contentLayout.visibility = View.GONE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.VISIBLE
-    }
-
-    private fun showEmptyLayout() {
-        contentLayout.visibility = View.GONE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.VISIBLE
-        loadingLayout.visibility = View.GONE
-    }
-
-    private fun showNoNetworkLayout() {
-        contentLayout.visibility = View.GONE
-        noNetworkLayout.visibility = View.VISIBLE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.GONE
+        when (newState) {
+            NewsViewModel.VIEW_STATE_NEWS_CONTENT -> contentLayout.visibility = View.VISIBLE
+            NewsViewModel.VIEW_STATE_NEWS_LOADING -> loadingLayout.visibility = View.VISIBLE
+            NewsViewModel.VIEW_STATE_NEWS_EMPTY -> emptyLayout.visibility = View.VISIBLE
+            NewsViewModel.VIEW_STATE_NEWS_NO_NETWORK -> noNetworkLayout.visibility = View.VISIBLE
+        }
     }
 }

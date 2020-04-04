@@ -22,9 +22,14 @@ import com.infinity_coder.divcalendar.presentation.search.securitylist.SearchSec
 import com.infinity_coder.divcalendar.presentation.search.securitylist.SearchSecurityListViewModel.Companion.VIEW_STATE_SEARCH_SECURITY_START_SEARCH
 import kotlinx.android.synthetic.main.fragment_portfolio.securitiesRecyclerView
 import kotlinx.android.synthetic.main.fragment_search_security_list.*
+import kotlin.properties.Delegates
 
 class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_list),
     AddSecurityBottomDialog.OnDialogClickListener {
+
+    private var currentState by Delegates.observable(
+        VIEW_STATE_SEARCH_SECURITY_START_SEARCH, { _, old, new -> changeViewState(new, old) }
+    )
 
     private lateinit var parentViewModel: SearchSecurityViewModel
     private val viewModel: SearchSecurityListViewModel by lazy {
@@ -56,8 +61,6 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
         super.onViewCreated(view, savedInstanceState)
 
         initUI()
-
-        showStartSearchLayout()
 
         parentViewModel.queryLiveData.observe(viewLifecycleOwner, Observer(this::updateQuery))
         parentViewModel.marketLiveData.observe(viewLifecycleOwner, Observer(this::updateMarket))
@@ -108,57 +111,25 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
     }
 
     private fun setState(state: Int) {
-        when (state) {
-            VIEW_STATE_SEARCH_SECURITY_CONTENT -> showContent()
+        currentState = state
+    }
 
-            VIEW_STATE_SEARCH_SECURITY_LOADING -> showLoading()
-
-            VIEW_STATE_SEARCH_SECURITY_EMPTY -> showEmptyLayout()
-
-            VIEW_STATE_SEARCH_SECURITY_NO_NETWORK -> showNoNetwork()
-
-            VIEW_STATE_SEARCH_SECURITY_START_SEARCH -> showStartSearchLayout()
+    private fun changeViewState(newState: Int, oldState: Int) {
+        when (oldState) {
+            VIEW_STATE_SEARCH_SECURITY_CONTENT -> contentLayout.visibility = View.GONE
+            VIEW_STATE_SEARCH_SECURITY_LOADING -> loadingLayout.visibility = View.GONE
+            VIEW_STATE_SEARCH_SECURITY_EMPTY -> emptyLayout.visibility = View.GONE
+            VIEW_STATE_SEARCH_SECURITY_NO_NETWORK -> noNetworkLayout.visibility = View.GONE
+            VIEW_STATE_SEARCH_SECURITY_START_SEARCH -> startSearchLayout.visibility = View.GONE
         }
-    }
 
-    private fun showContent() {
-        contentLayout.visibility = View.VISIBLE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.GONE
-        startSearchLayout.visibility = View.GONE
-    }
-
-    private fun showLoading() {
-        contentLayout.visibility = View.GONE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.VISIBLE
-        startSearchLayout.visibility = View.GONE
-    }
-
-    private fun showEmptyLayout() {
-        contentLayout.visibility = View.GONE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.VISIBLE
-        loadingLayout.visibility = View.GONE
-        startSearchLayout.visibility = View.GONE
-    }
-
-    private fun showNoNetwork() {
-        contentLayout.visibility = View.GONE
-        noNetworkLayout.visibility = View.VISIBLE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.GONE
-        startSearchLayout.visibility = View.GONE
-    }
-
-    private fun showStartSearchLayout() {
-        contentLayout.visibility = View.GONE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.GONE
-        startSearchLayout.visibility = View.VISIBLE
+        when (newState) {
+            VIEW_STATE_SEARCH_SECURITY_CONTENT -> contentLayout.visibility = View.VISIBLE
+            VIEW_STATE_SEARCH_SECURITY_LOADING -> loadingLayout.visibility = View.VISIBLE
+            VIEW_STATE_SEARCH_SECURITY_EMPTY -> emptyLayout.visibility = View.VISIBLE
+            VIEW_STATE_SEARCH_SECURITY_NO_NETWORK -> noNetworkLayout.visibility = View.VISIBLE
+            VIEW_STATE_SEARCH_SECURITY_START_SEARCH -> startSearchLayout.visibility = View.VISIBLE
+        }
     }
 
     private fun dismissAddSecurityDialog() {
