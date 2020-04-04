@@ -92,11 +92,6 @@ dependencies {
 
     implementation "org.jsoup:jsoup:1.12.1"
 
-    // Picasso
-    implementation "com.squareup.picasso:picasso:2.71828"
-    // Цвета
-    implementation 'androidx.palette:palette:1.0.0'
-
     // Firebase
     implementation "com.google.firebase:firebase-core:17.2.3"
     implementation "com.google.firebase:firebase-analytics:17.2.3"
@@ -105,6 +100,8 @@ dependencies {
 
     // CircleImageView
     implementation "de.hdodenhof:circleimageview:3.0.1"
+    // Цвета
+    implementation 'androidx.palette:palette:1.0.0'
 
     //delegate adapter https://github.com/Liverm0r/DelegateAdapters
     implementation "com.github.liverm0r:delegateadapters:v2.03"

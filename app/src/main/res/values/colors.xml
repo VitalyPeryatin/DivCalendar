@@ -20,4 +20,6 @@
     <color name="typeRusBondColor">#1D7AD5</color>
 
     <color name="background">#ffffff</color>
+
+    <color name="logo_placeholder">#226F6F6F</color>
 </resources>

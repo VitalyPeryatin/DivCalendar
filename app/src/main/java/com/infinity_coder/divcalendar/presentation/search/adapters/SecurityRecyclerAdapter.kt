@@ -50,7 +50,7 @@ class SecurityRecyclerAdapter(
             exchangeTextView.text = security.exchange
             yearYieldTextView.text =
                 containerView.context.getString(R.string.yield_in_year, security.yield)
-            SimpleGlide.loadSVG(containerView, security.logo, logoImageView)
+            SimpleGlide.loadImage(containerView, security.logo, logoImageView)
 
             containerView.setOnClickListener {
                 clickListener?.onClick(security)

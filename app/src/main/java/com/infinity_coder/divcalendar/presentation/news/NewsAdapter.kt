@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.PostDbModel
-import com.infinity_coder.divcalendar.presentation._common.loadImg
+import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_post.*
 
@@ -43,7 +43,7 @@ class NewsAdapter(
             sourceTextView.text = post.source
             textTextView.text = post.text
             timeAgoTextView.text = post.date
-            logoImageView.loadImg(post.logo)
+            SimpleGlide.loadImage(containerView, post.logo, logoImageView)
 
             postItemLayout.setOnClickListener {
                 onItemClickListener?.onClick(post)
