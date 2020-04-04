@@ -33,7 +33,7 @@ subprojects {
 
     ktlint {
         android = true
-        //additionalEditorconfigFile = file(".editorconfig")
+        additionalEditorconfigFile = file(".editorconfig")
     }
 }
 
