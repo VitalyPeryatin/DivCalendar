@@ -4,9 +4,9 @@ orbs:
  android: circleci/android@0.2.0
 
 jobs:
-  build:
+  test:
     docker:
-      - image: circleci/android:api-28
+        - image: circleci/android:api-28
     steps:
       - checkout
       - run:
@@ -25,12 +25,6 @@ jobs:
             - ~/.gradle
           key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          command: ./gradlew build
-  test:
-    docker:
-        - image: circleci/android:api-28
-    steps:
-      - run:
           name: Run Ktlint
           command: ./gradlew ktlintReleaseCheck
       - run:
@@ -39,31 +33,13 @@ jobs:
       - run:
           name: Run Unit Tests
           command: ./gradlew testReleaseUnitTest
-  deploy:
-    docker:
-        - image: circleci/android:api-28
-    steps:
-      - run:
-          name: Build
-          command: ./gradlew build
-
 
 workflows:
   version: 2
-  build-and-deploy:
+  testing:
     jobs:
-      - build
       - test:
-          requires:
-            - build
           filters:
             branches:
               only:
                 - circleci-project-setup
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - master
