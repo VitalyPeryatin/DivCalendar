@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class NewsViewModel : ViewModel() {
 
@@ -30,7 +31,7 @@ class NewsViewModel : ViewModel() {
             .flowOn(Dispatchers.IO)
             .onStart { _state.postValue(VIEW_STATE_NEWS_LOADING) }
             .onEach(this@NewsViewModel::collectPosts)
-            .catch { _state.postValue(VIEW_STATE_NEWS_NO_NETWORK) }
+            .catch { handleError(it) }
             .launchIn(viewModelScope)
     }
 
@@ -44,10 +45,19 @@ class NewsViewModel : ViewModel() {
         }
     }
 
+    private fun handleError(error: Throwable) {
+        if (error is HttpException) {
+            _state.postValue(VIEW_STATE_NEWS_EMPTY_SECURITIES)
+        } else {
+            _state.postValue(VIEW_STATE_NEWS_NO_NETWORK)
+        }
+    }
+
     companion object {
         const val VIEW_STATE_NEWS_LOADING = 1
         const val VIEW_STATE_NEWS_CONTENT = 2
         const val VIEW_STATE_NEWS_EMPTY = 3
         const val VIEW_STATE_NEWS_NO_NETWORK = 4
+        const val VIEW_STATE_NEWS_EMPTY_SECURITIES = 5
     }
 }

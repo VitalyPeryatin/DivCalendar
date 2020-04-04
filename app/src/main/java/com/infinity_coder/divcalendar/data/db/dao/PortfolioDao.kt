@@ -11,6 +11,9 @@ abstract class PortfolioDao {
     abstract suspend fun getSecurityPackage(secid: String): SecurityPackageDbModel?
 
     @Query("SELECT * FROM ${SecurityPackageDbModel.TABLE_NAME}")
+    abstract suspend fun getSecurityPackages(): List<SecurityPackageDbModel>
+
+    @Query("SELECT * FROM ${SecurityPackageDbModel.TABLE_NAME}")
     abstract fun getAllSecuritiesPackageLiveData(): LiveData<List<SecurityPackageDbModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

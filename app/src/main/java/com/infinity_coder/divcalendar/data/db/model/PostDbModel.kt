@@ -17,8 +17,8 @@ data class PostDbModel(
     @ColumnInfo(name = COLUMN_LOGO)
     var logo: String = "",
 
-    @ColumnInfo(name = COLUMN_TICKER)
-    var ticker: String = "",
+    @ColumnInfo(name = COLUMN_SOURCE)
+    var source: String = "",
 
     @ColumnInfo(name = COLUMN_DATE)
     var date: String = "",
@@ -38,7 +38,7 @@ data class PostDbModel(
         const val COLUMN_TITLE = "title"
         const val COLUMN_TEXT = "text"
         const val COLUMN_LOGO = "logo"
-        const val COLUMN_TICKER = "ticker"
+        const val COLUMN_SOURCE = "source"
         const val COLUMN_DATE = "date"
         const val COLUMN_LINK = "link"
 
@@ -46,7 +46,7 @@ data class PostDbModel(
             title = post.title,
             text = post.text,
             logo = post.logo,
-            ticker = post.ticker,
+            source = post.source,
             date = post.date,
             link = post.link
         )

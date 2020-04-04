@@ -66,6 +66,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             NewsViewModel.VIEW_STATE_NEWS_LOADING -> loadingLayout.visibility = View.GONE
             NewsViewModel.VIEW_STATE_NEWS_EMPTY -> emptyLayout.visibility = View.GONE
             NewsViewModel.VIEW_STATE_NEWS_NO_NETWORK -> noNetworkLayout.visibility = View.GONE
+            NewsViewModel.VIEW_STATE_NEWS_EMPTY_SECURITIES -> emptySecuritiesLayout.visibility = View.GONE
         }
 
         when (newState) {
@@ -73,6 +74,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             NewsViewModel.VIEW_STATE_NEWS_LOADING -> loadingLayout.visibility = View.VISIBLE
             NewsViewModel.VIEW_STATE_NEWS_EMPTY -> emptyLayout.visibility = View.VISIBLE
             NewsViewModel.VIEW_STATE_NEWS_NO_NETWORK -> noNetworkLayout.visibility = View.VISIBLE
+            NewsViewModel.VIEW_STATE_NEWS_EMPTY_SECURITIES -> emptySecuritiesLayout.visibility = View.VISIBLE
         }
     }
 }
