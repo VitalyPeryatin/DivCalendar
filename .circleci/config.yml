@@ -11,10 +11,10 @@ jobs:
       - checkout
       - run:
           name: Run Ktlint
-          command: ./gradlew ktlintReleaseCheck
+          command: ./gradlew ktlintDebugCheck
       - run:
           name: Run Unit Tests
-          command: ./gradlew testReleaseUnitTest
+          command: ./gradlew testDebugUnitTest
 
 workflows:
   version: 2
