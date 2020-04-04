@@ -11,19 +11,9 @@ jobs:
       - checkout
       - run:
           name: Create DivCalendarKey.jks
-          command: echo $RELEASE_KEYSTORE_BASE64 | base64 -d > DivCalendarKey.jks
+          command: echo $RELEASE_KEYSTORE_BASE64 | base64 -d > DivCalendarKey
       - run:
           name: Create keystore.properies
           command: printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' $releaseKeyAlias $releaseKeyAlias $releaseKeyPassword $releaseKeyStore $releaseStorePassword > keystore.properties
       - run:
           command: ./gradlew build
-
-general:
-  artifacts:
-    - /Users/vitaly/AndroidStudioProjects/DivCalendar/app/build/outputs/apk/
-
-deployment:
-  beta:
-    branch: master
-    commands:
-      - cd scripts && ./build.sh
