@@ -16,7 +16,7 @@ jobs:
       - checkout
       - run:
           name: Create DivCalendarKey.jks
-          command: echo $RELEASE_KEYSTORE_BASE64 | base64 -d > DivCalendarKey
+          command: echo $RELEASE_KEYSTORE_BASE64 | base64 -d > DivCalendarKey.jks
       - run:
           name: Create keystore.properies
           command: printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' $releaseKeyAlias $releaseKeyPassword $releaseKeyStore $releaseStorePassword > keystore.properties
@@ -34,13 +34,23 @@ jobs:
           command: ./gradlew ktlintCheck
       - run:
           name: Run Lint
-          command: ./gradlew lintDebug
+          command: ./gradlew lint
       - run:
           name: Run Unit Tests
-          command: ./gradlew testDebugUnitTest
+          command: ./gradlew testReleaseUnitTest
       - save_cache:
           paths:
             - ~/.gradle
           key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           command: ./gradlew build
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - circleci-project-setup
