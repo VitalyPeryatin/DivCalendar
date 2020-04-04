@@ -10,7 +10,6 @@ import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_post.*
 
-
 class NewsAdapter(
     var onItemClickListener: NewsItemClickListener? = null
 ) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
@@ -59,5 +58,4 @@ class NewsAdapter(
     interface NewsItemClickListener {
         fun onClick(post: PostDbModel)
     }
-
 }

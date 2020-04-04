@@ -15,7 +15,6 @@ import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.search.adapters.SearchSecurityPagerAdapter
 import kotlinx.android.synthetic.main.activity_search_securities.*
 
-
 class SearchSecurityActivity : AppCompatActivity() {
 
     val viewModel: SearchSecurityViewModel by lazy {
@@ -59,21 +58,24 @@ class SearchSecurityActivity : AppCompatActivity() {
 
     private fun getQueryTextWatcher() = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
-            if (s == null) return
-
-            if (s.isNotEmpty()) {
-                clearButton.visibility = View.VISIBLE
-            } else {
-                clearButton.visibility = View.GONE
-            }
+            executeQuery(s)
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            viewModel.executeQuery(s.toString())
         }
+    }
+
+    private fun executeQuery(s: Editable?) {
+        val query = s.toString()
+        if (query.isBlank()) {
+            clearButton.visibility = View.GONE
+        } else {
+            clearButton.visibility = View.VISIBLE
+        }
+        viewModel.executeQuery(query)
     }
 
     private fun setMarketByTitle(title: String) {

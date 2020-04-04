@@ -32,5 +32,4 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
         val months = resources.getStringArray(R.array.months_genitive)
         return "${splitDate[2].toInt()} ${months[splitDate[1].toInt()]} ${splitDate[0]}"
     }
-
 }

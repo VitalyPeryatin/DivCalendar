@@ -30,5 +30,4 @@ object RetrofitService {
         readTimeout(10, TimeUnit.SECONDS)
         writeTimeout(10, TimeUnit.SECONDS)
     }
-
 }
