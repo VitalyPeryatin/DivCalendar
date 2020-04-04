@@ -1,4 +1,5 @@
 GRADLE="./gradlew"
+echo $RELEASE_KEYSTORE_BASE64 | base64 --decode > DivCalendarKey.jks
 $GRADLE assembleRelease
 RELEASEFILE="${CIRCLE_ARTIFACTS}/habrcicdcat-release-${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1}.apk"
 cp ./app/build/outputs/apk/debug/app-debug.apk ${RELEASEFILE}
