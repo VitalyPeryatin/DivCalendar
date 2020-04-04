@@ -2,27 +2,35 @@ package com.infinity_coder.divcalendar.data.repositories
 
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.PostDbModel
+import com.infinity_coder.divcalendar.data.network.RetrofitService
+import com.infinity_coder.divcalendar.data.network.model.BodyPostNetworkModel
 import com.infinity_coder.divcalendar.data.network.model.PostNetworkModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
 object NewsRepository {
 
     private val newsDao = DivCalendarDatabase.roomDatabase.newsDao
+    private val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
+
+    private val divCalendarApi = RetrofitService.divCalendarApi
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun getPosts(): Flow<List<PostDbModel>> = flow {
-        emit(getPostsFromDatabase())
-        emit(getPostsFromNetworkAndSaveToDB())
-    }.distinctUntilChanged()
+    suspend fun getPosts(limit: Int, offset: Int): Flow<List<PostDbModel>> = flow {
+        emit(getPostsFromNetworkAndSaveToDB(limit, offset))
+    }.catch {
+        val postsFromDatabase = getPostsFromDatabase()
+        emitIf(postsFromDatabase, it) { postsFromDatabase.isNotEmpty() }
+    }
 
-    private suspend fun getPostsFromDatabase(): List<PostDbModel> =
-        newsDao.getPosts()
+    private suspend fun getPostsFromDatabase(): List<PostDbModel> {
+        return newsDao.getPosts()
+    }
 
-    private suspend fun getPostsFromNetworkAndSaveToDB(): List<PostDbModel> {
-        val dbPosts = getPostsFromNetwork().map { PostDbModel.from(it) }
+    private suspend fun getPostsFromNetworkAndSaveToDB(limit: Int, offset: Int): List<PostDbModel> {
+        val dbPosts = getPostsFromNetwork(limit, offset).map { PostDbModel.from(it) }
         savePostToDatabase(dbPosts)
         return dbPosts
     }
@@ -32,73 +40,9 @@ object NewsRepository {
         newsDao.insertPosts(posts)
     }
 
-    private fun getPostsFromNetwork(): List<PostNetworkModel> {
-        return listOf(
-            PostNetworkModel(
-                title = "Обзор стратегий FINTARGET.RU",
-                text = "На  рынки продолжает поступать негатив относительно состояния мировой экономики, под большим давлением акции банков. В российской экономике возможен шквал банкротств и невозвраты кредитов. Сбербанк одна...",
-                logo = "https://s3-symbol-logo.tradingview.com/mts--big.svg",
-                ticker = "NLMK",
-                date = "12.02.2020",
-                link = "https://bcs-express.ru/novosti-i-analitika/daidzhest-strategii-fintarget"
-            ),
-            PostNetworkModel(
-                title = "Обзор стратегий FINTARGET.RU",
-                text = "На  рынки продолжает поступать негатив относительно состояния мировой экономики, под большим давлением акции банков. В российской экономике возможен шквал банкротств и невозвраты кредитов. Сбербанк одна...",
-                logo = "https://s3-symbol-logo.tradingview.com/mts--big.svg",
-                ticker = "NLMK",
-                date = "12.02.2020",
-                link = "https://bcs-express.ru/novosti-i-analitika/daidzhest-strategii-fintarget"
-            ),
-            PostNetworkModel(
-                title = "Обзор стратегий FINTARGET.RU",
-                text = "На  рынки продолжает поступать негатив относительно состояния мировой экономики, под большим давлением акции банков. В российской экономике возможен шквал банкротств и невозвраты кредитов. Сбербанк одна...",
-                logo = "https://s3-symbol-logo.tradingview.com/mts--big.svg",
-                ticker = "NLMK",
-                date = "12.02.2020",
-                link = "https://bcs-express.ru/novosti-i-analitika/daidzhest-strategii-fintarget"
-            ),
-            PostNetworkModel(
-                title = "Обзор стратегий FINTARGET.RU",
-                text = "На  рынки продолжает поступать негатив относительно состояния мировой экономики, под большим давлением акции банков. В российской экономике возможен шквал банкротств и невозвраты кредитов. Сбербанк одна...",
-                logo = "https://s3-symbol-logo.tradingview.com/mts--big.svg",
-                ticker = "NLMK",
-                date = "12.02.2020",
-                link = "https://bcs-express.ru/novosti-i-analitika/daidzhest-strategii-fintarget"
-            ),
-            PostNetworkModel(
-                title = "Обзор стратегий FINTARGET.RU",
-                text = "На  рынки продолжает поступать негатив относительно состояния мировой экономики, под большим давлением акции банков. В российской экономике возможен шквал банкротств и невозвраты кредитов. Сбербанк одна...",
-                logo = "https://s3-symbol-logo.tradingview.com/mts--big.svg",
-                ticker = "NLMK",
-                date = "12.02.2020",
-                link = "https://bcs-express.ru/novosti-i-analitika/daidzhest-strategii-fintarget"
-            ),
-            PostNetworkModel(
-                title = "Обзор стратегий FINTARGET.RU",
-                text = "На  рынки продолжает поступать негатив относительно состояния мировой экономики, под большим давлением акции банков. В российской экономике возможен шквал банкротств и невозвраты кредитов. Сбербанк одна...",
-                logo = "https://s3-symbol-logo.tradingview.com/mts--big.svg",
-                ticker = "NLMK",
-                date = "12.02.2020",
-                link = "https://bcs-express.ru/novosti-i-analitika/daidzhest-strategii-fintarget"
-            ),
-            PostNetworkModel(
-                title = "Обзор стратегий FINTARGET.RU",
-                text = "На  рынки продолжает поступать негатив относительно состояния мировой экономики, под большим давлением акции банков. В российской экономике возможен шквал банкротств и невозвраты кредитов. Сбербанк одна...",
-                logo = "https://s3-symbol-logo.tradingview.com/mts--big.svg",
-                ticker = "DFSF",
-                date = "12.02.2020",
-                link = "https://bcs-express.ru/novosti-i-analitika/daidzhest-strategii-fintarget"
-            ),
-            PostNetworkModel(
-                title = "Обзор стратегий FINTARGET.RU",
-                text = "На  рынки продолжает поступать негатив относительно состояния мировой экономики, под большим давлением акции банков. В российской экономике возможен шквал банкротств и невозвраты кредитов. Сбербанк одна...",
-                logo = "https://s3-symbol-logo.tradingview.com/mts--big.svg",
-                ticker = "NLMK",
-                date = "12.02.2020",
-                link = "https://bcs-express.ru/novosti-i-analitika/daidzhest-strategii-fintarget"
-            )
-        )
-
+    private suspend fun getPostsFromNetwork(limit: Int, offset: Int): List<PostNetworkModel> {
+        val securities = portfolioDao.getSecurityPackages().map { it.secid }
+        val body = BodyPostNetworkModel(securities,limit,offset)
+        return divCalendarApi.fetchPosts(body)
     }
 }

@@ -52,7 +52,7 @@
             app:layout_constraintTop_toTopOf="@+id/logoImageView" />
 
         <TextView
-            android:id="@+id/tickerTextView"
+            android:id="@+id/sourceTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

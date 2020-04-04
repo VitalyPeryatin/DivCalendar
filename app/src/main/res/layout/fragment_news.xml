@@ -59,4 +59,11 @@
         android:visibility="gone"
         tools:visibility="gone" />
 
+    <include
+        android:id="@+id/emptySecuritiesLayout"
+        layout="@layout/layout_empty_securities"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="gone" />
 </LinearLayout>

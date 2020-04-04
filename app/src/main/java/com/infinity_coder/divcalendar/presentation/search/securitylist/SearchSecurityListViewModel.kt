@@ -55,7 +55,7 @@ class SearchSecurityListViewModel : ViewModel() {
     }
 
     private fun isNewQueryGroup(query: String, market: String): Boolean {
-        return query!= loadedQuery || market != loadedMarket
+        return query != loadedQuery || market != loadedMarket
     }
 
     private suspend fun collectSearchSecurities(searchSecurities: List<SecurityNetworkModel>) {
