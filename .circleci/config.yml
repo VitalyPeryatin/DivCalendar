@@ -5,9 +5,6 @@ orbs:
 
 jobs:
   build:
-    branches:
-      only:
-        - circleci-project-setup
     executor: android/android
     working_directory: ~/DivCalendar
     docker:
@@ -15,6 +12,9 @@ jobs:
     environment:
       GRADLE_OPTS: -Xmx4g -Dorg.gradle.daemon=false
       JVM_OPTS: -Xmx4g
+    branches:
+      only:
+        - circleci-project-setup
     steps:
       - checkout
       - run:
