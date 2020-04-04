@@ -5,6 +5,9 @@ orbs:
 
 jobs:
   build:
+    branches:
+      only:
+        - circleci-project-setup
     executor: android/android
     working_directory: ~/DivCalendar
     docker:
@@ -34,10 +37,10 @@ jobs:
           command: ./gradlew ktlintCheck
       - run:
           name: Run Lint
-          command: ./gradlew lintDebug
+          command: ./gradlew lint
       - run:
           name: Run Unit Tests
-          command: ./gradlew testDebugUnitTest
+          command: ./gradlew testReleaseUnitTest
       - save_cache:
           paths:
             - ~/.gradle
