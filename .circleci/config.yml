@@ -10,26 +10,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Create DivCalendarKey.jks
-          command: echo $RELEASE_KEYSTORE_BASE64 | base64 -d > DivCalendarKey.jks
-      - run:
-          name: Create keystore.properies
-          command: printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' $releaseKeyAlias $releaseKeyPassword $releaseKeyStore $releaseStorePassword > keystore.properties
-      - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run:
           name: Run Ktlint
           command: ./gradlew ktlintReleaseCheck
-      - run:
-          name: Run Lint
-          command: ./gradlew lintRelease
       - run:
           name: Run Unit Tests
           command: ./gradlew testReleaseUnitTest
