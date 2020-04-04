@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class NewsInteractor {
-    suspend fun getPosts(): Flow<List<PostDbModel>> =
+    suspend fun getPosts():Flow<List<PostDbModel>> =
         NewsRepository.getPosts(DEFAULT_LIMIT, DEFAULT_OFFSET)
             .map { posts -> posts.filter { LinkDelegate.isValidURL(it.link) } }
 
