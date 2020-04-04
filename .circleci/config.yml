@@ -14,6 +14,12 @@ jobs:
       JVM_OPTS: -Xmx4g
     steps:
       - checkout
+      - run:
+          name: Create DivCalendarKey.jks
+          command: echo $RELEASE_KEYSTORE_BASE64 | base64 -d > DivCalendarKey
+      - run:
+          name: Create keystore.properies
+          command: printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' $releaseKeyAlias $releaseKeyPassword $releaseKeyStore $releaseStorePassword > keystore.properties
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
@@ -36,11 +42,5 @@ jobs:
           paths:
             - ~/.gradle
           key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run:
-          name: Create DivCalendarKey.jks
-          command: echo $RELEASE_KEYSTORE_BASE64 | base64 -d > DivCalendarKey
-      - run:
-          name: Create keystore.properies
-          command: printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' $releaseKeyAlias $releaseKeyPassword $releaseKeyStore $releaseStorePassword > keystore.properties
       - run:
           command: ./gradlew build
