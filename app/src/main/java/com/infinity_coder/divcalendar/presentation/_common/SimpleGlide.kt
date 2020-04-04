@@ -52,5 +52,4 @@ object SimpleGlide {
             .error(error)
             .into(target)
     }
-
 }
