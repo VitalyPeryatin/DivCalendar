@@ -57,8 +57,6 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
 
         initUI()
 
-        showStartSearchLayout()
-
         parentViewModel.queryLiveData.observe(viewLifecycleOwner, Observer(this::updateQuery))
         parentViewModel.marketLiveData.observe(viewLifecycleOwner, Observer(this::updateMarket))
         viewModel.searchedSecurities.observe(viewLifecycleOwner, Observer(this::setSecurities))
@@ -108,57 +106,19 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
     }
 
     private fun setState(state: Int) {
+        contentLayout.visibility = View.GONE
+        loadingLayout.visibility = View.GONE
+        emptyLayout.visibility = View.GONE
+        noNetworkLayout.visibility = View.GONE
+        startSearchLayout.visibility = View.GONE
+
         when (state) {
-            VIEW_STATE_SEARCH_SECURITY_CONTENT -> showContent()
-
-            VIEW_STATE_SEARCH_SECURITY_LOADING -> showLoading()
-
-            VIEW_STATE_SEARCH_SECURITY_EMPTY -> showEmptyLayout()
-
-            VIEW_STATE_SEARCH_SECURITY_NO_NETWORK -> showNoNetwork()
-
-            VIEW_STATE_SEARCH_SECURITY_START_SEARCH -> showStartSearchLayout()
+            VIEW_STATE_SEARCH_SECURITY_CONTENT -> contentLayout.visibility = View.VISIBLE
+            VIEW_STATE_SEARCH_SECURITY_LOADING -> loadingLayout.visibility = View.VISIBLE
+            VIEW_STATE_SEARCH_SECURITY_EMPTY -> emptyLayout.visibility = View.VISIBLE
+            VIEW_STATE_SEARCH_SECURITY_NO_NETWORK -> noNetworkLayout.visibility = View.VISIBLE
+            VIEW_STATE_SEARCH_SECURITY_START_SEARCH -> startSearchLayout.visibility = View.VISIBLE
         }
-    }
-
-    private fun showContent() {
-        contentLayout.visibility = View.VISIBLE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.GONE
-        startSearchLayout.visibility = View.GONE
-    }
-
-    private fun showLoading() {
-        contentLayout.visibility = View.GONE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.VISIBLE
-        startSearchLayout.visibility = View.GONE
-    }
-
-    private fun showEmptyLayout() {
-        contentLayout.visibility = View.GONE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.VISIBLE
-        loadingLayout.visibility = View.GONE
-        startSearchLayout.visibility = View.GONE
-    }
-
-    private fun showNoNetwork() {
-        contentLayout.visibility = View.GONE
-        noNetworkLayout.visibility = View.VISIBLE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.GONE
-        startSearchLayout.visibility = View.GONE
-    }
-
-    private fun showStartSearchLayout() {
-        contentLayout.visibility = View.GONE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.GONE
-        startSearchLayout.visibility = View.VISIBLE
     }
 
     private fun dismissAddSecurityDialog() {

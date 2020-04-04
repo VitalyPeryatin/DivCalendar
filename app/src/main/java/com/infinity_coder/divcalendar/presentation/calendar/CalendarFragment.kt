@@ -65,42 +65,16 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     }
 
     private fun updateState(state: Int) {
+        calendarContent.visibility = View.GONE
+        loadingLayout.visibility = View.GONE
+        emptyLayout.visibility = View.GONE
+        noNetworkLayout.visibility = View.GONE
+
         when (state) {
-            CalendarViewModel.VIEW_STATE_CALENDAR_LOADING -> showLoading()
-
-            CalendarViewModel.VIEW_STATE_CALENDAR_CONTENT -> showContent()
-
-            CalendarViewModel.VIEW_STATE_CALENDAR_EMPTY -> showEmptyLayout()
-
-            CalendarViewModel.VIEW_STATE_CALENDAR_NO_NETWORK -> showNoNetworkLayout()
+            CalendarViewModel.VIEW_STATE_CALENDAR_CONTENT -> calendarContent.visibility = View.VISIBLE
+            CalendarViewModel.VIEW_STATE_CALENDAR_LOADING -> loadingLayout.visibility = View.VISIBLE
+            CalendarViewModel.VIEW_STATE_CALENDAR_EMPTY -> emptyLayout.visibility = View.VISIBLE
+            CalendarViewModel.VIEW_STATE_CALENDAR_NO_NETWORK -> noNetworkLayout.visibility = View.VISIBLE
         }
-    }
-
-    private fun showContent() {
-        calendarContent.visibility = View.VISIBLE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.GONE
-    }
-
-    private fun showLoading() {
-        calendarContent.visibility = View.GONE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.VISIBLE
-    }
-
-    private fun showEmptyLayout() {
-        calendarContent.visibility = View.GONE
-        noNetworkLayout.visibility = View.GONE
-        emptyLayout.visibility = View.VISIBLE
-        loadingLayout.visibility = View.GONE
-    }
-
-    private fun showNoNetworkLayout() {
-        calendarContent.visibility = View.GONE
-        noNetworkLayout.visibility = View.VISIBLE
-        emptyLayout.visibility = View.GONE
-        loadingLayout.visibility = View.GONE
     }
 }

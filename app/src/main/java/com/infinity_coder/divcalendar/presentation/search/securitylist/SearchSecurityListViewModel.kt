@@ -8,6 +8,7 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.SearchInteractor
+import com.infinity_coder.divcalendar.presentation.search.model.QueryGroup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -23,7 +24,7 @@ class SearchSecurityListViewModel : ViewModel() {
 
     lateinit var securityType: String
 
-    private val _state = MutableLiveData<Int>(VIEW_STATE_SEARCH_SECURITY_START_SEARCH)
+    private val _state = MutableLiveData(VIEW_STATE_SEARCH_SECURITY_START_SEARCH)
     val state: LiveData<Int>
         get() = _state
 
@@ -31,13 +32,15 @@ class SearchSecurityListViewModel : ViewModel() {
     val searchedSecurities: LiveData<List<SecurityNetworkModel>>
         get() = _searchedSecurities
 
+    private var oldQueryGroup: QueryGroup? = null
+
     @OptIn(ExperimentalCoroutinesApi::class)
     fun search(query: String = loadedQuery!!, market: String) = viewModelScope.launch {
-
-        if (!isNewQueryGroup(query, market)) return@launch
+        val queryGroup = QueryGroup(query, market, securityType)
+        if (oldQueryGroup == queryGroup) return@launch
 
         if (query.length >= MIN_QUERY_LENGTH) {
-            searchInteractor.search(query, securityType, market)
+            searchInteractor.search(queryGroup)
                 .flowOn(Dispatchers.IO)
                 .onStart { _state.value = VIEW_STATE_SEARCH_SECURITY_LOADING }
                 .onEach(this@SearchSecurityListViewModel::collectSearchSecurities)
@@ -52,10 +55,6 @@ class SearchSecurityListViewModel : ViewModel() {
     private fun saveQueryGroup(query: String, market: String) {
         loadedQuery = query
         loadedMarket = market
-    }
-
-    private fun isNewQueryGroup(query: String, market: String): Boolean {
-        return query != loadedQuery || market != loadedMarket
     }
 
     private suspend fun collectSearchSecurities(searchSecurities: List<SecurityNetworkModel>) {
