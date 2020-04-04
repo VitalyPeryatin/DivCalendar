@@ -1,5 +1,6 @@
 package com.infinity_coder.divcalendar.data.network
 
+import com.infinity_coder.divcalendar.data.network.model.BodyPostNetworkModel
 import com.infinity_coder.divcalendar.data.network.model.PostNetworkModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
 import retrofit2.http.Body
@@ -16,8 +17,8 @@ interface DivCalendarApi {
         @Query("limit") limit: Int? = null
     ): List<SecurityNetworkModel>
 
-    @POST("/posts/")
+    @POST("posts/")
     suspend fun fetchPosts(
-        @Body body: HashMap<String, Any>
+        @Body body: BodyPostNetworkModel
     ): List<PostNetworkModel>
 }

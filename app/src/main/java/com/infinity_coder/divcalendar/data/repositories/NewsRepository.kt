@@ -3,6 +3,7 @@ package com.infinity_coder.divcalendar.data.repositories
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.PostDbModel
 import com.infinity_coder.divcalendar.data.network.RetrofitService
+import com.infinity_coder.divcalendar.data.network.model.BodyPostNetworkModel
 import com.infinity_coder.divcalendar.data.network.model.PostNetworkModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -40,13 +41,8 @@ object NewsRepository {
     }
 
     private suspend fun getPostsFromNetwork(limit: Int, offset: Int): List<PostNetworkModel> {
-        val securities = portfolioDao.getAllSecuritiesPackage().map { it.secid }
-
-        val body = hashMapOf(
-            "securities" to securities,
-            "limit" to limit,
-            "offset" to offset
-        )
+        val securities = portfolioDao.getSecurityPackages().map { it.secid }
+        val body = BodyPostNetworkModel(securities,limit,offset)
         return divCalendarApi.fetchPosts(body)
     }
 }
