@@ -1,0 +1,35 @@
+version: 2.1
+
+orbs:
+ android: circleci/android@0.2.0
+
+jobs:
+  test:
+    docker:
+        - image: circleci/android:api-28
+    steps:
+      - checkout
+      - run:
+          name: Create DivCalendarKey.jks
+          command: echo $RELEASE_KEYSTORE_BASE64 | base64 -d > DivCalendarKey.jks
+      - run:
+          name: Create keystore.properies
+          command: printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' $releaseKeyAlias $releaseKeyPassword $releaseKeyStore $releaseStorePassword > keystore.properties
+      - run:
+          name: Run Ktlint
+          command: ./gradlew ktlintReleaseCheck
+      - run:
+          name: Run Unit Tests
+          command: ./gradlew testReleaseUnitTest
+
+workflows:
+  version: 2
+  testing:
+    jobs:
+      - test:
+          filters:
+            branches:
+              ignore:
+                - develop
+                - master
+                - release
