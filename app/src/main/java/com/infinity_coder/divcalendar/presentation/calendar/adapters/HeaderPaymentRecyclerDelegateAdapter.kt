@@ -19,5 +19,4 @@ class HeaderPaymentRecyclerDelegateAdapter : KDelegateAdapter<HeaderPaymentPrese
                 headerPaymentMonth.context.resources.getStringArray(R.array.months_nominative_case)[item.month - 1]
         }
     }
-
 }

@@ -19,5 +19,4 @@ data class FooterPaymentPresentationModel(
     override fun id() = id
 
     override fun content() = this
-
 }

@@ -15,7 +15,6 @@ import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.search.adapters.SearchSecurityPagerAdapter
 import kotlinx.android.synthetic.main.activity_search_securities.*
 
-
 class SearchSecurityActivity : AppCompatActivity() {
 
     val viewModel: SearchSecurityViewModel by lazy {

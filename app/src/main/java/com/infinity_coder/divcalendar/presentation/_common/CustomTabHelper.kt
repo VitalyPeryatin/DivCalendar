@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 
-
 object CustomTabHelper {
 
     private const val ACTION_CUSTOM_TABS_CONNECTION =
@@ -35,8 +34,8 @@ object CustomTabHelper {
             packagesSupportingCustomTabs.size == 1 -> {
                 packageNameToUse = packagesSupportingCustomTabs[0]
             }
-            defaultPackageName != null
-                    && !hasSpecializedHandlerIntents(packageManager)
+            defaultPackageName != null &&
+                    !hasSpecializedHandlerIntents(packageManager)
                     && packagesSupportingCustomTabs.contains(defaultPackageName) -> {
                 packageNameToUse = defaultPackageName
             }

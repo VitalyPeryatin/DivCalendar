@@ -28,5 +28,4 @@ data class PaymentPresentationModel(
     override fun id() = name
 
     override fun content() = this
-
 }

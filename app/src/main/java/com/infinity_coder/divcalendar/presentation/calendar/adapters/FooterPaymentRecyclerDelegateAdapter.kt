@@ -22,5 +22,4 @@ class FooterPaymentRecyclerDelegateAdapter : KDelegateAdapter<FooterPaymentPrese
                 )
         }
     }
-
 }

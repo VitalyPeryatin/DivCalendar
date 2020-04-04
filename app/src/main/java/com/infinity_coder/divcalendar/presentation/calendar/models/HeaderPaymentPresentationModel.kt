@@ -17,5 +17,4 @@ data class HeaderPaymentPresentationModel(
     override fun id() = this
 
     override fun content() = this
-
 }
