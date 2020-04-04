@@ -11,3 +11,13 @@ jobs:
       - checkout
       - run:
           command: ./gradlew build
+
+general:
+  artifacts:
+    - /Users/vitaly/AndroidStudioProjects/DivCalendar/app/build/outputs/apk/
+
+deployment:
+  beta:
+    branch: master
+    commands:
+      - cd scripts && ./build.sh
