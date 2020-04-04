@@ -4,14 +4,9 @@ orbs:
  android: circleci/android@0.2.0
 
 jobs:
-  build:
-    executor: android/android
-    working_directory: ~/DivCalendar
+  test:
     docker:
-      - image: circleci/android:api-28
-    environment:
-      GRADLE_OPTS: -Xmx4g -Dorg.gradle.daemon=false
-      JVM_OPTS: -Xmx4g
+        - image: circleci/android:api-28
     steps:
       - checkout
       - run:
@@ -20,37 +15,21 @@ jobs:
       - run:
           name: Create keystore.properies
           command: printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' $releaseKeyAlias $releaseKeyPassword $releaseKeyStore $releaseStorePassword > keystore.properties
-      - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Run Ktlint
-          command: ./gradlew ktlintCheck
-      - run:
-          name: Run Lint
-          command: ./gradlew lint
+          command: ./gradlew ktlintReleaseCheck
       - run:
           name: Run Unit Tests
           command: ./gradlew testReleaseUnitTest
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run:
-          command: ./gradlew build
 
 workflows:
   version: 2
-  build-and-deploy:
+  testing:
     jobs:
-      - build:
+      - test:
           filters:
             branches:
-              only:
-                - circleci-project-setup
+              ignore:
+                - develop
+                - master
+                - release
