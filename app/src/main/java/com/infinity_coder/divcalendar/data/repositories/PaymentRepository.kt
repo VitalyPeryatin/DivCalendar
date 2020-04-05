@@ -16,6 +16,13 @@ object PaymentRepository {
             PaymentNetworkModel(
                 "Яндекс",
                 "https://s0.rbk.ru/emitent_pics/resized/80x80_crop/images/20/74/3c2996c034c70685ec736cd563e55dd6.png",
+                30,
+                502.05,
+                "2020-03-04"
+            ),
+            PaymentNetworkModel(
+                "Яндекс",
+                "https://s0.rbk.ru/emitent_pics/resized/80x80_crop/images/20/74/3c2996c034c70685ec736cd563e55dd6.png",
                 15,
                 174.05,
                 "2020-03-04"

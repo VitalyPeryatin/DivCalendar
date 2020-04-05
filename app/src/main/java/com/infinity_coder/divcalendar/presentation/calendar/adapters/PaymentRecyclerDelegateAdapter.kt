@@ -30,6 +30,6 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
     private fun Context.getDate(date: String): String {
         val splitDate = date.split("-")
         val months = resources.getStringArray(R.array.months_genitive)
-        return "${splitDate[2].toInt()} ${months[splitDate[1].toInt()]} ${splitDate[0]}"
+        return "${splitDate[2].toInt()} ${months[splitDate[1].toInt() - 1]} ${splitDate[0]}"
     }
 }

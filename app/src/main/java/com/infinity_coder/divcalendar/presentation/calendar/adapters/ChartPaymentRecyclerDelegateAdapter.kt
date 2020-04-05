@@ -48,10 +48,11 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         if (entry == null || monthlyPayments == null) return
 
         val firstPayment = monthlyPayments
-            ?.find { it.first == entry.x.toInt() }
-            ?.first ?: return
+            ?.find { it.first == (entry.x.toInt() + 1) }
+            ?: return
 
-        onItemClickListener?.onClick(firstPayment)
+        if (firstPayment.second.isNotEmpty())
+            onItemClickListener?.onClick(firstPayment.first)
         chart?.highlightValues(null)
     }
 
@@ -67,7 +68,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         xAxis.setDrawGridLines(false)
         xAxis.valueFormatter = object : ValueFormatter() {
             override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                return months[value.toInt() - 1]
+                return months[value.toInt()]
             }
         }
 
@@ -85,8 +86,12 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
 
     private fun createBarEntries(monthlyPayments: List<Pair<Int, List<PaymentNetworkModel>>>): List<BarEntry> {
         return monthlyPayments.map {
-            val month = it.first.toFloat()
-            val dividends = it.second.map { payment -> payment.dividends.toFloat() }.toFloatArray()
+            val month = (it.first - 1).toFloat()
+            val dividends = if (it.second.isEmpty()) {
+                floatArrayOf(0f)
+            } else {
+                it.second.map { payment -> payment.dividends.toFloat() }.toFloatArray()
+            }
             return@map BarEntry(month, dividends)
         }
     }

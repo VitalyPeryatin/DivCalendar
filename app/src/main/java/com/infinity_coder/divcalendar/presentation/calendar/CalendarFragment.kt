@@ -47,8 +47,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     }
 
     private fun getChartAdapter(): ChartPaymentRecyclerDelegateAdapter {
-        val adapter =
-            ChartPaymentRecyclerDelegateAdapter()
+        val adapter = ChartPaymentRecyclerDelegateAdapter()
         adapter.onItemClickListener =
             object : ChartPaymentRecyclerDelegateAdapter.ChartItemClickListener {
                 override fun onClick(numberMonth: Int) {
@@ -71,10 +70,12 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         noNetworkLayout.visibility = View.GONE
 
         when (state) {
-            CalendarViewModel.VIEW_STATE_CALENDAR_CONTENT -> calendarContent.visibility = View.VISIBLE
+            CalendarViewModel.VIEW_STATE_CALENDAR_CONTENT -> calendarContent.visibility =
+                View.VISIBLE
             CalendarViewModel.VIEW_STATE_CALENDAR_LOADING -> loadingLayout.visibility = View.VISIBLE
             CalendarViewModel.VIEW_STATE_CALENDAR_EMPTY -> emptyLayout.visibility = View.VISIBLE
-            CalendarViewModel.VIEW_STATE_CALENDAR_NO_NETWORK -> noNetworkLayout.visibility = View.VISIBLE
+            CalendarViewModel.VIEW_STATE_CALENDAR_NO_NETWORK -> noNetworkLayout.visibility =
+                View.VISIBLE
         }
     }
 }

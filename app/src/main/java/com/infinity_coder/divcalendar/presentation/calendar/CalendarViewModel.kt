@@ -39,7 +39,6 @@ class CalendarViewModel : ViewModel() {
 
     private fun loadAllPayments() = viewModelScope.launch {
         _state.postValue(VIEW_STATE_CALENDAR_LOADING)
-        // TODO: Удалить задержку, когда будем получать реальные данные
         val payments = withContext(Dispatchers.IO) {
             mapPaymentsToPresentationModels(PaymentRepository.loadAllPayments())
         }
@@ -50,7 +49,9 @@ class CalendarViewModel : ViewModel() {
     private suspend fun mapPaymentsToPresentationModels(payments: List<PaymentNetworkModel>): List<IComparableItem> {
         val items = mutableListOf<IComparableItem>()
         items.add(mapPaymentsToChartPresentationModel(payments))
-        val groupMonth = payments.groupBy { it.date.split("-")[1] }.toList()
+        val groupMonth = payments.groupBy { it.date.split("-")[1] }
+            .toList()
+            .sortedBy { it.first }
         for (i in groupMonth.indices) {
             items.add(HeaderPaymentPresentationModel.from(groupMonth[i]))
             items.addAll(PaymentPresentationModel.from(groupMonth[i]))
@@ -64,6 +65,7 @@ class CalendarViewModel : ViewModel() {
 
     private suspend fun mapPaymentsToChartPresentationModel(payments: List<PaymentNetworkModel>): ChartPresentationModel {
         val annualIncome = payments.sumByDouble { it.dividends }
+
         val groupPayments = payments.groupBy { it.date.split("-")[1] }
             .toList()
             .sortedBy {
@@ -72,21 +74,34 @@ class CalendarViewModel : ViewModel() {
             .map {
                 Pair(it.first.toInt(), it.second)
             }
+
+        val monthlyPayments = mutableListOf<Pair<Int, List<PaymentNetworkModel>>>()
+
+        for (numberMonth in 1..12) {
+            val query = groupPayments.find { it.first == numberMonth }?.second ?: listOf()
+            monthlyPayments.add(Pair(numberMonth, query))
+        }
+
         val color = mutableListOf<Int>().apply {
-            groupPayments.forEach {
-                it.second.forEach { payment ->
-                    this.add(getColor(payment.logo))
+            monthlyPayments.forEach {
+                if (it.second.isEmpty()) {
+                    this.add(Color.WHITE)
+                } else {
+                    it.second.forEach { payment ->
+                        this.add(getColor(payment.logo))
+                    }
                 }
             }
         }
         return ChartPresentationModel(
             annualIncome.toString(),
-            groupPayments,
+            monthlyPayments,
             color
         )
     }
 
     private fun getColor(url: String): Int {
+        // TODO сделать обработку SVG
         return try {
             val inputStream: InputStream = URL(url).openStream()
             val image = BitmapFactory.decodeStream(inputStream)
