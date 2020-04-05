@@ -3,6 +3,7 @@ package com.infinity_coder.divcalendar.presentation.calendar.adapters
 import android.content.Context
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.presentation._common.DateFormatter
 import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
 import kotlinx.android.synthetic.main.item_payment_calendar.*
@@ -28,8 +29,7 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
     }
 
     private fun Context.getDate(date: String): String {
-        val splitDate = date.split("-")
         val months = resources.getStringArray(R.array.months_genitive)
-        return "${splitDate[2].toInt()} ${months[splitDate[1].toInt() - 1]} ${splitDate[0]}"
+        return DateFormatter.formatDate(date, months)
     }
 }

@@ -1,16 +1,16 @@
 package com.infinity_coder.divcalendar.presentation.calendar.models
 
 import com.example.delegateadapter.delegate.diff.IComparableItem
-import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
+import com.infinity_coder.divcalendar.domain.models.PaymentsForMonth
 
 data class HeaderPaymentPresentationModel(
     val month: Int
 ) : IComparableItem {
 
     companion object {
-        fun from(groupPayment: Pair<String, List<PaymentNetworkModel>>) =
+        fun from(monthlyPayments: PaymentsForMonth) =
             HeaderPaymentPresentationModel(
-                month = groupPayment.first.toInt()
+                month = monthlyPayments.month
             )
     }
 

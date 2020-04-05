@@ -12,7 +12,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
+import com.infinity_coder.divcalendar.domain.models.PaymentsForMonth
 import com.infinity_coder.divcalendar.presentation.calendar.models.ChartPresentationModel
 import kotlinx.android.synthetic.main.item_chart_calendar.*
 import java.util.*
@@ -22,7 +22,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
 
     var onItemClickListener: ChartItemClickListener? = null
 
-    private var monthlyPayments: List<Pair<Int, List<PaymentNetworkModel>>>? = null
+    private var monthlyPayments: List<PaymentsForMonth>? = null
     private var chart: BarChart? = null
 
     override fun getLayoutId() = R.layout.item_chart_calendar
@@ -61,12 +61,12 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
     override fun onValueSelected(entry: Entry?, highlight: Highlight?) {
         if (entry == null || monthlyPayments == null) return
 
-        val firstPayment = monthlyPayments
-            ?.find { it.first == (entry.x.toInt() + 1) }
+        val paymentsForMonth = monthlyPayments
+            ?.find { it.month == entry.x.toInt() }
             ?: return
 
-        if (firstPayment.second.isNotEmpty())
-            onItemClickListener?.onClick(firstPayment.first)
+        if (paymentsForMonth.payments.isNotEmpty())
+            onItemClickListener?.onClick(paymentsForMonth.month)
         chart?.highlightValues(null)
     }
 
@@ -98,15 +98,14 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         invalidate()
     }
 
-    private fun createBarEntries(monthlyPayments: List<Pair<Int, List<PaymentNetworkModel>>>): List<BarEntry> {
+    private fun createBarEntries(monthlyPayments: List<PaymentsForMonth>): List<BarEntry> {
         return monthlyPayments.map {
-            val month = (it.first - 1).toFloat()
-            val dividends = if (it.second.isEmpty()) {
+            val month = it.month.toFloat()
+            val payments = if (it.payments.isEmpty())
                 floatArrayOf(0f)
-            } else {
-                it.second.map { payment -> payment.dividends.toFloat() }.toFloatArray()
-            }
-            return@map BarEntry(month, dividends)
+            else
+                it.payments.map { payment -> payment.dividends.toFloat() }.toFloatArray()
+            return@map BarEntry(month, payments)
         }
     }
 
