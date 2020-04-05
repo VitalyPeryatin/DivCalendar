@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/dropdownTextView"
+    android:background="@color/background"
     android:maxLines="1"
     android:gravity="center"
     android:fontFamily="@font/roboto"

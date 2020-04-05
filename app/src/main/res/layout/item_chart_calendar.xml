@@ -13,15 +13,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Spinner
-            android:id="@+id/yearSpinner"
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/yearSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="18dp"
             android:dropDownWidth="wrap_content"
-            android:gravity="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:gravity="center" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/chartTitle"

@@ -1,6 +1,5 @@
 package com.infinity_coder.divcalendar.presentation.calendar.adapters
 
-import android.widget.ArrayAdapter
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
@@ -39,7 +38,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         val currentYear = getCurrentYear()
 
         val items = Array(MAX_YEARS_CHOICE) { index -> (currentYear + index).toString() }
-        val spinnerAdapter = ArrayAdapter<Any?>(chart!!.context, R.layout.simple_spinner_item, items)
+        val spinnerAdapter = SpinnerAdapter(chart!!.context, items)
         spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
 
         viewHolder.run {
