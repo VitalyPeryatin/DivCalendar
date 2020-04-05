@@ -65,7 +65,6 @@ class CalendarViewModel : ViewModel() {
 
     private suspend fun mapPaymentsToChartPresentationModel(payments: List<PaymentNetworkModel>): ChartPresentationModel {
         val annualIncome = payments.sumByDouble { it.dividends }
-
         val groupPayments = payments.groupBy { it.date.split("-")[1] }
             .toList()
             .sortedBy {

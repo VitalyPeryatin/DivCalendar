@@ -12,8 +12,9 @@
     <color name="black">#202020</color>
     <color name="grey">#6f6f6f</color>
     <color name="red">#CB2431</color>
+    <color name="green">#00B07D</color>
     <color name="redRipple">#44CB2431</color>
-    <color name="separator">#bfbfbf</color>
+    <color name="separator">#99bfbfbf</color>
     <color name="placeholder">#D3FFFF</color>
 
     <color name="typeRusStockColor">#1EC8DF</color>
