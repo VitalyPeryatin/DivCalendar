@@ -18,7 +18,6 @@ import com.infinity_coder.divcalendar.presentation.calendar.models.ChartPresenta
 import kotlinx.android.synthetic.main.item_chart_calendar.*
 import java.util.*
 
-
 class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationModel>(),
     OnChartValueSelectedListener {
 
