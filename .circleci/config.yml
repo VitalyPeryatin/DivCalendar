@@ -10,6 +10,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name:
+          command: echo $googleServicesJson | base64 --decode > "app/google-services.json"
+      - run:
           name: Create DivCalendarKey.jks
           command: echo $RELEASE_KEYSTORE_BASE64 | base64 -d > DivCalendarKey.jks
       - run:

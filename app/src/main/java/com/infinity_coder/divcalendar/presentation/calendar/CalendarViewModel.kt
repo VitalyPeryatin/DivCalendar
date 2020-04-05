@@ -39,7 +39,7 @@ class CalendarViewModel : ViewModel() {
 
     private fun loadAllPayments() = viewModelScope.launch {
         _state.postValue(VIEW_STATE_CALENDAR_LOADING)
-        // TODO: Удалить задержку, когда будем получать реальные данные
+
         val payments = withContext(Dispatchers.IO) {
             mapPaymentsToPresentationModels(PaymentRepository.loadAllPayments())
         }

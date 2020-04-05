@@ -15,6 +15,7 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
 import com.infinity_coder.divcalendar.presentation.calendar.models.ChartPresentationModel
 import kotlinx.android.synthetic.main.item_chart_calendar.*
+import java.util.*
 
 class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationModel>(),
     OnChartValueSelectedListener {
@@ -34,11 +35,21 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         monthlyPayments = item.monthlyPayments
         chart = viewHolder.chart
 
+        val currentYear = getCurrentYear()
+
+        val items = Array(MAX_YEARS_CHOICE) { index -> (currentYear + index).toString() }
+        val spinnerAdapter = SpinnerAdapter(chart!!.context, items)
+        spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+
         viewHolder.run {
             chart.onBindChart(item)
-            annualIncome.text =
-                annualIncome.context.getString(R.string.annual_income, item.annualIncome.toFloat())
+            annualIncome.text = annualIncome.context.getString(R.string.value_currency_rub, item.annualIncome.toFloat())
+            yearSpinner.adapter = spinnerAdapter
         }
+    }
+
+    private fun getCurrentYear(): Int {
+        return Calendar.getInstance().get(Calendar.YEAR)
     }
 
     override fun onNothingSelected() {
@@ -93,5 +104,9 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
 
     interface ChartItemClickListener {
         fun onClick(numberMonth: Int)
+    }
+
+    companion object {
+        private const val MAX_YEARS_CHOICE = 2
     }
 }

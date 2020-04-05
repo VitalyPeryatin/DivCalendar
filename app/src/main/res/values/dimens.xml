@@ -5,4 +5,6 @@
     <dimen name="font_normal">16sp</dimen>
     <dimen name="font_few_big">18sp</dimen>
     <dimen name="font_big">22sp</dimen>
+
+    <dimen name="spinner_padding">12dp</dimen>
 </resources>
