@@ -11,8 +11,8 @@
     <string name="empty_list">Empty list</string>
     <string name="empty_securities">You don\'t have securities.\nAdd security to your portfolio!</string>
 
-    <string name="currency_rub" translatable="false">₽</string>
-    <string name="currency_usd" translatable="false">$</string>
+    <string name="currency_rub_name" translatable="false">₽</string>
+    <string name="currency_usd_name" translatable="false">$</string>
     <string name="currency_eur" translatable="false">€</string>
 
     <string name="value_currency_rub" translatable="false">%1$.2f₽</string>
@@ -43,4 +43,7 @@
     <string name="change">Change package</string>
     <string name="delete_entire_package">Delete entire package</string>
     <string name="cost">Cost</string>
+
+    <string name="currency_name_rub" translatable="false">RUB</string>
+    <string name="currency_name_usd" translatable="false">USD</string>
 </resources>
