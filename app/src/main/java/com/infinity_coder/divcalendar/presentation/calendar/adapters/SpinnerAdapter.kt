@@ -8,7 +8,8 @@ import android.widget.ArrayAdapter
 import com.infinity_coder.divcalendar.R
 import kotlinx.android.synthetic.main.simple_spinner_item.view.*
 
-class SpinnerAdapter(context: Context, objects: Array<String>) : ArrayAdapter<String>(context, R.layout.simple_spinner_item, objects) {
+class SpinnerAdapter(context: Context, objects: Array<String>) :
+    ArrayAdapter<String>(context, R.layout.simple_spinner_item, objects) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = super.getView(position, convertView, parent)

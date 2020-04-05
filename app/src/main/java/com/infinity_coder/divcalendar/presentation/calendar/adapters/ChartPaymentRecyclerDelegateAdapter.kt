@@ -43,7 +43,10 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
 
         viewHolder.run {
             chart.onBindChart(item)
-            annualIncome.text = annualIncome.context.getString(R.string.value_currency_rub, item.annualIncome.toFloat())
+            annualIncome.text = annualIncome.context.getString(
+                R.string.value_currency_rub,
+                item.annualIncome.toFloat()
+            )
             yearSpinner.adapter = spinnerAdapter
         }
     }
