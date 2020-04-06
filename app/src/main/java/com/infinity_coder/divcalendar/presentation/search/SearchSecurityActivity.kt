@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import com.infinity_coder.divcalendar.R
@@ -28,6 +30,8 @@ class SearchSecurityActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search_securities)
 
         initUI()
+
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
     }
 
     private fun initUI() {
@@ -54,6 +58,12 @@ class SearchSecurityActivity : AppCompatActivity() {
             queryEditText.text.clear()
         }
         queryEditText.addTextChangedListener(getQueryTextWatcher())
+        queryEditText.setOnEditorActionListener { v, actionId, event ->
+            queryEditText.clearFocus()
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(queryEditText.windowToken, 0)
+            return@setOnEditorActionListener true
+        }
     }
 
     private fun getQueryTextWatcher() = object : TextWatcher {

@@ -7,13 +7,12 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/emptySecuritiesTextView"
+        android:id="@+id/emptyTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center_horizontal"
         android:fontFamily="@font/roboto_medium"
-        android:text="@string/empty_securities"
+        android:text="@string/empty_list"
         android:textColor="?android:textColorSecondary"
-        android:textSize="@dimen/font_normal" />
+        android:textSize="@dimen/font_few_big" />
 </LinearLayout>

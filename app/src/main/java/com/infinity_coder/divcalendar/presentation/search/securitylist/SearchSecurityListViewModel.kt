@@ -24,7 +24,7 @@ class SearchSecurityListViewModel : ViewModel() {
 
     lateinit var securityType: String
 
-    private val _state = MutableLiveData(VIEW_STATE_SEARCH_SECURITY_START_SEARCH)
+    private val _state = MutableLiveData(VIEW_STATE_SEARCH_SECURITY_CONTENT)
     val state: LiveData<Int>
         get() = _state
 
@@ -39,32 +39,20 @@ class SearchSecurityListViewModel : ViewModel() {
         val queryGroup = QueryGroup(query, market, securityType)
         if (oldQueryGroup == queryGroup) return@launch
 
-        if (query.length >= MIN_QUERY_LENGTH) {
-            searchInteractor.search(queryGroup)
-                .flowOn(Dispatchers.IO)
-                .onStart { _state.value = VIEW_STATE_SEARCH_SECURITY_LOADING }
-                .onEach(this@SearchSecurityListViewModel::collectSearchSecurities)
-                .catch { _state.value = VIEW_STATE_SEARCH_SECURITY_NO_NETWORK }
-                .launchIn(viewModelScope)
-        } else {
-            _state.value = VIEW_STATE_SEARCH_SECURITY_START_SEARCH
-        }
+        searchInteractor.search(queryGroup)
+            .flowOn(Dispatchers.IO)
+            .onStart { _state.value = VIEW_STATE_SEARCH_SECURITY_LOADING }
+            .onEach { _searchedSecurities.value = it }
+            .catch { _state.value = VIEW_STATE_SEARCH_SECURITY_NO_NETWORK }
+            .onCompletion { _state.value = VIEW_STATE_SEARCH_SECURITY_CONTENT }
+            .launchIn(viewModelScope)
+
         saveQueryGroup(query, market)
     }
 
     private fun saveQueryGroup(query: String, market: String) {
         loadedQuery = query
         loadedMarket = market
-    }
-
-    private suspend fun collectSearchSecurities(searchSecurities: List<SecurityNetworkModel>) {
-        this._searchedSecurities.value = searchSecurities
-
-        if (searchSecurities.isEmpty()) {
-            _state.value = VIEW_STATE_SEARCH_SECURITY_EMPTY
-        } else {
-            _state.value = VIEW_STATE_SEARCH_SECURITY_CONTENT
-        }
     }
 
     fun appendSecurityPackage(securityPackage: SecurityPackageDbModel) = viewModelScope.launch {
@@ -74,10 +62,6 @@ class SearchSecurityListViewModel : ViewModel() {
     companion object {
         const val VIEW_STATE_SEARCH_SECURITY_LOADING = 1
         const val VIEW_STATE_SEARCH_SECURITY_CONTENT = 2
-        const val VIEW_STATE_SEARCH_SECURITY_EMPTY = 3
-        const val VIEW_STATE_SEARCH_SECURITY_NO_NETWORK = 4
-        const val VIEW_STATE_SEARCH_SECURITY_START_SEARCH = 5
-
-        private const val MIN_QUERY_LENGTH = 3
+        const val VIEW_STATE_SEARCH_SECURITY_NO_NETWORK = 3
     }
 }

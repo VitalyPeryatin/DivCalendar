@@ -12,5 +12,5 @@
         android:fontFamily="@font/roboto_medium"
         android:text="@string/no_connection"
         android:textColor="?android:textColorSecondary"
-        android:textSize="@dimen/font_normal" />
+        android:textSize="@dimen/font_few_big" />
 </LinearLayout>

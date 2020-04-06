@@ -9,7 +9,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface DivCalendarApi {
-    @GET("search/")
+    @GET("search")
     suspend fun searchSecurities(
         @Query("q") query: String,
         @Query("type") type: String,
@@ -17,7 +17,7 @@ interface DivCalendarApi {
         @Query("limit") limit: Int? = null
     ): List<SecurityNetworkModel>
 
-    @POST("posts/")
+    @POST("posts")
     suspend fun fetchPosts(
         @Body body: BodyPostNetworkModel
     ): List<PostNetworkModel>
