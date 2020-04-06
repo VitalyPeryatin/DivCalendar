@@ -7,8 +7,10 @@ data class PaymentPresentationModel(
     val name: String,
     val logo: String,
     val count: Int,
-    val dividends: Double,
-    val date: String
+    var dividends: Double,
+    val date: String,
+    val originalCurrency: String,
+    var currentCurrency: String
 ) : IComparableItem {
 
     companion object {
@@ -21,7 +23,9 @@ data class PaymentPresentationModel(
                 logo = payment.logo,
                 count = payment.count,
                 dividends = payment.dividends,
-                date = payment.date
+                date = payment.date,
+                originalCurrency = payment.currency,
+                currentCurrency = ""
             )
     }
 

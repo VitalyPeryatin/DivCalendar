@@ -11,7 +11,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp">
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -19,13 +20,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/yearSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="18dp"
-            android:dropDownWidth="wrap_content"
-            android:gravity="center" />
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/yearSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="18dp"
+                android:dropDownWidth="wrap_content"
+                android:gravity="center" />
 
         </FrameLayout>
 
@@ -117,7 +118,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/separator"
-            app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/annualIncome"
             app:layout_constraintTop_toBottomOf="@+id/include2" />
 
@@ -136,40 +137,6 @@
             app:layout_constraintEnd_toStartOf="@+id/include3"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="8dp"
-            android:gravity="clip_vertical|end"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/annualIncome">
-
-            <RadioButton
-                android:id="@+id/radioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:button="@drawable/radiobutton_selector_currency_rub"
-                android:background="@android:color/transparent"
-                android:layout_marginEnd="16dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="0dp"
-                android:text="@string/currency_name_rub" />
-
-            <RadioButton
-                android:id="@+id/radioButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:button="@drawable/radiobutton_selector_currency_usd"
-                android:background="@android:color/transparent"
-                android:layout_marginEnd="16dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="0dp"
-                android:text="@string/currency_name_usd" />
-        </RadioGroup>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

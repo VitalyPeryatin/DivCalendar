@@ -10,6 +10,8 @@ import androidx.palette.graphics.Palette
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
 import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
+import com.infinity_coder.divcalendar.data.repositories.RateRepository
+import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.presentation.calendar.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,6 +28,8 @@ class CalendarViewModel : ViewModel() {
     private val _payments = MutableLiveData<List<IComparableItem>>()
     val payments: LiveData<List<IComparableItem>>
         get() = _payments
+
+    private val rateInteractor = RateInteractor()
 
     init {
         loadAllPayments()
@@ -51,10 +55,26 @@ class CalendarViewModel : ViewModel() {
         val items = mutableListOf<IComparableItem>()
         items.add(mapPaymentsToChartPresentationModel(payments))
         val groupMonth = payments.groupBy { it.date.split("-")[1] }.toList()
+        val currentCurrency = getDisplayCurrency()
         for (i in groupMonth.indices) {
             items.add(HeaderPaymentPresentationModel.from(groupMonth[i]))
-            items.addAll(PaymentPresentationModel.from(groupMonth[i]))
-            items.add(FooterPaymentPresentationModel.from(groupMonth[i]))
+            val paymentList = PaymentPresentationModel.from(groupMonth[i])
+            paymentList.map {
+                it.currentCurrency = currentCurrency
+                when {
+                    it.originalCurrency == RateRepository.USD_RATE && currentCurrency == RateRepository.RUB_RATE -> {
+                        it.dividends = rateInteractor.getUsdToRubRate() * it.dividends
+                    }
+                    it.originalCurrency == RateRepository.RUB_RATE && currentCurrency == RateRepository.USD_RATE -> {
+                        it.dividends = rateInteractor.getRubToUsdRate() * it.dividends
+                    }
+                }
+            }
+            items.addAll(paymentList)
+
+            val totalPayments = FooterPaymentPresentationModel.from(groupMonth[i])
+            totalPayments.currentCurrency = currentCurrency
+            items.add(totalPayments)
             if (i != groupMonth.size - 1) {
                 items.add(DividerPresentationModel)
             }
@@ -62,7 +82,7 @@ class CalendarViewModel : ViewModel() {
         return items
     }
 
-    private suspend fun mapPaymentsToChartPresentationModel(payments: List<PaymentNetworkModel>): ChartPresentationModel {
+    private fun mapPaymentsToChartPresentationModel(payments: List<PaymentNetworkModel>): ChartPresentationModel {
         val annualIncome = payments.sumByDouble { it.dividends }
         val groupPayments = payments.groupBy { it.date.split("-")[1] }
             .toList()
@@ -94,6 +114,15 @@ class CalendarViewModel : ViewModel() {
         } catch (e: Exception) {
             Color.BLACK
         }
+    }
+
+    fun setDisplayCurrency(currency: String) {
+        rateInteractor.saveDisplayCurrency(currency)
+        loadAllPayments()
+    }
+
+    fun getDisplayCurrency(): String {
+        return rateInteractor.getDisplayCurrency()
     }
 
     companion object {
