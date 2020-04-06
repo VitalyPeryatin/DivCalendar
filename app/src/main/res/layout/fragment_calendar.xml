@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,23 +7,60 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/calendarToolbar"
+        style="?attr/toolbarStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="?attr/toolbarStyle"/>
+        android:layout_height="wrap_content" />
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/calendarContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="clip_vertical|end"
+            android:orientation="horizontal"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
+
+            <RadioButton
+                android:id="@+id/rubRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                android:button="@drawable/radiobutton_selector_currency_rub"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="0dp"
+                android:paddingBottom="8dp"
+                android:text="@string/currency_name_rub" />
+
+            <RadioButton
+                android:id="@+id/usdRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                android:button="@drawable/radiobutton_selector_currency_usd"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="0dp"
+                android:paddingBottom="8dp"
+                android:text="@string/currency_name_usd" />
+        </RadioGroup>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/calendarPaymentsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            tools:listitem="@layout/item_payment_calendar"/>
+            tools:listitem="@layout/item_payment_calendar" />
 
-    </FrameLayout>
+    </LinearLayout>
 
     <include
         android:id="@+id/loadingLayout"

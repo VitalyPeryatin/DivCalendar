@@ -16,5 +16,8 @@ data class PaymentNetworkModel(
     val dividends: Double,
 
     @SerializedName("date")
-    val date: String
+    val date: String,
+
+    @SerializedName("currency")
+    val currency: String
 )

@@ -110,7 +110,7 @@ class AddSecurityBottomDialog : BottomDialog() {
     private fun setTotalPrice(price: Float?) {
         if (price == null) return
         totalPriceTextView.text =
-            resources.getString(R.string.total_price, price) + getString(R.string.currency_rub)
+            resources.getString(R.string.total_price, price) + getString(R.string.currency_rub_name)
     }
 
     private fun addSecPackage(secPackage: SecurityPackageDbModel) {

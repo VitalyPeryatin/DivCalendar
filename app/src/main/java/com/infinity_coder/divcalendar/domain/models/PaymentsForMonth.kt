@@ -7,10 +7,10 @@ data class PaymentsForMonth(
     val payments: List<PaymentNetworkModel>
 ) {
     companion object {
-        fun from(paymentsForSpecificMonth: Pair<Int, List<PaymentNetworkModel>>) =
+        fun from(paymentNetworkModel: Pair<Int, List<PaymentNetworkModel>>) =
             PaymentsForMonth(
-                month = paymentsForSpecificMonth.first,
-                payments = paymentsForSpecificMonth.second
+                month = paymentNetworkModel.first,
+                payments = paymentNetworkModel.second
             )
     }
 }

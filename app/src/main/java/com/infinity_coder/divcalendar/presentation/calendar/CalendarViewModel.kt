@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
 import com.example.delegateadapter.delegate.diff.IComparableItem
+import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.domain.CalendarInteractor
+import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain.models.PaymentsForMonth
 import com.infinity_coder.divcalendar.presentation.calendar.models.*
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +29,10 @@ class CalendarViewModel : ViewModel() {
     val payments: LiveData<List<IComparableItem>>
         get() = _payments
 
+    private var cachedPayments: List<PaymentsForMonth> = emptyList()
+
     private val calendarInteractor = CalendarInteractor()
+    private val rateInteractor = RateInteractor()
 
     init {
         loadAllPayments()
@@ -41,32 +46,58 @@ class CalendarViewModel : ViewModel() {
 
     private fun loadAllPayments() = viewModelScope.launch {
         _state.postValue(VIEW_STATE_CALENDAR_LOADING)
-        val payments = withContext(Dispatchers.IO) {
-            mapPaymentsToPresentationModels(calendarInteractor.getPayments())
+
+        var payments: List<IComparableItem> = listOf()
+
+        withContext(Dispatchers.IO) {
+            cachedPayments = calendarInteractor.getPayments()
+            payments = mapPaymentsToPresentationModels(cachedPayments)
         }
-        _payments.postValue(payments)
-        _state.postValue(VIEW_STATE_CALENDAR_CONTENT)
+        _payments.value = payments
+        _state.value = VIEW_STATE_CALENDAR_CONTENT
     }
 
     private suspend fun mapPaymentsToPresentationModels(monthlyPayments: List<PaymentsForMonth>): List<IComparableItem> {
-        calendarInteractor.getPayments()
         val items = mutableListOf<IComparableItem>()
-        items.add(mapPaymentsToChartPresentationModel(monthlyPayments))
+        val currentCurrency = getDisplayCurrency()
         for (i in monthlyPayments.indices) {
             items.add(HeaderPaymentPresentationModel.from(monthlyPayments[i]))
-            items.addAll(PaymentPresentationModel.from(monthlyPayments[i]))
-            items.add(FooterPaymentPresentationModel.from(monthlyPayments[i]))
+            val paymentsForMonth = PaymentPresentationModel.from(monthlyPayments[i])
+            paymentsForMonth.map {
+                it.currentCurrency = currentCurrency
+                it.dividends = convertCurrencies(it.dividends.toFloat(), it.originalCurrency, currentCurrency).toDouble()
+            }
+            items.addAll(paymentsForMonth)
+
+            val totalPayments = FooterPaymentPresentationModel.from(monthlyPayments[i])
+            totalPayments.currentCurrency = currentCurrency
+            items.add(totalPayments)
             if (i != monthlyPayments.size - 1) {
                 items.add(DividerPresentationModel)
             }
         }
+        items.add(0, mapPaymentsToChartPresentationModel(monthlyPayments))
         return items
     }
 
-    private suspend fun mapPaymentsToChartPresentationModel(monthlyPayments: List<PaymentsForMonth>): ChartPresentationModel {
+    private suspend fun convertCurrencies(value: Float, from: String, to: String): Float {
+        return when {
+            from == RateRepository.USD_RATE && to == RateRepository.RUB_RATE -> {
+                value / rateInteractor.getUsdToRubRate()
+            }
+            from == RateRepository.RUB_RATE && to == RateRepository.USD_RATE -> {
+                value / rateInteractor.getRubToUsdRate()
+            }
+            else -> value
+        }
+    }
+
+    private fun mapPaymentsToChartPresentationModel(monthlyPayments: List<PaymentsForMonth>): ChartPresentationModel {
         val annualIncome = monthlyPayments.sumByDouble { paymentsForMonth ->
             paymentsForMonth.payments.sumByDouble { it.dividends }
-        }
+        }.toFloat()
+
+        val annualYield = 0f
 
         val allMonthlyPayments = (0..11).map { numberMonth ->
             val payments = monthlyPayments.find { it.month == numberMonth }?.payments ?: listOf()
@@ -75,15 +106,14 @@ class CalendarViewModel : ViewModel() {
 
         val colors = allMonthlyPayments.map {
             return@map if (it.payments.isEmpty())
-                listOf(Color.WHITE)
+                listOf(Color.TRANSPARENT)
             else
                 it.payments.map { payment -> getColor(payment.logo) }
         }.flatten()
 
         return ChartPresentationModel(
-            annualIncome.toString(),
-            allMonthlyPayments,
-            colors
+            annualIncome, annualYield, getDisplayCurrency(),
+            allMonthlyPayments, colors
         )
     }
 
@@ -96,6 +126,16 @@ class CalendarViewModel : ViewModel() {
         } catch (e: Exception) {
             Color.BLACK
         }
+    }
+
+    fun setDisplayCurrency(currency: String) = viewModelScope.launch {
+        rateInteractor.saveDisplayCurrency(currency)
+        val payments = mapPaymentsToPresentationModels(cachedPayments)
+        _payments.postValue(payments)
+    }
+
+    fun getDisplayCurrency(): String {
+        return rateInteractor.getDisplayCurrency()
     }
 
     companion object {
