@@ -13,6 +13,7 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
+import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.presentation.calendar.models.ChartPresentationModel
 import kotlinx.android.synthetic.main.item_chart_calendar.*
 import java.util.*
@@ -34,6 +35,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
     override fun onBind(item: ChartPresentationModel, viewHolder: KViewHolder) {
         monthlyPayments = item.monthlyPayments
         chart = viewHolder.chart
+        val context = viewHolder.containerView.context
 
         val currentYear = getCurrentYear()
 
@@ -41,9 +43,16 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         val spinnerAdapter = SpinnerAdapter(chart!!.context, items)
         spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
 
+        val currencyStringId = when (item.currentCurrency) {
+            RateRepository.RUB_RATE -> R.string.value_currency_rub
+            RateRepository.USD_RATE -> R.string.value_currency_usd
+            else -> R.string.value_currency_undefined
+        }
+
         viewHolder.run {
             chart.onBindChart(item)
-            annualIncome.text = annualIncome.context.getString(R.string.value_currency_rub, item.annualIncome.toFloat())
+            annualIncomeTextView.text = context.getString(currencyStringId, item.annualIncome)
+            annualYieldTextView.text = context.getString(R.string.value_percent, item.annualYield)
             yearSpinner.adapter = spinnerAdapter
         }
     }

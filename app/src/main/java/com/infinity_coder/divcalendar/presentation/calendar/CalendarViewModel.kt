@@ -29,6 +29,8 @@ class CalendarViewModel : ViewModel() {
     val payments: LiveData<List<IComparableItem>>
         get() = _payments
 
+    private var cachedPayments: List<PaymentNetworkModel> = emptyList()
+
     private val rateInteractor = RateInteractor()
 
     init {
@@ -42,18 +44,20 @@ class CalendarViewModel : ViewModel() {
     }
 
     private fun loadAllPayments() = viewModelScope.launch {
-        _state.postValue(VIEW_STATE_CALENDAR_LOADING)
+        _state.value = VIEW_STATE_CALENDAR_LOADING
 
-        val payments = withContext(Dispatchers.IO) {
-            mapPaymentsToPresentationModels(PaymentRepository.loadAllPayments())
+        var payments: List<IComparableItem> = listOf()
+
+        withContext(Dispatchers.IO) {
+            cachedPayments = PaymentRepository.loadAllPayments()
+            payments = mapPaymentsToPresentationModels(cachedPayments)
         }
-        _payments.postValue(payments)
-        _state.postValue(VIEW_STATE_CALENDAR_CONTENT)
+        _payments.value = payments
+        _state.value = VIEW_STATE_CALENDAR_CONTENT
     }
 
     private suspend fun mapPaymentsToPresentationModels(payments: List<PaymentNetworkModel>): List<IComparableItem> {
         val items = mutableListOf<IComparableItem>()
-        items.add(mapPaymentsToChartPresentationModel(payments))
         val groupMonth = payments.groupBy { it.date.split("-")[1] }.toList()
         val currentCurrency = getDisplayCurrency()
         for (i in groupMonth.indices) {
@@ -61,14 +65,7 @@ class CalendarViewModel : ViewModel() {
             val paymentList = PaymentPresentationModel.from(groupMonth[i])
             paymentList.map {
                 it.currentCurrency = currentCurrency
-                when {
-                    it.originalCurrency == RateRepository.USD_RATE && currentCurrency == RateRepository.RUB_RATE -> {
-                        it.dividends = rateInteractor.getUsdToRubRate() * it.dividends
-                    }
-                    it.originalCurrency == RateRepository.RUB_RATE && currentCurrency == RateRepository.USD_RATE -> {
-                        it.dividends = rateInteractor.getRubToUsdRate() * it.dividends
-                    }
-                }
+                it.dividends = convertCurrencies(it.dividends.toFloat(), it.originalCurrency, currentCurrency).toDouble()
             }
             items.addAll(paymentList)
 
@@ -79,17 +76,30 @@ class CalendarViewModel : ViewModel() {
                 items.add(DividerPresentationModel)
             }
         }
+        items.add(0, mapPaymentsToChartPresentationModel(payments))
         return items
     }
 
+    private suspend fun convertCurrencies(value: Float, from: String, to: String): Float {
+        return when {
+            from == RateRepository.USD_RATE && to == RateRepository.RUB_RATE -> {
+                value / rateInteractor.getUsdToRubRate()
+            }
+            from == RateRepository.RUB_RATE && to == RateRepository.USD_RATE -> {
+                value / rateInteractor.getRubToUsdRate()
+            }
+            else -> value
+        }
+    }
+
     private fun mapPaymentsToChartPresentationModel(payments: List<PaymentNetworkModel>): ChartPresentationModel {
-        val annualIncome = payments.sumByDouble { it.dividends }
+        val annualIncome = payments.sumByDouble { it.dividends }.toFloat()
+        val annualYield = 0f
         val groupPayments = payments.groupBy { it.date.split("-")[1] }
             .toList()
             .sortedBy {
                 it.first
-            }
-            .map {
+            }.map {
                 Pair(it.first.toInt(), it.second)
             }
         val color = mutableListOf<Int>().apply {
@@ -100,9 +110,8 @@ class CalendarViewModel : ViewModel() {
             }
         }
         return ChartPresentationModel(
-            annualIncome.toString(),
-            groupPayments,
-            color
+            annualIncome, annualYield, getDisplayCurrency(),
+            groupPayments, color
         )
     }
 
@@ -116,9 +125,10 @@ class CalendarViewModel : ViewModel() {
         }
     }
 
-    fun setDisplayCurrency(currency: String) {
+    fun setDisplayCurrency(currency: String) = viewModelScope.launch {
         rateInteractor.saveDisplayCurrency(currency)
-        loadAllPayments()
+        val payments = mapPaymentsToPresentationModels(cachedPayments)
+        _payments.postValue(payments)
     }
 
     fun getDisplayCurrency(): String {
