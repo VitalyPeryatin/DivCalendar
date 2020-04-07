@@ -18,7 +18,7 @@ class NewsViewModel : ViewModel() {
     val newsPost: LiveData<List<PostDbModel>>
         get() = _newsPosts
 
-    private val _state = MutableLiveData<Int>(VIEW_STATE_NEWS_CONTENT)
+    private val _state = MutableLiveData(VIEW_STATE_NEWS_CONTENT)
     val state: LiveData<Int>
         get() = _state
 
