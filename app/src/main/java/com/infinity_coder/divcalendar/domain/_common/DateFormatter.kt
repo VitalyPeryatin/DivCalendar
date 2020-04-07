@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation._common
+package com.infinity_coder.divcalendar.domain._common
 
 import java.text.SimpleDateFormat
 import java.util.*
