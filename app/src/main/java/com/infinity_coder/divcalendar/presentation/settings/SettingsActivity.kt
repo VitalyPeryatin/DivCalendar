@@ -2,12 +2,12 @@ package com.infinity_coder.divcalendar.presentation.settings
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.infinity_coder.divcalendar.BuildConfig
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
@@ -48,13 +48,8 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun tryShowCurrentVersion() {
-        try {
-            versionTextView.visibility = View.VISIBLE
-            val version = packageManager.getPackageInfo(packageName, 0).versionName
-            versionTextView.text = resources.getString(R.string.version_name, version)
-        } catch (e: PackageManager.NameNotFoundException) {
-            versionTextView.visibility = View.GONE
-        }
+        versionTextView.visibility = View.VISIBLE
+        versionTextView.text = resources.getString(R.string.version_name, BuildConfig.VERSION_NAME)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
