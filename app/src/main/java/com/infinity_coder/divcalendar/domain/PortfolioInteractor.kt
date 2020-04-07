@@ -1,13 +1,13 @@
 package com.infinity_coder.divcalendar.domain
 
-import androidx.lifecycle.LiveData
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
+import kotlinx.coroutines.flow.Flow
 
 class PortfolioInteractor {
 
-    fun loadAllSecurityPackages(): LiveData<List<SecurityPackageDbModel>> {
-        return PortfolioRepository.loadAllSecurityPackages()
+    fun loadAllSecurityPackages(): Flow<List<SecurityPackageDbModel>> {
+        return PortfolioRepository.getAllSecurityPackages()
     }
 
     suspend fun changeSecurityPackage(securityPackage: SecurityPackageDbModel) {

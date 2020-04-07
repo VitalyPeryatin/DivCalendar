@@ -37,7 +37,7 @@
 
     <include
         android:id="@+id/loadingLayout"
-        layout="@layout/layout_loading"
+        layout="@layout/layout_stub_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
@@ -45,7 +45,7 @@
 
     <include
         android:id="@+id/emptyLayout"
-        layout="@layout/layout_empty"
+        layout="@layout/layout_stub_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
@@ -53,7 +53,7 @@
 
     <include
         android:id="@+id/noNetworkLayout"
-        layout="@layout/layout_no_network"
+        layout="@layout/layout_stub_no_network"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
@@ -61,7 +61,7 @@
 
     <include
         android:id="@+id/emptySecuritiesLayout"
-        layout="@layout/layout_empty_securities"
+        layout="@layout/layout_stub_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"

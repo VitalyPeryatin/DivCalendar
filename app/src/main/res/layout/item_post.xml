@@ -63,7 +63,7 @@
         android:ellipsize="end"
         android:fontFamily="@font/roboto"
         android:maxLines="3"
-        android:textColor="?android:textColorPrimary"
+        android:textColor="?attr/textColorPrimary"
         android:textSize="@dimen/font_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
