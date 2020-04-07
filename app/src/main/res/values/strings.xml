@@ -19,6 +19,8 @@
     <string name="value_currency_usd" translatable="false">%1$.2f$</string>
     <string name="value_currency_eur" translatable="false">%1$.2f€</string>
 
+    <string name="version_name" translatable="false">DivCalendar %s</string>
+
     <!--calendar screen-->
     <string name="payout_chart">Payout chart</string>
     <string name="annual_income">Income</string>
@@ -44,4 +46,11 @@
     <string name="delete_entire_package">Delete entire package</string>
     <string name="cost">Cost</string>
     <string name="collect_portfolio">Collect portfolio</string>
+
+    <!-- settings -->
+    <string name="settings">Settings</string>
+    <string name="account_for_taxes">Account for taxes</string>
+    <string name="feedback">Feedback</string>
+    <string name="email_developers">Email developers</string>
+    <string name="telegram_chat">Telegram chat</string>
 </resources>
