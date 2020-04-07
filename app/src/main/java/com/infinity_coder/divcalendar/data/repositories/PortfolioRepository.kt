@@ -1,15 +1,16 @@
 package com.infinity_coder.divcalendar.data.repositories
 
-import androidx.lifecycle.LiveData
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 object PortfolioRepository {
 
     private val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
 
-    fun loadAllSecurityPackages(): LiveData<List<SecurityPackageDbModel>> {
-        return portfolioDao.getAllSecuritiesPackageLiveData()
+    fun getAllSecurityPackages(): Flow<List<SecurityPackageDbModel>> = flow {
+        emit(portfolioDao.getSecurityPackages())
     }
 
     suspend fun deleteSecurityPackage(securityPackage: SecurityPackageDbModel) {

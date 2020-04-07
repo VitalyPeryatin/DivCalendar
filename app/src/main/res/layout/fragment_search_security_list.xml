@@ -24,15 +24,7 @@
 
     <include
         android:id="@+id/loadingLayout"
-        layout="@layout/layout_loading"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="gone" />
-
-    <include
-        android:id="@+id/emptyLayout"
-        layout="@layout/layout_empty"
+        layout="@layout/layout_stub_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
@@ -40,15 +32,7 @@
 
     <include
         android:id="@+id/noNetworkLayout"
-        layout="@layout/layout_no_network"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="gone" />
-
-    <include
-        android:id="@+id/startSearchLayout"
-        layout="@layout/layout_start_search"
+        layout="@layout/layout_stub_no_network"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"

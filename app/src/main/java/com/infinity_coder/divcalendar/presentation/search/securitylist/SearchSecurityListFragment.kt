@@ -16,10 +16,8 @@ import com.infinity_coder.divcalendar.presentation.search.SearchSecurityViewMode
 import com.infinity_coder.divcalendar.presentation.search.adapters.SecurityRecyclerAdapter
 import com.infinity_coder.divcalendar.presentation.search.addsecurity.AddSecurityBottomDialog
 import com.infinity_coder.divcalendar.presentation.search.securitylist.SearchSecurityListViewModel.Companion.VIEW_STATE_SEARCH_SECURITY_CONTENT
-import com.infinity_coder.divcalendar.presentation.search.securitylist.SearchSecurityListViewModel.Companion.VIEW_STATE_SEARCH_SECURITY_EMPTY
 import com.infinity_coder.divcalendar.presentation.search.securitylist.SearchSecurityListViewModel.Companion.VIEW_STATE_SEARCH_SECURITY_LOADING
 import com.infinity_coder.divcalendar.presentation.search.securitylist.SearchSecurityListViewModel.Companion.VIEW_STATE_SEARCH_SECURITY_NO_NETWORK
-import com.infinity_coder.divcalendar.presentation.search.securitylist.SearchSecurityListViewModel.Companion.VIEW_STATE_SEARCH_SECURITY_START_SEARCH
 import kotlinx.android.synthetic.main.fragment_portfolio.securitiesRecyclerView
 import kotlinx.android.synthetic.main.fragment_search_security_list.*
 
@@ -108,16 +106,12 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
     private fun setState(state: Int) {
         contentLayout.visibility = View.GONE
         loadingLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
         noNetworkLayout.visibility = View.GONE
-        startSearchLayout.visibility = View.GONE
 
         when (state) {
             VIEW_STATE_SEARCH_SECURITY_CONTENT -> contentLayout.visibility = View.VISIBLE
             VIEW_STATE_SEARCH_SECURITY_LOADING -> loadingLayout.visibility = View.VISIBLE
-            VIEW_STATE_SEARCH_SECURITY_EMPTY -> emptyLayout.visibility = View.VISIBLE
             VIEW_STATE_SEARCH_SECURITY_NO_NETWORK -> noNetworkLayout.visibility = View.VISIBLE
-            VIEW_STATE_SEARCH_SECURITY_START_SEARCH -> startSearchLayout.visibility = View.VISIBLE
         }
     }
 
