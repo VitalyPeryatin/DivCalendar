@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flow
 object NewsRepository {
 
     private val newsDao = DivCalendarDatabase.roomDatabase.newsDao
-    private val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
+    private val portfolioDao = DivCalendarDatabase.roomDatabase.securityDao
 
     private val divCalendarApi = RetrofitService.divCalendarApi
 

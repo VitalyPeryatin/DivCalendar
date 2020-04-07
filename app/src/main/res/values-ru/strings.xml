@@ -36,4 +36,9 @@
     <string name="change">Изменить пакет</string>
     <string name="delete_entire_package">Удалить весь пакет</string>
     <string name="cost">Стоимость</string>
+    <string name="new_portfolio">Новый портфель</string>
+    <string name="name">Название</string>
+    <string name="create_new_portfolio">Создание портфеля</string>
+    <string name="delete">Удалить</string>
+    <string name="create">Создать</string>
 </resources>

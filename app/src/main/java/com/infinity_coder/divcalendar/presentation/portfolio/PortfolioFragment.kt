@@ -1,9 +1,7 @@
 package com.infinity_coder.divcalendar.presentation.portfolio
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -13,6 +11,7 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.portfolio.changepackage.ChangePackageBottomDialog
+import com.infinity_coder.divcalendar.presentation.portfolio.changeportfolio.ChangePortfolioBottomDialog
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
 import kotlinx.android.synthetic.main.fragment_portfolio.*
 
@@ -24,12 +23,35 @@ class PortfolioFragment : Fragment(), ChangePackageBottomDialog.OnClickListener 
         viewModel { PortfolioViewModel() }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_portfolio, container, false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.portfolio, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.changePortfolioItem -> openChangePortfolioDialog()
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
+    }
+
+    private fun openChangePortfolioDialog() {
+        val changePortfolioDialog = ChangePortfolioBottomDialog.newInstance()
+        changePortfolioDialog.show(childFragmentManager, ChangePortfolioBottomDialog::class.toString())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

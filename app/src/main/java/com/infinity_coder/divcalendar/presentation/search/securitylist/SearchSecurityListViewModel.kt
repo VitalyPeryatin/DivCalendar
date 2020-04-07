@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
-import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.SearchInteractor
+import com.infinity_coder.divcalendar.domain.SecurityInteractor
 import com.infinity_coder.divcalendar.presentation.search.model.QueryGroup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 class SearchSecurityListViewModel : ViewModel() {
 
     private val searchInteractor = SearchInteractor()
-    private val portfolioInteractor = PortfolioInteractor()
+    private val portfolioInteractor = SecurityInteractor()
 
     private var loadedMarket: String? = null
     private var loadedQuery: String? = null

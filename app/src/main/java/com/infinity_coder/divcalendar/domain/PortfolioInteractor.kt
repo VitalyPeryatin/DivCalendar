@@ -1,31 +1,22 @@
 package com.infinity_coder.divcalendar.domain
 
-import androidx.lifecycle.LiveData
-import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
+
 
 class PortfolioInteractor {
 
-    fun loadAllSecurityPackages(): LiveData<List<SecurityPackageDbModel>> {
-        return PortfolioRepository.loadAllSecurityPackages()
+    suspend fun addPortfolio(portfolioName: String) {
+        val portfolio = PortfolioDbModel(portfolioName)
+        PortfolioRepository.addPortfolio(portfolio)
     }
 
-    suspend fun changeSecurityPackage(securityPackage: SecurityPackageDbModel) {
-        if (securityPackage.count <= 0) {
-            PortfolioRepository.deleteSecurityPackage(securityPackage)
-        } else {
-            PortfolioRepository.addSecurityPackage(securityPackage)
-        }
+    suspend fun deletePortfolio(portfolioName: String) {
+        val portfolio = PortfolioDbModel(portfolioName)
+        PortfolioRepository.deletePortfolio(portfolio)
     }
 
-    suspend fun appendSecurityPackage(newSecurityPackage: SecurityPackageDbModel) {
-        var securitiesPackage = PortfolioRepository.getSecurityPackage(newSecurityPackage.secid)
-        if (securitiesPackage == null) {
-            securitiesPackage = newSecurityPackage
-        } else {
-            securitiesPackage.count += newSecurityPackage.count
-            securitiesPackage.totalPrice += newSecurityPackage.totalPrice
-        }
-        PortfolioRepository.addSecurityPackage(securitiesPackage)
+    suspend fun getAllPortfolios(): List<PortfolioDbModel> {
+        return PortfolioRepository.getAllPortfolios()
     }
 }
