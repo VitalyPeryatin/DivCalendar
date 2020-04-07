@@ -1,9 +1,7 @@
 package com.infinity_coder.divcalendar.presentation.portfolio
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,8 +13,9 @@ import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.portfolio.changepackage.ChangePackageBottomDialog
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
 import kotlinx.android.synthetic.main.fragment_portfolio.*
+import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 
-class PortfolioFragment : Fragment(), ChangePackageBottomDialog.OnClickListener {
+class PortfolioFragment : Fragment(R.layout.fragment_portfolio), ChangePackageBottomDialog.OnClickListener {
 
     private var changePackageDialog: ChangePackageBottomDialog? = null
 
@@ -24,25 +23,24 @@ class PortfolioFragment : Fragment(), ChangePackageBottomDialog.OnClickListener 
         viewModel { PortfolioViewModel() }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_portfolio, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        securitiesRecyclerView.layoutManager = LinearLayoutManager(context)
-        securitiesRecyclerView.adapter = SecurityRecyclerAdapter(getOnItemClickListener())
+        initUI()
 
+        viewModel.securities.observe(viewLifecycleOwner, Observer(this::setSecurities))
+        viewModel.state.observe(viewLifecycleOwner, Observer(this::setState))
+    }
+
+    private fun initUI() {
         portfolioToolbar.title = context!!.resources.getString(R.string.portfolio)
         val parentActivity = (activity as AppCompatActivity)
         parentActivity.setActionBar(portfolioToolbar)
 
-        viewModel.getSecuritiesLiveData().observe(viewLifecycleOwner, Observer(this::setSecurities))
+        emptyLayout.emptyTextView.text = resources.getText(R.string.collect_portfolio)
+
+        securitiesRecyclerView.layoutManager = LinearLayoutManager(context)
+        securitiesRecyclerView.adapter = SecurityRecyclerAdapter(getOnItemClickListener())
 
         addSecurityButton.setOnClickListener {
             val intent = SearchSecurityActivity.getIntent(context!!)
@@ -64,6 +62,16 @@ class PortfolioFragment : Fragment(), ChangePackageBottomDialog.OnClickListener 
     private fun setSecurities(securities: List<SecurityPackageDbModel>) {
         val adapter = securitiesRecyclerView.adapter as? SecurityRecyclerAdapter
         adapter?.setSecurities(securities)
+    }
+
+    private fun setState(state: Int) {
+        contentLayout.visibility = View.GONE
+        emptyLayout.visibility = View.GONE
+
+        when (state) {
+            PortfolioViewModel.VIEW_STATE_PORTFOLIO_CONTENT -> contentLayout.visibility = View.VISIBLE
+            PortfolioViewModel.VIEW_STATE_PORTFOLIO_EMPTY -> emptyLayout.visibility = View.VISIBLE
+        }
     }
 
     override fun onChangePackageClick(securityPackage: SecurityPackageDbModel) {

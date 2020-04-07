@@ -45,6 +45,7 @@
     <string name="change">Change package</string>
     <string name="delete_entire_package">Delete entire package</string>
     <string name="cost">Cost</string>
+    <string name="collect_portfolio">Collect portfolio</string>
 
     <!-- settings -->
     <string name="settings">Settings</string>

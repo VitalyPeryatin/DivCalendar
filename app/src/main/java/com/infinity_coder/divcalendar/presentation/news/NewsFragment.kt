@@ -12,6 +12,7 @@ import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.browser.BrowserActivity
 import kotlinx.android.synthetic.main.fragment_news.*
+import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
 
@@ -27,6 +28,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         newsToolbar.title = context!!.resources.getString(R.string.news)
         val parentActivity = (activity as AppCompatActivity)
         parentActivity.setActionBar(newsToolbar)
+
+        emptySecuritiesLayout.emptyTextView.text = resources.getText(R.string.empty_securities)
 
         newsRecyclerView.layoutManager = LinearLayoutManager(context)
         adapter.onItemClickListener = getItemClickListener()
