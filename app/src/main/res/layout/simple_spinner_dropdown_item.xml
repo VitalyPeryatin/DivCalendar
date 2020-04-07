@@ -5,7 +5,7 @@
     android:maxLines="1"
     android:gravity="center"
     android:fontFamily="@font/roboto"
-    android:textColor="?android:textColorPrimary"
+    android:textColor="?attr/textColorPrimary"
     android:textSize="@dimen/font_few_big"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

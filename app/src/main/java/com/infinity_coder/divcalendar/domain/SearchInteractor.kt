@@ -12,7 +12,7 @@ class SearchInteractor {
         return if (queryGroup.query.length >= MIN_QUERY_LENGTH) {
             SearchRepository.search(queryGroup.query, queryGroup.securityType, queryGroup.market, limit)
         } else {
-             flowOf(emptyList())
+            flowOf(emptyList())
         }
     }
 
