@@ -1,21 +1,19 @@
 package com.infinity_coder.divcalendar.presentation.calendar
 
-import android.graphics.BitmapFactory
-import android.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.palette.graphics.Palette
 import com.example.delegateadapter.delegate.diff.IComparableItem
-import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
-import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
-import com.infinity_coder.divcalendar.presentation.calendar.models.*
+import com.infinity_coder.divcalendar.domain.CalendarInteractor
+import com.infinity_coder.divcalendar.domain.RateInteractor
+import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
+import com.infinity_coder.divcalendar.presentation.calendar.mappers.PaymentsToPresentationModelMapper
+import com.infinity_coder.divcalendar.presentation.calendar.models.FooterPaymentPresentationModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.InputStream
-import java.net.URL
 
 class CalendarViewModel : ViewModel() {
 
@@ -27,73 +25,43 @@ class CalendarViewModel : ViewModel() {
     val payments: LiveData<List<IComparableItem>>
         get() = _payments
 
+    private var cachedPayments: List<MonthlyPayment> = emptyList()
+
+    private val calendarInteractor = CalendarInteractor()
+    private val rateInteractor = RateInteractor()
+
+    private val paymentsMapper = PaymentsToPresentationModelMapper()
+
     init {
         loadAllPayments()
     }
 
-    fun getPositionMonth(numberMonth: Int): Int {
-        return _payments.value!!.indexOfFirst {
-            it is FooterPaymentPresentationModel && it.id == numberMonth
-        }
-    }
-
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun loadAllPayments() = viewModelScope.launch {
-        _state.postValue(VIEW_STATE_CALENDAR_LOADING)
+        calendarInteractor.getPayments()
+            .onEach { cachedPayments = it }
+            .map { paymentsMapper.mapToPresentationModel(cachedPayments) }
+            .flowOn(Dispatchers.IO)
+            .onStart { _state.value = VIEW_STATE_CALENDAR_LOADING }
+            .onEach { _payments.value = it }
+            .onCompletion { _state.value = VIEW_STATE_CALENDAR_CONTENT }
+            .launchIn(viewModelScope)
+    }
 
-        val payments = withContext(Dispatchers.IO) {
-            mapPaymentsToPresentationModels(PaymentRepository.loadAllPayments())
+    fun getFooterPositionByMonthNumber(monthNumber: Int): Int {
+        return _payments.value!!.indexOfFirst {
+            it is FooterPaymentPresentationModel && it.id == monthNumber
         }
+    }
+
+    fun setDisplayCurrency(currency: String) = viewModelScope.launch {
+        rateInteractor.saveDisplayCurrency(currency)
+        val payments = paymentsMapper.mapToPresentationModel(cachedPayments)
         _payments.postValue(payments)
-        _state.postValue(VIEW_STATE_CALENDAR_CONTENT)
     }
 
-    private suspend fun mapPaymentsToPresentationModels(payments: List<PaymentNetworkModel>): List<IComparableItem> {
-        val items = mutableListOf<IComparableItem>()
-        items.add(mapPaymentsToChartPresentationModel(payments))
-        val groupMonth = payments.groupBy { it.date.split("-")[1] }.toList()
-        for (i in groupMonth.indices) {
-            items.add(HeaderPaymentPresentationModel.from(groupMonth[i]))
-            items.addAll(PaymentPresentationModel.from(groupMonth[i]))
-            items.add(FooterPaymentPresentationModel.from(groupMonth[i]))
-            if (i != groupMonth.size - 1) {
-                items.add(DividerPresentationModel)
-            }
-        }
-        return items
-    }
-
-    private suspend fun mapPaymentsToChartPresentationModel(payments: List<PaymentNetworkModel>): ChartPresentationModel {
-        val annualIncome = payments.sumByDouble { it.dividends }
-        val groupPayments = payments.groupBy { it.date.split("-")[1] }
-            .toList()
-            .sortedBy {
-                it.first
-            }
-            .map {
-                Pair(it.first.toInt(), it.second)
-            }
-        val color = mutableListOf<Int>().apply {
-            groupPayments.forEach {
-                it.second.forEach { payment ->
-                    this.add(getColor(payment.logo))
-                }
-            }
-        }
-        return ChartPresentationModel(
-            annualIncome.toString(),
-            groupPayments,
-            color
-        )
-    }
-
-    private fun getColor(url: String): Int {
-        return try {
-            val inputStream: InputStream = URL(url).openStream()
-            val image = BitmapFactory.decodeStream(inputStream)
-            Palette.from(image).generate().getDominantColor(0)
-        } catch (e: Exception) {
-            Color.BLACK
-        }
+    fun getDisplayCurrency(): String {
+        return rateInteractor.getDisplayCurrency()
     }
 
     companion object {

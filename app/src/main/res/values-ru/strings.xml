@@ -16,7 +16,9 @@
     <string name="payout_chart">График выплат</string>
     <string name="annual_income">Прибыль</string>
     <string name="annual_yield">Доход</string>
-    <string name="monthly_income_label">Доход за месяц: +%1$.2f₽</string>
+    <string name="monthly_income_label_rub">Доход за месяц: +%1$.2f₽</string>
+    <string name="monthly_income_label_usd">Доход за месяц: +%1$.2f$</string>
+    <string name="monthly_income_label_undefined">Доход за месяц: +%1$.2f</string>
     <string name="count_securities">%d шт.</string>
     <string name="dividends">+%1$.2f₽</string>
 

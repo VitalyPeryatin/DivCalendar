@@ -11,13 +11,19 @@
     <string name="empty_list">Empty list</string>
     <string name="empty_securities">You don\'t have securities.\nAdd security to your portfolio!</string>
 
-    <string name="currency_rub" translatable="false">₽</string>
-    <string name="currency_usd" translatable="false">$</string>
+    <string name="currency_rub_name" translatable="false">₽</string>
+    <string name="currency_usd_name" translatable="false">$</string>
     <string name="currency_eur" translatable="false">€</string>
 
     <string name="value_currency_rub" translatable="false">%1$.2f₽</string>
     <string name="value_currency_usd" translatable="false">%1$.2f$</string>
     <string name="value_currency_eur" translatable="false">%1$.2f€</string>
+    <string name="value_currency_undefined" translatable="false">%1$.2f</string>
+
+    <string name="value_percent" translatable="false">%1$.2f\%%</string>
+
+    <string name="currency_name_rub" translatable="false">RUB</string>
+    <string name="currency_name_usd" translatable="false">USD</string>
 
     <string name="version_name" translatable="false">DivCalendar %s</string>
 
@@ -25,7 +31,9 @@
     <string name="payout_chart">Payout chart</string>
     <string name="annual_income">Income</string>
     <string name="annual_yield">Yield</string>
-    <string name="monthly_income_label">Monthly income: +%1$.2f₽</string>
+    <string name="monthly_income_label_rub">Monthly income: +%1$.2f₽</string>
+    <string name="monthly_income_label_usd">Monthly income: +%1$.2f$</string>
+    <string name="monthly_income_label_undefined">Monthly income: +%1$.2f</string>
     <string name="count_securities">%d pcs.</string>
     <string name="dividends">+%1$.2f₽</string>
 
