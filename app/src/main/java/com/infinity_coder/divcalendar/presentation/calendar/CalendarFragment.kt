@@ -2,6 +2,7 @@ package com.infinity_coder.divcalendar.presentation.calendar
 
 import android.os.Bundle
 import android.view.View
+import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -35,43 +36,43 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             (activity as AppCompatActivity).setActionBar(this)
         }
 
-        when (viewModel.getDisplayCurrency()) {
-            RateRepository.RUB_RATE -> rubRadioButton.isChecked = true
-            RateRepository.USD_RATE -> usdRadioButton.isChecked = true
-        }
-        rubRadioButton.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                viewModel.setDisplayCurrency(RateRepository.RUB_RATE)
+        val checkedCurrencyRadioButton =
+            when (viewModel.getDisplayCurrency()) {
+                RateRepository.RUB_RATE -> rubRadioButton
+                RateRepository.USD_RATE -> usdRadioButton
+                else -> null
             }
-        }
-        usdRadioButton.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                viewModel.setDisplayCurrency(RateRepository.USD_RATE)
-            }
-        }
 
-        calendarPaymentsRecyclerView.run {
-            layoutManager = LinearLayoutManager(context)
-            adapter = DiffUtilCompositeAdapter.Builder()
-                .add(getChartAdapter())
-                .add(DividerDelegateAdapter())
-                .add(HeaderPaymentRecyclerDelegateAdapter())
-                .add(PaymentRecyclerDelegateAdapter())
-                .add(FooterPaymentRecyclerDelegateAdapter())
-                .build()
+        checkedCurrencyRadioButton?.isChecked = true
+
+        rubRadioButton.setOnCheckedChangeListener(this::checkCurrency)
+        usdRadioButton.setOnCheckedChangeListener(this::checkCurrency)
+
+        calendarPaymentsRecyclerView.layoutManager = LinearLayoutManager(context)
+        calendarPaymentsRecyclerView.adapter = DiffUtilCompositeAdapter.Builder()
+            .add(getChartAdapter()).add(DividerDelegateAdapter())
+            .add(HeaderPaymentRecyclerDelegateAdapter()).add(PaymentRecyclerDelegateAdapter())
+            .add(FooterPaymentRecyclerDelegateAdapter()).build()
+    }
+
+    private fun checkCurrency(radioButton: CompoundButton, isChecked: Boolean) {
+        if (!isChecked) return
+
+        when (radioButton) {
+            rubRadioButton -> viewModel.setDisplayCurrency(RateRepository.RUB_RATE)
+            usdRadioButton -> viewModel.setDisplayCurrency(RateRepository.USD_RATE)
         }
     }
 
     private fun getChartAdapter(): ChartPaymentRecyclerDelegateAdapter {
         val adapter = ChartPaymentRecyclerDelegateAdapter()
-        adapter.onItemClickListener =
-            object : ChartPaymentRecyclerDelegateAdapter.ChartItemClickListener {
-                override fun onClick(numberMonth: Int) {
-                    calendarPaymentsRecyclerView.smoothScrollToPosition(
-                        viewModel.getPositionMonth(numberMonth)
-                    )
-                }
+        adapter.onItemClickListener = object : ChartPaymentRecyclerDelegateAdapter.ChartItemClickListener {
+            override fun onClick(numberMonth: Int) {
+                calendarPaymentsRecyclerView.smoothScrollToPosition(
+                    viewModel.getFooterPositionByMonthNumber(numberMonth)
+                )
             }
+        }
         return adapter
     }
 
@@ -86,12 +87,10 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         noNetworkLayout.visibility = View.GONE
 
         when (state) {
-            CalendarViewModel.VIEW_STATE_CALENDAR_CONTENT -> calendarContent.visibility =
-                View.VISIBLE
+            CalendarViewModel.VIEW_STATE_CALENDAR_CONTENT -> calendarContent.visibility = View.VISIBLE
             CalendarViewModel.VIEW_STATE_CALENDAR_LOADING -> loadingLayout.visibility = View.VISIBLE
             CalendarViewModel.VIEW_STATE_CALENDAR_EMPTY -> emptyLayout.visibility = View.VISIBLE
-            CalendarViewModel.VIEW_STATE_CALENDAR_NO_NETWORK -> noNetworkLayout.visibility =
-                View.VISIBLE
+            CalendarViewModel.VIEW_STATE_CALENDAR_NO_NETWORK -> noNetworkLayout.visibility = View.VISIBLE
         }
     }
 }

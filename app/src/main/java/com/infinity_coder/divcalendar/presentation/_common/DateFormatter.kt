@@ -5,9 +5,10 @@ import java.util.*
 
 object DateFormatter {
 
+    val basicDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
     fun formatDate(dateStr: String, months: Array<String>): String {
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val date = simpleDateFormat.parse(dateStr) ?: Date()
+        val date = basicDateFormat.parse(dateStr) ?: Date()
         val calendar = Calendar.getInstance()
         calendar.time = date
 

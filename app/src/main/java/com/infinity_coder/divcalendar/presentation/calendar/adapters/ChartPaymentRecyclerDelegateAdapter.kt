@@ -12,8 +12,8 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.domain.models.PaymentsForMonth
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
+import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 import com.infinity_coder.divcalendar.presentation.calendar.models.ChartPresentationModel
 import kotlinx.android.synthetic.main.item_chart_calendar.*
 import java.util.*
@@ -23,7 +23,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
 
     var onItemClickListener: ChartItemClickListener? = null
 
-    private var monthlyPayments: List<PaymentsForMonth>? = null
+    private var monthlyPayments: List<MonthlyPayment>? = null
     private var chart: BarChart? = null
 
     override fun getLayoutId() = R.layout.item_chart_calendar
@@ -104,7 +104,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         invalidate()
     }
 
-    private fun createBarEntries(monthlyPayments: List<PaymentsForMonth>): List<BarEntry> {
+    private fun createBarEntries(monthlyPayments: List<MonthlyPayment>): List<BarEntry> {
         return monthlyPayments.map {
             val month = it.month.toFloat()
             val payments = if (it.payments.isEmpty())

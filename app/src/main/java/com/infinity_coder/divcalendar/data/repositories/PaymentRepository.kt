@@ -1,11 +1,13 @@
 package com.infinity_coder.divcalendar.data.repositories
 
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 object PaymentRepository {
 
-    suspend fun loadAllPayments(): List<PaymentNetworkModel> {
-        return listOf(
+    suspend fun loadAllPayments(): Flow<List<PaymentNetworkModel>> {
+        return flowOf(listOf(
             PaymentNetworkModel(
                 "Яндекс",
                 "https://s0.rbk.ru/emitent_pics/resized/80x80_crop/images/20/74/3c2996c034c70685ec736cd563e55dd6.png",
@@ -78,6 +80,6 @@ object PaymentRepository {
                 "2020-08-21",
                 "RUB"
             )
-        )
+        ))
     }
 }

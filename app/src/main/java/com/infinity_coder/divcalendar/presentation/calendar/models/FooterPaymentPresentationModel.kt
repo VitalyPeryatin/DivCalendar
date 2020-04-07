@@ -1,7 +1,7 @@
 package com.infinity_coder.divcalendar.presentation.calendar.models
 
 import com.example.delegateadapter.delegate.diff.IComparableItem
-import com.infinity_coder.divcalendar.domain.models.PaymentsForMonth
+import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 
 data class FooterPaymentPresentationModel(
     val id: Int,
@@ -11,7 +11,7 @@ data class FooterPaymentPresentationModel(
 ) : IComparableItem {
 
     companion object {
-        fun from(monthlyPayments: PaymentsForMonth) =
+        fun from(monthlyPayments: MonthlyPayment) =
             FooterPaymentPresentationModel(
                 id = monthlyPayments.month,
                 income = monthlyPayments.payments.sumByDouble { payment -> payment.dividends },

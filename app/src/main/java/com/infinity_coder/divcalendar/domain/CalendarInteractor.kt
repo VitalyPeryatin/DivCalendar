@@ -1,22 +1,31 @@
 package com.infinity_coder.divcalendar.domain
 
+import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
 import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
-import com.infinity_coder.divcalendar.domain.models.PaymentsForMonth
-import java.text.SimpleDateFormat
+import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
+import com.infinity_coder.divcalendar.presentation._common.DateFormatter
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.util.*
 
 class CalendarInteractor {
-    suspend fun getPayments(): List<PaymentsForMonth> {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return PaymentRepository.loadAllPayments()
-            .groupBy {
-                val date = dateFormat.parse(it.date) ?: Date()
-                val calendar = Calendar.getInstance()
-                calendar.time = date
-                calendar.get(Calendar.MONTH)
-            }
-            .toList()
-            .sortedBy { it.first }
-            .map { PaymentsForMonth.from(it) }
+
+    private val dateFormat = DateFormatter.basicDateFormat
+
+    suspend fun getPayments(): Flow<List<MonthlyPayment>> {
+        return PaymentRepository.loadAllPayments().map { groupAndSortPayments(it) }
+    }
+
+    private fun groupAndSortPayments(payments: List<PaymentNetworkModel>): List<MonthlyPayment> {
+        return payments.groupByDate()
+            .map { MonthlyPayment.from(it) }
+            .sortedBy { it.month }
+    }
+
+    private fun List<PaymentNetworkModel>.groupByDate(): List<Pair<Int, List<PaymentNetworkModel>>> {
+        return groupBy {
+            Calendar.getInstance().apply { time = dateFormat.parse(it.date) ?: Date() }
+                .get(Calendar.MONTH)
+        }.toList()
     }
 }
