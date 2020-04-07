@@ -33,7 +33,7 @@ class PaymentsToPresentationModelMapper {
         items.add(0, mapPaymentsToChartPresentationModel(monthlyPayments))
         return items
     }
-    
+
     private suspend fun prepareMonthlyPayments(monthlyPayment: MonthlyPayment): List<PaymentPresentationModel> {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val paymentsForMonth = PaymentPresentationModel.from(monthlyPayment)
@@ -61,20 +61,20 @@ class PaymentsToPresentationModelMapper {
 
         return ChartPresentationModel(annualIncome, annualYield, currentCurrency, allMonthlyPayments, colors)
     }
-    
+
     private fun sumMonthPayments(monthlyPayments: List<MonthlyPayment>): Float {
         return monthlyPayments.sumByDouble { paymentsForMonth ->
             paymentsForMonth.payments.sumByDouble { it.dividends }
         }.toFloat()
     }
-    
+
     private fun getMonthlyPayments(monthlyPayments: List<MonthlyPayment>): List<MonthlyPayment> {
         return (0..11).map { numberMonth ->
             val payments = monthlyPayments.find { it.month == numberMonth }?.payments ?: listOf()
             return@map MonthlyPayment(numberMonth, payments)
         }
     }
-    
+
     private fun getChartBarColors(monthlyPayments: List<MonthlyPayment>): List<Int> {
         return monthlyPayments.map {
             return@map if (it.payments.isEmpty())
