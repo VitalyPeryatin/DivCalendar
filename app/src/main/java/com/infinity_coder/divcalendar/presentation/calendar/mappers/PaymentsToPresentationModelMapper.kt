@@ -1,14 +1,10 @@
 package com.infinity_coder.divcalendar.presentation.calendar.mappers
 
-import android.graphics.BitmapFactory
 import android.graphics.Color
-import androidx.palette.graphics.Palette
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 import com.infinity_coder.divcalendar.presentation.calendar.models.*
-import java.io.InputStream
-import java.net.URL
 
 class PaymentsToPresentationModelMapper {
 
@@ -80,18 +76,7 @@ class PaymentsToPresentationModelMapper {
             return@map if (it.payments.isEmpty())
                 listOf(Color.TRANSPARENT)
             else
-                it.payments.map { payment -> getDominantColorFromImage(payment.logo) }
+                it.payments.map { payment -> payment.colorLogo }
         }.flatten()
-    }
-
-    private fun getDominantColorFromImage(url: String): Int {
-        // TODO сделать обработку SVG
-        return try {
-            val inputStream: InputStream = URL(url).openStream()
-            val image = BitmapFactory.decodeStream(inputStream)
-            Palette.from(image).generate().getDominantColor(0)
-        } catch (e: Exception) {
-            Color.BLACK
-        }
     }
 }

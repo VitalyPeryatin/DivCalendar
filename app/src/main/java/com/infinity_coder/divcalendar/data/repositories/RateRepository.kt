@@ -1,6 +1,7 @@
 package com.infinity_coder.divcalendar.data.repositories
 
 import android.content.Context
+import android.util.Log
 import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.network.RetrofitService
 import com.infinity_coder.divcalendar.data.network.model.CurrencyRateNetworkModel
@@ -29,9 +30,11 @@ object RateRepository {
     suspend fun getRates(): CurrencyRateNetworkModel {
         return try {
             if (System.currentTimeMillis() - lastUpdateRateMillis > outDateLimit()) {
+                Log.d("Rates","network")
                 lastUpdateRateMillis = System.currentTimeMillis()
                 getRatesFromNetworkAndSaveToDB()
             } else {
+                Log.d("Rates","pref")
                 getRatesFromPref()
             }
         } catch (e: Exception) {

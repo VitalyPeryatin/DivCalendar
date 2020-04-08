@@ -3,6 +3,7 @@ package com.infinity_coder.divcalendar.presentation.calendar.models
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
+import com.infinity_coder.divcalendar.domain.models.Payment
 
 data class PaymentPresentationModel(
     val name: String,
@@ -10,6 +11,7 @@ data class PaymentPresentationModel(
     val count: Int,
     var dividends: Double,
     val date: String,
+    val colorLogo:Int,
     val originalCurrency: String,
     var currentCurrency: String
 ) : IComparableItem {
@@ -18,13 +20,14 @@ data class PaymentPresentationModel(
         fun from(monthlyPayments: MonthlyPayment) =
             monthlyPayments.payments.map { from(it) }
 
-        private fun from(payment: PaymentNetworkModel) =
+        private fun from(payment: Payment) =
             PaymentPresentationModel(
                 name = payment.name,
                 logo = payment.logo,
                 count = payment.count,
                 dividends = payment.dividends,
                 date = payment.date,
+                colorLogo = payment.colorLogo,
                 originalCurrency = payment.currency,
                 currentCurrency = ""
             )
