@@ -7,16 +7,18 @@ import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
 class PortfolioInteractor {
 
     suspend fun addPortfolio(portfolioName: String) {
-        val portfolio = PortfolioDbModel(portfolioName)
-        PortfolioRepository.addPortfolio(portfolio)
-    }
-
-    suspend fun deletePortfolio(portfolioName: String) {
-        val portfolio = PortfolioDbModel(portfolioName)
-        PortfolioRepository.deletePortfolio(portfolio)
+        PortfolioRepository.addPortfolio(portfolioName)
     }
 
     suspend fun getAllPortfolios(): List<PortfolioDbModel> {
         return PortfolioRepository.getAllPortfolios()
+    }
+
+    fun setCurrentPortfolio(name: String) {
+        PortfolioRepository.setCurrentPortfolio(name)
+    }
+
+    fun getCurrentPortfolio(): String {
+        return PortfolioRepository.getCurrentPortfolio()
     }
 }

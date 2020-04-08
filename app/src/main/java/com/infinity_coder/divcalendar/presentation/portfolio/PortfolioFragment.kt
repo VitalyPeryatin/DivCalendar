@@ -7,18 +7,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
-import com.infinity_coder.divcalendar.presentation.portfolio.changepackage.ChangePackageBottomDialog
 import com.infinity_coder.divcalendar.presentation.portfolio.changeportfolio.ChangePortfolioBottomDialog
+import com.infinity_coder.divcalendar.presentation.portfolio.changesecurity.ChangeSecurityBottomDialog
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
 import kotlinx.android.synthetic.main.fragment_portfolio.*
 import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 
-class PortfolioFragment : Fragment(R.layout.fragment_portfolio), ChangePackageBottomDialog.OnClickListener {
+class PortfolioFragment : Fragment(R.layout.fragment_portfolio), ChangeSecurityBottomDialog.OnClickListener, ChangePortfolioBottomDialog.OnChangePortfolioClickListener {
 
-    private var changePackageDialog: ChangePackageBottomDialog? = null
+    private var changePackageDialog: ChangeSecurityBottomDialog? = null
 
     private val viewModel: PortfolioViewModel by lazy {
         viewModel { PortfolioViewModel() }
@@ -60,8 +61,14 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio), ChangePackageBo
 
         initUI()
 
-        viewModel.securities.observe(viewLifecycleOwner, Observer(this::setSecurities))
+        viewModel.portfolio.observe(viewLifecycleOwner, Observer(this::setPortfolio))
         viewModel.state.observe(viewLifecycleOwner, Observer(this::setState))
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.loadSecurities()
     }
 
     private fun initUI() {
@@ -71,11 +78,11 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio), ChangePackageBo
 
         emptyLayout.emptyTextView.text = resources.getText(R.string.collect_portfolio)
 
-        securitiesRecyclerView.layoutManager = LinearLayoutManager(context)
+        securitiesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         securitiesRecyclerView.adapter = SecurityRecyclerAdapter(getOnItemClickListener())
 
         addSecurityButton.setOnClickListener {
-            val intent = SearchSecurityActivity.getIntent(context!!)
+            val intent = SearchSecurityActivity.getIntent(requireContext())
             startActivity(intent)
         }
     }
@@ -87,13 +94,14 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio), ChangePackageBo
     }
 
     private fun openChangePackageDialog(securityPackage: SecurityPackageDbModel) {
-        changePackageDialog = ChangePackageBottomDialog.newInstance(securityPackage)
-        changePackageDialog?.show(childFragmentManager, ChangePackageBottomDialog::class.toString())
+        changePackageDialog = ChangeSecurityBottomDialog.newInstance(securityPackage)
+        changePackageDialog?.show(childFragmentManager, ChangeSecurityBottomDialog::class.toString())
     }
 
-    private fun setSecurities(securities: List<SecurityPackageDbModel>) {
+    private fun setPortfolio(portfolio: PortfolioWithSecurities) {
+        portfolioToolbar.subtitle = portfolio.portfolio.name
         val adapter = securitiesRecyclerView.adapter as? SecurityRecyclerAdapter
-        adapter?.setSecurities(securities)
+        adapter?.setSecurities(portfolio.securities)
     }
 
     private fun setState(state: Int) {
@@ -109,5 +117,9 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio), ChangePackageBo
     override fun onChangePackageClick(securityPackage: SecurityPackageDbModel) {
         viewModel.changeSecurityPackage(securityPackage)
         changePackageDialog?.dismiss()
+    }
+
+    override fun onPortfolioChange() {
+        viewModel.loadSecurities()
     }
 }

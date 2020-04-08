@@ -44,7 +44,7 @@ class CreatePortfolioDialog : DialogFragment() {
     private fun addPortfolio() {
         val name = portfolioNameEditText.text.toString()
         viewModel.addPortfolio(name)
-        clickListener?.onPortfolioCreated()
+        clickListener?.onPortfolioCreated(name)
         dismiss()
     }
 
@@ -55,6 +55,6 @@ class CreatePortfolioDialog : DialogFragment() {
     }
 
     interface OnCreatePortfolioClickListener {
-        fun onPortfolioCreated()
+        fun onPortfolioCreated(portfolioName: String)
     }
 }

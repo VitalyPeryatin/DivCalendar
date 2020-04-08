@@ -20,4 +20,8 @@ class ChangePortfolioViewModel : ViewModel() {
     fun loadAllPortfolios() = viewModelScope.launch(Dispatchers.IO) {
         _portfolios.postValue(portfolioInteractor.getAllPortfolios())
     }
+
+    fun setCurrentPortfolio(name: String) {
+        portfolioInteractor.setCurrentPortfolio(name)
+    }
 }

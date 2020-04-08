@@ -9,14 +9,16 @@ import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_portfolio.*
 
-class ChangePortfolioRecyclerAdapter : RecyclerView.Adapter<ChangePortfolioRecyclerAdapter.ChangePortfolioViewHolder>() {
+class ChangePortfolioRecyclerAdapter(
+    var onItemClickListener: OnItemClickListener? = null
+) : RecyclerView.Adapter<ChangePortfolioRecyclerAdapter.ChangePortfolioViewHolder>() {
 
     private var portfolios: List<PortfolioDbModel> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChangePortfolioViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_portfolio, parent, false)
-        return ChangePortfolioViewHolder(view)
+        return ChangePortfolioViewHolder(view, onItemClickListener)
     }
 
     override fun getItemCount(): Int {
@@ -32,9 +34,19 @@ class ChangePortfolioRecyclerAdapter : RecyclerView.Adapter<ChangePortfolioRecyc
         notifyDataSetChanged()
     }
 
-    class ChangePortfolioViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+    class ChangePortfolioViewHolder(
+        override val containerView: View,
+        var onItemClickListener: OnItemClickListener?
+    ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bind(portfolio: PortfolioDbModel) {
             nameTextView.text = portfolio.name
+            containerView.setOnClickListener {
+                onItemClickListener?.onItemClick(portfolio)
+            }
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(portfolio: PortfolioDbModel)
     }
 }

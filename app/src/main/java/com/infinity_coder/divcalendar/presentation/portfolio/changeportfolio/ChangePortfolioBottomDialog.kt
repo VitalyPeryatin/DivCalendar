@@ -19,12 +19,17 @@ import kotlinx.android.synthetic.main.bottom_dialog_change_portfolio.*
 class ChangePortfolioBottomDialog : BottomDialog(),
     CreatePortfolioDialog.OnCreatePortfolioClickListener {
 
-    private var clickListener: OnDialogClickListener? = null
+    private var clickListener: OnChangePortfolioClickListener? = null
 
     private val viewModel: ChangePortfolioViewModel by lazy {
         viewModel { ChangePortfolioViewModel() }
     }
-    private val portfoliosAdapter = ChangePortfolioRecyclerAdapter()
+
+    private val portfoliosAdapter = ChangePortfolioRecyclerAdapter(object : ChangePortfolioRecyclerAdapter.OnItemClickListener {
+        override fun onItemClick(portfolio: PortfolioDbModel) {
+            setCurrentPortfolio(portfolio.name)
+        }
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +49,9 @@ class ChangePortfolioBottomDialog : BottomDialog(),
         super.onAttach(context)
 
         val parentFragment = parentFragment
-        if (parentFragment is OnDialogClickListener) {
+        if (parentFragment is OnChangePortfolioClickListener) {
             clickListener = parentFragment
-        } else if (context is OnDialogClickListener) {
+        } else if (context is OnChangePortfolioClickListener) {
             clickListener = context
         }
     }
@@ -63,6 +68,13 @@ class ChangePortfolioBottomDialog : BottomDialog(),
 
     private fun setPortfolios(portfolios: List<PortfolioDbModel>) {
         portfoliosAdapter.setPortfolios(portfolios)
+        portfoliosRecyclerView.scrollToPosition(portfoliosAdapter.itemCount - 1)
+    }
+
+    private fun setCurrentPortfolio(portfolioName: String) {
+        viewModel.setCurrentPortfolio(portfolioName)
+        clickListener?.onPortfolioChange()
+        dismiss()
     }
 
     private fun initUI() {
@@ -85,10 +97,11 @@ class ChangePortfolioBottomDialog : BottomDialog(),
         }
     }
 
-    interface OnDialogClickListener {
+    interface OnChangePortfolioClickListener {
+        fun onPortfolioChange()
     }
 
-    override fun onPortfolioCreated() {
-        viewModel.loadAllPortfolios()
+    override fun onPortfolioCreated(portfolioName: String) {
+        setCurrentPortfolio(portfolioName)
     }
 }

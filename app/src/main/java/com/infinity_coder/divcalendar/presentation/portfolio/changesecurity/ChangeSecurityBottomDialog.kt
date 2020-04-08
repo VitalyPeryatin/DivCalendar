@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation.portfolio.changepackage
+package com.infinity_coder.divcalendar.presentation.portfolio.changesecurity
 
 import android.content.Context
 import android.os.Bundle
@@ -18,14 +18,14 @@ import com.infinity_coder.divcalendar.presentation._common.shake
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import kotlinx.android.synthetic.main.bottom_dialog_remove_security.*
 
-class ChangePackageBottomDialog : BottomDialog() {
+class ChangeSecurityBottomDialog : BottomDialog() {
 
     private var clickListener: OnClickListener? = null
 
     private lateinit var security: SecurityNetworkModel
 
-    private val viewModel: ChangePackageViewModel by lazy {
-        viewModel { ChangePackageViewModel() }
+    private val viewModel: ChangeSecurityViewModel by lazy {
+        viewModel { ChangeSecurityViewModel() }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -124,8 +124,8 @@ class ChangePackageBottomDialog : BottomDialog() {
 
         private const val SHAKE_AMPLITUDE = 8f
 
-        fun newInstance(security: SecurityPackageDbModel): ChangePackageBottomDialog {
-            val dialog = ChangePackageBottomDialog()
+        fun newInstance(security: SecurityPackageDbModel): ChangeSecurityBottomDialog {
+            val dialog = ChangeSecurityBottomDialog()
             dialog.arguments = bundleOf(
                 ARGUMENT_SEC_ID to security.secid,
                 ARGUMENT_NAME to security.name

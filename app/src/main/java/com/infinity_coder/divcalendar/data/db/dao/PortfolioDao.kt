@@ -2,18 +2,37 @@ package com.infinity_coder.divcalendar.data.db.dao
 
 import androidx.room.*
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
+import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
+import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class PortfolioDao {
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract suspend fun insertPortfolio(portfolio: PortfolioDbModel)
-
-    @Query("SELECT * FROM ${PortfolioDbModel.TABLE_NAME} WHERE ${PortfolioDbModel.COLUMN_NAME} = :name")
-    abstract suspend fun getPortfolioByName(name: String): PortfolioDbModel?
 
     @Query("SELECT * FROM ${PortfolioDbModel.TABLE_NAME}")
     abstract suspend fun getAllPortfolios(): List<PortfolioDbModel>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun addSecurityPackage(securityPackage: SecurityPackageDbModel)
+
+    @Query("SELECT * FROM ${SecurityPackageDbModel.TABLE_NAME} WHERE ${SecurityPackageDbModel.COLUMN_SEC_ID} = :secId")
+    abstract suspend fun getSecurityPackage(secId: String): SecurityPackageDbModel?
+
+    @Transaction
+    @Query("SELECT * FROM ${PortfolioDbModel.TABLE_NAME} WHERE ${PortfolioDbModel.COLUMN_NAME} = :name LIMIT 1")
+    abstract fun getPortfolioWithSecurities(name: String): Flow<PortfolioWithSecurities>
+
     @Delete
-    abstract suspend fun deletePortfolio(portfolio: PortfolioDbModel)
+    abstract suspend fun deleteSecurityPackage(securityPackage: SecurityPackageDbModel)
+
+    @Transaction
+    open suspend fun insertPortfolioWithSecurities(portfolio: PortfolioWithSecurities) {
+        insertPortfolio(portfolio.portfolio)
+        for (security in portfolio.securities) {
+            addSecurityPackage(security)
+        }
+    }
 }

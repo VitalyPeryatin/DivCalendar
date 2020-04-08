@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
+import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.SearchInteractor
 import com.infinity_coder.divcalendar.domain.SecurityInteractor
 import com.infinity_coder.divcalendar.presentation.search.model.QueryGroup
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 class SearchSecurityListViewModel : ViewModel() {
 
     private val searchInteractor = SearchInteractor()
-    private val portfolioInteractor = SecurityInteractor()
+    private val securityInteractor = SecurityInteractor()
+    private val portfolioInteractor = PortfolioInteractor()
 
     private var loadedMarket: String? = null
     private var loadedQuery: String? = null
@@ -42,9 +44,15 @@ class SearchSecurityListViewModel : ViewModel() {
         searchInteractor.search(queryGroup)
             .flowOn(Dispatchers.IO)
             .onStart { _state.value = VIEW_STATE_SEARCH_SECURITY_LOADING }
-            .onEach { _searchedSecurities.value = it }
-            .catch { _state.value = VIEW_STATE_SEARCH_SECURITY_NO_NETWORK }
-            .onCompletion { _state.value = VIEW_STATE_SEARCH_SECURITY_CONTENT }
+            .onEach {
+                _searchedSecurities.value = it
+            }
+            .catch {
+                _state.value = VIEW_STATE_SEARCH_SECURITY_NO_NETWORK
+            }
+            .onCompletion {
+                _state.value = VIEW_STATE_SEARCH_SECURITY_CONTENT
+            }
             .launchIn(viewModelScope)
 
         saveQueryGroup(query, market)
@@ -56,7 +64,8 @@ class SearchSecurityListViewModel : ViewModel() {
     }
 
     fun appendSecurityPackage(securityPackage: SecurityPackageDbModel) = viewModelScope.launch {
-        portfolioInteractor.appendSecurityPackage(securityPackage)
+        val currentPortfolioName = portfolioInteractor.getCurrentPortfolio()
+        securityInteractor.appendSecurityPackage(currentPortfolioName, securityPackage)
     }
 
     companion object {

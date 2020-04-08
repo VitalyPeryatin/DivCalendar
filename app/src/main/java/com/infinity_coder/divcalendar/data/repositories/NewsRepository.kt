@@ -2,18 +2,20 @@ package com.infinity_coder.divcalendar.data.repositories
 
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.PostDbModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.network.RetrofitService
 import com.infinity_coder.divcalendar.data.network.model.BodyPostNetworkModel
 import com.infinity_coder.divcalendar.data.network.model.PostNetworkModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 
 object NewsRepository {
 
     private val newsDao = DivCalendarDatabase.roomDatabase.newsDao
-    private val portfolioDao = DivCalendarDatabase.roomDatabase.securityDao
+    private val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
 
     private val divCalendarApi = RetrofitService.divCalendarApi
 
@@ -41,8 +43,13 @@ object NewsRepository {
     }
 
     private suspend fun getPostsFromNetwork(limit: Int, offset: Int): List<PostNetworkModel> {
-        val securities = portfolioDao.getSecurityPackages().map { it.secid }
+        val securities = getSecuritiesForCurrentPortfolio().map { it.secid }
         val body = BodyPostNetworkModel(securities, limit, offset)
         return divCalendarApi.fetchPosts(body)
+    }
+
+    private suspend fun getSecuritiesForCurrentPortfolio(): List<SecurityPackageDbModel> {
+        val currentPortfolioName = PortfolioRepository.getCurrentPortfolio()
+        return portfolioDao.getPortfolioWithSecurities(currentPortfolioName).first().securities
     }
 }

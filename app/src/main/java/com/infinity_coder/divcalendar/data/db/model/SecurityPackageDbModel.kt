@@ -25,7 +25,10 @@ data class SecurityPackageDbModel(
     var yearYield: Float = 0f,
 
     @ColumnInfo(name = COLUMN_TYPE)
-    var type: String = SecurityTypeDelegate.SECURITY_TYPE_STOCK
+    var type: String = SecurityTypeDelegate.SECURITY_TYPE_STOCK,
+
+    @ColumnInfo(name = COLUMN_PORTFOLIO_NAME)
+    var portfolioName: String = ""
 ) {
     companion object {
         const val TABLE_NAME = "SecPackage"
@@ -36,5 +39,6 @@ data class SecurityPackageDbModel(
         const val COLUMN_TOTAL_PRICE = "total_price"
         const val COLUMN_YEAR_YIELD = "year_yield"
         const val COLUMN_TYPE = "type"
+        const val COLUMN_PORTFOLIO_NAME = "portfolio_name"
     }
 }

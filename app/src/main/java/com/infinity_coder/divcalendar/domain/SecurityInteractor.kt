@@ -1,24 +1,27 @@
 package com.infinity_coder.divcalendar.domain
 
-import androidx.lifecycle.LiveData
+import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
+import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
 import com.infinity_coder.divcalendar.data.repositories.SecurityRepository
+import kotlinx.coroutines.flow.Flow
 
 class SecurityInteractor {
 
-    fun loadAllSecurityPackages(): LiveData<List<SecurityPackageDbModel>> {
-        return SecurityRepository.loadAllSecurityPackages()
+    fun loadAllSecurityPackages(portfolioName: String): Flow<PortfolioWithSecurities> {
+        return SecurityRepository.loadPortfolio(portfolioName)
     }
 
-    suspend fun changeSecurityPackage(securityPackage: SecurityPackageDbModel) {
+    suspend fun changeSecurityPackage(portfolioName: String, securityPackage: SecurityPackageDbModel) {
         if (securityPackage.count <= 0) {
             SecurityRepository.deleteSecurityPackage(securityPackage)
         } else {
-            SecurityRepository.addSecurityPackage(securityPackage)
+            addSecurityPackage(portfolioName, securityPackage)
         }
     }
 
-    suspend fun appendSecurityPackage(newSecurityPackage: SecurityPackageDbModel) {
+    suspend fun appendSecurityPackage(portfolioName: String, newSecurityPackage: SecurityPackageDbModel) {
         var securitiesPackage = SecurityRepository.getSecurityPackage(newSecurityPackage.secid)
         if (securitiesPackage == null) {
             securitiesPackage = newSecurityPackage
@@ -26,6 +29,16 @@ class SecurityInteractor {
             securitiesPackage.count += newSecurityPackage.count
             securitiesPackage.totalPrice += newSecurityPackage.totalPrice
         }
-        SecurityRepository.addSecurityPackage(securitiesPackage)
+        addSecurityPackage(portfolioName, securitiesPackage)
+    }
+
+    private suspend fun addSecurityPackage(portfolioName: String, packageDbModel: SecurityPackageDbModel) {
+        packageDbModel.portfolioName = portfolioName
+        SecurityRepository.addSecurityPackage(packageDbModel)
+    }
+
+    private suspend fun getPortfolioByName(name: String): PortfolioDbModel {
+        return PortfolioRepository.getPortfolioByName(name)
+            ?: throw IllegalStateException("No portfolio $name")
     }
 }
