@@ -1,7 +1,6 @@
 package com.infinity_coder.divcalendar.presentation.calendar.models
 
 import com.example.delegateadapter.delegate.diff.IComparableItem
-import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 import com.infinity_coder.divcalendar.domain.models.Payment
 
@@ -11,7 +10,7 @@ data class PaymentPresentationModel(
     val count: Int,
     var dividends: Double,
     val date: String,
-    val colorLogo:Int,
+    val colorLogo: Int,
     val originalCurrency: String,
     var currentCurrency: String
 ) : IComparableItem {
@@ -33,7 +32,7 @@ data class PaymentPresentationModel(
             )
     }
 
-    override fun id() = this
+    override fun id() = name + date
 
     override fun content() = this
 }

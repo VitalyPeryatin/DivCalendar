@@ -1,7 +1,6 @@
 package com.infinity_coder.divcalendar.data.repositories
 
 import android.content.Context
-import android.util.Log
 import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.network.RetrofitService
 import com.infinity_coder.divcalendar.data.network.model.CurrencyRateNetworkModel
@@ -14,6 +13,7 @@ object RateRepository {
     private const val RUB_TO_USD_KEY = "rub_to_usd"
     private const val USD_TO_RUB_KEY = "usd_to_rub"
     private const val DISPLAY_CURRENCY_KEY = "display_currency"
+    private const val OUT_DATE_LIMIT = 30 * 60 * 1000
 
     private val divCalendarApi = RetrofitService.divCalendarApi
 
@@ -29,23 +29,15 @@ object RateRepository {
 
     suspend fun getRates(): CurrencyRateNetworkModel {
         return try {
-            if (System.currentTimeMillis() - lastUpdateRateMillis > outDateLimit()) {
-                Log.d("Rates","network")
+            if (System.currentTimeMillis() - lastUpdateRateMillis > OUT_DATE_LIMIT) {
                 lastUpdateRateMillis = System.currentTimeMillis()
                 getRatesFromNetworkAndSaveToDB()
             } else {
-                Log.d("Rates","pref")
                 getRatesFromPref()
             }
         } catch (e: Exception) {
             getRatesFromPref()
         }
-    }
-
-    private fun outDateLimit(): Long {
-        return Calendar.getInstance().apply {
-            set(0, 0, 0, 0, 30, 0)
-        }.time.time
     }
 
     private fun getRatesFromPref(): CurrencyRateNetworkModel {

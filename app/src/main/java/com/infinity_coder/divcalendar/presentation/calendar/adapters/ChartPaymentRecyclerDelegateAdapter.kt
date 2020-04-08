@@ -99,6 +99,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
             setDrawValues(false)
         }
 
+        animateY(750)
         setData(data)
         setOnChartValueSelectedListener(this@ChartPaymentRecyclerDelegateAdapter)
         invalidate()
