@@ -16,7 +16,9 @@
     <string name="payout_chart">График выплат</string>
     <string name="annual_income">Прибыль</string>
     <string name="annual_yield">Доход</string>
-    <string name="monthly_income_label">Доход за месяц: +%1$.2f₽</string>
+    <string name="monthly_income_label_rub">Доход за месяц: +%1$.2f₽</string>
+    <string name="monthly_income_label_usd">Доход за месяц: +%1$.2f$</string>
+    <string name="monthly_income_label_undefined">Доход за месяц: +%1$.2f</string>
     <string name="count_securities">%d шт.</string>
     <string name="dividends">+%1$.2f₽</string>
 
@@ -41,4 +43,12 @@
     <string name="create_new_portfolio">Создание портфеля</string>
     <string name="delete">Удалить</string>
     <string name="create">Создать</string>
+    <string name="collect_portfolio">Соберите портфель</string>
+
+    <!-- settings -->
+    <string name="settings">Настройки</string>
+    <string name="account_for_taxes">Учитывать налоги</string>
+    <string name="feedback">Обратная связь</string>
+    <string name="email_developers">Написать разработчикам</string>
+    <string name="telegram_chat">Telegram-чат</string>
 </resources>

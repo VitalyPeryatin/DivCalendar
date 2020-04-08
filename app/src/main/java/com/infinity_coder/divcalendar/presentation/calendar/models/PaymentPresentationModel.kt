@@ -2,18 +2,21 @@ package com.infinity_coder.divcalendar.presentation.calendar.models
 
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
+import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 
 data class PaymentPresentationModel(
     val name: String,
     val logo: String,
     val count: Int,
-    val dividends: Double,
-    val date: String
+    var dividends: Double,
+    val date: String,
+    val originalCurrency: String,
+    var currentCurrency: String
 ) : IComparableItem {
 
     companion object {
-        fun from(groupPayment: Pair<String, List<PaymentNetworkModel>>) =
-            groupPayment.second.map { from(it) }
+        fun from(monthlyPayments: MonthlyPayment) =
+            monthlyPayments.payments.map { from(it) }
 
         private fun from(payment: PaymentNetworkModel) =
             PaymentPresentationModel(
@@ -21,11 +24,13 @@ data class PaymentPresentationModel(
                 logo = payment.logo,
                 count = payment.count,
                 dividends = payment.dividends,
-                date = payment.date
+                date = payment.date,
+                originalCurrency = payment.currency,
+                currentCurrency = ""
             )
     }
 
-    override fun id() = name
+    override fun id() = this
 
     override fun content() = this
 }

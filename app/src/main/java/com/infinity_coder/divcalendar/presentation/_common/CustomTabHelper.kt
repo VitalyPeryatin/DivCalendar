@@ -35,8 +35,8 @@ object CustomTabHelper {
                 packageNameToUse = packagesSupportingCustomTabs[0]
             }
             defaultPackageName != null &&
-                    !hasSpecializedHandlerIntents(packageManager)
-                    && packagesSupportingCustomTabs.contains(defaultPackageName) -> {
+                !hasSpecializedHandlerIntents(packageManager)
+                && packagesSupportingCustomTabs.contains(defaultPackageName) -> {
                 packageNameToUse = defaultPackageName
             }
             packagesSupportingCustomTabs.contains(STABLE_PACKAGE) -> {

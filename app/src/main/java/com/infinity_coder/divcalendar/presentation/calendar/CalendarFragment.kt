@@ -2,6 +2,7 @@ package com.infinity_coder.divcalendar.presentation.calendar
 
 import android.os.Bundle
 import android.view.View
+import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.delegateadapter.delegate.diff.DiffUtilCompositeAdapter
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.calendar.adapters.*
@@ -34,29 +36,43 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             (activity as AppCompatActivity).setActionBar(this)
         }
 
-        calendarPaymentsRecyclerView.run {
-            layoutManager = LinearLayoutManager(context)
-            adapter = DiffUtilCompositeAdapter.Builder()
-                .add(getChartAdapter())
-                .add(DividerDelegateAdapter())
-                .add(HeaderPaymentRecyclerDelegateAdapter())
-                .add(PaymentRecyclerDelegateAdapter())
-                .add(FooterPaymentRecyclerDelegateAdapter())
-                .build()
+        val checkedCurrencyRadioButton =
+            when (viewModel.getDisplayCurrency()) {
+                RateRepository.RUB_RATE -> rubRadioButton
+                RateRepository.USD_RATE -> usdRadioButton
+                else -> null
+            }
+
+        checkedCurrencyRadioButton?.isChecked = true
+
+        rubRadioButton.setOnCheckedChangeListener(this::checkCurrency)
+        usdRadioButton.setOnCheckedChangeListener(this::checkCurrency)
+
+        calendarPaymentsRecyclerView.layoutManager = LinearLayoutManager(context)
+        calendarPaymentsRecyclerView.adapter = DiffUtilCompositeAdapter.Builder()
+            .add(getChartAdapter()).add(DividerDelegateAdapter())
+            .add(HeaderPaymentRecyclerDelegateAdapter()).add(PaymentRecyclerDelegateAdapter())
+            .add(FooterPaymentRecyclerDelegateAdapter()).build()
+    }
+
+    private fun checkCurrency(radioButton: CompoundButton, isChecked: Boolean) {
+        if (!isChecked) return
+
+        when (radioButton) {
+            rubRadioButton -> viewModel.setDisplayCurrency(RateRepository.RUB_RATE)
+            usdRadioButton -> viewModel.setDisplayCurrency(RateRepository.USD_RATE)
         }
     }
 
     private fun getChartAdapter(): ChartPaymentRecyclerDelegateAdapter {
-        val adapter =
-            ChartPaymentRecyclerDelegateAdapter()
-        adapter.onItemClickListener =
-            object : ChartPaymentRecyclerDelegateAdapter.ChartItemClickListener {
-                override fun onClick(numberMonth: Int) {
-                    calendarPaymentsRecyclerView.smoothScrollToPosition(
-                        viewModel.getPositionMonth(numberMonth)
-                    )
-                }
+        val adapter = ChartPaymentRecyclerDelegateAdapter()
+        adapter.onItemClickListener = object : ChartPaymentRecyclerDelegateAdapter.ChartItemClickListener {
+            override fun onClick(numberMonth: Int) {
+                calendarPaymentsRecyclerView.smoothScrollToPosition(
+                    viewModel.getFooterPositionByMonthNumber(numberMonth)
+                )
             }
+        }
         return adapter
     }
 
