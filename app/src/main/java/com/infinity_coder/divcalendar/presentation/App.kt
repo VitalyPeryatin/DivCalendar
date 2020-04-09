@@ -13,7 +13,7 @@ class App : Application() {
         initActualizer()
     }
 
-    private fun initActualizer(){
+    private fun initActualizer() {
         Actualizer.subscribe(RateRepository::updateRates, RATE_OUT_DATE_LIMIT)
     }
 
