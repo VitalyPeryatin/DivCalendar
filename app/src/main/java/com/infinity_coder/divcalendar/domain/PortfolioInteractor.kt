@@ -43,6 +43,6 @@ class PortfolioInteractor {
 
     fun getCurrentPortfolio(): Flow<PortfolioWithSecurities> {
         return PortfolioRepository.getAllPortfoliosWithSecurities()
-            .map { it.first { portfolio -> getCurrentPortfolioName() == portfolio.portfolio.name }}
+            .map { it.first { portfolio -> getCurrentPortfolioName() == portfolio.portfolio.name } }
     }
 }

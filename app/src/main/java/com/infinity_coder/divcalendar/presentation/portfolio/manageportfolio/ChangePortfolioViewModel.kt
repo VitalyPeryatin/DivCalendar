@@ -34,7 +34,6 @@ class ChangePortfolioViewModel : ViewModel() {
             .launchIn(viewModelScope)
     }
 
-
     fun requestRenamePortfolio(oldName: String, newName: String) = viewModelScope.launch {
         val portfolioNames = portfolioInteractor.getAllPortfolioNames()
         when {
@@ -70,7 +69,6 @@ class ChangePortfolioViewModel : ViewModel() {
                 currentPortfolioEvent.value = portfolioName
             }
         }
-
     }
 
     fun requestConfirmationOnDeletePortfolio(portfolio: PortfolioDbModel) = viewModelScope.launch {

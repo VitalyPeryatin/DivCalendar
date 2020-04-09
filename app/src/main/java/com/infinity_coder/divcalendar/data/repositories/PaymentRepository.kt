@@ -14,7 +14,7 @@ object PaymentRepository {
                 15,
                 174.05,
                 "2020-01-04",
-                "USD"
+                "RUB"
             ),
             PaymentNetworkModel(
                 "Яндекс",

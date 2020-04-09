@@ -62,7 +62,7 @@ object PortfolioRepository {
         }
     }
 
-    fun getAllPortfoliosWithSecurities() : Flow<List<PortfolioWithSecurities>> {
+    fun getAllPortfoliosWithSecurities(): Flow<List<PortfolioWithSecurities>> {
         return portfolioDao.getAllPortfoliosWithSecurities()
     }
 
