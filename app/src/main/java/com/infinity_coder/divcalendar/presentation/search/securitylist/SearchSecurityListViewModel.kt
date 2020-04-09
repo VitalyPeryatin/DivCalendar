@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
-import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.SearchInteractor
 import com.infinity_coder.divcalendar.domain.SecurityInteractor
 import com.infinity_coder.divcalendar.presentation.search.model.QueryGroup
@@ -19,7 +18,6 @@ class SearchSecurityListViewModel : ViewModel() {
 
     private val searchInteractor = SearchInteractor()
     private val securityInteractor = SecurityInteractor()
-    private val portfolioInteractor = PortfolioInteractor()
 
     private var loadedMarket: String? = null
     private var loadedQuery: String? = null
@@ -64,8 +62,7 @@ class SearchSecurityListViewModel : ViewModel() {
     }
 
     fun appendSecurityPackage(securityPackage: SecurityPackageDbModel) = viewModelScope.launch {
-        val currentPortfolioName = portfolioInteractor.getCurrentPortfolioName()
-        securityInteractor.appendSecurityPackage(currentPortfolioName, securityPackage)
+        securityInteractor.appendSecurityPackage(securityPackage)
     }
 
     companion object {

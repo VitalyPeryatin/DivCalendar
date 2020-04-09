@@ -19,7 +19,7 @@ object SecurityRepository {
         securityDao.updateSecurityPackage(securityPackage)
     }
 
-    suspend fun getSecurityPackage(secid: String): SecurityPackageDbModel? {
-        return securityDao.getSecurityPackage(secid)
+    suspend fun getSecurityPackage(portfolioName: String, secid: String): SecurityPackageDbModel? {
+        return securityDao.getSecurityPackage(portfolioName, secid)
     }
 }

@@ -1,7 +1,10 @@
 package com.infinity_coder.divcalendar.presentation.portfolio
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -21,21 +24,13 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio), ChangeSecurityB
 
     private var changePackageDialog: ChangeSecurityBottomDialog? = null
 
-    private val viewModel: PortfolioViewModel by lazy {
+    public val viewModel: PortfolioViewModel by lazy {
         viewModel { PortfolioViewModel() }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_portfolio, container, false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

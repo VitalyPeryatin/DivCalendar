@@ -26,6 +26,13 @@ abstract class PortfolioDao {
     abstract fun getPortfolioWithSecurities(name: String): Flow<PortfolioWithSecurities?>
 
     @Transaction
+    @Query("SELECT * FROM ${PortfolioDbModel.TABLE_NAME}")
+    abstract fun getAllPortfoliosWithSecurities(): Flow<List<PortfolioWithSecurities>>
+
+    @Query("SELECT ${PortfolioDbModel.COLUMN_NAME} FROM ${PortfolioDbModel.TABLE_NAME}")
+    abstract suspend fun getPortfolioNames(): List<String>
+
+    @Transaction
     open suspend fun insertPortfolioWithSecurities(portfolio: PortfolioWithSecurities) {
         insertPortfolio(portfolio.portfolio)
         for (security in portfolio.securities) {

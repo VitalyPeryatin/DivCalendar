@@ -9,7 +9,6 @@ import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -24,6 +23,8 @@ class ChangePortfolioViewModel : ViewModel() {
     val showDeletePortfolioDialogEvent = LiveEvent<PortfolioDbModel>()
     val errorMessageEvent = LiveEvent<Int>()
     val currentPortfolioEvent = LiveEvent<String>()
+    val renamePortfolioEvent = LiveEvent<String>()
+    val createPortfolioEvent = LiveEvent<Unit?>()
 
     private val portfolioInteractor = PortfolioInteractor()
 
@@ -33,24 +34,51 @@ class ChangePortfolioViewModel : ViewModel() {
             .launchIn(viewModelScope)
     }
 
+
+    fun requestRenamePortfolio(oldName: String, newName: String) = viewModelScope.launch {
+        val portfolioNames = portfolioInteractor.getAllPortfolioNames()
+        when {
+            newName.isBlank() -> {
+                errorMessageEvent.value = ERROR_CODE_EMPTY_PORTFOLIO_NAME
+            }
+            portfolioNames.contains(newName) -> {
+                errorMessageEvent.value = ERROR_CODE_NOT_UNIQUE_NAME
+            }
+            else -> {
+                portfolioInteractor.renamePortfolio(oldName, newName)
+                renamePortfolioEvent.value = newName
+            }
+        }
+    }
+
     fun setCurrentPortfolio(name: String) {
         portfolioInteractor.setCurrentPortfolio(name)
     }
 
-    fun addPortfolio(portfolioName: String) = viewModelScope.launch {
-        portfolioInteractor.addPortfolio(portfolioName)
+    fun requestCreatePortfolio(portfolioName: String) = viewModelScope.launch {
+        val portfolioNames = portfolioInteractor.getAllPortfolioNames()
+        when {
+            portfolioName.isBlank() -> {
+                errorMessageEvent.value = ERROR_CODE_EMPTY_PORTFOLIO_NAME
+            }
+            portfolioNames.contains(portfolioName) -> {
+                errorMessageEvent.value = ERROR_CODE_NOT_UNIQUE_NAME
+            }
+            else -> {
+                portfolioInteractor.addPortfolio(portfolioName)
+                createPortfolioEvent.value = null
+                currentPortfolioEvent.value = portfolioName
+            }
+        }
+
     }
 
-    fun tryDeletePortfolio(portfolio: PortfolioDbModel) = viewModelScope.launch {
+    fun requestConfirmationOnDeletePortfolio(portfolio: PortfolioDbModel) = viewModelScope.launch {
         if (portfolioInteractor.getPortfolioCount() > 1) {
             showDeletePortfolioDialogEvent.value = portfolio
         } else {
-            errorMessageEvent.value = ERROR_MESSAGE_SMALL_COUNT_PORTFOLIO
+            errorMessageEvent.value = ERROR_CODE_SMALL_COUNT_PORTFOLIO
         }
-    }
-
-    fun renamePortfolio(oldName: String, newName: String) = viewModelScope.launch {
-        portfolioInteractor.renamePortfolio(oldName, newName)
     }
 
     fun deletePortfolio(name: String) = viewModelScope.launch {
@@ -63,7 +91,7 @@ class ChangePortfolioViewModel : ViewModel() {
     private suspend fun checkoutCurrentPortfolio(name: String): Boolean {
         val currentPortfolioName = portfolioInteractor.getCurrentPortfolioName()
         if (currentPortfolioName == name) {
-            val portfolioNames = portfolioInteractor.getAllPortfolioNames().first()
+            val portfolioNames = portfolioInteractor.getAllPortfolioNames()
             val deleteNameIndex = portfolioNames.indexOf(name)
             val iterator = portfolioNames.listIterator(deleteNameIndex)
             val nextPortfolioName = when {
@@ -80,6 +108,8 @@ class ChangePortfolioViewModel : ViewModel() {
     }
 
     companion object {
-        const val ERROR_MESSAGE_SMALL_COUNT_PORTFOLIO = 1
+        const val ERROR_CODE_SMALL_COUNT_PORTFOLIO = 1
+        const val ERROR_CODE_EMPTY_PORTFOLIO_NAME = 2
+        const val ERROR_CODE_NOT_UNIQUE_NAME = 3
     }
 }

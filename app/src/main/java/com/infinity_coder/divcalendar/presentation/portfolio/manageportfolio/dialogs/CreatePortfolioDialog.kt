@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.ChangePortfolioBottomDialog
 import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.ChangePortfolioViewModel
@@ -30,6 +31,9 @@ class CreatePortfolioDialog : DialogFragment() {
         createPortfolioButton.setOnClickListener {
             addPortfolio()
         }
+
+        parentViewModel.errorMessageEvent.observe(viewLifecycleOwner, Observer(this::showError))
+        parentViewModel.createPortfolioEvent.observe(viewLifecycleOwner, Observer { dismiss() })
     }
 
     override fun onAttach(context: Context) {
@@ -45,9 +49,18 @@ class CreatePortfolioDialog : DialogFragment() {
 
     private fun addPortfolio() {
         val name = portfolioNameEditText.text.toString()
-        parentViewModel.addPortfolio(name)
-        clickListener?.onPortfolioCreated(name)
-        dismiss()
+        parentViewModel.requestCreatePortfolio(name)
+    }
+
+    private fun showError(errorCode: Int) {
+        when (errorCode) {
+            ChangePortfolioViewModel.ERROR_CODE_EMPTY_PORTFOLIO_NAME -> {
+                portfolioNameInputLayout.error = resources.getString(R.string.empty_portfolio_name_error)
+            }
+            ChangePortfolioViewModel.ERROR_CODE_NOT_UNIQUE_NAME -> {
+                portfolioNameInputLayout.error = resources.getString(R.string.not_new_portfolio_name_error)
+            }
+        }
     }
 
     companion object {

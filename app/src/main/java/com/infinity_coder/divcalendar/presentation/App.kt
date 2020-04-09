@@ -21,8 +21,10 @@ class App : Application() {
     }
 
     private fun addDefaultPortfolio() = GlobalScope.launch {
-        portfolioInteractor.addPortfolio(DEFAULT_PORTFOLIO_NAME)
-        portfolioInteractor.setCurrentPortfolio(DEFAULT_PORTFOLIO_NAME)
+        if (portfolioInteractor.getCurrentPortfolioName().isEmpty()) {
+            portfolioInteractor.addPortfolio(DEFAULT_PORTFOLIO_NAME)
+            portfolioInteractor.setCurrentPortfolio(DEFAULT_PORTFOLIO_NAME)
+        }
     }
 
     companion object {

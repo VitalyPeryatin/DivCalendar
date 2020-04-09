@@ -63,7 +63,7 @@
     <string name="cancel">Cancel</string>
     <string name="sure_remove_portfolio">Are you sure you want to delete the portfolio \'%s\'?</string>
     <string name="empty_portfolio_name_error">The portfolio name must have at least one letter</string>
-    <string name="not_new_portfolio_name_error">The new portfolio name should be different from the old</string>
+    <string name="not_new_portfolio_name_error">Portfolio name must be unique</string>
     <string name="edit_portfolio_with_name">Edit portfolio \'%s\'</string>
     <string name="small_count_portfolio">This is the only portfolio. You cannot delete it.</string>
 

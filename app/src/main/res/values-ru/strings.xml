@@ -48,7 +48,7 @@
     <string name="cancel">Отмена</string>
     <string name="sure_remove_portfolio">Вы точно хотите удалить портфель \'%s\'? </string>
     <string name="empty_portfolio_name_error">В названии портфеля должна быть хотя бы одна буква</string>
-    <string name="not_new_portfolio_name_error">Новое название портфеля должно отличаться от старого</string>
+    <string name="not_new_portfolio_name_error">Название портфеля должно быть уникальным</string>
     <string name="edit_portfolio_with_name">Редактирование портфеля \'%s\'</string>
     <string name="small_count_portfolio">Это единственный портфель. Вы не можете его удалить.</string>
 

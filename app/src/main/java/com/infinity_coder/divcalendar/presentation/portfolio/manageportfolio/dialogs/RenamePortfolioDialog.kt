@@ -7,7 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.ChangePortfolioBottomDialog
+import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.ChangePortfolioViewModel
 import kotlinx.android.synthetic.main.dialog_rename_portfolio.*
 
 class RenamePortfolioDialog : DialogFragment() {
@@ -15,6 +18,11 @@ class RenamePortfolioDialog : DialogFragment() {
     private lateinit var oldPortfolioName: String
 
     private var clickListener: RenamePortfolioClickListener? = null
+
+    private val parentViewModel: ChangePortfolioViewModel by lazy {
+        val parentFragment = parentFragment as ChangePortfolioBottomDialog
+        parentFragment.viewModel
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_rename_portfolio, container, false)
@@ -25,25 +33,40 @@ class RenamePortfolioDialog : DialogFragment() {
 
         oldPortfolioName = requireArguments().getString(ARGUMENT_PORTFOLIO_NAME, "")
 
-        editButton.setOnClickListener { rename() }
-        titleTextView.text = resources.getString(R.string.edit_portfolio_with_name, oldPortfolioName)
+        initUI()
+
+        parentViewModel.errorMessageEvent.observe(viewLifecycleOwner, Observer(this::showError))
+        parentViewModel.renamePortfolioEvent.observe(viewLifecycleOwner, Observer(this::rename))
     }
 
-    private fun rename() {
-        val newPortfolioName = nameEditText.text.toString()
-        when {
-            newPortfolioName.isBlank() -> {
+    private fun initUI() {
+        changeButton.setOnClickListener { requestRename() }
+        titleTextView.text = resources.getString(
+            R.string.edit_portfolio_with_name,
+            oldPortfolioName
+        )
+    }
+
+    private fun showError(errorCode: Int) {
+        when (errorCode) {
+            ChangePortfolioViewModel.ERROR_CODE_EMPTY_PORTFOLIO_NAME -> {
                 nameInputLayout.error = resources.getString(R.string.empty_portfolio_name_error)
             }
-            newPortfolioName == oldPortfolioName -> {
+            ChangePortfolioViewModel.ERROR_CODE_NOT_UNIQUE_NAME -> {
                 nameInputLayout.error = resources.getString(R.string.not_new_portfolio_name_error)
             }
-            else -> {
-                nameInputLayout.error = null
-                clickListener?.renamePortfolio(oldPortfolioName, newPortfolioName)
-                dismiss()
-            }
         }
+    }
+
+    private fun requestRename() {
+        val newPortfolioName = nameEditText.text.toString()
+        parentViewModel.requestRenamePortfolio(oldPortfolioName, newPortfolioName)
+    }
+
+    private fun rename(newName: String) {
+        nameInputLayout.error = null
+        clickListener?.renamePortfolio(oldPortfolioName, newName)
+        dismiss()
     }
 
     override fun onAttach(context: Context) {

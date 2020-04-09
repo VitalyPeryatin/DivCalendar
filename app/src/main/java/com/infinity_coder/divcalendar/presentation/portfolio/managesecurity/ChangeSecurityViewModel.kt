@@ -47,13 +47,13 @@ class ChangeSecurityViewModel : ViewModel() {
             }
             else -> {
                 val securityPackage = getSecurityPackage(count, cost)
-                _changeSecurityPackage.postValue(securityPackage)
+                _changeSecurityPackage.value = securityPackage
             }
         }
     }
 
     fun removePackage() {
         val securityPackage = getSecurityPackage(0, 0f)
-        _changeSecurityPackage.postValue(securityPackage)
+        _changeSecurityPackage.value = securityPackage
     }
 }

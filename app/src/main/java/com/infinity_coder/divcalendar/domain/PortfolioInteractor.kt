@@ -17,10 +17,8 @@ class PortfolioInteractor {
         return PortfolioRepository.getAllPortfolios()
     }
 
-    fun getAllPortfolioNames(): Flow<List<String>> {
-        return getAllPortfolios().map { portfolios ->
-            portfolios.map { it.name }
-        }
+    suspend fun getAllPortfolioNames(): List<String> {
+        return PortfolioRepository.getAllPortfolioNames()
     }
 
     fun setCurrentPortfolio(name: String) {
@@ -43,12 +41,8 @@ class PortfolioInteractor {
         PortfolioRepository.renamePortfolio(oldName, newName)
     }
 
-    private fun getPortfolioWithSecurities(name: String): Flow<PortfolioWithSecurities> {
-        return PortfolioRepository.getPortfolioWithSecurities(name)
-    }
-
     fun getCurrentPortfolio(): Flow<PortfolioWithSecurities> {
-        val currentPortfolioName = getCurrentPortfolioName()
-        return getPortfolioWithSecurities(currentPortfolioName)
+        return PortfolioRepository.getAllPortfoliosWithSecurities()
+            .map { it.first { portfolio -> getCurrentPortfolioName() == portfolio.portfolio.name }}
     }
 }

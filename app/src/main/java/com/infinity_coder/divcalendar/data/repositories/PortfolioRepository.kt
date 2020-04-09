@@ -1,16 +1,14 @@
 package com.infinity_coder.divcalendar.data.repositories
 
 import android.content.Context
+import android.util.Log
 import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
 import com.infinity_coder.divcalendar.presentation.App
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
 object PortfolioRepository {
@@ -32,6 +30,10 @@ object PortfolioRepository {
             .distinctUntilChanged()
     }
 
+    suspend fun getAllPortfolioNames(): List<String> {
+        return portfolioDao.getPortfolioNames()
+    }
+
     private suspend fun getPortfolioByName(portfolioName: String): PortfolioDbModel? {
         return getPortfolioWithSecurities(portfolioName).first().portfolio
     }
@@ -43,7 +45,7 @@ object PortfolioRepository {
     }
 
     fun getCurrentPortfolio(): String {
-        return portfolioPreferences.getString(CURRENT_PORTFOLIO_NAME_KEY, App.DEFAULT_PORTFOLIO_NAME)!!
+        return portfolioPreferences.getString(CURRENT_PORTFOLIO_NAME_KEY, "")!!
     }
 
     suspend fun deletePortfolio(name: String) {
@@ -51,16 +53,22 @@ object PortfolioRepository {
     }
 
     suspend fun renamePortfolio(oldName: String, newName: String) {
+        Log.d("Sd", newName)
         val portfolio = getPortfolioByName(oldName)
+        Log.d("Sd", "portfolio: ${portfolio?.name}")
         if (portfolio != null) {
             portfolio.name = newName
             portfolioDao.updatePortfolio(portfolio)
         }
     }
 
+    fun getAllPortfoliosWithSecurities() : Flow<List<PortfolioWithSecurities>> {
+        return portfolioDao.getAllPortfoliosWithSecurities()
+    }
+
     fun getPortfolioWithSecurities(name: String): Flow<PortfolioWithSecurities> {
-        return portfolioDao.getPortfolioWithSecurities(name)
-            .filterNotNull()
+        return getAllPortfoliosWithSecurities()
+            .map { it.first { portfolio -> portfolio.portfolio.name == name } }
             .distinctUntilChanged()
     }
 }

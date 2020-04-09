@@ -4,8 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
-import androidx.room.PrimaryKey
+import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel.Companion.COLUMN_NAME
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel.Companion.COLUMN_PORTFOLIO_NAME
+import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel.Companion.COLUMN_SEC_ID
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel.Companion.TABLE_NAME
 import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
 
@@ -13,13 +14,13 @@ import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
     tableName = TABLE_NAME,
     foreignKeys = [ForeignKey(
         entity = PortfolioDbModel::class,
-        parentColumns = [PortfolioDbModel.COLUMN_NAME],
+        parentColumns = [COLUMN_NAME],
         childColumns = [COLUMN_PORTFOLIO_NAME],
         onDelete = CASCADE
-    )]
+    )],
+    primaryKeys = [COLUMN_SEC_ID, COLUMN_PORTFOLIO_NAME]
 )
 data class SecurityPackageDbModel(
-    @PrimaryKey
     @ColumnInfo(name = COLUMN_SEC_ID)
     val secid: String,
 

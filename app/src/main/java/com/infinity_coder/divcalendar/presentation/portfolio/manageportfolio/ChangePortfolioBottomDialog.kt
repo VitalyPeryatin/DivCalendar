@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.bottom_dialog_change_portfolio.*
 
 class ChangePortfolioBottomDialog : BottomDialog(),
     CreatePortfolioDialog.OnCreatePortfolioClickListener,
-    RenamePortfolioDialog.RenamePortfolioClickListener,
     DeletePortfolioDialog.DeletePortfolioClickListener {
 
     private var clickListener: OnChangePortfolioClickListener? = null
@@ -36,7 +35,7 @@ class ChangePortfolioBottomDialog : BottomDialog(),
         }
 
         override fun onDelete(portfolio: PortfolioDbModel) {
-            viewModel.tryDeletePortfolio(portfolio)
+            viewModel.requestConfirmationOnDeletePortfolio(portfolio)
         }
 
         override fun onEdit(portfolio: PortfolioDbModel) {
@@ -95,7 +94,7 @@ class ChangePortfolioBottomDialog : BottomDialog(),
 
     private fun showError(errorType: Int) {
         val message = when (errorType) {
-            ChangePortfolioViewModel.ERROR_MESSAGE_SMALL_COUNT_PORTFOLIO -> {
+            ChangePortfolioViewModel.ERROR_CODE_SMALL_COUNT_PORTFOLIO -> {
                 resources.getString(R.string.small_count_portfolio)
             }
             else -> {
@@ -131,10 +130,6 @@ class ChangePortfolioBottomDialog : BottomDialog(),
 
     override fun onPortfolioCreated(portfolioName: String) {
         setCurrentPortfolio(portfolioName)
-    }
-
-    override fun renamePortfolio(from: String, to: String) {
-        viewModel.renamePortfolio(from, to)
     }
 
     override fun onDelete(name: String) {

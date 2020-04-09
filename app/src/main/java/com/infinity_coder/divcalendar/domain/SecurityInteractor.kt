@@ -5,7 +5,10 @@ import com.infinity_coder.divcalendar.data.repositories.SecurityRepository
 
 class SecurityInteractor {
 
+    private val portfolioInteractor = PortfolioInteractor()
+
     suspend fun changeSecurityPackage(securityPackage: SecurityPackageDbModel) {
+        securityPackage.portfolioName = getCurrentPortfolioName()
         if (securityPackage.count <= 0) {
             SecurityRepository.deleteSecurityPackage(securityPackage)
         } else {
@@ -13,8 +16,9 @@ class SecurityInteractor {
         }
     }
 
-    suspend fun appendSecurityPackage(portfolioName: String, newSecurityPackage: SecurityPackageDbModel) {
-        val securitiesPackage = SecurityRepository.getSecurityPackage(newSecurityPackage.secid)
+    suspend fun appendSecurityPackage(newSecurityPackage: SecurityPackageDbModel) {
+        val portfolioName = getCurrentPortfolioName()
+        val securitiesPackage = SecurityRepository.getSecurityPackage(portfolioName, newSecurityPackage.secid)
         if (securitiesPackage == null) {
             newSecurityPackage.portfolioName = portfolioName
             SecurityRepository.addSecurityPackage(newSecurityPackage)
@@ -23,5 +27,9 @@ class SecurityInteractor {
             securitiesPackage.totalPrice += newSecurityPackage.totalPrice
             SecurityRepository.updateSecurityPackage(securitiesPackage)
         }
+    }
+
+    private fun getCurrentPortfolioName(): String {
+        return portfolioInteractor.getCurrentPortfolioName()
     }
 }
