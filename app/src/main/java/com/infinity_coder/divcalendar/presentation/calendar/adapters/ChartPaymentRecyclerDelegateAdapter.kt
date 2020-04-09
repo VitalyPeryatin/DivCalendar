@@ -83,8 +83,11 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         axisLeft.setDrawGridLines(false)
         axisLeft.axisMinimum = 0f
 
-        val months = context.resources.getStringArray(R.array.months_nominative_case)
+        val months = context.resources.getStringArray(R.array.months_first_letter)
         xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.labelCount = 12
         xAxis.setDrawGridLines(false)
         xAxis.valueFormatter = object : ValueFormatter() {
             override fun getAxisLabel(value: Float, axis: AxisBase?): String {

@@ -30,8 +30,8 @@ object RateRepository {
 
     fun getRates(): CurrencyRateNetworkModel {
         return CurrencyRateNetworkModel(
-            rubToUsd = currencyPreferences.getFloat(RUB_TO_USD_KEY, 0f),
-            usdToRub = currencyPreferences.getFloat(USD_TO_RUB_KEY, 0f)
+            rubToUsd = currencyPreferences.getFloat(RUB_TO_USD_KEY, 73.6f),
+            usdToRub = currencyPreferences.getFloat(USD_TO_RUB_KEY, 0.012919896f)
         )
     }
 

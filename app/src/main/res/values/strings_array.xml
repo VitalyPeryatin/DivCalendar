@@ -30,5 +30,20 @@
         <item>Ноябрь</item>
         <item>Декабрь</item>
     </string-array>
-
+    
+    <string-array name="months_first_letter">
+        <item>Янв</item>
+        <item>Фев</item>
+        <item>Мар</item>
+        <item>Апр</item>
+        <item>Май</item>
+        <item>Июн</item>
+        <item>Июл</item>
+        <item>Авг</item>
+        <item>Сен</item>
+        <item>Окт</item>
+        <item>Ноя</item>
+        <item>Дек</item>
+    </string-array>
+    
 </resources>

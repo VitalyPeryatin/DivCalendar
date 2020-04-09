@@ -45,7 +45,6 @@ class CalendarInteractor {
     }
 
     private fun getDominantColorFromImage(url: String): Int {
-        // TODO сделать обработку SVG
         return try {
             val inputStream: InputStream = URL(url).openStream()
             val image = BitmapFactory.decodeStream(inputStream)
