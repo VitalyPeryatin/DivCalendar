@@ -5,7 +5,6 @@ import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.network.RetrofitService
 import com.infinity_coder.divcalendar.data.network.model.CurrencyRateNetworkModel
 import com.infinity_coder.divcalendar.presentation.App
-import java.util.*
 
 object RateRepository {
 
@@ -13,7 +12,6 @@ object RateRepository {
     private const val RUB_TO_USD_KEY = "rub_to_usd"
     private const val USD_TO_RUB_KEY = "usd_to_rub"
     private const val DISPLAY_CURRENCY_KEY = "display_currency"
-    private const val OUT_DATE_LIMIT = 30 * 60 * 1000
 
     private val divCalendarApi = RetrofitService.divCalendarApi
 
@@ -25,35 +23,19 @@ object RateRepository {
         Context.MODE_PRIVATE
     )
 
-    private var lastUpdateRateMillis = 0L
-
-    suspend fun getRates(): CurrencyRateNetworkModel {
-        return try {
-            if (System.currentTimeMillis() - lastUpdateRateMillis > OUT_DATE_LIMIT) {
-                lastUpdateRateMillis = System.currentTimeMillis()
-                getRatesFromNetworkAndSaveToDB()
-            } else {
-                getRatesFromPref()
-            }
-        } catch (e: Exception) {
-            getRatesFromPref()
-        }
+    suspend fun updateRates() {
+        val dbPosts = getRatesFromNetwork()
+        saveRatesToPref(dbPosts)
     }
 
-    private fun getRatesFromPref(): CurrencyRateNetworkModel {
+    fun getRates(): CurrencyRateNetworkModel {
         return CurrencyRateNetworkModel(
             rubToUsd = currencyPreferences.getFloat(RUB_TO_USD_KEY, 0f),
             usdToRub = currencyPreferences.getFloat(USD_TO_RUB_KEY, 0f)
         )
     }
 
-    private suspend fun getRatesFromNetworkAndSaveToDB(): CurrencyRateNetworkModel {
-        val dbPosts = getRatesFromNetwork()
-        saveRatesToPref(dbPosts)
-        return dbPosts
-    }
-
-    private suspend fun saveRatesToPref(rates: CurrencyRateNetworkModel) {
+    private fun saveRatesToPref(rates: CurrencyRateNetworkModel) {
         currencyPreferences.edit {
             putFloat(RUB_TO_USD_KEY, rates.rubToUsd)
             putFloat(USD_TO_RUB_KEY, rates.usdToRub)

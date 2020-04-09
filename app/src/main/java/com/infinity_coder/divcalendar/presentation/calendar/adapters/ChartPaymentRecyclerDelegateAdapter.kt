@@ -99,7 +99,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
             setDrawValues(false)
         }
 
-        animateY(750)
+        animateY(ANIMATE_DURATION)
         setData(data)
         setOnChartValueSelectedListener(this@ChartPaymentRecyclerDelegateAdapter)
         invalidate()
@@ -122,5 +122,6 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
 
     companion object {
         private const val MAX_YEARS_CHOICE = 2
+        private const val ANIMATE_DURATION = 750
     }
 }

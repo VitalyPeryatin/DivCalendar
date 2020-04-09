@@ -22,9 +22,7 @@ class CalendarInteractor {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getPayments(): Flow<List<MonthlyPayment>> {
-        return PaymentRepository.loadAllPayments()
-            .map { groupAndSortPayments(it) }
-            .onCompletion { RateRepository.getRates() }
+        return PaymentRepository.loadAllPayments().map { groupAndSortPayments(it) }
     }
 
     private fun groupAndSortPayments(payments: List<PaymentNetworkModel>): List<MonthlyPayment> {
