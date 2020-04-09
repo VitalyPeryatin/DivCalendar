@@ -33,10 +33,10 @@ class App : Application() {
             portfolioInteractor.setCurrentPortfolio(DEFAULT_PORTFOLIO_NAME)
         }
     }
-
+  
     companion object {
         const val DEFAULT_PORTFOLIO_NAME = "Default"
-
+      
         private const val RATE_OUT_DATE_LIMIT = 30 * 60 * 1000L
 
         lateinit var instance: App
