@@ -8,9 +8,10 @@ data class ChartPresentationModel(
     val annualYield: Float,
     val currentCurrency: String,
     val monthlyPayments: List<MonthlyPayment>,
-    val colors: List<Int>
+    val colors: List<Int>,
+    val id: Int = 0
 ) : IComparableItem {
-    override fun id() = this
+    override fun id() = id
 
     override fun content() = this
 }

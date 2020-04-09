@@ -5,7 +5,7 @@ import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 
 data class FooterPaymentPresentationModel(
     val id: Int,
-    val income: Double,
+    var income: Double,
     val originalCurrency: String,
     var currentCurrency: String
 ) : IComparableItem {
