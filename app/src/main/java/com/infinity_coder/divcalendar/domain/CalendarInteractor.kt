@@ -5,13 +5,11 @@ import android.graphics.Color
 import androidx.palette.graphics.Palette
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
 import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
-import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onCompletion
 import java.io.InputStream
 import java.net.URL
 import java.util.*

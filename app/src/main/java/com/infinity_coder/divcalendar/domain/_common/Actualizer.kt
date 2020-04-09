@@ -14,21 +14,21 @@ object Actualizer {
         subscribe(RateRepository::updateRates, OUT_DATE_LIMIT.toLong())
     }
 
-    fun actualize() = GlobalScope.launch{
-       subscriptions.filter { System.currentTimeMillis() - it.lastUpdateMillis > it.outDateLimit }
-           .forEach {
-               it.lastUpdateMillis = System.currentTimeMillis()
-               it.updateFunction.invoke()
-           }
+    fun actualize() = GlobalScope.launch {
+        subscriptions.filter { System.currentTimeMillis() - it.lastUpdateMillis > it.outDateLimit }
+            .forEach {
+                it.lastUpdateMillis = System.currentTimeMillis()
+                it.updateFunction.invoke()
+            }
     }
 
-    private fun subscribe(updateFunction:suspend ()->Unit, outDateLimit:Long){
+    private fun subscribe(updateFunction: suspend () -> Unit, outDateLimit: Long) {
         subscriptions.add(Subscription(updateFunction, outDateLimit))
     }
 
     data class Subscription(
-        val updateFunction: suspend ()->Unit,
+        val updateFunction: suspend () -> Unit,
         val outDateLimit: Long,
-        var lastUpdateMillis:Long = 0L
+        var lastUpdateMillis: Long = 0L
     )
 }
