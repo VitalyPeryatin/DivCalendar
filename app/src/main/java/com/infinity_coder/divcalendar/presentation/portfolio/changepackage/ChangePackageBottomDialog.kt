@@ -35,7 +35,8 @@ class ChangePackageBottomDialog : BottomDialog() {
 
         security = SecurityNetworkModel(
             ticker = arguments!!.getString(ARGUMENT_SEC_ID, ""),
-            name = arguments!!.getString(ARGUMENT_NAME, "")
+            name = arguments!!.getString(ARGUMENT_NAME, ""),
+            logo = arguments!!.getString(ARGUMENT_LOGO, "")
         )
         viewModel.setSecurity(security)
     }
@@ -121,6 +122,7 @@ class ChangePackageBottomDialog : BottomDialog() {
 
         private const val ARGUMENT_SEC_ID = "sec_id"
         private const val ARGUMENT_NAME = "sec_name"
+        private const val ARGUMENT_LOGO = "logo"
 
         private const val SHAKE_AMPLITUDE = 8f
 
@@ -128,7 +130,8 @@ class ChangePackageBottomDialog : BottomDialog() {
             val dialog = ChangePackageBottomDialog()
             dialog.arguments = bundleOf(
                 ARGUMENT_SEC_ID to security.secid,
-                ARGUMENT_NAME to security.name
+                ARGUMENT_NAME to security.name,
+                ARGUMENT_LOGO to security.logo
             )
             return dialog
         }

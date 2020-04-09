@@ -15,6 +15,9 @@ data class SecurityPackageDbModel(
     @ColumnInfo(name = COLUMN_NAME)
     val name: String,
 
+    @ColumnInfo(name = COLUMN_LOGO)
+    val logo: String,
+
     @ColumnInfo(name = COLUMN_COUNT)
     var count: Int = 0,
 
@@ -32,6 +35,7 @@ data class SecurityPackageDbModel(
 
         const val COLUMN_SEC_ID = "sec_id"
         const val COLUMN_NAME = "name"
+        const val COLUMN_LOGO = "logo"
         const val COLUMN_COUNT = "count"
         const val COLUMN_TOTAL_PRICE = "total_price"
         const val COLUMN_YEAR_YIELD = "year_yield"
