@@ -8,31 +8,27 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 abstract class BottomDialog : BottomSheetDialogFragment() {
 
-    private val bottomSheetBehaviorCallback: BottomSheetBehavior.BottomSheetCallback =
-        object : BottomSheetBehavior.BottomSheetCallback() {
+    private val bottomSheetBehaviorCallback: BottomSheetBehavior.BottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
 
-            var lastOffset: Float = 0f
-
-            override fun onStateChanged(@NonNull bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_SETTLING && lastOffset < -0.9) {
-                    dismiss()
-                }
-                lastOffset = 0f
-            }
-
-            override fun onSlide(@NonNull bottomSheet: View, slideOffset: Float) {
-                lastOffset = slideOffset
+        override fun onStateChanged(@NonNull bottomSheet: View, newState: Int) {
+            if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                dismiss()
             }
         }
+
+        override fun onSlide(@NonNull bottomSheet: View, slideOffset: Float) {
+        }
+    }
 
     override fun onStart() {
         super.onStart()
 
-        val params = (view!!.parent as View).layoutParams as CoordinatorLayout.LayoutParams
-        val behavior = params.behavior
+        getSheetBehavior().addBottomSheetCallback(bottomSheetBehaviorCallback)
+    }
 
-        if (behavior != null && behavior is BottomSheetBehavior<*>) {
-            behavior.addBottomSheetCallback(bottomSheetBehaviorCallback)
-        }
+    private fun getSheetBehavior(): BottomSheetBehavior<View> {
+        val sheetView = (requireView().parent as View)
+        val sheetParams = sheetView.layoutParams as CoordinatorLayout.LayoutParams
+        return sheetParams.behavior as BottomSheetBehavior<View>
     }
 }

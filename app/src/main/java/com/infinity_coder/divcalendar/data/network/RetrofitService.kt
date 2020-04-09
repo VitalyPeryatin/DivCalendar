@@ -22,10 +22,12 @@ object RetrofitService {
         .build()
 
     private fun provideOkHttpClientBuilder(): OkHttpClient.Builder = OkHttpClient.Builder().apply {
-        val logging = HttpLoggingInterceptor().apply {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
-        addInterceptor(logging)
+        val actualizerInterceptor = ActualizerInterceptor()
+        addInterceptor(loggingInterceptor)
+        addInterceptor(actualizerInterceptor)
         connectTimeout(10, TimeUnit.SECONDS)
         readTimeout(10, TimeUnit.SECONDS)
         writeTimeout(10, TimeUnit.SECONDS)

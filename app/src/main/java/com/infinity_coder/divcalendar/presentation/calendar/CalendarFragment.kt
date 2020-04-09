@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.delegateadapter.delegate.diff.DiffUtilCompositeAdapter
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.R
@@ -49,6 +50,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         usdRadioButton.setOnCheckedChangeListener(this::checkCurrency)
 
         calendarPaymentsRecyclerView.layoutManager = LinearLayoutManager(context)
+        (calendarPaymentsRecyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         calendarPaymentsRecyclerView.adapter = DiffUtilCompositeAdapter.Builder()
             .add(getChartAdapter()).add(DividerDelegateAdapter())
             .add(HeaderPaymentRecyclerDelegateAdapter()).add(PaymentRecyclerDelegateAdapter())
