@@ -14,7 +14,7 @@ android {
         applicationId "com.infinity_coder.divcalendar"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 3
+        versionCode 4
         versionName "v1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -148,4 +148,9 @@ dependencies {
     implementation "com.github.creageek:segmented:1.0.0"
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
+
+    // Billing
+    def billing_version = "2.2.0"
+    implementation "com.android.billingclient:billing:$billing_version"
+    implementation "com.android.billingclient:billing-ktx:$billing_version"
 }
