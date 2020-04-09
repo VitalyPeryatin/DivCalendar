@@ -1,6 +1,5 @@
 package com.infinity_coder.divcalendar.presentation.portfolio
 
-import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

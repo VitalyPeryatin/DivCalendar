@@ -1,5 +1,6 @@
 package com.infinity_coder.divcalendar.domain._common
 
+import android.util.Log
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -17,6 +18,7 @@ object Actualizer {
 
     fun subscribe(updateFunction: suspend () -> Unit, outDateLimit: Long) {
         subscriptions.add(Subscription(updateFunction, outDateLimit))
+        Log.d("Actualizer", "$subscriptions")
     }
 
     data class Subscription(
