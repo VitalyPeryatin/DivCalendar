@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-
 class PortfolioInteractor {
 
     suspend fun addPortfolio(portfolioName: String) {
@@ -49,7 +48,7 @@ class PortfolioInteractor {
     }
 
     fun getCurrentPortfolio(): Flow<PortfolioWithSecurities> {
-        val currentPortfolioName= getCurrentPortfolioName()
+        val currentPortfolioName = getCurrentPortfolioName()
         return getPortfolioWithSecurities(currentPortfolioName)
     }
 }

@@ -3,7 +3,6 @@ package com.infinity_coder.divcalendar.data.db.model
 import androidx.room.Embedded
 import androidx.room.Relation
 
-
 class PortfolioWithSecurities {
     @Embedded
     lateinit var portfolio: PortfolioDbModel
