@@ -19,20 +19,11 @@ abstract class PortfolioDao {
     abstract suspend fun deletePortfolio(name: String)
 
     @Query("SELECT * FROM ${PortfolioDbModel.TABLE_NAME}")
-    abstract fun getAllPortfolios(): Flow<List<PortfolioDbModel>>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun addSecurityPackage(securityPackage: SecurityPackageDbModel)
-
-    @Query("SELECT * FROM ${SecurityPackageDbModel.TABLE_NAME} WHERE ${SecurityPackageDbModel.COLUMN_SEC_ID} = :secId")
-    abstract suspend fun getSecurityPackage(secId: String): SecurityPackageDbModel?
+    abstract fun getAllPortfolios(): Flow<List<PortfolioDbModel>?>
 
     @Transaction
     @Query("SELECT * FROM ${PortfolioDbModel.TABLE_NAME} WHERE ${PortfolioDbModel.COLUMN_NAME} = :name LIMIT 1")
-    abstract fun getPortfolioWithSecurities(name: String): Flow<PortfolioWithSecurities>
-
-    @Delete
-    abstract suspend fun deleteSecurityPackage(securityPackage: SecurityPackageDbModel)
+    abstract fun getPortfolioWithSecurities(name: String): Flow<PortfolioWithSecurities?>
 
     @Transaction
     open suspend fun insertPortfolioWithSecurities(portfolio: PortfolioWithSecurities) {
@@ -41,4 +32,7 @@ abstract class PortfolioDao {
             addSecurityPackage(security)
         }
     }
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun addSecurityPackage(securityPackage: SecurityPackageDbModel)
 }

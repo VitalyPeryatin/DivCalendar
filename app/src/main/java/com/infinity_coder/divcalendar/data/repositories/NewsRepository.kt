@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.flow
 object NewsRepository {
 
     private val newsDao = DivCalendarDatabase.roomDatabase.newsDao
-    private val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
 
     private val divCalendarApi = RetrofitService.divCalendarApi
 
@@ -50,6 +49,7 @@ object NewsRepository {
 
     private suspend fun getSecuritiesForCurrentPortfolio(): List<SecurityPackageDbModel> {
         val currentPortfolioName = PortfolioRepository.getCurrentPortfolio()
-        return portfolioDao.getPortfolioWithSecurities(currentPortfolioName).first().securities
+        return PortfolioRepository.getPortfolioWithSecurities(currentPortfolioName)
+            .first().securities
     }
 }

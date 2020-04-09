@@ -4,5 +4,6 @@
     <item android:id="@+id/settingsItem"
         android:icon="@drawable/ic_settings"
         app:showAsAction="always"
-        android:title="" />
+        android:title=""
+        android:orderInCategory="10"/>
 </menu>

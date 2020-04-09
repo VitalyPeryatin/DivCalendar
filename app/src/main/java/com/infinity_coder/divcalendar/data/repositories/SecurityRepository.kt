@@ -1,26 +1,25 @@
 package com.infinity_coder.divcalendar.data.repositories
 
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
-import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import kotlinx.coroutines.flow.Flow
 
 object SecurityRepository {
 
-    private val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
-
-    fun loadPortfolio(portfolioName: String): Flow<PortfolioWithSecurities> =
-        portfolioDao.getPortfolioWithSecurities(portfolioName)
+    private val securityDao = DivCalendarDatabase.roomDatabase.securityDao
 
     suspend fun deleteSecurityPackage(securityPackage: SecurityPackageDbModel) {
-        portfolioDao.deleteSecurityPackage(securityPackage)
+        securityDao.deleteSecurityPackage(securityPackage)
     }
 
     suspend fun addSecurityPackage(securityPackage: SecurityPackageDbModel) {
-        portfolioDao.addSecurityPackage(securityPackage)
+        securityDao.insertSecurityPackage(securityPackage)
+    }
+
+    suspend fun updateSecurityPackage(securityPackage: SecurityPackageDbModel) {
+        securityDao.updateSecurityPackage(securityPackage)
     }
 
     suspend fun getSecurityPackage(secid: String): SecurityPackageDbModel? {
-        return portfolioDao.getSecurityPackage(secid)
+        return securityDao.getSecurityPackage(secid)
     }
 }

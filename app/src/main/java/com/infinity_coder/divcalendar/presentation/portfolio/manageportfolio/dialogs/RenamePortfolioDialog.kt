@@ -41,6 +41,7 @@ class RenamePortfolioDialog : DialogFragment() {
             else -> {
                 nameInputLayout.error = null
                 clickListener?.renamePortfolio(oldPortfolioName, newPortfolioName)
+                dismiss()
             }
         }
     }

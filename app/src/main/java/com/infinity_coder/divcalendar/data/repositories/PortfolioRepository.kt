@@ -4,10 +4,15 @@ import android.content.Context
 import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
+import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
 import com.infinity_coder.divcalendar.presentation.App
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 
+@OptIn(ExperimentalCoroutinesApi::class)
 object PortfolioRepository {
 
     private val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
@@ -23,10 +28,12 @@ object PortfolioRepository {
 
     fun getAllPortfolios(): Flow<List<PortfolioDbModel>> {
         return portfolioDao.getAllPortfolios()
+            .filterNotNull()
+            .distinctUntilChanged()
     }
 
-    suspend fun getPortfolioByName(portfolioName: String): PortfolioDbModel? {
-        return portfolioDao.getPortfolioWithSecurities(portfolioName).first().portfolio
+    private suspend fun getPortfolioByName(portfolioName: String): PortfolioDbModel? {
+        return getPortfolioWithSecurities(portfolioName).first().portfolio
     }
 
     fun setCurrentPortfolio(name: String) {
@@ -49,5 +56,11 @@ object PortfolioRepository {
             portfolio.name = newName
             portfolioDao.updatePortfolio(portfolio)
         }
+    }
+
+    fun getPortfolioWithSecurities(name: String): Flow<PortfolioWithSecurities> {
+        return portfolioDao.getPortfolioWithSecurities(name)
+            .filterNotNull()
+            .distinctUntilChanged()
     }
 }

@@ -8,11 +8,13 @@ import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ChangePortfolioViewModel : ViewModel() {
 
     private val _portfolios = MutableLiveData<List<PortfolioDbModel>>()
@@ -59,7 +61,7 @@ class ChangePortfolioViewModel : ViewModel() {
     }
 
     private suspend fun checkoutCurrentPortfolio(name: String): Boolean {
-        val currentPortfolioName = portfolioInteractor.getCurrentPortfolio()
+        val currentPortfolioName = portfolioInteractor.getCurrentPortfolioName()
         if (currentPortfolioName == name) {
             val portfolioNames = portfolioInteractor.getAllPortfolioNames().first()
             val deleteNameIndex = portfolioNames.indexOf(name)

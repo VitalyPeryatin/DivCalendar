@@ -64,7 +64,7 @@ class SearchSecurityListViewModel : ViewModel() {
     }
 
     fun appendSecurityPackage(securityPackage: SecurityPackageDbModel) = viewModelScope.launch {
-        val currentPortfolioName = portfolioInteractor.getCurrentPortfolio()
+        val currentPortfolioName = portfolioInteractor.getCurrentPortfolioName()
         securityInteractor.appendSecurityPackage(currentPortfolioName, securityPackage)
     }
 
