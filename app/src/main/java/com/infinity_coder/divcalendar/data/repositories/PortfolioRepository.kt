@@ -5,6 +5,7 @@ import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.presentation.App
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 
 object PortfolioRepository {
@@ -20,7 +21,7 @@ object PortfolioRepository {
         portfolioDao.insertPortfolio(portfolio)
     }
 
-    suspend fun getAllPortfolios(): List<PortfolioDbModel> {
+    fun getAllPortfolios(): Flow<List<PortfolioDbModel>> {
         return portfolioDao.getAllPortfolios()
     }
 
@@ -36,5 +37,17 @@ object PortfolioRepository {
 
     fun getCurrentPortfolio(): String {
         return portfolioPreferences.getString(CURRENT_PORTFOLIO_NAME_KEY, App.DEFAULT_PORTFOLIO_NAME)!!
+    }
+
+    suspend fun deletePortfolio(name: String) {
+        portfolioDao.deletePortfolio(name)
+    }
+
+    suspend fun renamePortfolio(oldName: String, newName: String) {
+        val portfolio = getPortfolioByName(oldName)
+        if (portfolio != null) {
+            portfolio.name = newName
+            portfolioDao.updatePortfolio(portfolio)
+        }
     }
 }

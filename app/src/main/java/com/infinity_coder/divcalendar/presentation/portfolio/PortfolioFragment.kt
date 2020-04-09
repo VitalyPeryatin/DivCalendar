@@ -11,8 +11,8 @@ import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
-import com.infinity_coder.divcalendar.presentation.portfolio.changeportfolio.ChangePortfolioBottomDialog
-import com.infinity_coder.divcalendar.presentation.portfolio.changesecurity.ChangeSecurityBottomDialog
+import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.ChangePortfolioBottomDialog
+import com.infinity_coder.divcalendar.presentation.portfolio.managesecurity.ChangeSecurityBottomDialog
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
 import kotlinx.android.synthetic.main.fragment_portfolio.*
 import kotlinx.android.synthetic.main.layout_stub_empty.view.*

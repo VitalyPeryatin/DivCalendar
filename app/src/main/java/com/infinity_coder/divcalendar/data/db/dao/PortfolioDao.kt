@@ -12,8 +12,14 @@ abstract class PortfolioDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract suspend fun insertPortfolio(portfolio: PortfolioDbModel)
 
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun updatePortfolio(portfolio: PortfolioDbModel)
+
+    @Query("DELETE FROM ${PortfolioDbModel.TABLE_NAME} WHERE ${PortfolioDbModel.COLUMN_NAME} = :name")
+    abstract suspend fun deletePortfolio(name: String)
+
     @Query("SELECT * FROM ${PortfolioDbModel.TABLE_NAME}")
-    abstract suspend fun getAllPortfolios(): List<PortfolioDbModel>
+    abstract fun getAllPortfolios(): Flow<List<PortfolioDbModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun addSecurityPackage(securityPackage: SecurityPackageDbModel)

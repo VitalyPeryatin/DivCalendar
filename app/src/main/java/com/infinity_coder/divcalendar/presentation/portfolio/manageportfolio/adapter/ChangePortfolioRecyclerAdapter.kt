@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation.portfolio.changeportfolio.adapter
+package com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -43,10 +43,20 @@ class ChangePortfolioRecyclerAdapter(
             containerView.setOnClickListener {
                 onItemClickListener?.onItemClick(portfolio)
             }
+            editButton.setOnClickListener {
+                onItemClickListener?.onEdit(portfolio)
+            }
+            deleteButton.setOnClickListener {
+                onItemClickListener?.onDelete(portfolio)
+            }
         }
     }
 
     interface OnItemClickListener {
         fun onItemClick(portfolio: PortfolioDbModel)
+
+        fun onDelete(portfolio: PortfolioDbModel)
+
+        fun onEdit(portfolio: PortfolioDbModel)
     }
 }

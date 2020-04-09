@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation.portfolio.changesecurity
+package com.infinity_coder.divcalendar.presentation.portfolio.managesecurity
 
 import android.content.Context
 import android.os.Bundle

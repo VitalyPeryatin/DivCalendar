@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_medium"
         android:textColor="?android:textColorPrimary"
-        android:gravity="center"
+        android:gravity="start"
         android:textSize="@dimen/font_few_big"
         android:padding="16dp"
         android:text="@string/create_new_portfolio"/>

@@ -1,10 +1,11 @@
-package com.infinity_coder.divcalendar.presentation.portfolio.changeportfolio
+package com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio
 
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,22 +13,34 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.viewModel
-import com.infinity_coder.divcalendar.presentation.portfolio.changeportfolio.adapter.ChangePortfolioRecyclerAdapter
-import com.infinity_coder.divcalendar.presentation.portfolio.createportfolio.CreatePortfolioDialog
+import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.adapter.ChangePortfolioRecyclerAdapter
+import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.dialogs.CreatePortfolioDialog
+import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.dialogs.DeletePortfolioDialog
+import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.dialogs.RenamePortfolioDialog
 import kotlinx.android.synthetic.main.bottom_dialog_change_portfolio.*
 
 class ChangePortfolioBottomDialog : BottomDialog(),
-    CreatePortfolioDialog.OnCreatePortfolioClickListener {
+    CreatePortfolioDialog.OnCreatePortfolioClickListener,
+    RenamePortfolioDialog.RenamePortfolioClickListener,
+    DeletePortfolioDialog.DeletePortfolioClickListener {
 
     private var clickListener: OnChangePortfolioClickListener? = null
 
-    private val viewModel: ChangePortfolioViewModel by lazy {
+    val viewModel: ChangePortfolioViewModel by lazy {
         viewModel { ChangePortfolioViewModel() }
     }
 
     private val portfoliosAdapter = ChangePortfolioRecyclerAdapter(object : ChangePortfolioRecyclerAdapter.OnItemClickListener {
         override fun onItemClick(portfolio: PortfolioDbModel) {
             setCurrentPortfolio(portfolio.name)
+        }
+
+        override fun onDelete(portfolio: PortfolioDbModel) {
+            viewModel.tryDeletePortfolio(portfolio)
+        }
+
+        override fun onEdit(portfolio: PortfolioDbModel) {
+            showRenamePortfolioDialog(portfolio)
         }
     })
 
@@ -62,6 +75,9 @@ class ChangePortfolioBottomDialog : BottomDialog(),
         initUI()
 
         viewModel.portfolios.observe(viewLifecycleOwner, Observer(this::setPortfolios))
+        viewModel.showDeletePortfolioDialogEvent.observe(viewLifecycleOwner, Observer(this::showDeletePortfolioDialog))
+        viewModel.errorMessageEvent.observe(viewLifecycleOwner, Observer(this::showError))
+        viewModel.currentPortfolioEvent.observe(viewLifecycleOwner, Observer(this::setCurrentPortfolio))
 
         viewModel.loadAllPortfolios()
     }
@@ -75,6 +91,28 @@ class ChangePortfolioBottomDialog : BottomDialog(),
         viewModel.setCurrentPortfolio(portfolioName)
         clickListener?.onPortfolioChange()
         dismiss()
+    }
+
+    private fun showError(errorType: Int) {
+        val message = when (errorType) {
+            ChangePortfolioViewModel.ERROR_MESSAGE_SMALL_COUNT_PORTFOLIO -> {
+                resources.getString(R.string.small_count_portfolio)
+            }
+            else -> {
+                return
+            }
+        }
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showRenamePortfolioDialog(portfolio: PortfolioDbModel) {
+        val dialog = RenamePortfolioDialog.newInstance(portfolio.name)
+        dialog.show(childFragmentManager, RenamePortfolioDialog::class.toString())
+    }
+
+    private fun showDeletePortfolioDialog(portfolio: PortfolioDbModel) {
+        val dialog = DeletePortfolioDialog.newInstance(portfolio.name)
+        dialog.show(childFragmentManager, DeletePortfolioDialog::class.toString())
     }
 
     private fun initUI() {
@@ -91,6 +129,18 @@ class ChangePortfolioBottomDialog : BottomDialog(),
         createPortfolioDialog.show(childFragmentManager, CreatePortfolioDialog::class.toString())
     }
 
+    override fun onPortfolioCreated(portfolioName: String) {
+        setCurrentPortfolio(portfolioName)
+    }
+
+    override fun renamePortfolio(from: String, to: String) {
+        viewModel.renamePortfolio(from, to)
+    }
+
+    override fun onDelete(name: String) {
+        viewModel.deletePortfolio(name)
+    }
+
     companion object {
         fun newInstance(): ChangePortfolioBottomDialog {
             return ChangePortfolioBottomDialog()
@@ -99,9 +149,5 @@ class ChangePortfolioBottomDialog : BottomDialog(),
 
     interface OnChangePortfolioClickListener {
         fun onPortfolioChange()
-    }
-
-    override fun onPortfolioCreated(portfolioName: String) {
-        setCurrentPortfolio(portfolioName)
     }
 }

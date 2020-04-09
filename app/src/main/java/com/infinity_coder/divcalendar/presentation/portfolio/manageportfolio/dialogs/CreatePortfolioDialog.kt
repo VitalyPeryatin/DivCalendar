@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation.portfolio.createportfolio
+package com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.dialogs
 
 import android.content.Context
 import android.os.Bundle
@@ -7,15 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.presentation._common.viewModel
+import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.ChangePortfolioBottomDialog
+import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.ChangePortfolioViewModel
 import kotlinx.android.synthetic.main.dialog_create_portfolio.*
 
 class CreatePortfolioDialog : DialogFragment() {
 
     private var clickListener: OnCreatePortfolioClickListener? = null
 
-    private val viewModel: CreatePortfolioViewModel by lazy {
-        viewModel { CreatePortfolioViewModel() }
+    private val parentViewModel: ChangePortfolioViewModel by lazy {
+        val parentFragment = parentFragment as ChangePortfolioBottomDialog
+        parentFragment.viewModel
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -43,7 +45,7 @@ class CreatePortfolioDialog : DialogFragment() {
 
     private fun addPortfolio() {
         val name = portfolioNameEditText.text.toString()
-        viewModel.addPortfolio(name)
+        parentViewModel.addPortfolio(name)
         clickListener?.onPortfolioCreated(name)
         dismiss()
     }

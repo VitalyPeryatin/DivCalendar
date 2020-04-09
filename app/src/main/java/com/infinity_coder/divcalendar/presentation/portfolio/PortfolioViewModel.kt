@@ -8,6 +8,7 @@ import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.SecurityInteractor
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -27,9 +28,10 @@ class PortfolioViewModel : ViewModel() {
 
     fun loadSecurities() = viewModelScope.launch {
         securityInteractor.loadAllSecurityPackages(getCurrentPortfolioName())
+            .filter { it != null }
             .onEach {
                 _portfolio.value = it
-                if (it.securities.isEmpty()) {
+                if (it!!.securities.isEmpty()) {
                     _state.value = VIEW_STATE_PORTFOLIO_EMPTY
                 } else {
                     _state.value = VIEW_STATE_PORTFOLIO_CONTENT

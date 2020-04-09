@@ -1,15 +1,13 @@
 package com.infinity_coder.divcalendar.domain
 
-import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
 import com.infinity_coder.divcalendar.data.repositories.SecurityRepository
 import kotlinx.coroutines.flow.Flow
 
 class SecurityInteractor {
 
-    fun loadAllSecurityPackages(portfolioName: String): Flow<PortfolioWithSecurities> {
+    fun loadAllSecurityPackages(portfolioName: String): Flow<PortfolioWithSecurities?> {
         return SecurityRepository.loadPortfolio(portfolioName)
     }
 
@@ -35,10 +33,5 @@ class SecurityInteractor {
     private suspend fun addSecurityPackage(portfolioName: String, packageDbModel: SecurityPackageDbModel) {
         packageDbModel.portfolioName = portfolioName
         SecurityRepository.addSecurityPackage(packageDbModel)
-    }
-
-    private suspend fun getPortfolioByName(name: String): PortfolioDbModel {
-        return PortfolioRepository.getPortfolioByName(name)
-            ?: throw IllegalStateException("No portfolio $name")
     }
 }
