@@ -7,7 +7,7 @@ class SettingsInteractor {
         SettingsRepository.saveIsAccountTaxes(isAccountTaxes)
     }
 
-    fun isAccountTaxes(): Boolean {
+    fun isIncludeTaxes(): Boolean {
         return SettingsRepository.isAccountTaxes()
     }
 

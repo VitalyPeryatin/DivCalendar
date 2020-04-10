@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.domain.CalendarInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
+import com.infinity_coder.divcalendar.domain.SettingsInteractor
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 import com.infinity_coder.divcalendar.presentation.calendar.mappers.PaymentsToPresentationModelMapper
 import com.infinity_coder.divcalendar.presentation.calendar.models.FooterPaymentPresentationModel
@@ -29,16 +30,22 @@ class CalendarViewModel : ViewModel() {
 
     private val calendarInteractor = CalendarInteractor()
     private val rateInteractor = RateInteractor()
+    private val settingsInteractor = SettingsInteractor()
 
     private val paymentsMapper = PaymentsToPresentationModelMapper()
 
+    private val _isIncludeTaxes = MutableLiveData<Boolean?>(null)
+    val isIncludeTaxes: LiveData<Boolean?>
+        get() = _isIncludeTaxes
+
     init {
-        loadAllPayments()
+        updateData()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun loadAllPayments() = viewModelScope.launch {
-        calendarInteractor.getPayments()
+        val includeTaxes = isIncludeTaxes.value ?: false
+        calendarInteractor.getPayments(includeTaxes)
             .onEach { cachedPayments = it }
             .map { paymentsMapper.mapToPresentationModel(cachedPayments) }
             .flowOn(Dispatchers.IO)
@@ -62,6 +69,19 @@ class CalendarViewModel : ViewModel() {
 
     fun getDisplayCurrency(): String {
         return rateInteractor.getDisplayCurrency()
+    }
+
+    fun updateData() {
+
+        val newIsIncludedTaxes = settingsInteractor.isIncludeTaxes()
+
+        val hasNewData = newIsIncludedTaxes != isIncludeTaxes.value
+
+        _isIncludeTaxes.value = newIsIncludedTaxes
+
+        if (hasNewData) {
+            loadAllPayments()
+        }
     }
 
     companion object {

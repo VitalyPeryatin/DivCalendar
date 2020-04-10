@@ -3,6 +3,7 @@ package com.infinity_coder.divcalendar.presentation.calendar.adapters
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
+import com.infinity_coder.divcalendar.domain._common.DisplayTaxesDelegate
 import com.infinity_coder.divcalendar.presentation.calendar.models.FooterPaymentPresentationModel
 import kotlinx.android.synthetic.main.item_footer_payment_calendar.*
 
@@ -21,8 +22,10 @@ class FooterPaymentRecyclerDelegateAdapter : KDelegateAdapter<FooterPaymentPrese
             else -> R.string.value_currency_undefined
         }
         viewHolder.run {
-            footerPaymentMonthlyIncome.text =
-                footerPaymentMonthlyIncome.context.getString(currencyStringId, item.income)
+            var totalPayments = footerPaymentMonthlyIncome.context.getString(currencyStringId, item.income)
+            totalPayments = DisplayTaxesDelegate.displayTaxes(totalPayments)
+
+            footerPaymentMonthlyIncome.text = totalPayments
         }
     }
 }

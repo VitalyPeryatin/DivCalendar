@@ -29,6 +29,13 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
         viewModel.state.observe(viewLifecycleOwner, Observer(this::updateState))
         viewModel.payments.observe(viewLifecycleOwner, Observer(this::updatePayments))
+        viewModel.isIncludeTaxes.observe(viewLifecycleOwner, Observer(this::setTexesVisibilityTextView))
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.updateData()
     }
 
     private fun initUI() {
@@ -53,7 +60,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         (calendarPaymentsRecyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         calendarPaymentsRecyclerView.adapter = DiffUtilCompositeAdapter.Builder()
             .add(getChartAdapter()).add(DividerDelegateAdapter())
-            .add(HeaderPaymentRecyclerDelegateAdapter()).add(PaymentRecyclerDelegateAdapter())
+            .add(HeaderPaymentRecyclerDelegateAdapter())
+            .add(PaymentRecyclerDelegateAdapter())
             .add(FooterPaymentRecyclerDelegateAdapter()).build()
     }
 
@@ -76,6 +84,14 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             }
         }
         return adapter
+    }
+
+    private fun setTexesVisibilityTextView(isVisible: Boolean?) {
+        if (isVisible == true) {
+            taxesTextView.visibility = View.VISIBLE
+        } else {
+            taxesTextView.visibility = View.GONE
+        }
     }
 
     private fun updatePayments(payments: List<IComparableItem>) {

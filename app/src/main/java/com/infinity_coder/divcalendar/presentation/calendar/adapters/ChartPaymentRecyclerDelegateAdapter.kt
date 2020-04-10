@@ -13,6 +13,7 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
+import com.infinity_coder.divcalendar.domain._common.DisplayTaxesDelegate
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 import com.infinity_coder.divcalendar.presentation.calendar.models.ChartPresentationModel
 import kotlinx.android.synthetic.main.item_chart_calendar.*
@@ -51,8 +52,15 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
 
         viewHolder.run {
             chart.onBindChart(item)
-            annualIncomeTextView.text = context.getString(currencyStringId, item.annualIncome)
-            annualYieldTextView.text = context.getString(R.string.value_percent, item.annualYield)
+
+            var annualIncome = context.getString(currencyStringId, item.annualIncome)
+            annualIncome = DisplayTaxesDelegate.displayTaxes(annualIncome)
+            annualIncomeTextView.text = annualIncome
+
+            var annualYield = context.getString(R.string.value_percent, item.annualYield)
+            annualYield = DisplayTaxesDelegate.displayTaxes(annualYield)
+            annualYieldTextView.text = annualYield
+
             yearSpinner.adapter = spinnerAdapter
         }
     }

@@ -53,6 +53,19 @@
                 android:text="@string/currency_name_usd" />
         </RadioGroup>
 
+        <TextView
+            android:id="@+id/taxesTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:gravity="end"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="4dp"
+            android:text="@string/taxes_included"
+            android:textColor="?attr/textColorSecondary"
+            android:textSize="@dimen/font_small_small" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/calendarPaymentsRecyclerView"
             android:layout_width="match_parent"

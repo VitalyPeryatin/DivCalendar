@@ -21,6 +21,7 @@
     <string name="monthly_income_label_undefined">Доход за месяц: +%1$.2f</string>
     <string name="count_securities">%d шт.</string>
     <string name="dividends">+%1$.2f₽</string>
+    <string name="taxes_included">С учетом налогов \*</string>
 
     <!-- search -->
     <string name="total_price">Стоимость: %1$.2f</string>
