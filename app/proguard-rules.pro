@@ -99,3 +99,6 @@
 
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
+
+# Billing
+-keep class com.android.vending.billing.**
