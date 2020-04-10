@@ -43,7 +43,11 @@ class AddSecurityViewModel : ViewModel() {
     }
 
     private fun getSecurityPackage() = SecurityPackageDbModel(
-        secid = security.ticker, name = security.name, count = count, totalPrice = price * count
+        secid = security.ticker,
+        name = security.name,
+        logo = security.logo,
+        count = count,
+        totalPrice = price * count
     )
 
     fun addSecurityPackage() = viewModelScope.launch {

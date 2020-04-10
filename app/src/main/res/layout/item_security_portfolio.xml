@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/securityPortfolioCardLayout"
@@ -31,22 +32,27 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
             android:layout_marginBottom="2dp"
-            android:ellipsize="end"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:scrollHorizontally="true"
             android:fontFamily="@font/roboto_medium"
-            android:maxLines="1"
             android:textColor="?attr/textColorPrimary"
             android:textSize="@dimen/font_normal"
             app:layout_constraintBottom_toTopOf="@+id/countTextView"
-            app:layout_constraintEnd_toStartOf="@+id/yearYieldTextView"
+            app:layout_constraintEnd_toStartOf="@+id/totalPriceTextView"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintStart_toEndOf="@+id/logoImageView"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="ВТБ" />
 
-        <ImageView
-            android:id="@+id/imageView2"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/logoImageView"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
@@ -68,7 +74,7 @@
             android:textColor="?android:textColorSecondary"
             android:textSize="@dimen/font_small_small"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintStart_toEndOf="@+id/logoImageView"
             app:layout_constraintTop_toBottomOf="@+id/nameTextView"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="30 000 шт" />
@@ -97,7 +103,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
             android:fontFamily="@font/roboto"
-            android:text="13.72% в год"
             android:textColor="?android:textColorSecondary"
             android:textSize="@dimen/font_small_small"
             app:layout_constraintBottom_toBottomOf="parent"
