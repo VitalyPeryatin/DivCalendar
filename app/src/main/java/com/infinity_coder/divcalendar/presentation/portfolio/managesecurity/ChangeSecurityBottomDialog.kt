@@ -34,9 +34,9 @@ class ChangeSecurityBottomDialog : BottomDialog() {
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
 
         security = SecurityNetworkModel(
-            ticker = arguments!!.getString(ARGUMENT_SEC_ID, ""),
-            name = arguments!!.getString(ARGUMENT_NAME, ""),
-            logo = arguments!!.getString(ARGUMENT_LOGO, "")
+            ticker = requireArguments().getString(ARGUMENT_SEC_ID, ""),
+            name = requireArguments().getString(ARGUMENT_NAME, ""),
+            logo = requireArguments().getString(ARGUMENT_LOGO, "")
         )
         viewModel.setSecurity(security)
     }
