@@ -1,5 +1,7 @@
 package com.infinity_coder.divcalendar.presentation.calendar.adapters
 
+import android.view.View
+import android.widget.AdapterView
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
@@ -53,7 +55,14 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
             chart.onBindChart(item)
             annualIncomeTextView.text = context.getString(currencyStringId, item.annualIncome)
             annualYieldTextView.text = context.getString(R.string.value_percent, item.annualYield)
-            yearSpinner.adapter = spinnerAdapter
+            /*yearSpinner.adapter = spinnerAdapter
+            yearSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    onItemClickListener?.onSelectYear(yearSpinner.selectedItem as String)
+                }
+            }*/
         }
     }
 
@@ -121,6 +130,8 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
 
     interface ChartItemClickListener {
         fun onClick(numberMonth: Int)
+
+        fun onSelectYear(year:String)
     }
 
     companion object {

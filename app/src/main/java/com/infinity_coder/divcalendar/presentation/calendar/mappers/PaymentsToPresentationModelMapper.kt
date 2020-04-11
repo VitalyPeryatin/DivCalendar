@@ -1,14 +1,21 @@
 package com.infinity_coder.divcalendar.presentation.calendar.mappers
 
 import android.graphics.Color
+import android.util.Log
 import com.example.delegateadapter.delegate.diff.IComparableItem
+import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
+import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import com.infinity_coder.divcalendar.data.repositories.RateRepository.RUB_RATE
+import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 import com.infinity_coder.divcalendar.presentation.calendar.models.*
+import kotlinx.coroutines.flow.first
 
 class PaymentsToPresentationModelMapper {
 
     private val rateInteractor = RateInteractor()
+    private val portfolioInteractor = PortfolioInteractor()
 
     suspend fun mapToPresentationModel(monthlyPayments: List<MonthlyPayment>): List<IComparableItem> {
         val items = mutableListOf<IComparableItem>()
@@ -58,10 +65,11 @@ class PaymentsToPresentationModelMapper {
         return totalPayments
     }
 
-    private fun mapPaymentsToChartPresentationModel(monthlyPayments: List<MonthlyPayment>): ChartPresentationModel {
+    private suspend fun mapPaymentsToChartPresentationModel(monthlyPayments: List<MonthlyPayment>): ChartPresentationModel {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val annualIncome = sumMonthPayments(monthlyPayments)
-        val annualYield = 0f
+        Log.d("PaymentsToPresentation","${annualIncome} ${getCosts()}")
+        val annualYield = annualIncome/getCosts()
         val allMonthlyPayments = getMonthlyPayments(monthlyPayments)
         val colors = getChartBarColors(allMonthlyPayments)
         return ChartPresentationModel(annualIncome, annualYield, currentCurrency, allMonthlyPayments, colors)
@@ -71,6 +79,13 @@ class PaymentsToPresentationModelMapper {
         return monthlyPayments.sumByDouble { paymentsForMonth ->
             paymentsForMonth.payments.sumByDouble { it.dividends }
         }.toFloat()
+    }
+
+    private suspend fun getCosts():Float{
+        val currentCurrency = rateInteractor.getDisplayCurrency()
+        val securities = portfolioInteractor.getCurrentPortfolio().first().securities
+        val costs = securities.sumByDouble { it.totalPrice.toDouble() }
+        return rateInteractor.convertCurrencies(costs.toFloat(),RUB_RATE,currentCurrency) //TODO currency
     }
 
     private fun getMonthlyPayments(monthlyPayments: List<MonthlyPayment>): List<MonthlyPayment> {

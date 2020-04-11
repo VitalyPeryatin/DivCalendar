@@ -1,6 +1,7 @@
 package com.infinity_coder.divcalendar.presentation.calendar
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,7 @@ import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.calendar.adapters.*
 import kotlinx.android.synthetic.main.fragment_calendar.*
+import java.util.*
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
@@ -36,6 +38,15 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             setTitle(R.string.calendar)
             (activity as AppCompatActivity).setActionBar(this)
         }
+
+
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+
+        val items = Array(2) { index -> (currentYear + index).toString() }
+        val spinnerAdapter = SpinnerAdapter(requireContext(), items)
+        spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+
+        yearSpinner.adapter = spinnerAdapter
 
         val checkedCurrencyRadioButton =
             when (viewModel.getDisplayCurrency()) {
@@ -73,6 +84,11 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                 calendarPaymentsRecyclerView.smoothScrollToPosition(
                     viewModel.getFooterPositionByMonthNumber(numberMonth)
                 )
+            }
+
+            override fun onSelectYear(year: String) {
+                Log.d("CalendarFragment","select year = ${year}")
+                viewModel.selectYear(year)
             }
         }
         return adapter

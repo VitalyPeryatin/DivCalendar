@@ -21,13 +21,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatSpinner
+            <!--<androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/yearSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="18dp"
                 android:dropDownWidth="wrap_content"
-                android:gravity="center" />
+                android:gravity="center" />-->
 
         </FrameLayout>
 

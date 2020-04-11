@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.util.*
 
 class CalendarViewModel : ViewModel() {
 
@@ -26,6 +27,7 @@ class CalendarViewModel : ViewModel() {
         get() = _payments
 
     private var cachedPayments: List<MonthlyPayment> = emptyList()
+    private var currentYear = Calendar.getInstance().get(Calendar.YEAR).toString()
 
     private val calendarInteractor = CalendarInteractor()
     private val rateInteractor = RateInteractor()
@@ -38,7 +40,7 @@ class CalendarViewModel : ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun loadAllPayments() = viewModelScope.launch {
-        calendarInteractor.getPayments()
+        calendarInteractor.getPayments(currentYear)
             .onEach { cachedPayments = it }
             .map { paymentsMapper.mapToPresentationModel(cachedPayments) }
             .flowOn(Dispatchers.IO)
@@ -58,6 +60,13 @@ class CalendarViewModel : ViewModel() {
         rateInteractor.saveDisplayCurrency(currency)
         val payments = paymentsMapper.mapToPresentationModel(cachedPayments)
         _payments.postValue(payments)
+    }
+
+    fun selectYear(selectedYear:String){
+        if(selectedYear != currentYear) {
+            currentYear = selectedYear
+            loadAllPayments()
+        }
     }
 
     fun getDisplayCurrency(): String {
