@@ -16,7 +16,6 @@ import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.shake
 import com.infinity_coder.divcalendar.presentation._common.viewModel
-import com.infinity_coder.divcalendar.presentation.search.addsecurity.AddSecurityBottomDialog
 import kotlinx.android.synthetic.main.bottom_dialog_remove_security.*
 
 class ChangeSecurityBottomDialog : BottomDialog() {

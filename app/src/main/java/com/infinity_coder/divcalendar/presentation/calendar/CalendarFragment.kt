@@ -26,7 +26,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         viewModel { CalendarViewModel() }
     }
 
-    private var items:Array<String> = arrayOf()
+    private var items: Array<String> = arrayOf()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -70,7 +70,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         emptySecuritiesLayout.emptyTextView.text = resources.getString(R.string.empty_securities)
     }
 
-    private fun initSpinnerYear(){
+    private fun initSpinnerYear() {
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
 
         items = Array(MAX_YEARS_CHOICE) { index -> (currentYear + index).toString() }
@@ -78,7 +78,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         }
 
-        val spinnerInteractionListener = SpinnerInteractionListener{
+        val spinnerInteractionListener = SpinnerInteractionListener {
             viewModel.selectYear(it as String)
         }
         yearSpinner.onItemSelectedListener = spinnerInteractionListener
@@ -110,7 +110,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         (calendarPaymentsRecyclerView.adapter as DiffUtilCompositeAdapter).swapData(payments)
     }
 
-    private fun updateCurrentYear(year:String) {
+    private fun updateCurrentYear(year: String) {
         emptyLayout.emptyTextView.text = resources.getString(R.string.empty_payments, year)
         yearSpinner.setSelection(items.indexOf(year))
     }
@@ -125,7 +125,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         }
     }
 
-    private fun showContentState(){
+    private fun showContentState() {
         calendarContent.visibility = View.VISIBLE
         yearSpinner.visibility = View.VISIBLE
         currencyRadioGroup.visibility = View.VISIBLE
@@ -136,7 +136,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         emptySecuritiesLayout.visibility = View.GONE
     }
 
-    private fun showLoadingState(){
+    private fun showLoadingState() {
         calendarContent.visibility = View.GONE
         yearSpinner.visibility = View.GONE
         currencyRadioGroup.visibility = View.GONE
@@ -147,7 +147,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         emptySecuritiesLayout.visibility = View.GONE
     }
 
-    private fun showEmptyState(){
+    private fun showEmptyState() {
         calendarContent.visibility = View.VISIBLE
         yearSpinner.visibility = View.VISIBLE
         currencyRadioGroup.visibility = View.INVISIBLE
@@ -158,7 +158,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         emptySecuritiesLayout.visibility = View.GONE
     }
 
-    private fun showNoNetworkState(){
+    private fun showNoNetworkState() {
         calendarContent.visibility = View.GONE
         yearSpinner.visibility = View.GONE
         currencyRadioGroup.visibility = View.GONE
@@ -169,7 +169,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         emptySecuritiesLayout.visibility = View.GONE
     }
 
-    private fun showEmptySecuritiesState(){
+    private fun showEmptySecuritiesState() {
         calendarContent.visibility = View.GONE
         yearSpinner.visibility = View.GONE
         currencyRadioGroup.visibility = View.GONE
@@ -180,7 +180,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         emptySecuritiesLayout.visibility = View.VISIBLE
     }
 
-    companion object{
+    companion object {
         private const val MAX_YEARS_CHOICE = 2
     }
 }

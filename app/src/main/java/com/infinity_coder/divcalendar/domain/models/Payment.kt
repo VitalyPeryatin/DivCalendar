@@ -16,7 +16,7 @@ data class Payment(
         fun from(paymentNetworkModel: PaymentNetworkModel, securityPackage: SecurityPackageDbModel) =
             Payment(
                 name = securityPackage.name,
-                logo = securityPackage.logo, //TODO сделать с сервера
+                logo = securityPackage.logo, // TODO сделать с сервера
                 count = securityPackage.count,
                 dividends = paymentNetworkModel.dividends * securityPackage.count,
                 date = paymentNetworkModel.date,

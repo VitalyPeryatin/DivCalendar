@@ -1,6 +1,5 @@
 package com.infinity_coder.divcalendar.domain._common
 
-import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -20,7 +19,7 @@ object DateFormatter {
         return "$day $month $year"
     }
 
-    fun getCurrentYear():String{
+    fun getCurrentYear(): String {
         return Calendar.getInstance().get(Calendar.YEAR).toString()
     }
 }

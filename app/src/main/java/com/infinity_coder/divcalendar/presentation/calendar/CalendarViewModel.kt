@@ -50,15 +50,15 @@ class CalendarViewModel : ViewModel() {
             .flowOn(Dispatchers.IO)
             .onStart { _state.value = VIEW_STATE_CALENDAR_LOADING }
             .onEach {
-                if(it.isEmpty()){
+                if (it.isEmpty()) {
                     _state.value = VIEW_STATE_CALENDAR_EMPTY
-                }else{
+                } else {
                     _payments.value = it
                     _state.value = VIEW_STATE_CALENDAR_CONTENT
                 }
                 _payments.value = it
             }
-            .catch{handleError(it)}
+            .catch { handleError(it) }
             .launchIn(viewModelScope)
     }
 
@@ -74,8 +74,8 @@ class CalendarViewModel : ViewModel() {
         _payments.postValue(payments)
     }
 
-    fun selectYear(selectedYear:String){
-        if(_currentYear.value == null || selectedYear != _currentYear.value) {
+    fun selectYear(selectedYear: String) {
+        if (_currentYear.value == null || selectedYear != _currentYear.value) {
             calendarInteractor.setSelectedYear(selectedYear)
             _currentYear.value = selectedYear
             loadAllPayments()
@@ -86,7 +86,7 @@ class CalendarViewModel : ViewModel() {
         return rateInteractor.getDisplayCurrency()
     }
 
-    private fun handleError(error:Throwable){
+    private fun handleError(error: Throwable) {
         if (error is HttpException) {
             _state.value = VIEW_STATE_CALENDAR_EMPTY_SECURITIES
         } else {

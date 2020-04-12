@@ -19,18 +19,18 @@ class CalendarInteractor {
     private val dateFormat = DateFormatter.basicDateFormat
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun getPayments(year:String): Flow<List<MonthlyPayment>> {
+    suspend fun getPayments(year: String): Flow<List<MonthlyPayment>> {
         return PaymentRepository.getPayments(
-            "${year}-01-01",
-            "${year}-12-31"
+            "$year-01-01",
+            "$year-12-31"
         ).map { groupAndSortPayments(it) }
     }
 
-    fun setSelectedYear(selectedYear:String){
+    fun setSelectedYear(selectedYear: String) {
         PaymentRepository.setSelectedYear(selectedYear)
     }
 
-    fun getSelectedYear():String{
+    fun getSelectedYear(): String {
         return PaymentRepository.getSelectedYear()
     }
 

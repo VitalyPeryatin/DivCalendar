@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName
 
 data class BodyPaymentNetworkModel(
     @SerializedName("securities")
-    val securities:List<String>,
+    val securities: List<String>,
 
     @SerializedName("start_date")
-    val startDate:String,
+    val startDate: String,
 
     @SerializedName("end_date")
-    val endDate:String
+    val endDate: String
 )

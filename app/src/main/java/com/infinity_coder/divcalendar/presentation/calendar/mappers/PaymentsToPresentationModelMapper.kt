@@ -3,8 +3,6 @@ package com.infinity_coder.divcalendar.presentation.calendar.mappers
 import android.graphics.Color
 import android.util.Log
 import com.example.delegateadapter.delegate.diff.IComparableItem
-import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
-import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.repositories.RateRepository.RUB_RATE
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
@@ -20,7 +18,7 @@ class PaymentsToPresentationModelMapper {
     suspend fun mapToPresentationModel(monthlyPayments: List<MonthlyPayment>): List<IComparableItem> {
         val items = mutableListOf<IComparableItem>()
 
-        if(monthlyPayments.isNotEmpty()) {
+        if (monthlyPayments.isNotEmpty()) {
             val preparedAllMonthlyPayments = prepareAllMonthlyPayments(monthlyPayments)
 
             for (i in preparedAllMonthlyPayments.indices) {
@@ -71,8 +69,8 @@ class PaymentsToPresentationModelMapper {
     private suspend fun mapPaymentsToChartPresentationModel(monthlyPayments: List<MonthlyPayment>): ChartPresentationModel {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val annualIncome = sumMonthPayments(monthlyPayments)
-        Log.d("PaymentsToPresentation","${annualIncome} ${getCosts()}")
-        val annualYield = annualIncome/getCosts()
+        Log.d("PaymentsToPresentation", "$annualIncome ${getCosts()}")
+        val annualYield = annualIncome / getCosts()
         val allMonthlyPayments = getMonthlyPayments(monthlyPayments)
         val colors = getChartBarColors(allMonthlyPayments)
         return ChartPresentationModel(annualIncome, annualYield, currentCurrency, allMonthlyPayments, colors)
@@ -84,11 +82,11 @@ class PaymentsToPresentationModelMapper {
         }.toFloat()
     }
 
-    private suspend fun getCosts():Float{
+    private suspend fun getCosts(): Float {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val securities = portfolioInteractor.getCurrentPortfolio().first().securities
         val costs = securities.sumByDouble { it.totalPrice.toDouble() }
-        return rateInteractor.convertCurrencies(costs.toFloat(),RUB_RATE,currentCurrency) //TODO currency
+        return rateInteractor.convertCurrencies(costs.toFloat(), RUB_RATE, currentCurrency) // TODO currency
     }
 
     private fun getMonthlyPayments(monthlyPayments: List<MonthlyPayment>): List<MonthlyPayment> {

@@ -38,7 +38,7 @@ class AddSecurityBottomDialog : BottomDialog() {
             ticker = requireArguments().getString(ARGUMENT_SEC_ID, ""),
             name = requireArguments().getString(ARGUMENT_NAME, ""),
             logo = requireArguments().getString(ARGUMENT_LOGO, ""),
-            yearYield =  requireArguments().getFloat(ARGUMENT_YEAR_YIELD, 0f)
+            yearYield = requireArguments().getFloat(ARGUMENT_YEAR_YIELD, 0f)
         )
         viewModel.setSecurity(security)
     }

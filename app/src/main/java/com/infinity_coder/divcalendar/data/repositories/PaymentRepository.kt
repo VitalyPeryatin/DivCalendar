@@ -1,7 +1,6 @@
 package com.infinity_coder.divcalendar.data.repositories
 
 import android.content.Context
-import android.util.Log
 import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.network.RetrofitService
@@ -24,19 +23,19 @@ object PaymentRepository {
     suspend fun getPayments(startDate: String, endDate: String): Flow<List<Payment>> = flow {
         val paymentsFromNetwork = getPaymentsFromNetwork(startDate, endDate)
         val securities = getSecuritiesForCurrentPortfolio()
-        val payments = paymentsFromNetwork.map {payment ->
+        val payments = paymentsFromNetwork.map { payment ->
             Payment.from(payment, securities.find { payment.ticker == it.secid }!!)
         }
         emit(payments)
     }
 
-    fun setSelectedYear(selectedYear:String){
+    fun setSelectedYear(selectedYear: String) {
         paymentsPreferences.edit {
             putString(SELECTED_YEAR_NAME_KEY, selectedYear)
         }
     }
 
-    fun getSelectedYear():String{
+    fun getSelectedYear(): String {
         return paymentsPreferences.getString(SELECTED_YEAR_NAME_KEY, DateFormatter.getCurrentYear())!!
     }
 
