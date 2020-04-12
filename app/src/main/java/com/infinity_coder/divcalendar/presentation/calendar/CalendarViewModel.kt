@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.util.*
+import retrofit2.HttpException
 
 class CalendarViewModel : ViewModel() {
 
@@ -26,8 +26,11 @@ class CalendarViewModel : ViewModel() {
     val payments: LiveData<List<IComparableItem>>
         get() = _payments
 
+    private val _currentYear = MutableLiveData<String>()
+    val currentYear: LiveData<String>
+        get() = _currentYear
+
     private var cachedPayments: List<MonthlyPayment> = emptyList()
-    private var currentYear = Calendar.getInstance().get(Calendar.YEAR).toString()
 
     private val calendarInteractor = CalendarInteractor()
     private val rateInteractor = RateInteractor()
@@ -35,18 +38,27 @@ class CalendarViewModel : ViewModel() {
     private val paymentsMapper = PaymentsToPresentationModelMapper()
 
     init {
+        _currentYear.value = calendarInteractor.getSelectedYear()
         loadAllPayments()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun loadAllPayments() = viewModelScope.launch {
-        calendarInteractor.getPayments(currentYear)
+        calendarInteractor.getPayments(_currentYear.value!!)
             .onEach { cachedPayments = it }
             .map { paymentsMapper.mapToPresentationModel(cachedPayments) }
             .flowOn(Dispatchers.IO)
             .onStart { _state.value = VIEW_STATE_CALENDAR_LOADING }
-            .onEach { _payments.value = it }
-            .onCompletion { _state.value = VIEW_STATE_CALENDAR_CONTENT }
+            .onEach {
+                if(it.isEmpty()){
+                    _state.value = VIEW_STATE_CALENDAR_EMPTY
+                }else{
+                    _payments.value = it
+                    _state.value = VIEW_STATE_CALENDAR_CONTENT
+                }
+                _payments.value = it
+            }
+            .catch{handleError(it)}
             .launchIn(viewModelScope)
     }
 
@@ -63,8 +75,9 @@ class CalendarViewModel : ViewModel() {
     }
 
     fun selectYear(selectedYear:String){
-        if(selectedYear != currentYear) {
-            currentYear = selectedYear
+        if(_currentYear.value == null || selectedYear != _currentYear.value) {
+            calendarInteractor.setSelectedYear(selectedYear)
+            _currentYear.value = selectedYear
             loadAllPayments()
         }
     }
@@ -73,10 +86,19 @@ class CalendarViewModel : ViewModel() {
         return rateInteractor.getDisplayCurrency()
     }
 
+    private fun handleError(error:Throwable){
+        if (error is HttpException) {
+            _state.value = VIEW_STATE_CALENDAR_EMPTY_SECURITIES
+        } else {
+            _state.value = VIEW_STATE_CALENDAR_NO_NETWORK
+        }
+    }
+
     companion object {
         const val VIEW_STATE_CALENDAR_LOADING = 1
         const val VIEW_STATE_CALENDAR_CONTENT = 2
         const val VIEW_STATE_CALENDAR_EMPTY = 3
         const val VIEW_STATE_CALENDAR_NO_NETWORK = 4
+        const val VIEW_STATE_CALENDAR_EMPTY_SECURITIES = 5
     }
 }

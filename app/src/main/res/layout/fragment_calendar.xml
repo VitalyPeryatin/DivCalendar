@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,12 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
     <LinearLayout
         android:id="@+id/calendarContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:visibility="visible">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,7 +34,7 @@
                 android:gravity="center" />
 
             <RadioGroup
-                android:id="@+id/radioGroup"
+                android:id="@+id/currencyRadioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -78,19 +79,19 @@
             android:clipToPadding="false"
             tools:listitem="@layout/item_payment_calendar" />
 
+        <include
+            android:id="@+id/emptyLayout"
+            layout="@layout/layout_stub_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="gone" />
+
     </LinearLayout>
 
     <include
         android:id="@+id/loadingLayout"
         layout="@layout/layout_stub_loading"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="gone" />
-
-    <include
-        android:id="@+id/emptyLayout"
-        layout="@layout/layout_stub_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
@@ -104,4 +105,11 @@
         android:visibility="gone"
         tools:visibility="gone" />
 
+    <include
+        android:id="@+id/emptySecuritiesLayout"
+        layout="@layout/layout_stub_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="gone" />
 </LinearLayout>

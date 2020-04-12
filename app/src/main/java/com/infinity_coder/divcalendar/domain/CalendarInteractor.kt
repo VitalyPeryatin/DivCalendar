@@ -26,6 +26,14 @@ class CalendarInteractor {
         ).map { groupAndSortPayments(it) }
     }
 
+    fun setSelectedYear(selectedYear:String){
+        PaymentRepository.setSelectedYear(selectedYear)
+    }
+
+    fun getSelectedYear():String{
+        return PaymentRepository.getSelectedYear()
+    }
+
     private fun groupAndSortPayments(payments: List<Payment>): List<MonthlyPayment> {
         return payments.groupByDate()
             .map(this::mapMonthWithPaymentsToMonthlyPayment)

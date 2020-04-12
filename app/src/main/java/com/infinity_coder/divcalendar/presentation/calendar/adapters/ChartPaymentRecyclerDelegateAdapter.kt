@@ -1,7 +1,5 @@
 package com.infinity_coder.divcalendar.presentation.calendar.adapters
 
-import android.view.View
-import android.widget.AdapterView
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
@@ -39,12 +37,6 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         chart = viewHolder.chart
         val context = viewHolder.containerView.context
 
-        val currentYear = getCurrentYear()
-
-        val items = Array(MAX_YEARS_CHOICE) { index -> (currentYear + index).toString() }
-        val spinnerAdapter = SpinnerAdapter(chart!!.context, items)
-        spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-
         val currencyStringId = when (item.currentCurrency) {
             RateRepository.RUB_RATE -> R.string.value_currency_rub
             RateRepository.USD_RATE -> R.string.value_currency_usd
@@ -55,19 +47,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
             chart.onBindChart(item)
             annualIncomeTextView.text = context.getString(currencyStringId, item.annualIncome)
             annualYieldTextView.text = context.getString(R.string.value_percent, item.annualYield)
-            /*yearSpinner.adapter = spinnerAdapter
-            yearSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    onItemClickListener?.onSelectYear(yearSpinner.selectedItem as String)
-                }
-            }*/
         }
-    }
-
-    private fun getCurrentYear(): Int {
-        return Calendar.getInstance().get(Calendar.YEAR)
     }
 
     override fun onNothingSelected() {
@@ -130,12 +110,9 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
 
     interface ChartItemClickListener {
         fun onClick(numberMonth: Int)
-
-        fun onSelectYear(year:String)
     }
 
     companion object {
-        private const val MAX_YEARS_CHOICE = 2
         private const val ANIMATE_DURATION = 750
     }
 }

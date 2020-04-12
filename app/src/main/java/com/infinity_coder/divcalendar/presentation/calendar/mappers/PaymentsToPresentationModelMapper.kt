@@ -20,22 +20,25 @@ class PaymentsToPresentationModelMapper {
     suspend fun mapToPresentationModel(monthlyPayments: List<MonthlyPayment>): List<IComparableItem> {
         val items = mutableListOf<IComparableItem>()
 
-        val preparedAllMonthlyPayments = prepareAllMonthlyPayments(monthlyPayments)
+        if(monthlyPayments.isNotEmpty()) {
+            val preparedAllMonthlyPayments = prepareAllMonthlyPayments(monthlyPayments)
 
-        for (i in preparedAllMonthlyPayments.indices) {
-            items.add(HeaderPaymentPresentationModel.from(preparedAllMonthlyPayments[i]))
+            for (i in preparedAllMonthlyPayments.indices) {
+                items.add(HeaderPaymentPresentationModel.from(preparedAllMonthlyPayments[i]))
 
-            val preparedMonthlyPayment = prepareMonthlyPayment(preparedAllMonthlyPayments[i])
-            items.addAll(preparedMonthlyPayment)
+                val preparedMonthlyPayment = prepareMonthlyPayment(preparedAllMonthlyPayments[i])
+                items.addAll(preparedMonthlyPayment)
 
-            val preparedTotalMonthPayment = prepareTotalMonthPayments(preparedAllMonthlyPayments[i])
-            items.add(preparedTotalMonthPayment)
+                val preparedTotalMonthPayment = prepareTotalMonthPayments(preparedAllMonthlyPayments[i])
+                items.add(preparedTotalMonthPayment)
 
-            if (i != preparedAllMonthlyPayments.lastIndex) {
-                items.add(DividerPresentationModel)
+                if (i != preparedAllMonthlyPayments.lastIndex) {
+                    items.add(DividerPresentationModel)
+                }
             }
+            items.add(0, mapPaymentsToChartPresentationModel(preparedAllMonthlyPayments))
         }
-        items.add(0, mapPaymentsToChartPresentationModel(preparedAllMonthlyPayments))
+
         return items
     }
 
