@@ -8,10 +8,6 @@ object DisplayTaxesDelegate {
 
     fun displayTaxes(sourceText: String): String {
         var totalText = sourceText
-
-        if (settingInteractor.isIncludeTaxes()) {
-            totalText += " *"
-        }
         return totalText
     }
 

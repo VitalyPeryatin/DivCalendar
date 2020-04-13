@@ -12,6 +12,7 @@ import com.example.delegateadapter.delegate.diff.DiffUtilCompositeAdapter
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
+import com.infinity_coder.divcalendar.presentation._common.getColorExt
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.calendar.adapters.*
@@ -29,7 +30,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
         viewModel.state.observe(viewLifecycleOwner, Observer(this::updateState))
         viewModel.payments.observe(viewLifecycleOwner, Observer(this::updatePayments))
-        viewModel.isIncludeTaxes.observe(viewLifecycleOwner, Observer(this::setTexesVisibilityTextView))
+        viewModel.isIncludeTaxes.observe(viewLifecycleOwner, Observer(this::setIsIncludedTexes))
     }
 
     override fun onStart() {
@@ -86,12 +87,16 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         return adapter
     }
 
-    private fun setTexesVisibilityTextView(isVisible: Boolean?) {
-        if (isVisible == true) {
-            taxesTextView.visibility = View.VISIBLE
+    private fun setIsIncludedTexes(isIncludedTaxes: Boolean) {
+        val colorId: Int
+        if (isIncludedTaxes) {
+            taxesTextView.text = resources.getString(R.string.taxes_included)
+            colorId = R.color.colorAccent
         } else {
-            taxesTextView.visibility = View.GONE
+            taxesTextView.text = resources.getString(R.string.taxes_excluding)
+            colorId = R.color.colorSecondary
         }
+        taxesTextView.setTextColor(resources.getColorExt(colorId, requireContext().theme))
     }
 
     private fun updatePayments(payments: List<IComparableItem>) {

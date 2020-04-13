@@ -57,7 +57,7 @@
             android:id="@+id/taxesTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
+            android:fontFamily="@font/roboto_medium"
             android:gravity="end"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"

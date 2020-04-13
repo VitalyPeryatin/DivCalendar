@@ -5,7 +5,6 @@ import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
-import com.infinity_coder.divcalendar.domain._common.DisplayTaxesDelegate
 import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
 import kotlinx.android.synthetic.main.item_payment_calendar.*
@@ -32,10 +31,7 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
                 else -> R.string.value_currency_undefined
             }
 
-            var paymentValue = paymentDividends.context.getString(currencyStringId, item.dividends)
-            paymentValue = DisplayTaxesDelegate.displayTaxes(paymentValue)
-
-            paymentDividends.text = paymentValue
+            paymentDividends.text = paymentDividends.context.getString(currencyStringId, item.dividends)
             SimpleGlide.loadImage(paymentLogo, item.logo, paymentLogo)
         }
     }

@@ -34,8 +34,8 @@ class CalendarViewModel : ViewModel() {
 
     private val paymentsMapper = PaymentsToPresentationModelMapper()
 
-    private val _isIncludeTaxes = MutableLiveData<Boolean?>(null)
-    val isIncludeTaxes: LiveData<Boolean?>
+    private val _isIncludeTaxes = MutableLiveData(false)
+    val isIncludeTaxes: LiveData<Boolean>
         get() = _isIncludeTaxes
 
     init {
