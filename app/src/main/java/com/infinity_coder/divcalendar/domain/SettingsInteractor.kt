@@ -8,7 +8,7 @@ class SettingsInteractor {
     }
 
     fun isIncludeTaxes(): Boolean {
-        return SettingsRepository.isAccountTaxes()
+        return SettingsRepository.isIncludeTaxes()
     }
 
     fun sendFeedback(message: String) {

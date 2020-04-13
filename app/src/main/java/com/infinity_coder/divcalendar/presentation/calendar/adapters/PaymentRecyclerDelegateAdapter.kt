@@ -21,8 +21,7 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
         viewHolder.run {
 
             paymentName.text = item.name
-            paymentCount.text =
-                paymentCount.context.getString(R.string.count_securities, item.count)
+            paymentCount.text = paymentCount.context.getString(R.string.count_securities, item.count)
             paymentDate.text = paymentDate.context.getDate(item.date)
 
             val currencyStringId = when (item.currentCurrency) {

@@ -12,7 +12,8 @@ data class PaymentNetworkModel(
     @SerializedName("count")
     val count: Int,
 
-    @SerializedName("dividends") var dividends: Double,
+    @SerializedName("dividends")
+    var dividends: Double,
 
     @SerializedName("date")
     val date: String,

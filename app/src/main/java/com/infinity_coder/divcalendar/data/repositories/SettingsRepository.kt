@@ -8,18 +8,18 @@ object SettingsRepository {
 
     private const val TAXES_PREFERENCES_NAME = "Settings"
 
-    private const val ACCOUNT_TAXES_PREF_KEY = "is_account_taxes"
+    private const val INCLUDE_TAXES = "is_include_taxes"
 
     private val taxesPreferences = App.instance.getSharedPreferences(TAXES_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
     fun saveIsAccountTaxes(isAccountTaxes: Boolean) {
         taxesPreferences.edit {
-            putBoolean(ACCOUNT_TAXES_PREF_KEY, isAccountTaxes)
+            putBoolean(INCLUDE_TAXES, isAccountTaxes)
         }
     }
 
-    fun isAccountTaxes(): Boolean {
-        return taxesPreferences.getBoolean(ACCOUNT_TAXES_PREF_KEY, false)
+    fun isIncludeTaxes(): Boolean {
+        return taxesPreferences.getBoolean(INCLUDE_TAXES, false)
     }
 
     fun sendFeedback(message: String) {

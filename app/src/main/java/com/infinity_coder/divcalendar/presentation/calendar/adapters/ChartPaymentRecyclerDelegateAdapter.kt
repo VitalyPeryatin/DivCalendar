@@ -53,9 +53,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
             chart.onBindChart(item)
 
             annualIncomeTextView.text = context.getString(currencyStringId, item.annualIncome)
-
             annualYieldTextView.text = context.getString(R.string.value_percent, item.annualYield)
-
             yearSpinner.adapter = spinnerAdapter
         }
     }
