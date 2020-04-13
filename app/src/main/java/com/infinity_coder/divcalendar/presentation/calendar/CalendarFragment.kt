@@ -116,68 +116,38 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     }
 
     private fun updateState(state: Int) {
+        calendarContent.visibility = View.GONE
+        yearSpinner.visibility = View.GONE
+        currencyRadioGroup.visibility = View.GONE
+        calendarPaymentsRecyclerView.visibility = View.GONE
+        loadingLayout.visibility = View.GONE
+        emptyLayout.visibility = View.GONE
+        noNetworkLayout.visibility = View.GONE
+        emptySecuritiesLayout.visibility = View.GONE
+
         when (state) {
-            CalendarViewModel.VIEW_STATE_CALENDAR_CONTENT -> showContentState()
-            CalendarViewModel.VIEW_STATE_CALENDAR_LOADING -> showLoadingState()
-            CalendarViewModel.VIEW_STATE_CALENDAR_EMPTY -> showEmptyState()
-            CalendarViewModel.VIEW_STATE_CALENDAR_NO_NETWORK -> showNoNetworkState()
-            CalendarViewModel.VIEW_STATE_CALENDAR_EMPTY_SECURITIES -> showEmptySecuritiesState()
+            CalendarViewModel.VIEW_STATE_CALENDAR_CONTENT -> {
+                calendarContent.visibility = View.VISIBLE
+                yearSpinner.visibility = View.VISIBLE
+                currencyRadioGroup.visibility = View.VISIBLE
+                calendarPaymentsRecyclerView.visibility = View.VISIBLE
+            }
+            CalendarViewModel.VIEW_STATE_CALENDAR_LOADING -> {
+                loadingLayout.visibility = View.VISIBLE
+            }
+            CalendarViewModel.VIEW_STATE_CALENDAR_EMPTY -> {
+                calendarContent.visibility = View.VISIBLE
+                yearSpinner.visibility = View.VISIBLE
+                currencyRadioGroup.visibility = View.INVISIBLE
+                emptyLayout.visibility = View.VISIBLE
+            }
+            CalendarViewModel.VIEW_STATE_CALENDAR_NO_NETWORK -> {
+                noNetworkLayout.visibility = View.VISIBLE
+            }
+            CalendarViewModel.VIEW_STATE_CALENDAR_EMPTY_SECURITIES -> {
+                emptySecuritiesLayout.visibility = View.VISIBLE
+            }
         }
-    }
-
-    private fun showContentState() {
-        calendarContent.visibility = View.VISIBLE
-        yearSpinner.visibility = View.VISIBLE
-        currencyRadioGroup.visibility = View.VISIBLE
-        calendarPaymentsRecyclerView.visibility = View.VISIBLE
-        loadingLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
-        noNetworkLayout.visibility = View.GONE
-        emptySecuritiesLayout.visibility = View.GONE
-    }
-
-    private fun showLoadingState() {
-        calendarContent.visibility = View.GONE
-        yearSpinner.visibility = View.GONE
-        currencyRadioGroup.visibility = View.GONE
-        calendarPaymentsRecyclerView.visibility = View.GONE
-        loadingLayout.visibility = View.VISIBLE
-        emptyLayout.visibility = View.GONE
-        noNetworkLayout.visibility = View.GONE
-        emptySecuritiesLayout.visibility = View.GONE
-    }
-
-    private fun showEmptyState() {
-        calendarContent.visibility = View.VISIBLE
-        yearSpinner.visibility = View.VISIBLE
-        currencyRadioGroup.visibility = View.INVISIBLE
-        calendarPaymentsRecyclerView.visibility = View.GONE
-        loadingLayout.visibility = View.GONE
-        emptyLayout.visibility = View.VISIBLE
-        noNetworkLayout.visibility = View.GONE
-        emptySecuritiesLayout.visibility = View.GONE
-    }
-
-    private fun showNoNetworkState() {
-        calendarContent.visibility = View.GONE
-        yearSpinner.visibility = View.GONE
-        currencyRadioGroup.visibility = View.GONE
-        calendarPaymentsRecyclerView.visibility = View.GONE
-        loadingLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
-        noNetworkLayout.visibility = View.VISIBLE
-        emptySecuritiesLayout.visibility = View.GONE
-    }
-
-    private fun showEmptySecuritiesState() {
-        calendarContent.visibility = View.GONE
-        yearSpinner.visibility = View.GONE
-        currencyRadioGroup.visibility = View.GONE
-        calendarPaymentsRecyclerView.visibility = View.GONE
-        loadingLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
-        noNetworkLayout.visibility = View.GONE
-        emptySecuritiesLayout.visibility = View.VISIBLE
     }
 
     companion object {

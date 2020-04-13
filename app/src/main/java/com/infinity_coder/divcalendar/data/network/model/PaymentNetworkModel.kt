@@ -2,22 +2,36 @@ package com.infinity_coder.divcalendar.data.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class PaymentNetworkModel(
-    @SerializedName("dividends")
-    val dividends: Double,
+class PaymentNetworkModel {
 
-    @SerializedName("date")
-    val date: String,
+    data class Request(
+        @SerializedName("securities")
+        val securities: List<String>,
 
-    @SerializedName("logo")
-    val logo: String,
+        @SerializedName("start_date")
+        val startDate: String,
 
-    @SerializedName("forecast")
-    val forecast: String,
+        @SerializedName("end_date")
+        val endDate: String
+    )
 
-    @SerializedName("name")
-    val ticker: String,
+    data class Response(
+        @SerializedName("dividends")
+        val dividends: Double,
 
-    @SerializedName("currency")
-    val currency: String
-)
+        @SerializedName("date")
+        val date: String,
+
+        @SerializedName("logo")
+        val logo: String,
+
+        @SerializedName("forecast")
+        val forecast: String,
+
+        @SerializedName("name")
+        val ticker: String,
+
+        @SerializedName("currency")
+        val currency: String
+    )
+}

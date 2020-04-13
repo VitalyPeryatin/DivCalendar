@@ -16,11 +16,11 @@ interface DivCalendarApi {
     ): List<SecurityNetworkModel>
 
     @POST("posts")
-    suspend fun fetchPosts(@Body body: BodyPostNetworkModel): List<PostNetworkModel>
+    suspend fun fetchPosts(@Body body: PostNetworkModel.Request): List<PostNetworkModel.Response>
 
     @GET("rate")
     suspend fun fetchCurrencyRate(): CurrencyRateNetworkModel
 
-    @POST("/payments")
-    suspend fun fetchPayments(@Body body: BodyPaymentNetworkModel): List<PaymentNetworkModel>
+    @POST("payments")
+    suspend fun fetchPayments(@Body body: PaymentNetworkModel.Request): List<PaymentNetworkModel.Response>
 }

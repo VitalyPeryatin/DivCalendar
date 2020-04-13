@@ -14,6 +14,9 @@ abstract class SecurityDao {
     @Query("SELECT * FROM ${SecurityPackageDbModel.TABLE_NAME} WHERE ${SecurityPackageDbModel.COLUMN_PORTFOLIO_NAME} = :portfolioName AND ${SecurityPackageDbModel.COLUMN_SEC_ID} = :secId")
     abstract suspend fun getSecurityPackage(portfolioName: String, secId: String): SecurityPackageDbModel?
 
+    @Query("SELECT * FROM ${SecurityPackageDbModel.TABLE_NAME} WHERE ${SecurityPackageDbModel.COLUMN_PORTFOLIO_NAME} = :portfolioName")
+    abstract suspend fun getSecurityPackagesForPortfolio(portfolioName: String): List<SecurityPackageDbModel>
+
     @Delete
     abstract suspend fun deleteSecurityPackage(securityPackage: SecurityPackageDbModel)
 }

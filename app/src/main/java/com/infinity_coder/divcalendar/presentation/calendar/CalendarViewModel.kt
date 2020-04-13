@@ -8,6 +8,7 @@ import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.domain.CalendarInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
+import com.infinity_coder.divcalendar.presentation._common.logException
 import com.infinity_coder.divcalendar.presentation.calendar.mappers.PaymentsToPresentationModelMapper
 import com.infinity_coder.divcalendar.presentation.calendar.models.FooterPaymentPresentationModel
 import kotlinx.coroutines.Dispatchers
@@ -56,7 +57,6 @@ class CalendarViewModel : ViewModel() {
                     _payments.value = it
                     _state.value = VIEW_STATE_CALENDAR_CONTENT
                 }
-                _payments.value = it
             }
             .catch { handleError(it) }
             .launchIn(viewModelScope)
@@ -87,6 +87,7 @@ class CalendarViewModel : ViewModel() {
     }
 
     private fun handleError(error: Throwable) {
+        logException(this, error)
         if (error is HttpException) {
             _state.value = VIEW_STATE_CALENDAR_EMPTY_SECURITIES
         } else {

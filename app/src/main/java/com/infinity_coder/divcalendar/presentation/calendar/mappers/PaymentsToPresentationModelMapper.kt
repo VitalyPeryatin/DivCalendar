@@ -1,7 +1,6 @@
 package com.infinity_coder.divcalendar.presentation.calendar.mappers
 
 import android.graphics.Color
-import android.util.Log
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.data.repositories.RateRepository.RUB_RATE
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
@@ -69,7 +68,6 @@ class PaymentsToPresentationModelMapper {
     private suspend fun mapPaymentsToChartPresentationModel(monthlyPayments: List<MonthlyPayment>): ChartPresentationModel {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val annualIncome = sumMonthPayments(monthlyPayments)
-        Log.d("PaymentsToPresentation", "$annualIncome ${getCosts()}")
         val annualYield = annualIncome / getCosts()
         val allMonthlyPayments = getMonthlyPayments(monthlyPayments)
         val colors = getChartBarColors(allMonthlyPayments)

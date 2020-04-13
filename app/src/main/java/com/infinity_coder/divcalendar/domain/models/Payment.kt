@@ -13,7 +13,7 @@ data class Payment(
     var colorLogo: Int
 ) {
     companion object {
-        fun from(paymentNetworkModel: PaymentNetworkModel, securityPackage: SecurityPackageDbModel) =
+        fun from(paymentNetworkModel: PaymentNetworkModel.Response, securityPackage: SecurityPackageDbModel) =
             Payment(
                 name = securityPackage.name,
                 logo = securityPackage.logo, // TODO сделать с сервера
