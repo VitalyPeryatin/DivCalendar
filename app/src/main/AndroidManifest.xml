@@ -37,6 +37,8 @@
 
         <activity android:name=".presentation.settings.SettingsActivity"/>
 
+        <activity android:name=".presentation.buysubscription.BuySubscriptionActivity"/>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

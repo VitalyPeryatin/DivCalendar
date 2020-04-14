@@ -43,6 +43,10 @@ class SettingsActivity : AppCompatActivity() {
         }
         telegramChatItem.itemTextView.text = resources.getString(R.string.telegram_chat)
         feedbackItem.itemTextView.text = resources.getString(R.string.feedback)
+        cancelSubscriptionItem.itemTextView.text = resources.getString(R.string.cancel_subscription)
+        cancelSubscriptionItem.setOnClickListener {
+
+        }
 
         tryShowCurrentVersion()
     }

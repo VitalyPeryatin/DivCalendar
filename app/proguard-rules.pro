@@ -100,5 +100,5 @@
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
 
-# Billing
+# Simple billing
 -keep class com.android.vending.billing.**

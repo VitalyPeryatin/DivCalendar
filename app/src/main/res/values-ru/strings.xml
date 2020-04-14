@@ -61,4 +61,5 @@
     <string name="feedback">Обратная связь</string>
     <string name="email_developers">Написать разработчикам</string>
     <string name="telegram_chat">Telegram-чат</string>
+    <string name="cancel_subscription">Отменить подписку</string>
 </resources>
