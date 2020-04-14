@@ -9,12 +9,14 @@ import com.infinity_coder.divcalendar.domain.CalendarInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain.SettingsInteractor
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
+import com.infinity_coder.divcalendar.presentation._common.logException
 import com.infinity_coder.divcalendar.presentation.calendar.mappers.PaymentsToPresentationModelMapper
 import com.infinity_coder.divcalendar.presentation.calendar.models.FooterPaymentPresentationModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class CalendarViewModel : ViewModel() {
 
@@ -25,6 +27,10 @@ class CalendarViewModel : ViewModel() {
     private val _payments = MutableLiveData<List<IComparableItem>>()
     val payments: LiveData<List<IComparableItem>>
         get() = _payments
+
+    private val _currentYear = MutableLiveData<String>()
+    val currentYear: LiveData<String>
+        get() = _currentYear
 
     private var cachedPayments: List<MonthlyPayment> = emptyList()
 
@@ -39,19 +45,29 @@ class CalendarViewModel : ViewModel() {
         get() = _isIncludeTaxes
 
     init {
+        _currentYear.value = calendarInteractor.getSelectedYear()
+        loadAllPayments()
         updateData()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun loadAllPayments() = viewModelScope.launch {
+        val currentYearValue = _currentYear.value!!
         val includeTaxes = isIncludeTaxes.value ?: false
-        calendarInteractor.getPayments(includeTaxes)
+        calendarInteractor.getPayments(currentYearValue, includeTaxes)
             .onEach { cachedPayments = it }
             .map { paymentsMapper.mapToPresentationModel(cachedPayments) }
             .flowOn(Dispatchers.IO)
             .onStart { _state.value = VIEW_STATE_CALENDAR_LOADING }
-            .onEach { _payments.value = it }
-            .onCompletion { _state.value = VIEW_STATE_CALENDAR_CONTENT }
+            .onEach {
+                if (it.isEmpty()) {
+                    _state.value = VIEW_STATE_CALENDAR_EMPTY
+                } else {
+                    _payments.value = it
+                    _state.value = VIEW_STATE_CALENDAR_CONTENT
+                }
+            }
+            .catch { handleError(it) }
             .launchIn(viewModelScope)
     }
 
@@ -65,6 +81,14 @@ class CalendarViewModel : ViewModel() {
         rateInteractor.saveDisplayCurrency(currency)
         val payments = paymentsMapper.mapToPresentationModel(cachedPayments)
         _payments.postValue(payments)
+    }
+
+    fun selectYear(selectedYear: String) {
+        if (_currentYear.value == null || selectedYear != _currentYear.value) {
+            calendarInteractor.setSelectedYear(selectedYear)
+            _currentYear.value = selectedYear
+            loadAllPayments()
+        }
     }
 
     fun getDisplayCurrency(): String {
@@ -84,10 +108,20 @@ class CalendarViewModel : ViewModel() {
         }
     }
 
+    private fun handleError(error: Throwable) {
+        logException(this, error)
+        if (error is HttpException) {
+            _state.value = VIEW_STATE_CALENDAR_EMPTY_SECURITIES
+        } else {
+            _state.value = VIEW_STATE_CALENDAR_NO_NETWORK
+        }
+    }
+
     companion object {
         const val VIEW_STATE_CALENDAR_LOADING = 1
         const val VIEW_STATE_CALENDAR_CONTENT = 2
         const val VIEW_STATE_CALENDAR_EMPTY = 3
         const val VIEW_STATE_CALENDAR_NO_NETWORK = 4
+        const val VIEW_STATE_CALENDAR_EMPTY_SECURITIES = 5
     }
 }

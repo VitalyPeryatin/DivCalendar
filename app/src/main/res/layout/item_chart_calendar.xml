@@ -15,33 +15,16 @@
         android:layout_height="wrap_content"
         android:paddingBottom="8dp">
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/yearSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="18dp"
-                android:dropDownWidth="wrap_content"
-                android:gravity="center" />
-
-        </FrameLayout>
-
         <TextView
             android:id="@+id/chartTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/roboto_medium"
             android:text="@string/payout_chart"
             android:textColor="?android:textColorSecondary"
             android:textSize="@dimen/font_few_big"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

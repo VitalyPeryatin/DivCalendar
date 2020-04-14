@@ -34,8 +34,10 @@ class ChangeSecurityBottomDialog : BottomDialog() {
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
 
         security = SecurityNetworkModel(
-            ticker = arguments!!.getString(ARGUMENT_SEC_ID, ""),
-            name = arguments!!.getString(ARGUMENT_NAME, "")
+            ticker = requireArguments().getString(ARGUMENT_SEC_ID, ""),
+            name = requireArguments().getString(ARGUMENT_NAME, ""),
+            logo = requireArguments().getString(ARGUMENT_LOGO, ""),
+            yearYield = requireArguments().getFloat(ARGUMENT_YEAR_YIELD, 0f)
         )
         viewModel.setSecurity(security)
     }
@@ -121,6 +123,8 @@ class ChangeSecurityBottomDialog : BottomDialog() {
 
         private const val ARGUMENT_SEC_ID = "sec_id"
         private const val ARGUMENT_NAME = "sec_name"
+        private const val ARGUMENT_LOGO = "logo"
+        private const val ARGUMENT_YEAR_YIELD = "year_yield"
 
         private const val SHAKE_AMPLITUDE = 8f
 
@@ -128,7 +132,9 @@ class ChangeSecurityBottomDialog : BottomDialog() {
             val dialog = ChangeSecurityBottomDialog()
             dialog.arguments = bundleOf(
                 ARGUMENT_SEC_ID to security.secid,
-                ARGUMENT_NAME to security.name
+                ARGUMENT_NAME to security.name,
+                ARGUMENT_LOGO to security.logo,
+                ARGUMENT_YEAR_YIELD to security.yearYield
             )
             return dialog
         }

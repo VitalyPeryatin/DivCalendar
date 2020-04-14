@@ -16,7 +16,7 @@ object PortfolioRepository {
     private val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
 
     private const val PORTFOLIO_PREF_NAME = "Portfolio"
-    private const val CURRENT_PORTFOLIO_NAME_KEY = "current_portfolio"
+    private const val PREF_CURRENT_PORTFOLIO = "current_portfolio"
     private val portfolioPreferences = App.instance.getSharedPreferences(PORTFOLIO_PREF_NAME, Context.MODE_PRIVATE)
 
     suspend fun addPortfolio(portfolioName: String) {
@@ -40,12 +40,12 @@ object PortfolioRepository {
 
     fun setCurrentPortfolio(name: String) {
         portfolioPreferences.edit {
-            putString(CURRENT_PORTFOLIO_NAME_KEY, name)
+            putString(PREF_CURRENT_PORTFOLIO, name)
         }
     }
 
     fun getCurrentPortfolio(): String {
-        return portfolioPreferences.getString(CURRENT_PORTFOLIO_NAME_KEY, "")!!
+        return portfolioPreferences.getString(PREF_CURRENT_PORTFOLIO, "")!!
     }
 
     suspend fun deletePortfolio(name: String) {
