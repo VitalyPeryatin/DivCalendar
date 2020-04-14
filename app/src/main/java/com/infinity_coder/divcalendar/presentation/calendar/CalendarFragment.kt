@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +14,6 @@ import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.presentation._common.SpinnerInteractionListener
-import com.infinity_coder.divcalendar.presentation._common.getColorExt
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.calendar.adapters.*
@@ -123,7 +123,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             taxesTextView.text = resources.getString(R.string.taxes_excluding)
             colorId = R.color.colorSecondary
         }
-        taxesTextView.setTextColor(resources.getColorExt(colorId, requireContext().theme))
+        taxesTextView.setTextColor(ContextCompat.getColor(requireContext(), colorId))
     }
 
     private fun updatePayments(payments: List<IComparableItem>) {

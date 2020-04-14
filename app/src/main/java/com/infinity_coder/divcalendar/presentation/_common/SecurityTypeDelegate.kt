@@ -1,6 +1,7 @@
 package com.infinity_coder.divcalendar.presentation._common
 
 import android.content.Context
+import androidx.core.content.ContextCompat
 import com.infinity_coder.divcalendar.R
 
 object SecurityTypeDelegate {
@@ -17,7 +18,7 @@ object SecurityTypeDelegate {
             SECURITY_TYPE_BOND -> R.color.typeRusBondColor
             else -> R.color.typeRusStockColor
         }
-        return context.getColorExt(colorId)
+        return ContextCompat.getColor(context, colorId)
     }
 
     fun getTitle(context: Context, type: String): String {

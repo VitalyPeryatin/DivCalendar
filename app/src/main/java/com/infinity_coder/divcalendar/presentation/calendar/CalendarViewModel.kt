@@ -47,7 +47,6 @@ class CalendarViewModel : ViewModel() {
     init {
         _currentYear.value = calendarInteractor.getSelectedYear()
         loadAllPayments()
-        updateData()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

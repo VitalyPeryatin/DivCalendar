@@ -13,10 +13,10 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.domain._common.LinkDelegate
 import com.infinity_coder.divcalendar.presentation._common.CustomTabHelper
-import com.infinity_coder.divcalendar.presentation._common.getColorExt
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import kotlinx.android.synthetic.main.activity_browser.*
 
@@ -31,7 +31,7 @@ class BrowserActivity : AppCompatActivity() {
             val packageNameToUse = CustomTabHelper.getPackageNameToUse(context)
             if (packageNameToUse != null) {
                 val uri = Uri.parse(url)
-                val toolbarColor = context.getColorExt(R.color.background)
+                val toolbarColor = ContextCompat.getColor(context, R.color.background)
 
                 val customTabsIntent = CustomTabsIntent.Builder()
                     .setToolbarColor(toolbarColor)
