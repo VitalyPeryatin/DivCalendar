@@ -14,24 +14,24 @@ class SplashScreenActivity : AppCompatActivity() {
         getAccess()
     }
 
-    private fun getAccess(){
+    private fun getAccess() {
         FirebaseFirestore.getInstance()
             .collection(COLLECTION_NAME)
             .get()
             .addOnCompleteListener {
-                if(!it.isSuccessful || it.result == null) return@addOnCompleteListener
+                if (!it.isSuccessful || it.result == null) return@addOnCompleteListener
 
-                if(it.result!!.isHaveAccess()){
+                if (it.result!!.isHaveAccess()) {
                     startActivity(Intent(this, MainActivity::class.java))
                 }
             }
     }
 
-    private fun QuerySnapshot.isHaveAccess():Boolean{
+    private fun QuerySnapshot.isHaveAccess(): Boolean {
         return (documents.find { it.id == DOC_NAME }?.data?.get(FIELD_NAME) as? Boolean) ?: false
     }
 
-    companion object{
+    companion object {
         private const val COLLECTION_NAME = "test_application"
         private const val DOC_NAME = "access"
         private const val FIELD_NAME = "haveAccess"
