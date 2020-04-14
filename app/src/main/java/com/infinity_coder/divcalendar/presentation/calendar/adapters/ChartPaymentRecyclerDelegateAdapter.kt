@@ -37,12 +37,6 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         chart = viewHolder.chart
         val context = viewHolder.containerView.context
 
-        val currentYear = getCurrentYear()
-
-        val items = Array(MAX_YEARS_CHOICE) { index -> (currentYear + index).toString() }
-        val spinnerAdapter = SpinnerAdapter(chart!!.context, items)
-        spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-
         val currencyStringId = when (item.currentCurrency) {
             RateRepository.RUB_RATE -> R.string.value_currency_rub
             RateRepository.USD_RATE -> R.string.value_currency_usd
@@ -53,12 +47,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
             chart.onBindChart(item)
             annualIncomeTextView.text = context.getString(currencyStringId, item.annualIncome)
             annualYieldTextView.text = context.getString(R.string.value_percent, item.annualYield)
-            yearSpinner.adapter = spinnerAdapter
         }
-    }
-
-    private fun getCurrentYear(): Int {
-        return Calendar.getInstance().get(Calendar.YEAR)
     }
 
     override fun onNothingSelected() {
@@ -83,8 +72,11 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         axisLeft.setDrawGridLines(false)
         axisLeft.axisMinimum = 0f
 
-        val months = context.resources.getStringArray(R.array.months_nominative_case)
+        val months = context.resources.getStringArray(R.array.months_first_letter)
         xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.labelCount = 12
         xAxis.setDrawGridLines(false)
         xAxis.valueFormatter = object : ValueFormatter() {
             override fun getAxisLabel(value: Float, axis: AxisBase?): String {
@@ -99,6 +91,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
             setDrawValues(false)
         }
 
+        animateY(ANIMATE_DURATION)
         setData(data)
         setOnChartValueSelectedListener(this@ChartPaymentRecyclerDelegateAdapter)
         invalidate()
@@ -120,6 +113,6 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
     }
 
     companion object {
-        private const val MAX_YEARS_CHOICE = 2
+        private const val ANIMATE_DURATION = 750
     }
 }

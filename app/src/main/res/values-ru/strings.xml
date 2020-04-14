@@ -11,6 +11,7 @@
     <string name="no_connection">Нет интернет соединения</string>
     <string name="empty_list">Список пуст</string>
     <string name="empty_securities">У вас нет ни одной ценной бумаги.\nДобавьте ценную бумагу себе в портфель!</string>
+    <string name="empty_payments">На %s год выплаты по Вашим ценным бумагам отсутствуют!</string>
 
     <!--calendar screen-->
     <string name="payout_chart">График выплат</string>
@@ -35,10 +36,22 @@
     <!--portfolio -->
     <string name="sec_count">%1$d шт.</string>
     <string name="yield_in_year">%1$.2f\%% в год</string>
-    <string name="change">Изменить пакет</string>
+    <string name="change_package">Изменить пакет</string>
     <string name="delete_entire_package">Удалить весь пакет</string>
     <string name="cost">Стоимость</string>
+    <string name="new_portfolio">Новый портфель</string>
+    <string name="name">Название</string>
+    <string name="create_new_portfolio">Создание портфеля</string>
+    <string name="delete">Удалить</string>
+    <string name="create">Создать</string>
     <string name="collect_portfolio">Соберите портфель</string>
+    <string name="change">Изменить</string>
+    <string name="cancel">Отмена</string>
+    <string name="sure_remove_portfolio">Вы точно хотите удалить портфель \'%s\'? </string>
+    <string name="empty_portfolio_name_error">В названии портфеля должна быть хотя бы одна буква</string>
+    <string name="not_new_portfolio_name_error">Название портфеля должно быть уникальным</string>
+    <string name="edit_portfolio_with_name">Редактирование портфеля \'%s\'</string>
+    <string name="small_count_portfolio">Это единственный портфель. Вы не можете его удалить.</string>
 
     <!-- settings -->
     <string name="settings">Настройки</string>

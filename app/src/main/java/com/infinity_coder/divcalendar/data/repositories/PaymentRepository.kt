@@ -1,85 +1,50 @@
 package com.infinity_coder.divcalendar.data.repositories
 
-import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
+import android.content.Context
+import androidx.core.content.edit
+import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
+import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import com.infinity_coder.divcalendar.data.network.RetrofitService
+import com.infinity_coder.divcalendar.data.network.model.*
+import com.infinity_coder.divcalendar.domain._common.DateFormatter
+import com.infinity_coder.divcalendar.domain.models.Payment
+import com.infinity_coder.divcalendar.presentation.App
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flow
 
 object PaymentRepository {
 
-    suspend fun loadAllPayments(): Flow<List<PaymentNetworkModel>> {
-        return flowOf(listOf(
-            PaymentNetworkModel(
-                "Яндекс",
-                "https://s0.rbk.ru/emitent_pics/resized/80x80_crop/images/20/74/3c2996c034c70685ec736cd563e55dd6.png",
-                15,
-                174.05,
-                "2020-01-04",
-                "USD"
-            ),
-            PaymentNetworkModel(
-                "Яндекс",
-                "https://s0.rbk.ru/emitent_pics/resized/80x80_crop/images/20/74/3c2996c034c70685ec736cd563e55dd6.png",
-                15,
-                174.05,
-                "2020-03-04",
-                "RUB"
-            ),
-            PaymentNetworkModel(
-                "Яндекс",
-                "https://s0.rbk.ru/emitent_pics/resized/80x80_crop/images/20/74/3c2996c034c70685ec736cd563e55dd6.png",
-                15,
-                174.05,
-                "2020-12-04",
-                "RUB"
-            ),
-            PaymentNetworkModel(
-                "Яндекс",
-                "https://s0.rbk.ru/emitent_pics/resized/80x80_crop/images/20/74/3c2996c034c70685ec736cd563e55dd6.png",
-                15,
-                174.05,
-                "2020-08-04",
-                "RUB"
-            ),
-            PaymentNetworkModel(
-                "Berkshire Hathaway",
-                "https://s0.rbk.ru/emitent_pics/resized/80x80_crop/images/17/27/ea801305f1b36bbaa63f4ed481522fed.png",
-                30,
-                342.4,
-                "2020-01-21",
-                "RUB"
-            ),
-            PaymentNetworkModel(
-                "Netflix",
-                "https://s0.rbk.ru/emitent_pics/resized/80x80_crop/images/14/92/ef18f9c42fac467a8502ec85b1a0159b.png",
-                5,
-                1234.1,
-                "2020-05-11",
-                "RUB"
-            ),
-            PaymentNetworkModel(
-                "MTC",
-                "https://s3-symbol-logo.tradingview.com/mts--big.svg",
-                5,
-                123.1,
-                "2020-04-11",
-                "RUB"
-            ),
-            PaymentNetworkModel(
-                "Welltower",
-                "https://s0.rbk.ru/emitent_pics/resized/80x80_crop/images/50/95/f1e15de0b09ae756330dcb3577957279.png",
-                14,
-                202.3,
-                "2020-05-21",
-                "RUB"
-            ),
-            PaymentNetworkModel(
-                "Starbucks",
-                "https://s0.rbk.ru/emitent_pics/resized/80x80_crop/images/57/14/aea38279dbc2f56d42174fddf90686d9.png",
-                30,
-                241.3,
-                "2020-08-21",
-                "RUB"
-            )
-        ))
+    private val securityDao = DivCalendarDatabase.roomDatabase.securityDao
+
+    private val divCalendarApi = RetrofitService.divCalendarApi
+
+    private const val PAYMENTS_PREF_NAME = "Payments"
+    private const val PREF_SELECTED_YEAR = "selected_year"
+    private val paymentsPreferences = App.instance.getSharedPreferences(PAYMENTS_PREF_NAME, Context.MODE_PRIVATE)
+
+    suspend fun getPayments(startDate: String, endDate: String): Flow<List<Payment>> = flow {
+        val currentPortfolio = PortfolioRepository.getCurrentPortfolio()
+        val securities = securityDao.getSecurityPackagesForPortfolio(currentPortfolio)
+        val paymentsFromNetwork = getPaymentsFromNetwork(securities, startDate, endDate)
+        val payments = paymentsFromNetwork.map { payment ->
+            Payment.from(payment, securities.find { payment.ticker == it.secid }!!)
+        }
+        emit(payments)
+    }
+
+    fun setSelectedYear(selectedYear: String) {
+        paymentsPreferences.edit {
+            putString(PREF_SELECTED_YEAR, selectedYear)
+        }
+    }
+
+    fun getSelectedYear(): String {
+        return paymentsPreferences.getString(PREF_SELECTED_YEAR, DateFormatter.getCurrentYear())!!
+    }
+
+    private suspend fun getPaymentsFromNetwork(securities: List<SecurityPackageDbModel>, startDate: String, endDate: String): List<PaymentNetworkModel.Response> {
+        val tickers = securities.map { it.secid }
+        val body = PaymentNetworkModel.Request(tickers, startDate, endDate)
+        return divCalendarApi.fetchPayments(body)
     }
 }

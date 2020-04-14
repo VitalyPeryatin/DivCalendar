@@ -1,27 +1,74 @@
 package com.infinity_coder.divcalendar.data.repositories
 
+import android.content.Context
+import android.util.Log
+import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
-import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
+import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
+import com.infinity_coder.divcalendar.presentation.App
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 
+@OptIn(ExperimentalCoroutinesApi::class)
 object PortfolioRepository {
 
     private val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
 
-    fun getAllSecurityPackages(): Flow<List<SecurityPackageDbModel>> = flow {
-        emit(portfolioDao.getSecurityPackages())
+    private const val PORTFOLIO_PREF_NAME = "Portfolio"
+    private const val PREF_CURRENT_PORTFOLIO = "current_portfolio"
+    private val portfolioPreferences = App.instance.getSharedPreferences(PORTFOLIO_PREF_NAME, Context.MODE_PRIVATE)
+
+    suspend fun addPortfolio(portfolioName: String) {
+        val portfolio = PortfolioDbModel(portfolioName)
+        portfolioDao.insertPortfolio(portfolio)
     }
 
-    suspend fun deleteSecurityPackage(securityPackage: SecurityPackageDbModel) {
-        portfolioDao.deleteSecurityPackage(securityPackage)
+    fun getAllPortfolios(): Flow<List<PortfolioDbModel>> {
+        return portfolioDao.getAllPortfolios()
+            .filterNotNull()
+            .distinctUntilChanged()
     }
 
-    suspend fun addSecurityPackage(securityPackage: SecurityPackageDbModel) {
-        portfolioDao.addSecurityPackage(securityPackage)
+    suspend fun getAllPortfolioNames(): List<String> {
+        return portfolioDao.getPortfolioNames()
     }
 
-    suspend fun getSecurityPackage(secid: String): SecurityPackageDbModel? {
-        return portfolioDao.getSecurityPackage(secid)
+    private suspend fun getPortfolioByName(portfolioName: String): PortfolioDbModel? {
+        return getPortfolioWithSecurities(portfolioName).first().portfolio
+    }
+
+    fun setCurrentPortfolio(name: String) {
+        portfolioPreferences.edit {
+            putString(PREF_CURRENT_PORTFOLIO, name)
+        }
+    }
+
+    fun getCurrentPortfolio(): String {
+        return portfolioPreferences.getString(PREF_CURRENT_PORTFOLIO, "")!!
+    }
+
+    suspend fun deletePortfolio(name: String) {
+        portfolioDao.deletePortfolio(name)
+    }
+
+    suspend fun renamePortfolio(oldName: String, newName: String) {
+        Log.d("Sd", newName)
+        val portfolio = getPortfolioByName(oldName)
+        Log.d("Sd", "portfolio: ${portfolio?.name}")
+        if (portfolio != null) {
+            portfolio.name = newName
+            portfolioDao.updatePortfolio(portfolio)
+        }
+    }
+
+    fun getAllPortfoliosWithSecurities(): Flow<List<PortfolioWithSecurities>> {
+        return portfolioDao.getAllPortfoliosWithSecurities()
+    }
+
+    fun getPortfolioWithSecurities(name: String): Flow<PortfolioWithSecurities> {
+        return getAllPortfoliosWithSecurities()
+            .map { it.first { portfolio -> portfolio.portfolio.name == name } }
+            .distinctUntilChanged()
     }
 }

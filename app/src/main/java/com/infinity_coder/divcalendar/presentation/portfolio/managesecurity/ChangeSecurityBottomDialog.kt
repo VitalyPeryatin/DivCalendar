@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation.portfolio.changepackage
+package com.infinity_coder.divcalendar.presentation.portfolio.managesecurity
 
 import android.content.Context
 import android.os.Bundle
@@ -18,14 +18,14 @@ import com.infinity_coder.divcalendar.presentation._common.shake
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import kotlinx.android.synthetic.main.bottom_dialog_remove_security.*
 
-class ChangePackageBottomDialog : BottomDialog() {
+class ChangeSecurityBottomDialog : BottomDialog() {
 
     private var clickListener: OnClickListener? = null
 
     private lateinit var security: SecurityNetworkModel
 
-    private val viewModel: ChangePackageViewModel by lazy {
-        viewModel { ChangePackageViewModel() }
+    private val viewModel: ChangeSecurityViewModel by lazy {
+        viewModel { ChangeSecurityViewModel() }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,8 +34,10 @@ class ChangePackageBottomDialog : BottomDialog() {
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
 
         security = SecurityNetworkModel(
-            ticker = arguments!!.getString(ARGUMENT_SEC_ID, ""),
-            name = arguments!!.getString(ARGUMENT_NAME, "")
+            ticker = requireArguments().getString(ARGUMENT_SEC_ID, ""),
+            name = requireArguments().getString(ARGUMENT_NAME, ""),
+            logo = requireArguments().getString(ARGUMENT_LOGO, ""),
+            yearYield = requireArguments().getFloat(ARGUMENT_YEAR_YIELD, 0f)
         )
         viewModel.setSecurity(security)
     }
@@ -121,14 +123,18 @@ class ChangePackageBottomDialog : BottomDialog() {
 
         private const val ARGUMENT_SEC_ID = "sec_id"
         private const val ARGUMENT_NAME = "sec_name"
+        private const val ARGUMENT_LOGO = "logo"
+        private const val ARGUMENT_YEAR_YIELD = "year_yield"
 
         private const val SHAKE_AMPLITUDE = 8f
 
-        fun newInstance(security: SecurityPackageDbModel): ChangePackageBottomDialog {
-            val dialog = ChangePackageBottomDialog()
+        fun newInstance(security: SecurityPackageDbModel): ChangeSecurityBottomDialog {
+            val dialog = ChangeSecurityBottomDialog()
             dialog.arguments = bundleOf(
                 ARGUMENT_SEC_ID to security.secid,
-                ARGUMENT_NAME to security.name
+                ARGUMENT_NAME to security.name,
+                ARGUMENT_LOGO to security.logo,
+                ARGUMENT_YEAR_YIELD to security.yearYield
             )
             return dialog
         }

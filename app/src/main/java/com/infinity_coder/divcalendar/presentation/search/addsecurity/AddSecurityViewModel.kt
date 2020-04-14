@@ -3,9 +3,11 @@ package com.infinity_coder.divcalendar.presentation.search.addsecurity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
+import kotlinx.coroutines.launch
 
 class AddSecurityViewModel : ViewModel() {
 
@@ -16,7 +18,7 @@ class AddSecurityViewModel : ViewModel() {
     val shakePriceEditText = LiveEvent<Void?>()
     val shakeCountEditText = LiveEvent<Void?>()
 
-    private val securityTotalPriceLiveData = MutableLiveData<Float>(0f)
+    private val securityTotalPriceLiveData = MutableLiveData(0f)
     private lateinit var security: SecurityNetworkModel
 
     private var price: Float = 0f
@@ -43,11 +45,13 @@ class AddSecurityViewModel : ViewModel() {
     private fun getSecurityPackage() = SecurityPackageDbModel(
         secid = security.ticker,
         name = security.name,
+        logo = security.logo,
         count = count,
-        totalPrice = price * count
+        totalPrice = price * count,
+        yearYield = security.yearYield
     )
 
-    fun addSecurityPackage() {
+    fun addSecurityPackage() = viewModelScope.launch {
         when {
             price <= 0 -> {
                 shakePriceEditText.postValue(null)
@@ -57,7 +61,7 @@ class AddSecurityViewModel : ViewModel() {
             }
             else -> {
                 val securityPackage = getSecurityPackage()
-                _securityPackage.postValue(securityPackage)
+                _securityPackage.value = securityPackage
             }
         }
     }

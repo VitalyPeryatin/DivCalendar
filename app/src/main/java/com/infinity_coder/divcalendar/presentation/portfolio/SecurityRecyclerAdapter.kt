@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
+import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_security_portfolio.*
 
@@ -44,15 +45,14 @@ class SecurityRecyclerAdapter(
             securityPortfolioCardLayout.setOnClickListener {
                 onClickListener?.onItemClick(securityPackage)
             }
-            val securityColor =
-                SecurityTypeDelegate.getColor(containerView.context, securityPackage.type)
+            val securityColor = SecurityTypeDelegate.getColor(containerView.context, securityPackage.type)
             securityTypeView.setBackgroundColor(securityColor)
             nameTextView.text = securityPackage.name
+            nameTextView.isSelected = true
+            SimpleGlide.loadImage(logoImageView, securityPackage.logo, logoImageView)
             countTextView.text = resources.getString(R.string.sec_count, securityPackage.count)
-            totalPriceTextView.text =
-                resources.getString(R.string.value_currency_rub, securityPackage.totalPrice)
-            yearYieldTextView.text =
-                resources.getString(R.string.yield_in_year, securityPackage.yearYield)
+            totalPriceTextView.text = resources.getString(R.string.value_currency_rub, securityPackage.totalPrice)
+            yearYieldTextView.text = resources.getString(R.string.yield_in_year, securityPackage.yearYield)
         }
     }
 

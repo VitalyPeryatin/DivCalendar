@@ -1,16 +1,14 @@
 package com.infinity_coder.divcalendar.domain.models
 
-import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
-
 data class MonthlyPayment(
     val month: Int,
-    val payments: List<PaymentNetworkModel>
+    val payments: List<Payment>
 ) {
     companion object {
-        fun from(paymentNetworkModel: Pair<Int, List<PaymentNetworkModel>>) =
+        fun from(monthsWithPayments: Pair<Int, List<Payment>>) =
             MonthlyPayment(
-                month = paymentNetworkModel.first,
-                payments = paymentNetworkModel.second
+                month = monthsWithPayments.first,
+                payments = monthsWithPayments.second
             )
     }
 }

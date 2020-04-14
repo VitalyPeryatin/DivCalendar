@@ -42,7 +42,7 @@ data class PostDbModel(
         const val COLUMN_DATE = "date"
         const val COLUMN_LINK = "link"
 
-        fun from(post: PostNetworkModel) = PostDbModel(
+        fun from(post: PostNetworkModel.Response) = PostDbModel(
             title = post.title,
             text = post.text,
             logo = post.logo,
@@ -51,6 +51,6 @@ data class PostDbModel(
             link = post.link
         )
 
-        fun from(posts: List<PostNetworkModel>) = posts.map { from(it) }
+        fun from(posts: List<PostNetworkModel.Response>) = posts.map { from(it) }
     }
 }

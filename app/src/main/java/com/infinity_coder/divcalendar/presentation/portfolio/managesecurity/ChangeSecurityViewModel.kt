@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation.portfolio.changepackage
+package com.infinity_coder.divcalendar.presentation.portfolio.managesecurity
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
+import kotlinx.coroutines.channels.ticker
 
-class ChangePackageViewModel : ViewModel() {
+class ChangeSecurityViewModel : ViewModel() {
 
     private val _changeSecurityPackage = MutableLiveData<SecurityPackageDbModel>()
     val changeSecurityPackage: LiveData<SecurityPackageDbModel>
@@ -34,7 +35,14 @@ class ChangePackageViewModel : ViewModel() {
     }
 
     private fun getSecurityPackage(count: Int, price: Float): SecurityPackageDbModel {
-        return SecurityPackageDbModel(security.ticker, security.name, count, price)
+        return SecurityPackageDbModel(
+            secid = security.ticker,
+            name = security.name,
+            logo = security.logo,
+            count = count,
+            totalPrice = price,
+            yearYield = security.yearYield
+        )
     }
 
     fun changePackage() {
@@ -47,13 +55,13 @@ class ChangePackageViewModel : ViewModel() {
             }
             else -> {
                 val securityPackage = getSecurityPackage(count, cost)
-                _changeSecurityPackage.postValue(securityPackage)
+                _changeSecurityPackage.value = securityPackage
             }
         }
     }
 
     fun removePackage() {
         val securityPackage = getSecurityPackage(0, 0f)
-        _changeSecurityPackage.postValue(securityPackage)
+        _changeSecurityPackage.value = securityPackage
     }
 }
