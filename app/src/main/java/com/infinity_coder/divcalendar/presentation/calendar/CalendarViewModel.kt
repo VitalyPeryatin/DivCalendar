@@ -20,6 +20,10 @@ import retrofit2.HttpException
 
 class CalendarViewModel : ViewModel() {
 
+    private val calendarInteractor = CalendarInteractor()
+    private val rateInteractor = RateInteractor()
+    private val settingsInteractor = SettingsInteractor()
+
     private val _state = MutableLiveData<Int>()
     val state: LiveData<Int>
         get() = _state
@@ -28,25 +32,16 @@ class CalendarViewModel : ViewModel() {
     val payments: LiveData<List<IComparableItem>>
         get() = _payments
 
-    private val _currentYear = MutableLiveData<String>()
+    private val _currentYear = MutableLiveData(calendarInteractor.getSelectedYear())
     val currentYear: LiveData<String>
         get() = _currentYear
 
     private var cachedPayments: List<MonthlyPayment> = emptyList()
-
-    private val calendarInteractor = CalendarInteractor()
-    private val rateInteractor = RateInteractor()
-    private val settingsInteractor = SettingsInteractor()
-
     private val paymentsMapper = PaymentsToPresentationModelMapper()
 
-    private val _isIncludeTaxes = MutableLiveData(false)
-    val isIncludeTaxes: LiveData<Boolean>
+    private val _isIncludeTaxes = MutableLiveData<Boolean?>(null)
+    val isIncludeTaxes: LiveData<Boolean?>
         get() = _isIncludeTaxes
-
-    init {
-        _currentYear.value = calendarInteractor.getSelectedYear()
-    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun loadAllPayments() = viewModelScope.launch {

@@ -114,7 +114,9 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         return adapter
     }
 
-    private fun setIsIncludedTexes(isIncludedTaxes: Boolean) {
+    private fun setIsIncludedTexes(isIncludedTaxes: Boolean?) {
+        if (isIncludedTaxes == null) return
+
         val colorId: Int
         if (isIncludedTaxes) {
             taxesTextView.text = resources.getString(R.string.taxes_included)
