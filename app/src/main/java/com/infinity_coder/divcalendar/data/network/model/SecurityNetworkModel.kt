@@ -16,7 +16,7 @@ data class SecurityNetworkModel(
     val logo: String = "",
 
     @SerializedName("yield")
-    val yield: Float = 0f,
+    val yearYield: Float = 0f,
 
     @SerializedName("income")
     val income: Float = 0f,

@@ -37,12 +37,6 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         chart = viewHolder.chart
         val context = viewHolder.containerView.context
 
-        val currentYear = getCurrentYear()
-
-        val items = Array(MAX_YEARS_CHOICE) { index -> (currentYear + index).toString() }
-        val spinnerAdapter = SpinnerAdapter(chart!!.context, items)
-        spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-
         val currencyStringId = when (item.currentCurrency) {
             RateRepository.RUB_RATE -> R.string.value_currency_rub
             RateRepository.USD_RATE -> R.string.value_currency_usd
@@ -53,12 +47,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
             chart.onBindChart(item)
             annualIncomeTextView.text = context.getString(currencyStringId, item.annualIncome)
             annualYieldTextView.text = context.getString(R.string.value_percent, item.annualYield)
-            yearSpinner.adapter = spinnerAdapter
         }
-    }
-
-    private fun getCurrentYear(): Int {
-        return Calendar.getInstance().get(Calendar.YEAR)
     }
 
     override fun onNothingSelected() {
@@ -124,7 +113,6 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
     }
 
     companion object {
-        private const val MAX_YEARS_CHOICE = 2
         private const val ANIMATE_DURATION = 750
     }
 }

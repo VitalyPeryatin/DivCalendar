@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
+import kotlinx.coroutines.channels.ticker
 
 class ChangeSecurityViewModel : ViewModel() {
 
@@ -34,7 +35,14 @@ class ChangeSecurityViewModel : ViewModel() {
     }
 
     private fun getSecurityPackage(count: Int, price: Float): SecurityPackageDbModel {
-        return SecurityPackageDbModel(security.ticker, security.name, security.logo, count, price)
+        return SecurityPackageDbModel(
+            secid = security.ticker,
+            name = security.name,
+            logo = security.logo,
+            count = count,
+            totalPrice = price,
+            yearYield = security.yearYield
+        )
     }
 
     fun changePackage() {

@@ -1,5 +1,6 @@
 package com.infinity_coder.divcalendar.domain.models
 
+import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetworkModel
 
 data class Payment(
@@ -12,12 +13,12 @@ data class Payment(
     var colorLogo: Int
 ) {
     companion object {
-        fun from(paymentNetworkModel: PaymentNetworkModel) =
+        fun from(paymentNetworkModel: PaymentNetworkModel.Response, securityPackage: SecurityPackageDbModel) =
             Payment(
-                name = paymentNetworkModel.name,
-                logo = paymentNetworkModel.logo,
-                count = paymentNetworkModel.count,
-                dividends = paymentNetworkModel.dividends,
+                name = securityPackage.name,
+                logo = securityPackage.logo, // TODO сделать с сервера
+                count = securityPackage.count,
+                dividends = paymentNetworkModel.dividends * securityPackage.count,
                 date = paymentNetworkModel.date,
                 currency = paymentNetworkModel.currency,
                 colorLogo = -1

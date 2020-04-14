@@ -18,4 +18,8 @@ object DateFormatter {
 
         return "$day $month $year"
     }
+
+    fun getCurrentYear(): String {
+        return Calendar.getInstance().get(Calendar.YEAR).toString()
+    }
 }
