@@ -28,7 +28,7 @@ class CalendarInteractor {
             .map { groupAndSortPayments(it) }
     }
 
-    private fun calculateTaxesIfNeed(isIncludeTaxes: Boolean, payments: List<PaymentNetworkModel>): List<PaymentNetworkModel> {
+    private fun calculateTaxesIfNeed(isIncludeTaxes: Boolean, payments: List<Payment>): List<Payment> {
         if (isIncludeTaxes) {
             payments.forEach { it.dividends *= TAX_FACTOR }
         }

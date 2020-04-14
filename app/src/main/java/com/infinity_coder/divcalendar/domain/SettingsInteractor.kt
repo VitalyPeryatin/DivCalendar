@@ -4,7 +4,7 @@ import com.infinity_coder.divcalendar.data.repositories.SettingsRepository
 
 class SettingsInteractor {
     fun saveIsAccountTaxes(isAccountTaxes: Boolean) {
-        SettingsRepository.saveIsAccountTaxes(isAccountTaxes)
+        SettingsRepository.saveIsIncludeTaxes(isAccountTaxes)
     }
 
     fun isIncludeTaxes(): Boolean {

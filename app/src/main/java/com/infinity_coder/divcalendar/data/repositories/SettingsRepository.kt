@@ -12,13 +12,13 @@ object SettingsRepository {
 
     private val taxesPreferences = App.instance.getSharedPreferences(TAXES_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
-    fun saveIsAccountTaxes(isAccountTaxes: Boolean) {
+    fun saveIsIncludeTaxes(isAccountTaxes: Boolean) {
         taxesPreferences.edit {
             putBoolean(PREF_INCLUDE_TAXES, isAccountTaxes)
         }
     }
 
-    fun isAccountTaxes(): Boolean {
+    fun isIncludeTaxes(): Boolean {
         return taxesPreferences.getBoolean(PREF_INCLUDE_TAXES, false)
     }
 
