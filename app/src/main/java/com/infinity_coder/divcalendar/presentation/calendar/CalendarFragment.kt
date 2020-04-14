@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +36,13 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         viewModel.state.observe(viewLifecycleOwner, Observer(this::updateState))
         viewModel.payments.observe(viewLifecycleOwner, Observer(this::updatePayments))
         viewModel.currentYear.observe(viewLifecycleOwner, Observer(this::updateCurrentYear))
+        viewModel.isIncludeTaxes.observe(viewLifecycleOwner, Observer(this::setIsIncludedTexes))
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.updateData()
     }
 
     private fun initUI() {
@@ -106,6 +114,20 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         return adapter
     }
 
+    private fun setIsIncludedTexes(isIncludedTaxes: Boolean?) {
+        if (isIncludedTaxes == null) return
+
+        val colorId: Int
+        if (isIncludedTaxes) {
+            taxesTextView.text = resources.getString(R.string.taxes_included)
+            colorId = R.color.colorAccent
+        } else {
+            taxesTextView.text = resources.getString(R.string.taxes_excluding)
+            colorId = R.color.colorSecondary
+        }
+        taxesTextView.setTextColor(ContextCompat.getColor(requireContext(), colorId))
+    }
+
     private fun updatePayments(payments: List<IComparableItem>) {
         (calendarPaymentsRecyclerView.adapter as DiffUtilCompositeAdapter).swapData(payments)
     }
@@ -124,6 +146,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         emptyLayout.visibility = View.GONE
         noNetworkLayout.visibility = View.GONE
         emptySecuritiesLayout.visibility = View.GONE
+        taxesTextView.visibility = View.GONE
 
         when (state) {
             CalendarViewModel.VIEW_STATE_CALENDAR_CONTENT -> {
@@ -131,6 +154,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                 yearSpinner.visibility = View.VISIBLE
                 currencyRadioGroup.visibility = View.VISIBLE
                 calendarPaymentsRecyclerView.visibility = View.VISIBLE
+                taxesTextView.visibility = View.VISIBLE
             }
             CalendarViewModel.VIEW_STATE_CALENDAR_LOADING -> {
                 loadingLayout.visibility = View.VISIBLE

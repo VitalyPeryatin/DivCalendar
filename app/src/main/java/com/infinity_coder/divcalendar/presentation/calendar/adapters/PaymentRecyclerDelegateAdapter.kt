@@ -19,9 +19,9 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
 
     override fun onBind(item: PaymentPresentationModel, viewHolder: KViewHolder) {
         viewHolder.run {
+
             paymentName.text = item.name
-            paymentCount.text =
-                paymentCount.context.getString(R.string.count_securities, item.count)
+            paymentCount.text = paymentCount.context.getString(R.string.count_securities, item.count)
             paymentDate.text = paymentDate.context.getDate(item.date)
 
             val currencyStringId = when (item.currentCurrency) {
@@ -29,6 +29,7 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
                 RateRepository.RUB_RATE -> R.string.value_currency_rub
                 else -> R.string.value_currency_undefined
             }
+
             paymentDividends.text = paymentDividends.context.getString(currencyStringId, item.dividends)
             SimpleGlide.loadImage(paymentLogo, item.logo, paymentLogo)
         }

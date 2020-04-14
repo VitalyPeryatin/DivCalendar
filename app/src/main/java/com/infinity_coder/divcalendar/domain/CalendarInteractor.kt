@@ -19,11 +19,20 @@ class CalendarInteractor {
     private val dateFormat = DateFormatter.basicDateFormat
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun getPayments(year: String): Flow<List<MonthlyPayment>> {
+    suspend fun getPayments(year: String, isIncludeTaxes: Boolean): Flow<List<MonthlyPayment>> {
         return PaymentRepository.getPayments(
             "$year-01-01",
             "$year-12-31"
-        ).map { groupAndSortPayments(it) }
+        )
+            .map { calculateTaxesIfNeed(isIncludeTaxes, it) }
+            .map { groupAndSortPayments(it) }
+    }
+
+    private fun calculateTaxesIfNeed(isIncludeTaxes: Boolean, payments: List<Payment>): List<Payment> {
+        if (isIncludeTaxes) {
+            payments.forEach { it.dividends *= TAX_FACTOR }
+        }
+        return payments
     }
 
     fun setSelectedYear(selectedYear: String) {
@@ -63,5 +72,9 @@ class CalendarInteractor {
         } catch (e: Exception) {
             Color.BLACK
         }
+    }
+
+    companion object {
+        private const val TAX_FACTOR = 0.87
     }
 }

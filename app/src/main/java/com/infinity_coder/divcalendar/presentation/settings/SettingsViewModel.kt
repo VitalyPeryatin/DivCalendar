@@ -11,7 +11,7 @@ class SettingsViewModel : ViewModel() {
 
     private val settingsInteractor = SettingsInteractor()
 
-    private val _isAccountTaxes = MutableLiveData(settingsInteractor.isAccountTaxes())
+    private val _isAccountTaxes = MutableLiveData(settingsInteractor.isIncludeTaxes())
     val isAccountTaxes: LiveData<Boolean>
         get() = _isAccountTaxes
 

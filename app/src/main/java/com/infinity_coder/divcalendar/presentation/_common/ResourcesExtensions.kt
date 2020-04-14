@@ -1,14 +1,14 @@
 package com.infinity_coder.divcalendar.presentation._common
 
-import android.content.Context
+import android.content.res.Resources
 import android.os.Build
 import androidx.annotation.ColorRes
 
 @Suppress("DEPRECATION")
-fun Context.getColorExt(@ColorRes colorId: Int): Int {
+fun Resources.getColorExt(@ColorRes colorId: Int, theme: Resources.Theme): Int {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        resources.getColor(colorId, theme)
+        getColor(colorId, theme)
     } else {
-        resources.getColor(colorId)
+        getColor(colorId)
     }
 }

@@ -6,18 +6,20 @@ import com.infinity_coder.divcalendar.presentation.App
 
 object SettingsRepository {
 
-    private const val TAXES_PREF_NAME = "Settings"
-    private const val PREF_ACCOUNT_TAXES = "is_account_taxes"
-    private val taxesPreferences = App.instance.getSharedPreferences(TAXES_PREF_NAME, Context.MODE_PRIVATE)
+    private const val TAXES_PREFERENCES_NAME = "Settings"
 
-    fun saveIsAccountTaxes(isAccountTaxes: Boolean) {
+    private const val PREF_INCLUDE_TAXES = "is_include_taxes"
+
+    private val taxesPreferences = App.instance.getSharedPreferences(TAXES_PREFERENCES_NAME, Context.MODE_PRIVATE)
+
+    fun saveIsIncludeTaxes(isAccountTaxes: Boolean) {
         taxesPreferences.edit {
-            putBoolean(PREF_ACCOUNT_TAXES, isAccountTaxes)
+            putBoolean(PREF_INCLUDE_TAXES, isAccountTaxes)
         }
     }
 
-    fun isAccountTaxes(): Boolean {
-        return taxesPreferences.getBoolean(PREF_ACCOUNT_TAXES, false)
+    fun isIncludeTaxes(): Boolean {
+        return taxesPreferences.getBoolean(PREF_INCLUDE_TAXES, false)
     }
 
     fun sendFeedback(message: String) {
