@@ -144,6 +144,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         emptyLayout.visibility = View.GONE
         noNetworkLayout.visibility = View.GONE
         emptySecuritiesLayout.visibility = View.GONE
+        taxesTextView.visibility = View.GONE
 
         when (state) {
             CalendarViewModel.VIEW_STATE_CALENDAR_CONTENT -> {
@@ -151,6 +152,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                 yearSpinner.visibility = View.VISIBLE
                 currencyRadioGroup.visibility = View.VISIBLE
                 calendarPaymentsRecyclerView.visibility = View.VISIBLE
+                taxesTextView.visibility = View.VISIBLE
             }
             CalendarViewModel.VIEW_STATE_CALENDAR_LOADING -> {
                 loadingLayout.visibility = View.VISIBLE
