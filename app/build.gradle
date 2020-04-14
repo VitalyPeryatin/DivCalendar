@@ -117,6 +117,8 @@ dependencies {
     implementation "com.google.firebase:firebase-core:17.3.0"
     implementation "com.google.firebase:firebase-analytics:17.3.0"
     implementation "com.google.firebase:firebase-crashlytics:17.0.0-beta04"
+    implementation 'com.google.firebase:firebase-firestore:21.4.2'
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 
     // CircleImageView
     implementation "de.hdodenhof:circleimageview:3.0.1"
