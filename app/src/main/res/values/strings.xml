@@ -37,6 +37,8 @@
     <string name="monthly_income_label_undefined">Monthly income: +%1$.2f</string>
     <string name="count_securities">%d pcs.</string>
     <string name="dividends">+%1$.2f₽</string>
+    <string name="taxes_included">Taxes included</string>
+    <string name="taxes_excluding">Excluding taxes</string>
 
     <!-- search -->
     <string name="total_price">Total price: %1$.2f</string>

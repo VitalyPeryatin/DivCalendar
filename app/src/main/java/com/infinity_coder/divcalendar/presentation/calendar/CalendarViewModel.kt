@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.domain.CalendarInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
+import com.infinity_coder.divcalendar.domain.SettingsInteractor
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 import com.infinity_coder.divcalendar.presentation._common.logException
 import com.infinity_coder.divcalendar.presentation.calendar.mappers.PaymentsToPresentationModelMapper
@@ -19,6 +20,10 @@ import retrofit2.HttpException
 
 class CalendarViewModel : ViewModel() {
 
+    private val calendarInteractor = CalendarInteractor()
+    private val rateInteractor = RateInteractor()
+    private val settingsInteractor = SettingsInteractor()
+
     private val _state = MutableLiveData<Int>()
     val state: LiveData<Int>
         get() = _state
@@ -27,25 +32,22 @@ class CalendarViewModel : ViewModel() {
     val payments: LiveData<List<IComparableItem>>
         get() = _payments
 
-    private val _currentYear = MutableLiveData<String>()
+    private val _currentYear = MutableLiveData(calendarInteractor.getSelectedYear())
     val currentYear: LiveData<String>
         get() = _currentYear
 
     private var cachedPayments: List<MonthlyPayment> = emptyList()
-
-    private val calendarInteractor = CalendarInteractor()
-    private val rateInteractor = RateInteractor()
-
     private val paymentsMapper = PaymentsToPresentationModelMapper()
 
-    init {
-        _currentYear.value = calendarInteractor.getSelectedYear()
-        loadAllPayments()
-    }
+    private val _isIncludeTaxes = MutableLiveData<Boolean?>(null)
+    val isIncludeTaxes: LiveData<Boolean?>
+        get() = _isIncludeTaxes
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun loadAllPayments() = viewModelScope.launch {
-        calendarInteractor.getPayments(_currentYear.value!!)
+        val currentYearValue = _currentYear.value!!
+        val includeTaxes = isIncludeTaxes.value ?: false
+        calendarInteractor.getPayments(currentYearValue, includeTaxes)
             .onEach { cachedPayments = it }
             .map { paymentsMapper.mapToPresentationModel(cachedPayments) }
             .flowOn(Dispatchers.IO)
@@ -84,6 +86,19 @@ class CalendarViewModel : ViewModel() {
 
     fun getDisplayCurrency(): String {
         return rateInteractor.getDisplayCurrency()
+    }
+
+    fun updateData() {
+
+        val newIsIncludedTaxes = settingsInteractor.isIncludeTaxes()
+
+        val hasNewData = newIsIncludedTaxes != isIncludeTaxes.value
+
+        _isIncludeTaxes.value = newIsIncludedTaxes
+
+        if (hasNewData) {
+            loadAllPayments()
+        }
     }
 
     private fun handleError(error: Throwable) {

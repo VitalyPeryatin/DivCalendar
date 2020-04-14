@@ -21,8 +21,7 @@ class FooterPaymentRecyclerDelegateAdapter : KDelegateAdapter<FooterPaymentPrese
             else -> R.string.value_currency_undefined
         }
         viewHolder.run {
-            footerPaymentMonthlyIncome.text =
-                footerPaymentMonthlyIncome.context.getString(currencyStringId, item.income)
+            footerPaymentMonthlyIncome.text = footerPaymentMonthlyIncome.context.getString(currencyStringId, item.income)
         }
     }
 }
