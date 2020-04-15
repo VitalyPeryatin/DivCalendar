@@ -7,11 +7,16 @@ import androidx.appcompat.app.AppCompatActivity
 import com.anjlab.android.iab.v3.BillingProcessor
 import com.anjlab.android.iab.v3.TransactionDetails
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.domain.SubscriptionInteractor
+import com.infinity_coder.divcalendar.presentation.billing.BuySubscriptionActivity
 import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObservable
 import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObserver
+import kotlinx.coroutines.*
 
-abstract class SubscriptionActivity : AppCompatActivity(), BillingProcessor.IBillingHandler, PremiumSubscriptionObservable {
+abstract class AbstractSubscriptionActivity : AppCompatActivity(), BillingProcessor.IBillingHandler, PremiumSubscriptionObservable {
 
+    private val activityScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private val subscriptionInteractor = SubscriptionInteractor()
     private var billingProcessor: BillingProcessor? = null
 
     private val subscriptionObservers: MutableList<PremiumSubscriptionObserver> = mutableListOf()
@@ -31,12 +36,24 @@ abstract class SubscriptionActivity : AppCompatActivity(), BillingProcessor.IBil
 
     override fun onDestroy() {
         billingProcessor?.release()
+        activityScope.cancel()
         super.onDestroy()
     }
 
     // Billing callbacks
 
     override fun onBillingInitialized() {
+        activityScope.launch {
+            var hasPremiumProducts = false
+            withContext(Dispatchers.IO) {
+                hasPremiumProducts = subscriptionInteractor.hasPremiumProducts()
+            }
+            if (hasPremiumProducts && !hasSubscription() && !isOpenedBuySubscribtionActivity) {
+                val intent = BuySubscriptionActivity.getIntent(this@AbstractSubscriptionActivity)
+                startActivity(intent)
+                finish()
+            }
+        }
     }
 
     override fun onPurchaseHistoryRestored() {
@@ -76,5 +93,7 @@ abstract class SubscriptionActivity : AppCompatActivity(), BillingProcessor.IBil
     companion object {
         private const val SUBSCRIPTION_ID = "standard_subscription"
         private const val LICENSE_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjqNWSexMmjxECoBCFKYAGTKAsesoYtvrxDk9uTDwg4A+sBA5YD7rvKBLEtQ2bfMLlKb0FQg6PZvmABtkb8oKAUEZCPVGuE6Ep4/pxWa/JO0Lz0mvZsLuh+8Obi8Bm1I3WG2kStaaeW+rYmA0r7m0vgd6XMa0Jl2ZImF+VFwcjHdL1wnik6WZNEMcme/Czvkxz06xADeapX7AocW7AMvgxFvbHdVqXTSoSzspfeNPB+/8745CN6B6HU4NlxCODjwkg3msYPROqNbO1rnoaWs4JBk+d6G67RYcsYxrJyZZYPNB6sKEZPjcokzwdDrcZ8fMsZF9j5jwpPdSR4epvwnWowIDAQAB"
+
+        var isOpenedBuySubscribtionActivity = false
     }
 }

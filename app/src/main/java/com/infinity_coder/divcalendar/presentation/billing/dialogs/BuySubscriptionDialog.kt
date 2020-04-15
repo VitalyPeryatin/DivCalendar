@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation.billing
+package com.infinity_coder.divcalendar.presentation.billing.dialogs
 
 import android.content.Context
 import android.os.Bundle
@@ -7,9 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObservable
+import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObserver
 import kotlinx.android.synthetic.main.dialog_buy_subscription.*
 
-class BuySubscriptionDialog : DialogFragment(), PremiumSubscriptionObserver {
+class BuySubscriptionDialog : DialogFragment(),
+    PremiumSubscriptionObserver {
 
     private var subscriptionObservable: PremiumSubscriptionObservable? = null
 

@@ -17,6 +17,7 @@
         <activity android:name=".presentation.main.MainActivity"
             android:launchMode="singleTask">
             <intent-filter>
+
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -36,6 +37,8 @@
         <activity android:name=".presentation.browser.BrowserActivity"/>
 
         <activity android:name=".presentation.settings.SettingsActivity"/>
+
+        <activity android:name=".presentation.billing.BuySubscriptionActivity"/>
 
         <meta-data
             android:name="preloaded_fonts"

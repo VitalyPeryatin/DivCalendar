@@ -10,14 +10,14 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import com.google.android.material.tabs.TabLayoutMediator
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.presentation._common.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation._common.SecurityMarketDelegate
 import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
-import com.infinity_coder.divcalendar.presentation._common.SubscriptionActivity
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.search.adapters.SearchSecurityPagerAdapter
 import kotlinx.android.synthetic.main.activity_search_securities.*
 
-class SearchSecurityActivity : SubscriptionActivity() {
+class SearchSecurityActivity : AbstractSubscriptionActivity() {
 
     val viewModel: SearchSecurityViewModel by lazy {
         viewModel { SearchSecurityViewModel() }

@@ -66,7 +66,11 @@ object PortfolioRepository {
         return portfolioDao.getAllPortfoliosWithSecurities()
     }
 
-    fun getPortfolioWithSecurities(name: String): Flow<PortfolioWithSecurities> {
+    suspend fun getPortfolioCount(): Int {
+        return portfolioDao.getPortfolioCount()
+    }
+
+    private fun getPortfolioWithSecurities(name: String): Flow<PortfolioWithSecurities> {
         return getAllPortfoliosWithSecurities()
             .map { it.first { portfolio -> portfolio.portfolio.name == name } }
             .distinctUntilChanged()

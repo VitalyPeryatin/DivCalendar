@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation.billing
+package com.infinity_coder.divcalendar.presentation.billing.dialogs
 
 import android.os.Bundle
 import android.view.LayoutInflater

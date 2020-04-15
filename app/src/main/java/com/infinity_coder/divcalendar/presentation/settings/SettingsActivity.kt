@@ -8,15 +8,15 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.infinity_coder.divcalendar.BuildConfig
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.presentation._common.SubscriptionActivity
+import com.infinity_coder.divcalendar.presentation._common.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
-import com.infinity_coder.divcalendar.presentation.billing.BuySubscriptionDialog
-import com.infinity_coder.divcalendar.presentation.billing.SubscriptionPurchasedDialog
+import com.infinity_coder.divcalendar.presentation.billing.dialogs.BuySubscriptionDialog
+import com.infinity_coder.divcalendar.presentation.billing.dialogs.SubscriptionPurchasedDialog
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.item_settings_switch.view.*
 
-class SettingsActivity : SubscriptionActivity() {
+class SettingsActivity : AbstractSubscriptionActivity() {
 
     private val viewModel: SettingsViewModel by lazy {
         viewModel { SettingsViewModel() }
