@@ -14,7 +14,6 @@ import com.infinity_coder.divcalendar.presentation.portfolio.PortfolioFragment
 import com.infinity_coder.divcalendar.presentation.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-
 class MainActivity : AbstractSubscriptionActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
