@@ -16,7 +16,7 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.presentation._common.executeIfSubscribed
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
-import com.infinity_coder.divcalendar.presentation.buysubscription.PremiumSubscriptionObservable
+import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObservable
 import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.ChangePortfolioBottomDialog
 import com.infinity_coder.divcalendar.presentation.portfolio.managesecurity.ChangeSecurityBottomDialog
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity

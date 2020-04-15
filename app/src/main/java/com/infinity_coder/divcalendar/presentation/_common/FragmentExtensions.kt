@@ -1,8 +1,8 @@
 package com.infinity_coder.divcalendar.presentation._common
 
 import androidx.fragment.app.Fragment
-import com.infinity_coder.divcalendar.presentation.buysubscription.BuySubscriptionDialog
-import com.infinity_coder.divcalendar.presentation.buysubscription.PremiumSubscriptionObservable
+import com.infinity_coder.divcalendar.presentation.billing.BuySubscriptionDialog
+import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObservable
 
 fun Fragment.executeIfSubscribed(func: () -> Unit) {
     val premiumSubscriptionObservable = activity as? PremiumSubscriptionObservable ?: return

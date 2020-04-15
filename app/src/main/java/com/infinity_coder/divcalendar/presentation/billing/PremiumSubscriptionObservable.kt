@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation.buysubscription
+package com.infinity_coder.divcalendar.presentation.billing
 
 interface PremiumSubscriptionObservable {
     fun hasSubscription(): Boolean

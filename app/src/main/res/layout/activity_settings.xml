@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content" />
 
                 <include
-                    android:id="@+id/cancelSubscriptionItem"
+                    android:id="@+id/subscribeItem"
                     layout="@layout/item_settings_normal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />

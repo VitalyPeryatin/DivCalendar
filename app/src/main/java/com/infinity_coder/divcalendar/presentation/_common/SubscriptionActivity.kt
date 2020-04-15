@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.anjlab.android.iab.v3.BillingProcessor
 import com.anjlab.android.iab.v3.TransactionDetails
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.presentation.buysubscription.PremiumSubscriptionObservable
-import com.infinity_coder.divcalendar.presentation.buysubscription.PremiumSubscriptionObserver
+import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObservable
+import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObserver
 
 abstract class SubscriptionActivity : AppCompatActivity(), BillingProcessor.IBillingHandler, PremiumSubscriptionObservable {
 
