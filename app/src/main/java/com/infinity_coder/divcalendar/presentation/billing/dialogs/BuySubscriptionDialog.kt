@@ -11,8 +11,7 @@ import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionOb
 import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObserver
 import kotlinx.android.synthetic.main.dialog_buy_subscription.*
 
-class BuySubscriptionDialog : DialogFragment(),
-    PremiumSubscriptionObserver {
+class BuySubscriptionDialog : DialogFragment(), PremiumSubscriptionObserver {
 
     private var subscriptionObservable: PremiumSubscriptionObservable? = null
 
