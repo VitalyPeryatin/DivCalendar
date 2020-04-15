@@ -29,6 +29,11 @@ class SecurityInteractor {
         }
     }
 
+    suspend fun getSecurityCount(): Int {
+        val portfolioName = getCurrentPortfolioName()
+        return SecurityRepository.getSecurityCount(portfolioName)
+    }
+
     private fun getCurrentPortfolioName(): String {
         return portfolioInteractor.getCurrentPortfolioName()
     }

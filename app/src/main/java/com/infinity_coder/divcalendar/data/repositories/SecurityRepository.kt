@@ -22,4 +22,8 @@ object SecurityRepository {
     suspend fun getSecurityPackage(portfolioName: String, secid: String): SecurityPackageDbModel? {
         return securityDao.getSecurityPackage(portfolioName, secid)
     }
+
+    suspend fun getSecurityCount(portfolioName: String): Int {
+        return securityDao.getSecurityCountForPortfolio(portfolioName)
+    }
 }

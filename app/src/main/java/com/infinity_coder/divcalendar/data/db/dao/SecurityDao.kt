@@ -17,6 +17,9 @@ abstract class SecurityDao {
     @Query("SELECT * FROM ${SecurityPackageDbModel.TABLE_NAME} WHERE ${SecurityPackageDbModel.COLUMN_PORTFOLIO_NAME} = :portfolioName")
     abstract suspend fun getSecurityPackagesForPortfolio(portfolioName: String): List<SecurityPackageDbModel>
 
+    @Query("SELECT count(*) FROM ${SecurityPackageDbModel.TABLE_NAME} WHERE ${SecurityPackageDbModel.COLUMN_PORTFOLIO_NAME} = :portfolioName")
+    abstract suspend fun getSecurityCountForPortfolio(portfolioName: String): Int
+
     @Delete
     abstract suspend fun deleteSecurityPackage(securityPackage: SecurityPackageDbModel)
 }
