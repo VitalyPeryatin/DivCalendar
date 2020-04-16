@@ -1,6 +1,5 @@
 package com.infinity_coder.divcalendar.presentation.portfolio
 
-import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -16,7 +15,6 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.presentation._common.executeIfSubscribed
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
-import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObservable
 import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.ChangePortfolioBottomDialog
 import com.infinity_coder.divcalendar.presentation.portfolio.managesecurity.ChangeSecurityBottomDialog
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
@@ -28,7 +26,6 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     ChangePortfolioBottomDialog.OnChangePortfolioClickListener {
 
     private var changePackageDialog: ChangeSecurityBottomDialog? = null
-    private var premiumSubscriptionObservable: PremiumSubscriptionObservable? = null
 
     private val viewModel: PortfolioViewModel by lazy {
         viewModel { PortfolioViewModel() }
@@ -57,17 +54,6 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     private fun openChangePortfolioDialog() {
         val changePortfolioDialog = ChangePortfolioBottomDialog.newInstance()
         changePortfolioDialog.show(childFragmentManager, ChangePortfolioBottomDialog::class.toString())
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        val parentFragment = parentFragment
-        if (parentFragment is PremiumSubscriptionObservable) {
-            premiumSubscriptionObservable = parentFragment
-        } else if (context is PremiumSubscriptionObservable) {
-            premiumSubscriptionObservable = context
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
