@@ -76,4 +76,19 @@
     <string name="feedback">Feedback</string>
     <string name="email_developers">Email developers</string>
     <string name="telegram_chat">Telegram chat</string>
+    <string name="purchase_subscription">Purchase subscription</string>
+
+    <!-- billing -->
+    <string name="purchase">Purchase</string>
+    <string name="purchase_subscription_title">Want to purchase a subscription?</string>
+    <string name="purchase_subscription_description">
+        In the premium version of the application you will be able to: \n\n
+
+        · Creating multiple portfolios \n
+        · Editing portfolio \n
+        · Adding more than 3 securities to the portfolio \n
+    </string>
+    <string name="billing_unavailable">Your device does not support purchasing subscriptions</string>
+    <string name="subscription_purchased">You already have a subscription</string>
+
 </resources>

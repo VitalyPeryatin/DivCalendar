@@ -1,18 +1,20 @@
 package com.infinity_coder.divcalendar.presentation.main
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.presentation._common.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation.calendar.CalendarFragment
 import com.infinity_coder.divcalendar.presentation.news.NewsFragment
 import com.infinity_coder.divcalendar.presentation.portfolio.PortfolioFragment
 import com.infinity_coder.divcalendar.presentation.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AbstractSubscriptionActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +24,10 @@ class MainActivity : AppCompatActivity() {
             showFragment(PortfolioFragment())
         }
 
+        initUI()
+    }
+
+    private fun initUI() {
         bottomNavigationView.setOnNavigationItemSelectedListener {
 
             if (bottomNavigationView.selectedItemId == it.itemId) {
@@ -47,7 +53,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.settingsItem -> openSettingsActivity()
+            R.id.settingsItem -> {
+                openSettingsActivity()
+            }
             else -> return super.onOptionsItemSelected(item)
         }
         return true
@@ -62,5 +70,16 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainerView, fragment)
             .commit()
+    }
+
+    companion object {
+        fun getIntent(context: Context): Intent {
+            return Intent(context, MainActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                putExtra("EXIT", true)
+            }
+        }
     }
 }

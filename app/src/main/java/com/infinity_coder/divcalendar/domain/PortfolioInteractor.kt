@@ -4,7 +4,6 @@ import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
 import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 class PortfolioInteractor {
@@ -30,7 +29,7 @@ class PortfolioInteractor {
     }
 
     suspend fun getPortfolioCount(): Int {
-        return getAllPortfolios().first().size
+        return PortfolioRepository.getPortfolioCount()
     }
 
     suspend fun deletePortfolio(name: String) {

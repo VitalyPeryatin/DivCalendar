@@ -61,4 +61,19 @@
     <string name="feedback">Обратная связь</string>
     <string name="email_developers">Написать разработчикам</string>
     <string name="telegram_chat">Telegram-чат</string>
+    <string name="purchase_subscription">Приобрести подписку</string>
+
+    <!-- billing -->
+    <string name="purchase">Приобрести</string>
+    <string name="purchase_subscription_title">Хотите приобрести подписку? </string>
+    <string name="purchase_subscription_description">
+        В премиум-версии приложения Вам будет доступно: \n\n
+
+        · Создание нескольких портфелей \n
+        · Редактирование портфеля \n
+        · Добавление в портфель более 3-х ценных бумаг
+    </string>
+    <string name="billing_unavailable">Ваше устройство не поддерживает приобретение подписок</string>
+    <string name="subscription_purchased">У Вас уже есть подписка</string>
+
 </resources>

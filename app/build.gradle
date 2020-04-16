@@ -22,8 +22,8 @@ android {
         applicationId "com.infinity_coder.divcalendar"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1
-        versionName "v1.0.0"
+        versionCode 9
+        versionName "v1.0.0-alpha"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -69,6 +69,10 @@ android {
     kotlinOptions {
         freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
     }
 
 }
@@ -150,4 +154,7 @@ dependencies {
 
     // Stetho
     implementation "com.facebook.stetho:stetho:1.5.1"
+
+    // Simple billing library
+    implementation "com.anjlab.android.iab.v3:library:1.0.44"
 }

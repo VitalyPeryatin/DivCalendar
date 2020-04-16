@@ -91,12 +91,12 @@ class ChangePortfolioViewModel : ViewModel() {
         if (currentPortfolioName == name) {
             val portfolioNames = portfolioInteractor.getAllPortfolioNames()
             val deleteNameIndex = portfolioNames.indexOf(name)
-            val iterator = portfolioNames.listIterator(deleteNameIndex)
+
             val nextPortfolioName = when {
 
-                iterator.hasNext() -> iterator.next()
+                deleteNameIndex + 1 < portfolioNames.size -> portfolioNames[deleteNameIndex + 1]
 
-                iterator.hasPrevious() -> iterator.previous()
+                deleteNameIndex - 1 >= 0 -> portfolioNames[deleteNameIndex - 1]
 
                 else -> return false
             }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import com.infinity_coder.divcalendar.presentation._common.executeIfSubscribed
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.ChangePortfolioBottomDialog
@@ -20,11 +21,13 @@ import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
 import kotlinx.android.synthetic.main.fragment_portfolio.*
 import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 
-class PortfolioFragment : Fragment(R.layout.fragment_portfolio), ChangeSecurityBottomDialog.OnClickListener, ChangePortfolioBottomDialog.OnChangePortfolioClickListener {
+class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
+    ChangeSecurityBottomDialog.OnClickListener,
+    ChangePortfolioBottomDialog.OnChangePortfolioClickListener {
 
     private var changePackageDialog: ChangeSecurityBottomDialog? = null
 
-    public val viewModel: PortfolioViewModel by lazy {
+    private val viewModel: PortfolioViewModel by lazy {
         viewModel { PortfolioViewModel() }
     }
 
@@ -40,7 +43,9 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio), ChangeSecurityB
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.changePortfolioItem -> openChangePortfolioDialog()
+            R.id.changePortfolioItem -> {
+                executeIfSubscribed(this::openChangePortfolioDialog)
+            }
             else -> return super.onOptionsItemSelected(item)
         }
         return true

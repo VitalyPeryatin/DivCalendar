@@ -1,13 +1,11 @@
 package com.infinity_coder.divcalendar.presentation.portfolio
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.SecurityInteractor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -32,7 +30,6 @@ class PortfolioViewModel : ViewModel() {
     fun loadSecurities() = viewModelScope.launch {
         portfolioInteractor.getCurrentPortfolio()
             .onEach {
-                Log.d("xcxc", "Ed: ${PortfolioRepository.getCurrentPortfolio()}:${it.portfolio.name} -  ${PortfolioRepository.getCurrentPortfolio() == it.portfolio.name}")
                 _portfolio.value = it
                 if (it.securities.isEmpty()) {
                     _state.value = VIEW_STATE_PORTFOLIO_EMPTY

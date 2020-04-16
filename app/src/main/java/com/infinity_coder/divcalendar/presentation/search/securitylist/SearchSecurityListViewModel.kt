@@ -8,6 +8,8 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
 import com.infinity_coder.divcalendar.domain.SearchInteractor
 import com.infinity_coder.divcalendar.domain.SecurityInteractor
+import com.infinity_coder.divcalendar.domain.SubscriptionInteractor
+import com.infinity_coder.divcalendar.presentation._common.LiveEvent
 import com.infinity_coder.divcalendar.presentation.search.model.QueryGroup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,6 +20,7 @@ class SearchSecurityListViewModel : ViewModel() {
 
     private val searchInteractor = SearchInteractor()
     private val securityInteractor = SecurityInteractor()
+    private val subscriptionInteractor = SubscriptionInteractor()
 
     private var loadedMarket: String? = null
     private var loadedQuery: String? = null
@@ -31,6 +34,9 @@ class SearchSecurityListViewModel : ViewModel() {
     private val _searchedSecurities = MutableLiveData<List<SecurityNetworkModel>>()
     val searchedSecurities: LiveData<List<SecurityNetworkModel>>
         get() = _searchedSecurities
+
+    val addSecurity = LiveEvent<SecurityPackageDbModel>()
+    val addSecurityIfHasSubscription = LiveEvent<SecurityPackageDbModel>()
 
     private var oldQueryGroup: QueryGroup? = null
 
@@ -63,6 +69,14 @@ class SearchSecurityListViewModel : ViewModel() {
 
     fun appendSecurityPackage(securityPackage: SecurityPackageDbModel) = viewModelScope.launch {
         securityInteractor.appendSecurityPackage(securityPackage)
+    }
+
+    fun requestOnAppendSecurityPackage(securityPackage: SecurityPackageDbModel) = viewModelScope.launch {
+        if (subscriptionInteractor.isSecurityCountLeastThanSubscriptionGrant()) {
+            addSecurity.value = securityPackage
+        } else {
+            addSecurityIfHasSubscription.value = securityPackage
+        }
     }
 
     companion object {

@@ -1,7 +1,6 @@
 package com.infinity_coder.divcalendar.data.repositories
 
 import android.content.Context
-import android.util.Log
 import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
@@ -53,9 +52,7 @@ object PortfolioRepository {
     }
 
     suspend fun renamePortfolio(oldName: String, newName: String) {
-        Log.d("Sd", newName)
         val portfolio = getPortfolioByName(oldName)
-        Log.d("Sd", "portfolio: ${portfolio?.name}")
         if (portfolio != null) {
             portfolio.name = newName
             portfolioDao.updatePortfolio(portfolio)
@@ -66,7 +63,11 @@ object PortfolioRepository {
         return portfolioDao.getAllPortfoliosWithSecurities()
     }
 
-    fun getPortfolioWithSecurities(name: String): Flow<PortfolioWithSecurities> {
+    suspend fun getPortfolioCount(): Int {
+        return portfolioDao.getPortfolioCount()
+    }
+
+    private fun getPortfolioWithSecurities(name: String): Flow<PortfolioWithSecurities> {
         return getAllPortfoliosWithSecurities()
             .map { it.first { portfolio -> portfolio.portfolio.name == name } }
             .distinctUntilChanged()

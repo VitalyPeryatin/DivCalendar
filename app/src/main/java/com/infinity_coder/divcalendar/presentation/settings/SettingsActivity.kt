@@ -5,16 +5,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.infinity_coder.divcalendar.BuildConfig
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.presentation._common.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
+import com.infinity_coder.divcalendar.presentation.billing.dialogs.BuySubscriptionDialog
+import com.infinity_coder.divcalendar.presentation.billing.dialogs.SubscriptionPurchasedDialog
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.item_settings_switch.view.*
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : AbstractSubscriptionActivity() {
 
     private val viewModel: SettingsViewModel by lazy {
         viewModel { SettingsViewModel() }
@@ -43,6 +45,16 @@ class SettingsActivity : AppCompatActivity() {
         }
         telegramChatItem.itemTextView.text = resources.getString(R.string.telegram_chat)
         feedbackItem.itemTextView.text = resources.getString(R.string.feedback)
+        subscribeItem.itemTextView.text = resources.getString(R.string.purchase_subscription)
+        subscribeItem.setOnClickListener {
+            if (!hasSubscription()) {
+                val dialog = BuySubscriptionDialog.newInstance()
+                dialog.show(supportFragmentManager, BuySubscriptionDialog::class.toString())
+            } else {
+                val dialog = SubscriptionPurchasedDialog.newInstance()
+                dialog.show(supportFragmentManager, SubscriptionPurchasedDialog::class.toString())
+            }
+        }
 
         tryShowCurrentVersion()
     }

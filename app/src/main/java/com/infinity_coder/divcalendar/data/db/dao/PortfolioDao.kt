@@ -32,6 +32,9 @@ abstract class PortfolioDao {
     @Query("SELECT ${PortfolioDbModel.COLUMN_NAME} FROM ${PortfolioDbModel.TABLE_NAME}")
     abstract suspend fun getPortfolioNames(): List<String>
 
+    @Query("SELECT count(*) FROM ${PortfolioDbModel.TABLE_NAME}")
+    abstract suspend fun getPortfolioCount(): Int
+
     @Transaction
     open suspend fun insertPortfolioWithSecurities(portfolio: PortfolioWithSecurities) {
         insertPortfolio(portfolio.portfolio)

@@ -12,23 +12,38 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:fontFamily="@font/roboto"
-        android:text="@string/sure_remove_portfolio"
+        android:text="@string/purchase_subscription_title"
         android:textColor="?attr/textColorPrimary"
         android:textSize="@dimen/font_few_big"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/roboto"
+        android:textColor="?attr/textColorSecondary"
+        android:textSize="@dimen/font_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/messageTextView"
+        android:text="@string/purchase_subscription_description" />
+
     <Button
-        android:id="@+id/deleteButton"
+        android:id="@+id/buySubscriptionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:background="@null"
         android:fontFamily="@font/roboto_medium"
-        android:text="@string/delete"
+        android:text="@string/purchase"
         android:textAllCaps="false"
-        android:textColor="@color/red"
+        android:textColor="@color/colorAccent"
         android:textSize="@dimen/font_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cancelButton" />
@@ -46,6 +61,6 @@
         android:textColor="?attr/textColorSecondary"
         android:textSize="@dimen/font_normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/deleteButton"
-        app:layout_constraintTop_toBottomOf="@+id/messageTextView" />
+        app:layout_constraintEnd_toStartOf="@+id/buySubscriptionButton"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
