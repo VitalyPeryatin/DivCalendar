@@ -4,8 +4,6 @@ import android.content.Context
 import android.view.View
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.domain._common.DateFormatter
-import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import com.infinity_coder.divcalendar.presentation._common.dpToPx
 import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
@@ -32,20 +30,12 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
 
             paymentName.text = item.name
             paymentCount.text = paymentCount.context.getString(R.string.count_securities, item.count)
-            paymentDate.text = paymentDate.context.getDate(item.date)
+            paymentDate.text = item.date
 
-            paymentDividends.text = SecurityCurrencyDelegate.getValueWithCurrency(
-                paymentDividends.context,
-                item.dividends,
-                item.currentCurrency
-            )
+            paymentDividends.text = item.dividends
 
             SimpleGlide.loadImage(paymentLogo, item.logo, paymentLogo)
         }
     }
 
-    private fun Context.getDate(date: String): String {
-        val months = resources.getStringArray(R.array.months_genitive)
-        return DateFormatter.formatDate(date, months)
-    }
 }

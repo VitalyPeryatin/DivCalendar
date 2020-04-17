@@ -5,7 +5,7 @@ import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 
 data class FooterPaymentPresentationModel(
     val id: Int,
-    var income: Double,
+    var income: String,
     val originalCurrency: String,
     var currentCurrency: String
 ) : IComparableItem {
@@ -14,7 +14,7 @@ data class FooterPaymentPresentationModel(
         fun from(monthlyPayments: MonthlyPayment) =
             FooterPaymentPresentationModel(
                 id = monthlyPayments.month,
-                income = monthlyPayments.payments.sumByDouble { payment -> payment.dividends },
+                income = monthlyPayments.payments.sumByDouble { payment -> payment.dividends }.toString(),
                 originalCurrency = monthlyPayments.payments.first().currency,
                 currentCurrency = ""
             )

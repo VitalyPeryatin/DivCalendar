@@ -4,7 +4,7 @@ import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 
 data class ChartPresentationModel(
-    val annualIncome: Float,
+    val annualIncome: String,
     val annualYield: Float,
     val currentCurrency: String,
     val monthlyPayments: List<MonthlyPayment>,
