@@ -12,7 +12,8 @@ data class PaymentPresentationModel(
     var date: String,
     val colorLogo: Int,
     val originalCurrency: String,
-    var currentCurrency: String
+    var currentCurrency: String,
+    var expired: Boolean
 ) : IComparableItem {
 
     companion object {
@@ -28,7 +29,8 @@ data class PaymentPresentationModel(
                 date = payment.date,
                 colorLogo = payment.colorLogo,
                 originalCurrency = payment.currency,
-                currentCurrency = ""
+                currentCurrency = "",
+                expired = false
             )
     }
 

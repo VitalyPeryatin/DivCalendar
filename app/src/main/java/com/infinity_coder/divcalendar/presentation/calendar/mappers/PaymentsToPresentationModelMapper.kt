@@ -60,6 +60,7 @@ class PaymentsToPresentationModelMapper {
         val paymentsForMonth = PaymentPresentationModel.from(monthlyPayment)
         paymentsForMonth.forEach {
             it.currentCurrency = currentCurrency
+            it.expired = DateFormatter.isExpired(it.date)
             it.date = context.getDate(it.date)
             it.dividends = SecurityCurrencyDelegate.getValueWithCurrency(context, it.dividends, it.currentCurrency)
         }

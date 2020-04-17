@@ -23,13 +23,13 @@ object DateFormatter {
         return Calendar.getInstance().get(Calendar.YEAR).toString()
     }
 
-    fun isExpired(dateStr:String):Boolean{
+    fun isExpired(dateStr: String): Boolean {
         val curDate = basicDateFormat.parse(getCurrentDateStr())
         val serverDate = basicDateFormat.parse(dateStr)
         return serverDate!!.compareTo(curDate) == -1
     }
 
-    private fun getCurrentDateStr():String{
+    private fun getCurrentDateStr(): String {
         val calendar = Calendar.getInstance()
 
         val year = calendar.get(Calendar.YEAR)

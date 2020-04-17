@@ -1,6 +1,5 @@
 package com.infinity_coder.divcalendar.presentation.calendar.adapters
 
-import android.content.Context
 import android.view.View
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.infinity_coder.divcalendar.R
@@ -20,10 +19,10 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
     override fun onBind(item: PaymentPresentationModel, viewHolder: KViewHolder) {
         viewHolder.run {
 
-            if(DateFormatter.isExpired(item.date)){
+            if (item.expired) {
                 paymentBlackout.visibility = View.VISIBLE
                 paymentRoot.elevation = paymentRoot.context.dpToPx(1f)
-            }else{
+            } else {
                 paymentBlackout.visibility = View.GONE
                 paymentRoot.elevation = paymentRoot.context.dpToPx(2f)
             }
@@ -37,5 +36,4 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
             SimpleGlide.loadImage(paymentLogo, item.logo, paymentLogo)
         }
     }
-
 }
