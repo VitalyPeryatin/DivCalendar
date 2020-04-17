@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
 import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import kotlinx.android.extensions.LayoutContainer
@@ -51,7 +52,11 @@ class SecurityRecyclerAdapter(
             nameTextView.isSelected = true
             SimpleGlide.loadImage(logoImageView, securityPackage.logo, logoImageView)
             countTextView.text = resources.getString(R.string.sec_count, securityPackage.count)
-            totalPriceTextView.text = resources.getString(R.string.value_currency_rub, securityPackage.totalPrice)
+            totalPriceTextView.text = SecurityCurrencyDelegate.getValueWithCurrency(
+                containerView.context,
+                securityPackage.totalPrice,
+                securityPackage.currency
+            )
             yearYieldTextView.text = resources.getString(R.string.yield_in_year, securityPackage.yearYield)
         }
     }

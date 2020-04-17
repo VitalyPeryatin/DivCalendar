@@ -3,8 +3,8 @@ package com.infinity_coder.divcalendar.presentation.calendar.adapters
 import android.content.Context
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
+import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
 import kotlinx.android.synthetic.main.item_payment_calendar.*
@@ -24,13 +24,12 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
             paymentCount.text = paymentCount.context.getString(R.string.count_securities, item.count)
             paymentDate.text = paymentDate.context.getDate(item.date)
 
-            val currencyStringId = when (item.currentCurrency) {
-                RateRepository.USD_RATE -> R.string.value_currency_usd
-                RateRepository.RUB_RATE -> R.string.value_currency_rub
-                else -> R.string.value_currency_undefined
-            }
+            paymentDividends.text = SecurityCurrencyDelegate.getValueWithCurrency(
+                paymentDividends.context,
+                item.dividends,
+                item.currentCurrency
+            )
 
-            paymentDividends.text = paymentDividends.context.getString(currencyStringId, item.dividends)
             SimpleGlide.loadImage(paymentLogo, item.logo, paymentLogo)
         }
     }

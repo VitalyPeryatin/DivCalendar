@@ -1,5 +1,6 @@
 package com.infinity_coder.divcalendar.presentation.search.securitylist
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -49,6 +50,7 @@ class SearchSecurityListViewModel : ViewModel() {
             .flowOn(Dispatchers.IO)
             .onStart { _state.value = VIEW_STATE_SEARCH_SECURITY_LOADING }
             .onEach {
+                Log.d("SearchSec", it.toString())
                 _searchedSecurities.value = it
             }
             .catch {

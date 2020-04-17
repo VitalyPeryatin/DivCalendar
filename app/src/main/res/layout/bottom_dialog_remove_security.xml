@@ -88,7 +88,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/bg_button_transparent_red"
         android:fontFamily="@font/roboto_medium"
         android:gravity="center"

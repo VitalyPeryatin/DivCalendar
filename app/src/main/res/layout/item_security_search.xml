@@ -81,7 +81,7 @@
             app:layout_constraintStart_toEndOf="@+id/securityTypeView" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/exchangeDashTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -101,8 +101,8 @@
             tools:text="ММВБ"
             android:textColor="?android:textColorSecondary"
             android:textSize="@dimen/font_small"
-            app:layout_constraintStart_toEndOf="@+id/textView2"
-            app:layout_constraintTop_toTopOf="@+id/textView2" />
+            app:layout_constraintStart_toEndOf="@+id/exchangeDashTextView"
+            app:layout_constraintTop_toTopOf="@+id/exchangeDashTextView" />
 
         <TextView
             android:id="@+id/yearYieldTextView"

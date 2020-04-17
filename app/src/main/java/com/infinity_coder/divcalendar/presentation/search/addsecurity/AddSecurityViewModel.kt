@@ -48,7 +48,9 @@ class AddSecurityViewModel : ViewModel() {
         logo = security.logo,
         count = count,
         totalPrice = price * count,
-        yearYield = security.yearYield
+        yearYield = security.yearYield,
+        currency = security.currency,
+        type = security.type
     )
 
     fun addSecurityPackage() = viewModelScope.launch {
