@@ -25,5 +25,4 @@ object SecurityCurrencyDelegate {
             else -> throw IllegalStateException("No currency name for such currency: $currency")
         }
     }
-
 }
