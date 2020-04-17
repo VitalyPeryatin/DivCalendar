@@ -18,7 +18,6 @@ object SecurityCurrencyDelegate {
 
     fun getValueWithCurrency(context: Context, value: Float, currency: String, accuracy: Int = 2): String {
         val valueStr = String.format(Locale.getDefault(), "%.${accuracy}f", value)
-        Log.d("SecCurrencyDelegate", valueStr)
         val newValueStr = deleteLastZeros(valueStr)
         val currencyBadge = getCurrencyBadge(context, currency)
         return "$newValueStr $currencyBadge"
@@ -26,7 +25,6 @@ object SecurityCurrencyDelegate {
 
     fun getValueWithCurrency(context: Context, value: Double, currency: String, accuracy: Int = 2): String {
         val valueStr = String.format(Locale.getDefault(), "%.${accuracy}f", value)
-        Log.d("SecCurrencyDelegate", valueStr)
         val newValueStr = deleteLastZeros(valueStr)
         val currencyBadge = getCurrencyBadge(context, currency)
         return "$newValueStr $currencyBadge"

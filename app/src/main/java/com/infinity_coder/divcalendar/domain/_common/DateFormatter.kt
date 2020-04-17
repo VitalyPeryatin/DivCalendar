@@ -22,4 +22,20 @@ object DateFormatter {
     fun getCurrentYear(): String {
         return Calendar.getInstance().get(Calendar.YEAR).toString()
     }
+
+    fun isExpired(dateStr:String):Boolean{
+        val curDate = basicDateFormat.parse(getCurrentDateStr())
+        val serverDate = basicDateFormat.parse(dateStr)
+        return serverDate!!.compareTo(curDate) == -1
+    }
+
+    private fun getCurrentDateStr():String{
+        val calendar = Calendar.getInstance()
+
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        return "$year-$month-$day"
+    }
 }

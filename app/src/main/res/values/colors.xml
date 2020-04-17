@@ -16,6 +16,7 @@
     <color name="redRipple">#44CB2431</color>
     <color name="separator">#99bfbfbf</color>
     <color name="placeholder">#D3FFFF</color>
+    <color name="blackout">#0F000000</color>
 
     <color name="typeRusStockColor">#1EC8DF</color>
     <color name="typeRusBondColor">#1D7AD5</color>
