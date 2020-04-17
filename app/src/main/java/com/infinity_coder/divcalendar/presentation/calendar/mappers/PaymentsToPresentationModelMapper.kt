@@ -1,12 +1,18 @@
 package com.infinity_coder.divcalendar.presentation.calendar.mappers
 
+import android.content.Context
 import android.graphics.Color
 import com.example.delegateadapter.delegate.diff.IComparableItem
+import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.RateRepository.RUB_RATE
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
+import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
+import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation.calendar.models.*
+import kotlinx.android.synthetic.main.item_footer_payment_calendar.*
+import kotlinx.android.synthetic.main.item_payment_calendar.*
 import kotlinx.coroutines.flow.first
 
 class PaymentsToPresentationModelMapper {
@@ -14,7 +20,7 @@ class PaymentsToPresentationModelMapper {
     private val rateInteractor = RateInteractor()
     private val portfolioInteractor = PortfolioInteractor()
 
-    suspend fun mapToPresentationModel(monthlyPayments: List<MonthlyPayment>): List<IComparableItem> {
+    suspend fun mapToPresentationModel(context: Context, monthlyPayments: List<MonthlyPayment>): List<IComparableItem> {
         val items = mutableListOf<IComparableItem>()
 
         if (monthlyPayments.isNotEmpty()) {
@@ -23,17 +29,17 @@ class PaymentsToPresentationModelMapper {
             for (i in preparedAllMonthlyPayments.indices) {
                 items.add(HeaderPaymentPresentationModel.from(preparedAllMonthlyPayments[i]))
 
-                val preparedMonthlyPayment = prepareMonthlyPayment(preparedAllMonthlyPayments[i])
+                val preparedMonthlyPayment = prepareMonthlyPayment(context, preparedAllMonthlyPayments[i])
                 items.addAll(preparedMonthlyPayment)
 
-                val preparedTotalMonthPayment = prepareTotalMonthPayments(preparedAllMonthlyPayments[i])
+                val preparedTotalMonthPayment = prepareTotalMonthPayments(context, preparedAllMonthlyPayments[i])
                 items.add(preparedTotalMonthPayment)
 
                 if (i != preparedAllMonthlyPayments.lastIndex) {
                     items.add(DividerPresentationModel)
                 }
             }
-            items.add(0, mapPaymentsToChartPresentationModel(preparedAllMonthlyPayments))
+            items.add(0, mapPaymentsToChartPresentationModel(context, preparedAllMonthlyPayments))
         }
 
         return items
@@ -49,29 +55,38 @@ class PaymentsToPresentationModelMapper {
         }
     }
 
-    private fun prepareMonthlyPayment(monthlyPayment: MonthlyPayment): List<PaymentPresentationModel> {
+    private fun prepareMonthlyPayment(context: Context, monthlyPayment: MonthlyPayment): List<PaymentPresentationModel> {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val paymentsForMonth = PaymentPresentationModel.from(monthlyPayment)
         paymentsForMonth.forEach {
             it.currentCurrency = currentCurrency
+            it.date = context.getDate(it.date)
+            it.dividends = SecurityCurrencyDelegate.getValueWithCurrency(context, it.dividends, it.currentCurrency)
         }
         return paymentsForMonth
     }
 
-    private fun prepareTotalMonthPayments(monthlyPayment: MonthlyPayment): FooterPaymentPresentationModel {
+    private fun Context.getDate(date: String): String {
+        val months = resources.getStringArray(R.array.months_genitive)
+        return DateFormatter.formatDate(date, months)
+    }
+
+    private fun prepareTotalMonthPayments(context: Context, monthlyPayment: MonthlyPayment): FooterPaymentPresentationModel {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val totalPayments = FooterPaymentPresentationModel.from(monthlyPayment)
         totalPayments.currentCurrency = currentCurrency
+        totalPayments.income = SecurityCurrencyDelegate.getValueWithCurrency(context, totalPayments.income, totalPayments.currentCurrency)
         return totalPayments
     }
 
-    private suspend fun mapPaymentsToChartPresentationModel(monthlyPayments: List<MonthlyPayment>): ChartPresentationModel {
+    private suspend fun mapPaymentsToChartPresentationModel(context: Context, monthlyPayments: List<MonthlyPayment>): ChartPresentationModel {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val annualIncome = sumMonthPayments(monthlyPayments)
         val annualYield = annualIncome / getCosts()
+        val annualIncomeStr = SecurityCurrencyDelegate.getValueWithCurrency(context, annualIncome, currentCurrency)
         val allMonthlyPayments = getMonthlyPayments(monthlyPayments)
         val colors = getChartBarColors(allMonthlyPayments)
-        return ChartPresentationModel(annualIncome, annualYield, currentCurrency, allMonthlyPayments, colors)
+        return ChartPresentationModel(annualIncomeStr, annualYield, currentCurrency, allMonthlyPayments, colors)
     }
 
     private fun sumMonthPayments(monthlyPayments: List<MonthlyPayment>): Float {

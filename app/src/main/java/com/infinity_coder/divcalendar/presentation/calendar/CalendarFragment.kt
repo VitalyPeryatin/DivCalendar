@@ -42,7 +42,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     override fun onStart() {
         super.onStart()
 
-        viewModel.updateData()
+        viewModel.updateData(requireContext())
     }
 
     private fun initUI() {
@@ -87,7 +87,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         }
 
         val spinnerInteractionListener = SpinnerInteractionListener {
-            viewModel.selectYear(it as String)
+            viewModel.selectYear(requireContext(), it as String)
         }
         yearSpinner.onItemSelectedListener = spinnerInteractionListener
         yearSpinner.setOnTouchListener(spinnerInteractionListener)
@@ -97,8 +97,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         if (!isChecked) return
 
         when (radioButton) {
-            rubRadioButton -> viewModel.setDisplayCurrency(RateRepository.RUB_RATE)
-            usdRadioButton -> viewModel.setDisplayCurrency(RateRepository.USD_RATE)
+            rubRadioButton -> viewModel.setDisplayCurrency(requireContext(), RateRepository.RUB_RATE)
+            usdRadioButton -> viewModel.setDisplayCurrency(requireContext(), RateRepository.USD_RATE)
         }
     }
 

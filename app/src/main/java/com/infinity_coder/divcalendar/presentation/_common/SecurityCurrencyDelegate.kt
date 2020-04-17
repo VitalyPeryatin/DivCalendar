@@ -1,7 +1,6 @@
 package com.infinity_coder.divcalendar.presentation._common
 
 import android.content.Context
-import android.util.Log
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import java.util.*
@@ -18,18 +17,13 @@ object SecurityCurrencyDelegate {
 
     fun getValueWithCurrency(context: Context, value: Float, currency: String, accuracy: Int = 2): String {
         val valueStr = String.format(Locale.getDefault(), "%.${accuracy}f", value)
-        Log.d("SecCurrencyDelegate", valueStr)
         val newValueStr = deleteLastZeros(valueStr)
         val currencyBadge = getCurrencyBadge(context, currency)
         return "$newValueStr $currencyBadge"
     }
 
-    fun getValueWithCurrency(context: Context, value: Double, currency: String, accuracy: Int = 2): String {
-        val valueStr = String.format(Locale.getDefault(), "%.${accuracy}f", value)
-        Log.d("SecCurrencyDelegate", valueStr)
-        val newValueStr = deleteLastZeros(valueStr)
-        val currencyBadge = getCurrencyBadge(context, currency)
-        return "$newValueStr $currencyBadge"
+    fun getValueWithCurrency(context: Context, value: String, currency: String, accuracy: Int = 2): String {
+        return getValueWithCurrency(context, value.toFloat(), currency, accuracy)
     }
 
     private fun deleteLastZeros(valueStr: String): String {
