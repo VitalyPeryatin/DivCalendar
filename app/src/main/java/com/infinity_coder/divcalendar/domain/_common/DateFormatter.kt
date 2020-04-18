@@ -34,9 +34,8 @@ object DateFormatter {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val hour = calendar.get(Calendar.HOUR_OF_DAY).addZerosInFrontIfNotDozen()
         val minute = calendar.get(Calendar.MINUTE).addZerosInFrontIfNotDozen()
-        val second = calendar.get(Calendar.SECOND).addZerosInFrontIfNotDozen()
 
-        return "$day $month $year $hour:$minute:$second"
+        return "$day $month $year, $hour:$minute"
     }
 
     private fun Int.addZerosInFrontIfNotDozen(): String {
