@@ -61,7 +61,10 @@ abstract class AbstractSubscriptionActivity : AppCompatActivity(), BillingProces
     }
 
     override fun onProductPurchased(productId: String, details: TransactionDetails?) {
-        subscriptionObservers.forEach { it.onSuccessfulSubscription() }
+        if (productId == SUBSCRIPTION_ID) {
+            SubscriptionRepository.saveHasSubscription(true)
+            subscriptionObservers.forEach { it.onSuccessfulSubscription() }
+        }
     }
 
     override fun onBillingError(errorCode: Int, error: Throwable?) {
