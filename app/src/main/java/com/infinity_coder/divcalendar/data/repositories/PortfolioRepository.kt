@@ -55,6 +55,9 @@ object PortfolioRepository {
         val portfolio = getPortfolioByName(oldName)
         if (portfolio != null) {
             portfolio.name = newName
+            if (getCurrentPortfolio() == oldName) {
+                setCurrentPortfolio(newName)
+            }
             portfolioDao.updatePortfolio(portfolio)
         }
     }
