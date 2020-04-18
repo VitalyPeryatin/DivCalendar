@@ -47,9 +47,10 @@ class SecurityRecyclerAdapter(
             val securityColor = SecurityTypeDelegate.getColor(containerView.context, security.type)
             securityTypeView.setBackgroundColor(securityColor)
             typeTextView.text = SecurityTypeDelegate.getTitle(containerView.context, security.type)
+            exchangeDashTextView.visibility = if (security.exchange.isEmpty()) View.INVISIBLE else View.VISIBLE
+            exchangeTextView.visibility = if (security.exchange.isEmpty()) View.INVISIBLE else View.VISIBLE
             exchangeTextView.text = security.exchange
-            yearYieldTextView.text =
-                containerView.context.getString(R.string.yield_in_year, security.yearYield)
+            yearYieldTextView.text = containerView.context.getString(R.string.yield_in_year, security.yearYield)
             SimpleGlide.loadImage(containerView, security.logo, logoImageView)
 
             containerView.setOnClickListener {

@@ -1,5 +1,6 @@
 package com.infinity_coder.divcalendar.presentation.calendar
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -44,12 +45,12 @@ class CalendarViewModel : ViewModel() {
         get() = _isIncludeTaxes
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun loadAllPayments() = viewModelScope.launch {
+    private fun loadAllPayments(context: Context) = viewModelScope.launch {
         val currentYearValue = _currentYear.value!!
         val includeTaxes = isIncludeTaxes.value ?: false
         calendarInteractor.getPayments(currentYearValue, includeTaxes)
             .onEach { cachedPayments = it }
-            .map { paymentsMapper.mapToPresentationModel(cachedPayments) }
+            .map { paymentsMapper.mapToPresentationModel(context, cachedPayments) }
             .flowOn(Dispatchers.IO)
             .onStart { _state.value = VIEW_STATE_CALENDAR_LOADING }
             .onEach {
@@ -70,17 +71,17 @@ class CalendarViewModel : ViewModel() {
         }
     }
 
-    fun setDisplayCurrency(currency: String) = viewModelScope.launch {
+    fun setDisplayCurrency(context: Context, currency: String) = viewModelScope.launch {
         rateInteractor.saveDisplayCurrency(currency)
-        val payments = paymentsMapper.mapToPresentationModel(cachedPayments)
+        val payments = paymentsMapper.mapToPresentationModel(context, cachedPayments)
         _payments.postValue(payments)
     }
 
-    fun selectYear(selectedYear: String) {
+    fun selectYear(context: Context, selectedYear: String) {
         if (_currentYear.value == null || selectedYear != _currentYear.value) {
             calendarInteractor.setSelectedYear(selectedYear)
             _currentYear.value = selectedYear
-            loadAllPayments()
+            loadAllPayments(context)
         }
     }
 
@@ -88,8 +89,7 @@ class CalendarViewModel : ViewModel() {
         return rateInteractor.getDisplayCurrency()
     }
 
-    fun updateData() {
-
+    fun updateData(context: Context) {
         val newIsIncludedTaxes = settingsInteractor.isIncludeTaxes()
 
         val hasNewData = newIsIncludedTaxes != isIncludeTaxes.value
@@ -97,7 +97,7 @@ class CalendarViewModel : ViewModel() {
         _isIncludeTaxes.value = newIsIncludedTaxes
 
         if (hasNewData) {
-            loadAllPayments()
+            loadAllPayments(context)
         }
     }
 

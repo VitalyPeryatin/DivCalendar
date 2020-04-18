@@ -41,7 +41,9 @@ class ChangeSecurityViewModel : ViewModel() {
             logo = security.logo,
             count = count,
             totalPrice = price,
-            yearYield = security.yearYield
+            yearYield = security.yearYield,
+            currency = security.currency,
+            type = security.type
         )
     }
 

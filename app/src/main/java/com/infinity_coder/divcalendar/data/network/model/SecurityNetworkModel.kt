@@ -18,9 +18,9 @@ data class SecurityNetworkModel(
     @SerializedName("yield")
     val yearYield: Float = 0f,
 
-    @SerializedName("income")
-    val income: Float = 0f,
-
     @SerializedName("exchange")
-    val exchange: String = ""
+    val exchange: String = "",
+
+    @SerializedName("currency")
+    val currency: String = ""
 )

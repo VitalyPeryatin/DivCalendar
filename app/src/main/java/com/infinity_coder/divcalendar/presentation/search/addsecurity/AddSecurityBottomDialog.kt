@@ -15,6 +15,7 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
+import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.shake
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import kotlinx.android.synthetic.main.bottom_dialog_add_security.*
@@ -38,7 +39,9 @@ class AddSecurityBottomDialog : BottomDialog() {
             ticker = requireArguments().getString(ARGUMENT_SEC_ID, ""),
             name = requireArguments().getString(ARGUMENT_NAME, ""),
             logo = requireArguments().getString(ARGUMENT_LOGO, ""),
-            yearYield = requireArguments().getFloat(ARGUMENT_YEAR_YIELD, 0f)
+            yearYield = requireArguments().getFloat(ARGUMENT_YEAR_YIELD, 0f),
+            currency = requireArguments().getString(ARGUMENT_CURRENCY, ""),
+            type = requireArguments().getString(ARGUMENT_TYPE, "")
         )
         viewModel.setSecurity(security)
     }
@@ -67,8 +70,7 @@ class AddSecurityBottomDialog : BottomDialog() {
 
         initUI()
 
-        viewModel.getTotalSecurityPriceLiveData()
-            .observe(viewLifecycleOwner, Observer(this::setTotalPrice))
+        viewModel.getTotalSecurityPriceLiveData().observe(viewLifecycleOwner, Observer(this::setTotalPrice))
         viewModel.securityPackage.observe(viewLifecycleOwner, Observer(this::addSecPackage))
         viewModel.shakePriceEditText.observe(viewLifecycleOwner, Observer { shakePriceEditText() })
         viewModel.shakeCountEditText.observe(viewLifecycleOwner, Observer { shakeCountEditText() })
@@ -111,8 +113,12 @@ class AddSecurityBottomDialog : BottomDialog() {
     @SuppressLint("SetTextI18n")
     private fun setTotalPrice(price: Float?) {
         if (price == null) return
-        totalPriceTextView.text =
-            resources.getString(R.string.total_price, price) + getString(R.string.currency_rub_name)
+        val priceWithCurrency = SecurityCurrencyDelegate.getValueWithCurrency(
+            requireContext(),
+            price,
+            security.currency
+        )
+        totalPriceTextView.text = resources.getString(R.string.total_price, priceWithCurrency)
     }
 
     private fun addSecPackage(secPackage: SecurityPackageDbModel) {
@@ -133,6 +139,8 @@ class AddSecurityBottomDialog : BottomDialog() {
         private const val ARGUMENT_NAME = "sec_name"
         private const val ARGUMENT_LOGO = "logo"
         private const val ARGUMENT_YEAR_YIELD = "year_yield"
+        private const val ARGUMENT_CURRENCY = "currency"
+        private const val ARGUMENT_TYPE = "type"
 
         private const val SHAKE_AMPLITUDE = 8f
 
@@ -142,7 +150,9 @@ class AddSecurityBottomDialog : BottomDialog() {
                 ARGUMENT_SEC_ID to security.ticker,
                 ARGUMENT_NAME to security.name,
                 ARGUMENT_LOGO to security.logo,
-                ARGUMENT_YEAR_YIELD to security.yearYield
+                ARGUMENT_YEAR_YIELD to security.yearYield,
+                ARGUMENT_CURRENCY to security.currency,
+                ARGUMENT_TYPE to security.type
             )
             return dialog
         }

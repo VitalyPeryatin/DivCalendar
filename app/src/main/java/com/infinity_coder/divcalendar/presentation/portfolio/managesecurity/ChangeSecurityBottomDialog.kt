@@ -37,7 +37,9 @@ class ChangeSecurityBottomDialog : BottomDialog() {
             ticker = requireArguments().getString(ARGUMENT_SEC_ID, ""),
             name = requireArguments().getString(ARGUMENT_NAME, ""),
             logo = requireArguments().getString(ARGUMENT_LOGO, ""),
-            yearYield = requireArguments().getFloat(ARGUMENT_YEAR_YIELD, 0f)
+            yearYield = requireArguments().getFloat(ARGUMENT_YEAR_YIELD, 0f),
+            currency = requireArguments().getString(ARGUMENT_CURRENCY, ""),
+            type = requireArguments().getString(ARGUMENT_TYPE, "")
         )
         viewModel.setSecurity(security)
     }
@@ -125,6 +127,8 @@ class ChangeSecurityBottomDialog : BottomDialog() {
         private const val ARGUMENT_NAME = "sec_name"
         private const val ARGUMENT_LOGO = "logo"
         private const val ARGUMENT_YEAR_YIELD = "year_yield"
+        private const val ARGUMENT_CURRENCY = "currency"
+        private const val ARGUMENT_TYPE = "type"
 
         private const val SHAKE_AMPLITUDE = 8f
 
@@ -134,7 +138,9 @@ class ChangeSecurityBottomDialog : BottomDialog() {
                 ARGUMENT_SEC_ID to security.secid,
                 ARGUMENT_NAME to security.name,
                 ARGUMENT_LOGO to security.logo,
-                ARGUMENT_YEAR_YIELD to security.yearYield
+                ARGUMENT_YEAR_YIELD to security.yearYield,
+                ARGUMENT_CURRENCY to security.currency,
+                ARGUMENT_TYPE to security.type
             )
             return dialog
         }

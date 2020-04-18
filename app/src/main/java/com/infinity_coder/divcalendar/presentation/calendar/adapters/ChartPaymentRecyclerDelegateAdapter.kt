@@ -12,11 +12,9 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 import com.infinity_coder.divcalendar.presentation.calendar.models.ChartPresentationModel
 import kotlinx.android.synthetic.main.item_chart_calendar.*
-import java.util.*
 
 class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationModel>(),
     OnChartValueSelectedListener {
@@ -37,16 +35,10 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         chart = viewHolder.chart
         val context = viewHolder.containerView.context
 
-        val currencyStringId = when (item.currentCurrency) {
-            RateRepository.RUB_RATE -> R.string.value_currency_rub
-            RateRepository.USD_RATE -> R.string.value_currency_usd
-            else -> R.string.value_currency_undefined
-        }
-
         viewHolder.run {
             chart.onBindChart(item)
 
-            annualIncomeTextView.text = context.getString(currencyStringId, item.annualIncome)
+            annualIncomeTextView.text = item.annualIncome
             annualYieldTextView.text = context.getString(R.string.value_percent, item.annualYield)
         }
     }
