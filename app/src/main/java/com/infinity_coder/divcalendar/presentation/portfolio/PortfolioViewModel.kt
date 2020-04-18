@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class PortfolioViewModel : ViewModel() {
 
-    private val _state = MutableLiveData(VIEW_STATE_PORTFOLIO_EMPTY)
+    private val _state = MutableLiveData<Int>()
     val state: LiveData<Int>
         get() = _state
 
