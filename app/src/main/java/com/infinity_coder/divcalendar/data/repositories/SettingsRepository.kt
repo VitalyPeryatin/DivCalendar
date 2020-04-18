@@ -14,7 +14,6 @@ import com.infinity_coder.divcalendar.presentation._common.logFile
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 object SettingsRepository {
 
     private const val TAXES_PREFERENCES_NAME = "Settings"
@@ -39,9 +38,9 @@ object SettingsRepository {
         return taxesPreferences.getBoolean(PREF_INCLUDE_TAXES, false)
     }
 
-    private fun sendLogs(fileName: String)  {
+    private fun sendLogs(fileName: String) {
         val file = Uri.fromFile(logFile)
-        val storageRef: StorageReference = storageReference.child("logs/${fileName}.txt")
+        val storageRef: StorageReference = storageReference.child("logs/$fileName.txt")
         storageRef.putFile(file)
     }
 

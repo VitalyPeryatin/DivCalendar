@@ -11,7 +11,7 @@ import java.io.FileWriter
 import java.text.SimpleDateFormat
 import java.util.*
 
-val logFile = File(App.instance.filesDir,"log.txt")
+val logFile = File(App.instance.filesDir, "log.txt")
 
 @SuppressLint("ConstantLocale")
 private val dateFormatter = SimpleDateFormat("yyyy-MM-dd hh:mm:ss:SS", Locale.getDefault())

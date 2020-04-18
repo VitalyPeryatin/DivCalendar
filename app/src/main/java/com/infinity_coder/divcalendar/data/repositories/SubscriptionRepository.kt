@@ -19,5 +19,4 @@ object SubscriptionRepository {
     fun hasSubscription(): Boolean {
         return subscriptionPreferences.getBoolean(PREF_HAS_SUBSCRIPTION, false)
     }
-
 }

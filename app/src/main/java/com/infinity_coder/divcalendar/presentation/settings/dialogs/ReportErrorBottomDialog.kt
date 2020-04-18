@@ -16,7 +16,6 @@ import com.infinity_coder.divcalendar.presentation.settings.SettingsActivity
 import com.infinity_coder.divcalendar.presentation.settings.SettingsViewModel
 import kotlinx.android.synthetic.main.bottom_dialog_report_error.*
 
-
 class ReportErrorBottomDialog : BottomDialog() {
 
     private lateinit var parentViewModel: SettingsViewModel
