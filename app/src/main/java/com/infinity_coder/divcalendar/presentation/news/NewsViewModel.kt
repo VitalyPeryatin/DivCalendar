@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinity_coder.divcalendar.data.db.model.PostDbModel
 import com.infinity_coder.divcalendar.domain.NewsInteractor
+import com.infinity_coder.divcalendar.presentation._common.logException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -28,27 +29,28 @@ class NewsViewModel : ViewModel() {
     fun loadNewsPosts() = viewModelScope.launch {
         newsInteractor.getPosts()
             .flowOn(Dispatchers.IO)
-            .onStart { _state.postValue(VIEW_STATE_NEWS_LOADING) }
+            .onStart { _state.value = VIEW_STATE_NEWS_LOADING }
             .onEach(this@NewsViewModel::collectPosts)
             .catch { handleError(it) }
             .launchIn(viewModelScope)
     }
 
     private suspend fun collectPosts(posts: List<PostDbModel>) {
-        _newsPosts.postValue(posts)
+        _newsPosts.value = posts
 
         if (posts.isNullOrEmpty()) {
-            _state.postValue(VIEW_STATE_NEWS_EMPTY)
+            _state.value = VIEW_STATE_NEWS_EMPTY
         } else {
-            _state.postValue(VIEW_STATE_NEWS_CONTENT)
+            _state.value = VIEW_STATE_NEWS_CONTENT
         }
     }
 
     private fun handleError(error: Throwable) {
+        logException(this, error)
         if (error is HttpException) {
-            _state.postValue(VIEW_STATE_NEWS_EMPTY_SECURITIES)
+            _state.value = VIEW_STATE_NEWS_EMPTY_SECURITIES
         } else {
-            _state.postValue(VIEW_STATE_NEWS_NO_NETWORK)
+            _state.value = VIEW_STATE_NEWS_NO_NETWORK
         }
     }
 

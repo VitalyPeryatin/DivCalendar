@@ -25,7 +25,8 @@ object NewsRepository {
     }
 
     private suspend fun getPostsFromDatabase(): List<PostDbModel> {
-        return newsDao.getPosts()
+        val tickers = getTickersFromCurrentPortfolio()
+        return newsDao.getPosts(tickers)
     }
 
     private suspend fun getPostsFromNetworkAndSaveToDB(limit: Int, offset: Int): List<PostDbModel> {
@@ -40,9 +41,13 @@ object NewsRepository {
     }
 
     private suspend fun getPostsFromNetwork(limit: Int, offset: Int): List<PostNetworkModel.Response> {
-        val currentPortfolio = PortfolioRepository.getCurrentPortfolio()
-        val tickers = securityDao.getSecurityPackagesForPortfolio(currentPortfolio).map { it.secid }
+        val tickers = getTickersFromCurrentPortfolio()
         val body = PostNetworkModel.Request(tickers, limit, offset)
         return divCalendarApi.fetchPosts(body)
+    }
+
+    private suspend fun getTickersFromCurrentPortfolio(): List<String> {
+        val currentPortfolio = PortfolioRepository.getCurrentPortfolio()
+        return securityDao.getSecurityPackagesForPortfolio(currentPortfolio).map { it.secid }
     }
 }
