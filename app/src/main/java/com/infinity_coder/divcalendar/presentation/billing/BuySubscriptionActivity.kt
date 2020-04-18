@@ -7,7 +7,6 @@ import com.anjlab.android.iab.v3.TransactionDetails
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation.main.MainActivity
-import kotlinx.android.synthetic.main.activity_buy_subscription.*
 
 class BuySubscriptionActivity : AbstractSubscriptionActivity() {
 
@@ -17,7 +16,7 @@ class BuySubscriptionActivity : AbstractSubscriptionActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_buy_subscription)
 
-        purchaseButton.setOnClickListener { subscribe() }
+        // purchaseButton.setOnClickListener { subscribe() }
     }
 
     override fun onProductPurchased(productId: String, details: TransactionDetails?) {

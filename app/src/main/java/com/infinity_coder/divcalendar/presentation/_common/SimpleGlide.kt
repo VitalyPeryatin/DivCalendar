@@ -15,7 +15,7 @@ object SimpleGlide {
         view: View,
         url: String,
         target: ImageView,
-        error: Int = R.drawable.ic_logo_error
+        error: Int = R.drawable.ic_default_security_logo
     ) {
         if (isFormatImageSvg(url)) {
             loadSVG(view.context, url, target, error)
