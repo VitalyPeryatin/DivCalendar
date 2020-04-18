@@ -15,6 +15,6 @@ abstract class NewsDao {
     @Query("DELETE FROM ${PostDbModel.TABLE_NAME}")
     abstract suspend fun deleteAll()
 
-    @Query("SELECT * FROM ${PostDbModel.TABLE_NAME}")
-    abstract suspend fun getPosts(): List<PostDbModel>
+    @Query("SELECT * FROM ${PostDbModel.TABLE_NAME} WHERE ${PostDbModel.COLUMN_TICKER} IN (:tickers)")
+    abstract suspend fun getPosts(tickers: List<String>): List<PostDbModel>
 }

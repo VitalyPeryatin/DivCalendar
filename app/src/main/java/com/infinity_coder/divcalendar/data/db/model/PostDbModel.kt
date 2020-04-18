@@ -24,7 +24,10 @@ data class PostDbModel(
     var date: String = "",
 
     @ColumnInfo(name = COLUMN_LINK)
-    var link: String = ""
+    var link: String = "",
+
+    @ColumnInfo(name = COLUMN_TICKER)
+    var ticker: String = ""
 ) {
 
     @PrimaryKey(autoGenerate = true)
@@ -41,6 +44,7 @@ data class PostDbModel(
         const val COLUMN_SOURCE = "source"
         const val COLUMN_DATE = "date"
         const val COLUMN_LINK = "link"
+        const val COLUMN_TICKER = "ticker"
 
         fun from(post: PostNetworkModel.Response) = PostDbModel(
             title = post.title,
@@ -48,7 +52,8 @@ data class PostDbModel(
             logo = post.logo,
             source = post.source,
             date = post.date,
-            link = post.link
+            link = post.link,
+            ticker = post.ticker
         )
 
         fun from(posts: List<PostNetworkModel.Response>) = posts.map { from(it) }
