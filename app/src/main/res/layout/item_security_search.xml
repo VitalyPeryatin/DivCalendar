@@ -32,7 +32,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toEndOf="@+id/securityTypeView"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/error" />
+            app:srcCompat="@drawable/ic_default_security_logo" />
 
         <TextView
             android:id="@+id/nameTextView"

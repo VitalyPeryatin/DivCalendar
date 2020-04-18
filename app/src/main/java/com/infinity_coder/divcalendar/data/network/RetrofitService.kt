@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitService {
 
-    private const val DIV_CALENDAR_URL = "http://div-calendar.herokuapp.com/"
+    private const val DIV_CALENDAR_URL = "https://div-calendar-prod.herokuapp.com/"
 
     val divCalendarApi: DivCalendarApi by lazy {
         val client = provideRetrofitClient(provideOkHttpClientBuilder().build())

@@ -3,6 +3,7 @@ package com.infinity_coder.divcalendar.presentation.billing
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import com.anjlab.android.iab.v3.TransactionDetails
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.AbstractSubscriptionActivity
@@ -16,8 +17,10 @@ class BuySubscriptionActivity : AbstractSubscriptionActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_buy_subscription)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
-        purchaseButton.setOnClickListener { subscribe() }
+        buySubscriptionButton.setOnClickListener { subscribe() }
+        buySubscriptionButton2.setOnClickListener { subscribe() }
     }
 
     override fun onProductPurchased(productId: String, details: TransactionDetails?) {
