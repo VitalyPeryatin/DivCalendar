@@ -38,7 +38,7 @@
 
         <activity android:name=".presentation.settings.SettingsActivity"/>
 
-        <activity android:name=".presentation.billing.BuySubscriptionActivity"/>
+        <activity android:name=".presentation.billing.BuySubscriptionActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -3,10 +3,12 @@ package com.infinity_coder.divcalendar.presentation.billing
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import com.anjlab.android.iab.v3.TransactionDetails
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation.main.MainActivity
+
 
 class BuySubscriptionActivity : AbstractSubscriptionActivity() {
 
@@ -15,7 +17,7 @@ class BuySubscriptionActivity : AbstractSubscriptionActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_buy_subscription)
-
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         // purchaseButton.setOnClickListener { subscribe() }
     }
 
