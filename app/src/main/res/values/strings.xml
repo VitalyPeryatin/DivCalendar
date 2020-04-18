@@ -83,5 +83,15 @@
     </string>
     <string name="billing_unavailable">Your device does not support purchasing subscriptions</string>
     <string name="subscription_purchased">You already have a subscription</string>
+    <string name="week_free">Week free</string>
+    <string name="actual_company_news">Actual company news</string>
+    <string name="subscription_details">Subscription details</string>
+    <string name="current_payout_information">Current regular payout information</string>
+    <string name="next_subscription_price">Next 149 rubles per month</string>
+    <string name="follow_the_news">Follow the news of those companies that may affect your earnings</string>
+    <string name="multiply_finances">Multiply your finances</string>
+    <string name="stay_on_top_of_latest_dividend">Stay on top of the latest dividend and coupon payment news</string>
+    <string name="seven_days_free">7 days for free with a Premium subscription</string>
+    <string name="first_charge_info">The first charge will be when the free period ends. You can cancel at any time.</string>
 
 </resources>
