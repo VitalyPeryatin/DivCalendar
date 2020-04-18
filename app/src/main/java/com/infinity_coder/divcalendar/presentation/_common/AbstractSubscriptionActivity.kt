@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.anjlab.android.iab.v3.BillingProcessor
 import com.anjlab.android.iab.v3.TransactionDetails
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.data.repositories.SubscriptionRepository
 import com.infinity_coder.divcalendar.domain.SubscriptionInteractor
 import com.infinity_coder.divcalendar.presentation.billing.BuySubscriptionActivity
 import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObservable
@@ -60,7 +61,10 @@ abstract class AbstractSubscriptionActivity : AppCompatActivity(), BillingProces
     }
 
     override fun onProductPurchased(productId: String, details: TransactionDetails?) {
-        subscriptionObservers.forEach { it.onSuccessfulSubscription() }
+        if (productId == SUBSCRIPTION_ID) {
+            SubscriptionRepository.saveHasSubscription(true)
+            subscriptionObservers.forEach { it.onSuccessfulSubscription() }
+        }
     }
 
     override fun onBillingError(errorCode: Int, error: Throwable?) {
@@ -69,7 +73,9 @@ abstract class AbstractSubscriptionActivity : AppCompatActivity(), BillingProces
 
     override fun hasSubscription(): Boolean {
         billingProcessor?.loadOwnedPurchasesFromGoogle()
-        return billingProcessor?.isSubscribed(SUBSCRIPTION_ID) == true
+        val hasSubscription = billingProcessor?.isSubscribed(SUBSCRIPTION_ID) == true
+        SubscriptionRepository.saveHasSubscription(hasSubscription)
+        return hasSubscription
     }
 
     override fun subscribe() {

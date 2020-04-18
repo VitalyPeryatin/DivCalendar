@@ -20,7 +20,7 @@ class SettingsViewModel : ViewModel() {
         settingsInteractor.saveIsAccountTaxes(isAccountTaxes)
     }
 
-    fun sendFeedback(message: String) {
-        settingsInteractor.sendFeedback(message)
+    fun reportError(message: String) {
+        settingsInteractor.reportError(message)
     }
 }
