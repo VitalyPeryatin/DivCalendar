@@ -22,7 +22,7 @@ class PostNetworkModel {
         @SerializedName("text")
         var text: String = "",
 
-        @SerializedName("poster")
+        @SerializedName("logo")
         var logo: String = "",
 
         @SerializedName("source")
@@ -32,6 +32,9 @@ class PostNetworkModel {
         var date: String = "",
 
         @SerializedName("link")
-        var link: String = ""
+        var link: String = "",
+
+        @SerializedName("ticker")
+        var ticker: String = ""
     )
 }

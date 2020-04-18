@@ -1,11 +1,13 @@
 package com.infinity_coder.divcalendar.presentation.news
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.PostDbModel
+import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_post.*
@@ -42,7 +44,7 @@ class NewsAdapter(
             titleTextView.text = post.title
             sourceTextView.text = post.source
             textTextView.text = post.text
-            timeAgoTextView.text = post.date
+            timeAgoTextView.text = timeAgoTextView.context.getDate(post.date)
             SimpleGlide.loadImage(containerView, post.logo, logoImageView)
 
             postItemLayout.setOnClickListener {
@@ -52,6 +54,11 @@ class NewsAdapter(
             if (isLastItem) {
                 separatorView.visibility = View.GONE
             }
+        }
+
+        private fun Context.getDate(date: String): String {
+            val month = resources.getStringArray(R.array.months_genitive)
+            return DateFormatter.formatDateForPosts(date, month)
         }
     }
 
