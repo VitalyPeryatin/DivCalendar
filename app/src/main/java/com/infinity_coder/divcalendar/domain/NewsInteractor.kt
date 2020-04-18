@@ -10,6 +10,7 @@ class NewsInteractor {
     suspend fun getPosts(): Flow<List<PostDbModel>> =
         NewsRepository.getPosts(DEFAULT_LIMIT, DEFAULT_OFFSET)
             .map { posts -> posts.filter { LinkDelegate.isValidURL(it.link) } }
+            .map { posts -> posts.sortedBy { it.date }.reversed() }
 
     companion object {
         private const val DEFAULT_LIMIT = 50
