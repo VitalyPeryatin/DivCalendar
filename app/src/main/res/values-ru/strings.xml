@@ -60,6 +60,12 @@
     <string name="email_developers">Написать разработчикам</string>
     <string name="telegram_chat">Telegram-чат</string>
     <string name="purchase_subscription">Приобрести подписку</string>
+    <string name="something_went_wrong">Что-то пошло не так?</string>
+    <string name="tell_about_problem">Расскажите нам о своей проблеме и в течение 12 часов мы рассмотрим её!</string>
+    <string name="your_message">Ваше сообщение…</string>
+    <string name="send">Отправить</string>
+    <string name="send_successful">Сообщение успешно отправлено разработчикам</string>
+    <string name="symbol_count">Количество символов: %1$d</string>
 
     <!-- billing -->
     <string name="purchase">Приобрести</string>
