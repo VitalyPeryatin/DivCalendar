@@ -70,6 +70,12 @@
     <string name="email_developers">Email developers</string>
     <string name="telegram_chat">Telegram chat</string>
     <string name="purchase_subscription">Purchase subscription</string>
+    <string name="something_went_wrong">Something went wrong?</string>
+    <string name="tell_about_problem">Tell us about your problem and within 12 hours we will consider it!</string>
+    <string name="your_message">Your message…</string>
+    <string name="send">Send</string>
+    <string name="send_successful">Message successfully sent to developers</string>
+    <string name="symbol_count">Characters: %1$d</string>
 
     <!-- billing -->
     <string name="purchase">Purchase</string>

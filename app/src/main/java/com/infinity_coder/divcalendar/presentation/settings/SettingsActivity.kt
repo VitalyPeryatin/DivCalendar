@@ -16,12 +16,13 @@ import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.billing.dialogs.BuySubscriptionDialog
 import com.infinity_coder.divcalendar.presentation.billing.dialogs.SubscriptionPurchasedDialog
+import com.infinity_coder.divcalendar.presentation.settings.dialogs.ReportErrorBottomDialog
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.item_settings_switch.view.*
 
 class SettingsActivity : AbstractSubscriptionActivity() {
 
-    private val viewModel: SettingsViewModel by lazy {
+    val viewModel: SettingsViewModel by lazy {
         viewModel { SettingsViewModel() }
     }
 
@@ -49,6 +50,7 @@ class SettingsActivity : AbstractSubscriptionActivity() {
         telegramChatItem.itemTextView.text = resources.getString(R.string.telegram_chat)
         telegramChatItem.setOnClickListener { openTelegramChannel() }
         feedbackItem.itemTextView.text = resources.getString(R.string.feedback)
+        feedbackItem.setOnClickListener { openSendReportDialog() }
         subscribeItem.itemTextView.text = resources.getString(R.string.purchase_subscription)
         subscribeItem.setOnClickListener {
             if (!hasSubscription()) {
@@ -61,6 +63,11 @@ class SettingsActivity : AbstractSubscriptionActivity() {
         }
 
         tryShowCurrentVersion()
+    }
+
+    private fun openSendReportDialog() {
+        val dialog = ReportErrorBottomDialog.newInstance()
+        dialog.show(supportFragmentManager, ReportErrorBottomDialog::class.toString())
     }
 
     private fun openTelegramChannel() {

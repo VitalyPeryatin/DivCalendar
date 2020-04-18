@@ -11,7 +11,7 @@ class SettingsInteractor {
         return SettingsRepository.isIncludeTaxes()
     }
 
-    fun sendFeedback(message: String) {
-        SettingsRepository.sendFeedback(message)
+    fun reportError(message: String) {
+        SettingsRepository.reportError(message)
     }
 }
