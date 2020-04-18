@@ -5,6 +5,7 @@ import com.facebook.stetho.Stetho
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain._common.Actualizer
+import com.infinity_coder.divcalendar.presentation._common.clearLogFile
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -18,6 +19,7 @@ class App : Application() {
         instance = this
         registerActivityLifecycleCallbacks(AppActivityLifecycleCallbacks())
         initActualizer()
+        clearLogFile()
     }
 
     private fun initActualizer() {

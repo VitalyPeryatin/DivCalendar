@@ -102,3 +102,9 @@
 
 # Simple billing
 -keep class com.android.vending.billing.**
+
+# Firebase Database
+-keepattributes Signature
+-keepclassmembers class com.yourcompany.models.** {
+  *;
+}
