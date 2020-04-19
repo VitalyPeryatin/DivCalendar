@@ -98,9 +98,9 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     private fun getScrollListener(): RecyclerView.OnScrollListener {
         return object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy <0 && !addSecurityButton.isShown) {
+                if (dy < 0 && !addSecurityButton.isShown) {
                     addSecurityButton.show()
-                } else if (dy> 0 && addSecurityButton.isShown) {
+                } else if (dy > 0 && addSecurityButton.isShown) {
                     addSecurityButton.hide()
                 }
             }
