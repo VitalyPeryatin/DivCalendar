@@ -75,7 +75,9 @@ abstract class AbstractSubscriptionActivity : AppCompatActivity(), BillingProces
         billingProcessor?.loadOwnedPurchasesFromGoogle()
         val hasSubscription = billingProcessor?.isSubscribed(SUBSCRIPTION_ID) == true
         SubscriptionRepository.saveHasSubscription(hasSubscription)
-        return hasSubscription
+        // TODO добавить проверку на подписку, то есть возвращать hasSubscription
+        // return hasSubscription
+        return true
     }
 
     override fun subscribe() {
