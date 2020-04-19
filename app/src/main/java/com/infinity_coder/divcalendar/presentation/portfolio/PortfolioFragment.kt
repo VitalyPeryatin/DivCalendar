@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
 import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
@@ -80,6 +81,7 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
 
         securitiesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         securitiesRecyclerView.adapter = SecurityRecyclerAdapter(getOnItemClickListener())
+        securitiesRecyclerView.addOnScrollListener(getScrollListener())
 
         addSecurityButton.setOnClickListener {
             val intent = SearchSecurityActivity.getIntent(requireContext())
@@ -90,6 +92,21 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     private fun getOnItemClickListener() = object : SecurityRecyclerAdapter.OnItemClickListener {
         override fun onItemClick(securityPackage: SecurityPackageDbModel) {
             openChangePackageDialog(securityPackage)
+        }
+    }
+
+    private fun getScrollListener(): RecyclerView.OnScrollListener {
+        return object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy < 0 && !addSecurityButton.isShown) {
+                    addSecurityButton.show()
+                } else if (dy > 0 && addSecurityButton.isShown) {
+                    addSecurityButton.hide()
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            }
         }
     }
 
