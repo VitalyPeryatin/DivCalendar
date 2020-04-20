@@ -28,4 +28,4 @@ fun Context.showSuccessfulToast(layoutInflater: LayoutInflater, message: Int) {
     }.show()
 }
 
-fun Context.dpToPx(dp: Float) = (dp * resources.displayMetrics.density)
+fun Context.dpToPx(dp: Float) = dp * resources.displayMetrics.density
