@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.repositories.RateRepository.RUB_RATE
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
@@ -83,7 +84,7 @@ class PaymentsToPresentationModelMapper {
     private suspend fun mapPaymentsToChartPresentationModel(context: Context, monthlyPayments: List<MonthlyPayment>): ChartPresentationModel {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val annualIncome = sumMonthPayments(monthlyPayments)
-        val annualYield = annualIncome / getCosts()
+        val annualYield = (annualIncome / getCosts()) * 100
         val annualIncomeStr = SecurityCurrencyDelegate.getValueWithCurrency(context, annualIncome, currentCurrency)
         val allMonthlyPayments = getMonthlyPayments(monthlyPayments)
         val colors = getChartBarColors(allMonthlyPayments)
@@ -99,8 +100,16 @@ class PaymentsToPresentationModelMapper {
     private suspend fun getCosts(): Float {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val securities = portfolioInteractor.getCurrentPortfolio().first().securities
-        val costs = securities.sumByDouble { it.totalPrice.toDouble() }
-        return rateInteractor.convertCurrencies(costs.toFloat(), RUB_RATE, currentCurrency) // TODO currency
+        return securities.sumByDouble{
+            getTotalPriceForCurrentCurrency(currentCurrency,it)
+        }.toFloat()
+    }
+
+    private suspend fun getTotalPriceForCurrentCurrency(currentCurrency:String, securityDbModel: SecurityDbModel):Double{
+        return if(securityDbModel.currency == currentCurrency)
+            securityDbModel.totalPrice.toDouble()
+        else
+            rateInteractor.convertCurrencies(securityDbModel.totalPrice, securityDbModel.currency, currentCurrency).toDouble()
     }
 
     private fun getMonthlyPayments(monthlyPayments: List<MonthlyPayment>): List<MonthlyPayment> {
