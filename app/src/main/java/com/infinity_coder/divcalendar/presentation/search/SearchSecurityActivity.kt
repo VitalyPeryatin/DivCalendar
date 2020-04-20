@@ -13,7 +13,7 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation._common.SecurityMarketDelegate
 import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
-import com.infinity_coder.divcalendar.presentation._common.viewModel
+import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation.search.adapters.SearchSecurityPagerAdapter
 import kotlinx.android.synthetic.main.activity_search_securities.*
 

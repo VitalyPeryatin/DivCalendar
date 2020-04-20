@@ -14,8 +14,8 @@ import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.presentation._common.SpinnerInteractionListener
-import com.infinity_coder.divcalendar.presentation._common.setActionBar
-import com.infinity_coder.divcalendar.presentation._common.viewModel
+import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
+import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation.calendar.adapters.*
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.layout_stub_empty.view.*

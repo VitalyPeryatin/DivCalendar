@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     app:cardCornerRadius="8dp"
     app:cardBackgroundColor="@color/colorToast">
 
@@ -13,6 +14,7 @@
         android:paddingBottom="8dp"
         android:orientation="horizontal"
         android:gravity="center_vertical">
+
         <ImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
@@ -20,14 +22,15 @@
             android:src="@drawable/ic_successful_checkmark"/>
 
         <TextView
+            android:id="@+id/messageTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/send_successful"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
             android:textSize="@dimen/font_normal"
             android:fontFamily="@font/roboto"
-            android:textColor="?attr/textColorPrimary"/>
+            android:textColor="?attr/textColorPrimary"
+            tools:text="@string/send_successful"/>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

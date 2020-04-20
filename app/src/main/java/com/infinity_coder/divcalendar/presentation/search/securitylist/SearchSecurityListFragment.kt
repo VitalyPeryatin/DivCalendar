@@ -10,8 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
-import com.infinity_coder.divcalendar.presentation._common.executeIfSubscribed
-import com.infinity_coder.divcalendar.presentation._common.viewModel
+import com.infinity_coder.divcalendar.presentation._common.extensions.executeIfSubscribed
+import com.infinity_coder.divcalendar.presentation._common.extensions.showSuccessfulToast
+import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityViewModel
 import com.infinity_coder.divcalendar.presentation.search.adapters.SecurityRecyclerAdapter
@@ -100,6 +101,7 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
     private fun addSecurityPackage(securityPackage: SecurityDbModel) {
         viewModel.appendSecurityPackage(securityPackage)
         dismissAddSecurityDialog()
+        requireContext().showSuccessfulToast(layoutInflater, R.string.add_security_successful)
     }
 
     private fun addSecurityPackageIfHasSubscription(securityPackage: SecurityDbModel) {
