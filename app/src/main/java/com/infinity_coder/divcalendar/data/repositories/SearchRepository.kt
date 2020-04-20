@@ -1,7 +1,7 @@
 package com.infinity_coder.divcalendar.data.repositories
 
 import com.infinity_coder.divcalendar.data.network.RetrofitService
-import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -16,7 +16,7 @@ object SearchRepository {
         type: String,
         market: String,
         limit: Int
-    ): Flow<List<SecurityNetworkModel>> = flow {
+    ): Flow<List<SecurityNetModel>> = flow {
         emit(divCalendarApi.searchSecurities(query, type, market, limit))
     }
 }

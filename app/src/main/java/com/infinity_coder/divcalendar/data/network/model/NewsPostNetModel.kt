@@ -2,7 +2,7 @@ package com.infinity_coder.divcalendar.data.network.model
 
 import com.google.gson.annotations.SerializedName
 
-class PostNetworkModel {
+class NewsPostNetModel {
 
     data class Request(
         @SerializedName("securities")
@@ -24,6 +24,9 @@ class PostNetworkModel {
 
         @SerializedName("logo")
         var logo: String = "",
+
+        @SerializedName("poster")
+        var poster: String = "",
 
         @SerializedName("source")
         var source: String = "",

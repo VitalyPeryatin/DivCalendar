@@ -1,9 +1,9 @@
 package com.infinity_coder.divcalendar.data.repositories
 
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
-import com.infinity_coder.divcalendar.data.db.model.PostDbModel
+import com.infinity_coder.divcalendar.data.db.model.NewsPostDbModel
 import com.infinity_coder.divcalendar.data.network.RetrofitService
-import com.infinity_coder.divcalendar.data.network.model.PostNetworkModel
+import com.infinity_coder.divcalendar.data.network.model.NewsPostNetModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -17,37 +17,37 @@ object NewsRepository {
     private val divCalendarApi = RetrofitService.divCalendarApi
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun getPosts(limit: Int, offset: Int): Flow<List<PostDbModel>> = flow {
+    suspend fun getPosts(limit: Int, offset: Int): Flow<List<NewsPostDbModel>> = flow {
         emit(getPostsFromNetworkAndSaveToDB(limit, offset))
     }.catch {
         val postsFromDatabase = getPostsFromDatabase()
         emitIf(postsFromDatabase, it) { postsFromDatabase.isNotEmpty() }
     }
 
-    private suspend fun getPostsFromDatabase(): List<PostDbModel> {
+    private suspend fun getPostsFromDatabase(): List<NewsPostDbModel> {
         val tickers = getTickersFromCurrentPortfolio()
         return newsDao.getPosts(tickers)
     }
 
-    private suspend fun getPostsFromNetworkAndSaveToDB(limit: Int, offset: Int): List<PostDbModel> {
-        val dbPosts = getPostsFromNetwork(limit, offset).map { PostDbModel.from(it) }
+    private suspend fun getPostsFromNetworkAndSaveToDB(limit: Int, offset: Int): List<NewsPostDbModel> {
+        val dbPosts = getPostsFromNetwork(limit, offset).map { NewsPostDbModel.from(it) }
         savePostToDatabase(dbPosts)
         return dbPosts
     }
 
-    private suspend fun savePostToDatabase(posts: List<PostDbModel>) {
+    private suspend fun savePostToDatabase(posts: List<NewsPostDbModel>) {
         newsDao.deleteAll()
         newsDao.insertPosts(posts)
     }
 
-    private suspend fun getPostsFromNetwork(limit: Int, offset: Int): List<PostNetworkModel.Response> {
+    private suspend fun getPostsFromNetwork(limit: Int, offset: Int): List<NewsPostNetModel.Response> {
         val tickers = getTickersFromCurrentPortfolio()
-        val body = PostNetworkModel.Request(tickers, limit, offset)
+        val body = NewsPostNetModel.Request(tickers, limit, offset)
         return divCalendarApi.fetchPosts(body)
     }
 
     private suspend fun getTickersFromCurrentPortfolio(): List<String> {
-        val currentPortfolio = PortfolioRepository.getCurrentPortfolio()
-        return securityDao.getSecurityPackagesForPortfolio(currentPortfolio).map { it.secid }
+        val currentPortfolioId = PortfolioRepository.getCurrentPortfolioId()
+        return securityDao.getSecurityPackagesForPortfolio(currentPortfolioId).map { it.ticker }
     }
 }

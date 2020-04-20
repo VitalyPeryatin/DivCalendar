@@ -3,21 +3,20 @@ package com.infinity_coder.divcalendar.presentation.portfolio.managesecurity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
-import kotlinx.coroutines.channels.ticker
 
 class ChangeSecurityViewModel : ViewModel() {
 
-    private val _changeSecurityPackage = MutableLiveData<SecurityPackageDbModel>()
-    val changeSecurityPackage: LiveData<SecurityPackageDbModel>
+    private val _changeSecurityPackage = MutableLiveData<SecurityDbModel>()
+    val changeSecurityPackage: LiveData<SecurityDbModel>
         get() = _changeSecurityPackage
 
     val shakePriceEditText = LiveEvent<Void?>()
     val shakeCountEditText = LiveEvent<Void?>()
 
-    private lateinit var security: SecurityNetworkModel
+    private lateinit var security: SecurityNetModel
 
     private var cost: Float = 0f
     private var count: Int = 0
@@ -30,13 +29,13 @@ class ChangeSecurityViewModel : ViewModel() {
         this.count = count
     }
 
-    fun setSecurity(security: SecurityNetworkModel) {
+    fun setSecurity(security: SecurityNetModel) {
         this.security = security
     }
 
-    private fun getSecurityPackage(count: Int, price: Float): SecurityPackageDbModel {
-        return SecurityPackageDbModel(
-            secid = security.ticker,
+    private fun getSecurityPackage(count: Int, price: Float): SecurityDbModel {
+        return SecurityDbModel(
+            ticker = security.ticker,
             name = security.name,
             logo = security.logo,
             count = count,

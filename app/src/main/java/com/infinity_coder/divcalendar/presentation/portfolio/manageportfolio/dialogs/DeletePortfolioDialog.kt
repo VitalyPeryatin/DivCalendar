@@ -31,7 +31,6 @@ class DeletePortfolioDialog : DialogFragment() {
     private fun initUI() {
         deleteButton.setOnClickListener {
             clickListener?.onDelete(portfolioName)
-            dismiss()
         }
 
         cancelButton.setOnClickListener {

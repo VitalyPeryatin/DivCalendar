@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.infinity_coder.divcalendar.data.db.model.PostDbModel
+import com.infinity_coder.divcalendar.data.db.model.NewsPostDbModel
 import com.infinity_coder.divcalendar.domain.NewsInteractor
 import com.infinity_coder.divcalendar.presentation._common.logException
 import kotlinx.coroutines.Dispatchers
@@ -15,8 +15,8 @@ import retrofit2.HttpException
 
 class NewsViewModel : ViewModel() {
 
-    private val _newsPosts = MutableLiveData<List<PostDbModel>>()
-    val newsPost: LiveData<List<PostDbModel>>
+    private val _newsPosts = MutableLiveData<List<NewsPostDbModel>>()
+    val newsPost: LiveData<List<NewsPostDbModel>>
         get() = _newsPosts
 
     private val _state = MutableLiveData(VIEW_STATE_NEWS_CONTENT)
@@ -35,7 +35,7 @@ class NewsViewModel : ViewModel() {
             .launchIn(viewModelScope)
     }
 
-    private suspend fun collectPosts(posts: List<PostDbModel>) {
+    private suspend fun collectPosts(posts: List<NewsPostDbModel>) {
         _newsPosts.value = posts
 
         if (posts.isNullOrEmpty()) {

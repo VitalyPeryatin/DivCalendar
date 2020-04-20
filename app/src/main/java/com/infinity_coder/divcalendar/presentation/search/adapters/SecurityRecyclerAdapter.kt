@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
 import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import kotlinx.android.extensions.LayoutContainer
@@ -15,7 +15,7 @@ class SecurityRecyclerAdapter(
     private var clickListener: OnClickListener? = null
 ) : RecyclerView.Adapter<SecurityRecyclerAdapter.SecurityViewHolder>() {
 
-    private var securities: List<SecurityNetworkModel> = emptyList()
+    private var securities: List<SecurityNetModel> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SecurityViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -32,7 +32,7 @@ class SecurityRecyclerAdapter(
         holder.bind(securities[position])
     }
 
-    fun setSecurities(securities: List<SecurityNetworkModel>) {
+    fun setSecurities(securities: List<SecurityNetModel>) {
         this.securities = securities
         notifyDataSetChanged()
     }
@@ -41,7 +41,7 @@ class SecurityRecyclerAdapter(
         override val containerView: View,
         private var clickListener: OnClickListener?
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
-        fun bind(security: SecurityNetworkModel) {
+        fun bind(security: SecurityNetModel) {
             nameTextView.text = security.name
             sourceTextView.text = security.ticker
             val securityColor = SecurityTypeDelegate.getColor(containerView.context, security.type)
@@ -60,6 +60,6 @@ class SecurityRecyclerAdapter(
     }
 
     interface OnClickListener {
-        fun onClick(security: SecurityNetworkModel)
+        fun onClick(security: SecurityNetModel)
     }
 }

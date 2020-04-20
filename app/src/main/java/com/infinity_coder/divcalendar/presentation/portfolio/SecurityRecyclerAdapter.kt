@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
 import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
@@ -16,7 +16,7 @@ class SecurityRecyclerAdapter(
     private val onClickListener: OnItemClickListener? = null
 ) : RecyclerView.Adapter<SecurityRecyclerAdapter.SecurityViewHolder>() {
 
-    private var securityList: List<SecurityPackageDbModel> = emptyList()
+    private var securityList: List<SecurityDbModel> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SecurityViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -30,7 +30,7 @@ class SecurityRecyclerAdapter(
         holder.bind(securityList[position])
     }
 
-    fun setSecurities(securities: List<SecurityPackageDbModel>) {
+    fun setSecurities(securities: List<SecurityDbModel>) {
         this.securityList = securities
         notifyDataSetChanged()
     }
@@ -42,7 +42,7 @@ class SecurityRecyclerAdapter(
 
         private val resources = containerView.resources
 
-        fun bind(securityPackage: SecurityPackageDbModel) {
+        fun bind(securityPackage: SecurityDbModel) {
             securityPortfolioCardLayout.setOnClickListener {
                 onClickListener?.onItemClick(securityPackage)
             }
@@ -62,6 +62,6 @@ class SecurityRecyclerAdapter(
     }
 
     interface OnItemClickListener {
-        fun onItemClick(securityPackage: SecurityPackageDbModel)
+        fun onItemClick(securityPackage: SecurityDbModel)
     }
 }

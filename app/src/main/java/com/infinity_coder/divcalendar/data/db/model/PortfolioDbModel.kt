@@ -1,9 +1,6 @@
 package com.infinity_coder.divcalendar.data.db.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel.Companion.COLUMN_NAME
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel.Companion.TABLE_NAME
 
@@ -16,6 +13,9 @@ data class PortfolioDbModel(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = COLUMN_ID)
     var id: Long = 0
+
+    @Ignore
+    var securities: List<SecurityDbModel> = emptyList()
 
     companion object {
         const val TABLE_NAME = "Portfolio"

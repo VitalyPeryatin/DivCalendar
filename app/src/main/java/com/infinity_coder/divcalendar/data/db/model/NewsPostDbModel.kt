@@ -3,11 +3,11 @@ package com.infinity_coder.divcalendar.data.db.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.infinity_coder.divcalendar.data.db.model.PostDbModel.Companion.TABLE_NAME
-import com.infinity_coder.divcalendar.data.network.model.PostNetworkModel
+import com.infinity_coder.divcalendar.data.db.model.NewsPostDbModel.Companion.TABLE_NAME
+import com.infinity_coder.divcalendar.data.network.model.NewsPostNetModel
 
 @Entity(tableName = TABLE_NAME)
-data class PostDbModel(
+data class NewsPostDbModel(
     @ColumnInfo(name = COLUMN_TITLE)
     var title: String = "",
 
@@ -16,6 +16,9 @@ data class PostDbModel(
 
     @ColumnInfo(name = COLUMN_LOGO)
     var logo: String = "",
+
+    @ColumnInfo(name = COLUMN_POSTER)
+    var poster: String = "",
 
     @ColumnInfo(name = COLUMN_SOURCE)
     var source: String = "",
@@ -41,21 +44,23 @@ data class PostDbModel(
         const val COLUMN_TITLE = "title"
         const val COLUMN_TEXT = "text"
         const val COLUMN_LOGO = "logo"
+        const val COLUMN_POSTER = "poster"
         const val COLUMN_SOURCE = "source"
         const val COLUMN_DATE = "date"
         const val COLUMN_LINK = "link"
         const val COLUMN_TICKER = "ticker"
 
-        fun from(post: PostNetworkModel.Response) = PostDbModel(
+        fun from(post: NewsPostNetModel.Response) = NewsPostDbModel(
             title = post.title,
             text = post.text,
             logo = post.logo,
+            poster = post.poster,
             source = post.source,
             date = post.date,
             link = post.link,
             ticker = post.ticker
         )
 
-        fun from(posts: List<PostNetworkModel.Response>) = posts.map { from(it) }
+        fun from(posts: List<NewsPostNetModel.Response>) = posts.map { from(it) }
     }
 }

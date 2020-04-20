@@ -12,8 +12,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.shake
@@ -24,7 +24,7 @@ class AddSecurityBottomDialog : BottomDialog() {
 
     private var clickListener: OnDialogClickListener? = null
 
-    private lateinit var security: SecurityNetworkModel
+    private lateinit var security: SecurityNetModel
 
     private val viewModel: AddSecurityViewModel by lazy {
         viewModel { AddSecurityViewModel() }
@@ -35,7 +35,7 @@ class AddSecurityBottomDialog : BottomDialog() {
 
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
 
-        security = SecurityNetworkModel(
+        security = SecurityNetModel(
             ticker = requireArguments().getString(ARGUMENT_SEC_ID, ""),
             name = requireArguments().getString(ARGUMENT_NAME, ""),
             logo = requireArguments().getString(ARGUMENT_LOGO, ""),
@@ -121,7 +121,7 @@ class AddSecurityBottomDialog : BottomDialog() {
         totalPriceTextView.text = resources.getString(R.string.total_price, priceWithCurrency)
     }
 
-    private fun addSecPackage(secPackage: SecurityPackageDbModel) {
+    private fun addSecPackage(secPackage: SecurityDbModel) {
         clickListener?.onAddSecPackageClick(secPackage)
     }
 
@@ -144,7 +144,7 @@ class AddSecurityBottomDialog : BottomDialog() {
 
         private const val SHAKE_AMPLITUDE = 8f
 
-        fun newInstance(security: SecurityNetworkModel): AddSecurityBottomDialog {
+        fun newInstance(security: SecurityNetModel): AddSecurityBottomDialog {
             val dialog = AddSecurityBottomDialog()
             dialog.arguments = bundleOf(
                 ARGUMENT_SEC_ID to security.ticker,
@@ -159,6 +159,6 @@ class AddSecurityBottomDialog : BottomDialog() {
     }
 
     interface OnDialogClickListener {
-        fun onAddSecPackageClick(securityPackage: SecurityPackageDbModel)
+        fun onAddSecPackageClick(securityPackage: SecurityDbModel)
     }
 }

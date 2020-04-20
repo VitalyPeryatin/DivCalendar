@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.domain.SearchInteractor
 import com.infinity_coder.divcalendar.domain.SecurityInteractor
 import com.infinity_coder.divcalendar.domain.SubscriptionInteractor
@@ -31,12 +31,12 @@ class SearchSecurityListViewModel : ViewModel() {
     val state: LiveData<Int>
         get() = _state
 
-    private val _searchedSecurities = MutableLiveData<List<SecurityNetworkModel>>()
-    val searchedSecurities: LiveData<List<SecurityNetworkModel>>
+    private val _searchedSecurities = MutableLiveData<List<SecurityNetModel>>()
+    val searchedSecurities: LiveData<List<SecurityNetModel>>
         get() = _searchedSecurities
 
-    val addSecurity = LiveEvent<SecurityPackageDbModel>()
-    val addSecurityIfHasSubscription = LiveEvent<SecurityPackageDbModel>()
+    val addSecurity = LiveEvent<SecurityDbModel>()
+    val addSecurityIfHasSubscription = LiveEvent<SecurityDbModel>()
 
     private var oldQueryGroup: QueryGroup? = null
 
@@ -67,11 +67,11 @@ class SearchSecurityListViewModel : ViewModel() {
         loadedMarket = market
     }
 
-    fun appendSecurityPackage(securityPackage: SecurityPackageDbModel) = viewModelScope.launch {
+    fun appendSecurityPackage(securityPackage: SecurityDbModel) = viewModelScope.launch {
         securityInteractor.appendSecurityPackage(securityPackage)
     }
 
-    fun requestOnAppendSecurityPackage(securityPackage: SecurityPackageDbModel) = viewModelScope.launch {
+    fun requestOnAppendSecurityPackage(securityPackage: SecurityDbModel) = viewModelScope.launch {
         if (subscriptionInteractor.isSecurityCountLeastThanSubscriptionGrant()) {
             addSecurity.value = securityPackage
         } else {

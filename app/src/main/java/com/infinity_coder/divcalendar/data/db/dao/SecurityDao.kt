@@ -1,25 +1,25 @@
 package com.infinity_coder.divcalendar.data.db.dao
 
 import androidx.room.*
-import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 
 @Dao
 abstract class SecurityDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    abstract suspend fun insertSecurityPackage(securityPackage: SecurityPackageDbModel)
+    abstract suspend fun insertSecurityPackage(securityPackage: SecurityDbModel)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun updateSecurityPackage(securityPackage: SecurityPackageDbModel)
+    abstract suspend fun updateSecurityPackage(securityPackage: SecurityDbModel)
 
-    @Query("SELECT * FROM ${SecurityPackageDbModel.TABLE_NAME} WHERE ${SecurityPackageDbModel.COLUMN_PORTFOLIO_NAME} = :portfolioName AND ${SecurityPackageDbModel.COLUMN_SEC_ID} = :secId")
-    abstract suspend fun getSecurityPackage(portfolioName: String, secId: String): SecurityPackageDbModel?
+    @Query("SELECT * FROM ${SecurityDbModel.TABLE_NAME} WHERE ${SecurityDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId AND ${SecurityDbModel.COLUMN_SEC_ID} = :secId")
+    abstract suspend fun getSecurityPackage(portfolioId: Long, secId: String): SecurityDbModel?
 
-    @Query("SELECT * FROM ${SecurityPackageDbModel.TABLE_NAME} WHERE ${SecurityPackageDbModel.COLUMN_PORTFOLIO_NAME} = :portfolioName")
-    abstract suspend fun getSecurityPackagesForPortfolio(portfolioName: String): List<SecurityPackageDbModel>
+    @Query("SELECT * FROM ${SecurityDbModel.TABLE_NAME} WHERE ${SecurityDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId")
+    abstract suspend fun getSecurityPackagesForPortfolio(portfolioId: Long): List<SecurityDbModel>
 
-    @Query("SELECT count(*) FROM ${SecurityPackageDbModel.TABLE_NAME} WHERE ${SecurityPackageDbModel.COLUMN_PORTFOLIO_NAME} = :portfolioName")
-    abstract suspend fun getSecurityCountForPortfolio(portfolioName: String): Int
+    @Query("SELECT count(*) FROM ${SecurityDbModel.TABLE_NAME} WHERE ${SecurityDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId")
+    abstract suspend fun getSecurityCountForPortfolio(portfolioId: Long): Int
 
     @Delete
-    abstract suspend fun deleteSecurityPackage(securityPackage: SecurityPackageDbModel)
+    abstract suspend fun deleteSecurityPackage(securityPackage: SecurityDbModel)
 }

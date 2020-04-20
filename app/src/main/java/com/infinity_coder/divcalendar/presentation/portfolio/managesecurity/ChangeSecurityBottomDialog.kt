@@ -11,8 +11,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.shake
 import com.infinity_coder.divcalendar.presentation._common.viewModel
@@ -22,7 +22,7 @@ class ChangeSecurityBottomDialog : BottomDialog() {
 
     private var clickListener: OnClickListener? = null
 
-    private lateinit var security: SecurityNetworkModel
+    private lateinit var security: SecurityNetModel
 
     private val viewModel: ChangeSecurityViewModel by lazy {
         viewModel { ChangeSecurityViewModel() }
@@ -33,7 +33,7 @@ class ChangeSecurityBottomDialog : BottomDialog() {
 
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
 
-        security = SecurityNetworkModel(
+        security = SecurityNetModel(
             ticker = requireArguments().getString(ARGUMENT_SEC_ID, ""),
             name = requireArguments().getString(ARGUMENT_NAME, ""),
             logo = requireArguments().getString(ARGUMENT_LOGO, ""),
@@ -109,7 +109,7 @@ class ChangeSecurityBottomDialog : BottomDialog() {
         }
     }
 
-    private fun changePackage(securityPackage: SecurityPackageDbModel) {
+    private fun changePackage(securityPackage: SecurityDbModel) {
         clickListener?.onChangePackageClick(securityPackage)
     }
 
@@ -132,10 +132,10 @@ class ChangeSecurityBottomDialog : BottomDialog() {
 
         private const val SHAKE_AMPLITUDE = 8f
 
-        fun newInstance(security: SecurityPackageDbModel): ChangeSecurityBottomDialog {
+        fun newInstance(security: SecurityDbModel): ChangeSecurityBottomDialog {
             val dialog = ChangeSecurityBottomDialog()
             dialog.arguments = bundleOf(
-                ARGUMENT_SEC_ID to security.secid,
+                ARGUMENT_SEC_ID to security.ticker,
                 ARGUMENT_NAME to security.name,
                 ARGUMENT_LOGO to security.logo,
                 ARGUMENT_YEAR_YIELD to security.yearYield,
@@ -147,6 +147,6 @@ class ChangeSecurityBottomDialog : BottomDialog() {
     }
 
     interface OnClickListener {
-        fun onChangePackageClick(securityPackage: SecurityPackageDbModel)
+        fun onChangePackageClick(securityPackage: SecurityDbModel)
     }
 }
