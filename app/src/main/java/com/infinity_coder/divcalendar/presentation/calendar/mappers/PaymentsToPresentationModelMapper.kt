@@ -5,7 +5,6 @@ import android.graphics.Color
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
-import com.infinity_coder.divcalendar.data.repositories.RateRepository.RUB_RATE
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
@@ -100,13 +99,13 @@ class PaymentsToPresentationModelMapper {
     private suspend fun getCosts(): Float {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val securities = portfolioInteractor.getCurrentPortfolio().first().securities
-        return securities.sumByDouble{
-            getTotalPriceForCurrentCurrency(currentCurrency,it)
+        return securities.sumByDouble {
+            getTotalPriceForCurrentCurrency(currentCurrency, it)
         }.toFloat()
     }
 
-    private suspend fun getTotalPriceForCurrentCurrency(currentCurrency:String, securityDbModel: SecurityDbModel):Double{
-        return if(securityDbModel.currency == currentCurrency)
+    private suspend fun getTotalPriceForCurrentCurrency(currentCurrency: String, securityDbModel: SecurityDbModel): Double {
+        return if (securityDbModel.currency == currentCurrency)
             securityDbModel.totalPrice.toDouble()
         else
             rateInteractor.convertCurrencies(securityDbModel.totalPrice, securityDbModel.currency, currentCurrency).toDouble()
