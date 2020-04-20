@@ -129,7 +129,9 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     }
 
     private fun updatePayments(payments: List<IComparableItem>) {
+        val state = calendarPaymentsRecyclerView.layoutManager!!.onSaveInstanceState()
         (calendarPaymentsRecyclerView.adapter as DiffUtilCompositeAdapter).swapData(payments)
+        calendarPaymentsRecyclerView.layoutManager!!.onRestoreInstanceState(state)
     }
 
     private fun updateCurrentYear(year: String) {
