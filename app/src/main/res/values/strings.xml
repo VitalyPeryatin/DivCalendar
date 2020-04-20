@@ -42,6 +42,7 @@
     <string name="bonds">Bonds</string>
     <string name="russian">Russian</string>
     <string name="foreign">Foreign</string>
+    <string name="add_security_successful">Securities package successfully added to your portfolio</string>
 
     <!--portfolio -->
     <string name="sec_count">%1$d pcs.</string>

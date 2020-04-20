@@ -17,7 +17,7 @@ import androidx.core.content.ContextCompat
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.domain._common.LinkDelegate
 import com.infinity_coder.divcalendar.presentation._common.CustomTabHelper
-import com.infinity_coder.divcalendar.presentation._common.setActionBar
+import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
 import kotlinx.android.synthetic.main.activity_browser.*
 
 class BrowserActivity : AppCompatActivity() {

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
-import com.infinity_coder.divcalendar.presentation._common.viewModel
+import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.adapter.ChangePortfolioRecyclerAdapter
 import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.dialogs.CreatePortfolioDialog
 import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.dialogs.DeletePortfolioDialog

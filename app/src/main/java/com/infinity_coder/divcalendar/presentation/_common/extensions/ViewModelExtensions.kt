@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation._common
+package com.infinity_coder.divcalendar.presentation._common.extensions
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
