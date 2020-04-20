@@ -10,6 +10,7 @@ import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
+import com.infinity_coder.divcalendar.presentation._common.sumByFloat
 import com.infinity_coder.divcalendar.presentation.calendar.models.*
 import kotlinx.coroutines.flow.first
 
@@ -99,16 +100,16 @@ class PaymentsToPresentationModelMapper {
     private suspend fun getCosts(): Float {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val securities = portfolioInteractor.getCurrentPortfolio().first().securities
-        return securities.sumByDouble {
+        return securities.sumByFloat {
             getTotalPriceForCurrentCurrency(currentCurrency, it)
-        }.toFloat()
+        }
     }
 
-    private suspend fun getTotalPriceForCurrentCurrency(currentCurrency: String, securityDbModel: SecurityDbModel): Double {
+    private suspend fun getTotalPriceForCurrentCurrency(currentCurrency: String, securityDbModel: SecurityDbModel): Float {
         return if (securityDbModel.currency == currentCurrency)
-            securityDbModel.totalPrice.toDouble()
+            securityDbModel.totalPrice
         else
-            rateInteractor.convertCurrencies(securityDbModel.totalPrice, securityDbModel.currency, currentCurrency).toDouble()
+            rateInteractor.convertCurrencies(securityDbModel.totalPrice, securityDbModel.currency, currentCurrency)
     }
 
     private fun getMonthlyPayments(monthlyPayments: List<MonthlyPayment>): List<MonthlyPayment> {
