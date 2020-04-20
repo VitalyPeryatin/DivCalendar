@@ -92,9 +92,9 @@ class PaymentsToPresentationModelMapper {
     }
 
     private fun sumMonthPayments(monthlyPayments: List<MonthlyPayment>): Float {
-        return monthlyPayments.sumByDouble { paymentsForMonth ->
-            paymentsForMonth.payments.sumByDouble { it.dividends }
-        }.toFloat()
+        return monthlyPayments.sumByFloat { paymentsForMonth ->
+            paymentsForMonth.payments.sumByFloat { it.dividends.toFloat() }
+        }
     }
 
     private suspend fun getCosts(): Float {
