@@ -50,7 +50,7 @@ data class PaymentDbModel(
 
         const val INDEX_SECURITY = "security_index"
 
-        fun from(portfolioId: Long, networkPayments: PaymentNetModel.Response) = PaymentDbModel (
+        fun from(portfolioId: Long, networkPayments: PaymentNetModel.Response) = PaymentDbModel(
             dividends = networkPayments.dividends,
             date = networkPayments.date,
             forecast = networkPayments.forecast,

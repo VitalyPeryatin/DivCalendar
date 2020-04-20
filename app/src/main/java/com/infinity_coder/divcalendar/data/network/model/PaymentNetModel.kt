@@ -2,7 +2,6 @@ package com.infinity_coder.divcalendar.data.network.model
 
 import com.google.gson.annotations.SerializedName
 
-
 class PaymentNetModel {
 
     data class Request(
