@@ -1,14 +1,14 @@
 package com.infinity_coder.divcalendar.domain
 
-import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.repositories.SecurityRepository
 
 class SecurityInteractor {
 
     private val portfolioInteractor = PortfolioInteractor()
 
-    suspend fun changeSecurityPackage(securityPackage: SecurityPackageDbModel) {
-        securityPackage.portfolioName = getCurrentPortfolioName()
+    suspend fun changeSecurityPackage(securityPackage: SecurityDbModel) {
+        securityPackage.portfolioId = portfolioInteractor.getCurrentPortfolioId()
         if (securityPackage.count <= 0) {
             SecurityRepository.deleteSecurityPackage(securityPackage)
         } else {
@@ -16,11 +16,11 @@ class SecurityInteractor {
         }
     }
 
-    suspend fun appendSecurityPackage(newSecurityPackage: SecurityPackageDbModel) {
-        val portfolioName = getCurrentPortfolioName()
-        val securitiesPackage = SecurityRepository.getSecurityPackage(portfolioName, newSecurityPackage.secid)
+    suspend fun appendSecurityPackage(newSecurityPackage: SecurityDbModel) {
+        val portfolioId = portfolioInteractor.getCurrentPortfolioId()
+        val securitiesPackage = SecurityRepository.getSecurityPackage(portfolioId, newSecurityPackage.ticker)
         if (securitiesPackage == null) {
-            newSecurityPackage.portfolioName = portfolioName
+            newSecurityPackage.portfolioId = portfolioId
             SecurityRepository.addSecurityPackage(newSecurityPackage)
         } else {
             securitiesPackage.count += newSecurityPackage.count
@@ -30,11 +30,7 @@ class SecurityInteractor {
     }
 
     suspend fun getSecurityCount(): Int {
-        val portfolioName = getCurrentPortfolioName()
-        return SecurityRepository.getSecurityCount(portfolioName)
-    }
-
-    private fun getCurrentPortfolioName(): String {
-        return portfolioInteractor.getCurrentPortfolioName()
+        val portfolioId = portfolioInteractor.getCurrentPortfolioId()
+        return SecurityRepository.getSecurityCount(portfolioId)
     }
 }

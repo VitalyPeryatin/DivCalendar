@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.db.model.PostDbModel
+import com.infinity_coder.divcalendar.data.db.model.NewsPostDbModel
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.browser.BrowserActivity
@@ -41,16 +41,16 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun getItemClickListener() = object : NewsAdapter.NewsItemClickListener {
-        override fun onClick(post: PostDbModel) {
+        override fun onClick(post: NewsPostDbModel) {
             openNewsArticle(post)
         }
     }
 
-    private fun updateNewsPosts(posts: List<PostDbModel>) {
+    private fun updateNewsPosts(posts: List<NewsPostDbModel>) {
         adapter.setPosts(posts)
     }
 
-    fun openNewsArticle(post: PostDbModel) {
+    fun openNewsArticle(post: NewsPostDbModel) {
         BrowserActivity.openActivity(context!!, post.link)
     }
 

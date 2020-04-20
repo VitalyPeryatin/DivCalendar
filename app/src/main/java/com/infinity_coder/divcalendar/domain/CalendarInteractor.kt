@@ -3,10 +3,10 @@ package com.infinity_coder.divcalendar.domain
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import androidx.palette.graphics.Palette
+import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
-import com.infinity_coder.divcalendar.domain.models.Payment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -28,7 +28,7 @@ class CalendarInteractor {
             .map { groupAndSortPayments(it) }
     }
 
-    private fun calculateTaxesIfNeed(isIncludeTaxes: Boolean, payments: List<Payment>): List<Payment> {
+    private fun calculateTaxesIfNeed(isIncludeTaxes: Boolean, payments: List<PaymentDbModel>): List<PaymentDbModel> {
         if (isIncludeTaxes) {
             payments.forEach { it.dividends *= TAX_FACTOR }
         }
@@ -43,23 +43,25 @@ class CalendarInteractor {
         return PaymentRepository.getSelectedYear()
     }
 
-    private fun groupAndSortPayments(payments: List<Payment>): List<MonthlyPayment> {
+    private fun groupAndSortPayments(payments: List<PaymentDbModel>): List<MonthlyPayment> {
         return payments.groupByDate()
             .map(this::mapMonthWithPaymentsToMonthlyPayment)
             .sortedBy { it.month }
     }
 
-    private fun List<Payment>.groupByDate(): List<Pair<Int, List<Payment>>> {
+    private fun List<PaymentDbModel>.groupByDate(): List<Pair<Int, List<PaymentDbModel>>> {
         return groupBy {
             Calendar.getInstance().apply { time = dateFormat.parse(it.date) ?: Date() }
                 .get(Calendar.MONTH)
         }.toList()
     }
 
-    private fun mapMonthWithPaymentsToMonthlyPayment(monthWithPayments: Pair<Int, List<Payment>>): MonthlyPayment {
+    private fun mapMonthWithPaymentsToMonthlyPayment(monthWithPayments: Pair<Int, List<PaymentDbModel>>): MonthlyPayment {
         val monthlyPayment = MonthlyPayment.from(monthWithPayments)
         monthlyPayment.payments.forEach {
-            it.colorLogo = getDominantColorFromImage(it.logo)
+            it.security?.let { security ->
+                security.color = getDominantColorFromImage(security.logo)
+            }
         }
         return monthlyPayment
     }

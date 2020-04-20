@@ -11,8 +11,6 @@ import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation.calendar.models.*
-import kotlinx.android.synthetic.main.item_footer_payment_calendar.*
-import kotlinx.android.synthetic.main.item_payment_calendar.*
 import kotlinx.coroutines.flow.first
 
 class PaymentsToPresentationModelMapper {
@@ -49,7 +47,9 @@ class PaymentsToPresentationModelMapper {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         return monthlyPayments.map { monthlyPayment ->
             val payments = monthlyPayment.payments.map {
-                it.copy(dividends = rateInteractor.convertCurrencies(it.dividends.toFloat(), it.currency, currentCurrency).toDouble())
+                val payment = it.copy(dividends = rateInteractor.convertCurrencies(it.dividends.toFloat(), it.security!!.currency, currentCurrency).toDouble())
+                payment.security = it.security
+                payment
             }
             return@map MonthlyPayment(monthlyPayment.month, payments)
         }
@@ -115,7 +115,7 @@ class PaymentsToPresentationModelMapper {
             return@map if (it.payments.isEmpty())
                 listOf(Color.TRANSPARENT)
             else
-                it.payments.map { payment -> payment.colorLogo }
+                it.payments.map { payment -> payment.security!!.color }
         }.flatten()
     }
 }

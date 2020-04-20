@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.db.model.PostDbModel
+import com.infinity_coder.divcalendar.data.db.model.NewsPostDbModel
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import kotlinx.android.extensions.LayoutContainer
@@ -16,7 +16,7 @@ class NewsAdapter(
     var onItemClickListener: NewsItemClickListener? = null
 ) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
-    private var newsPosts: List<PostDbModel> = listOf()
+    private var newsPosts: List<NewsPostDbModel> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -31,7 +31,7 @@ class NewsAdapter(
         holder.bind(newsPosts[position], isLastPosition)
     }
 
-    fun setPosts(posts: List<PostDbModel>) {
+    fun setPosts(posts: List<NewsPostDbModel>) {
         this.newsPosts = posts
         notifyDataSetChanged()
     }
@@ -40,7 +40,7 @@ class NewsAdapter(
         override val containerView: View,
         private val onItemClickListener: NewsItemClickListener?
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
-        fun bind(post: PostDbModel, isLastItem: Boolean = false) {
+        fun bind(post: NewsPostDbModel, isLastItem: Boolean = false) {
             titleTextView.text = post.title
             sourceTextView.text = post.source
             textTextView.text = post.text
@@ -63,6 +63,6 @@ class NewsAdapter(
     }
 
     interface NewsItemClickListener {
-        fun onClick(post: PostDbModel)
+        fun onClick(post: NewsPostDbModel)
     }
 }

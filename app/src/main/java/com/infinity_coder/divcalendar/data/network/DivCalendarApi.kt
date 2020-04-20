@@ -1,6 +1,9 @@
 package com.infinity_coder.divcalendar.data.network
 
-import com.infinity_coder.divcalendar.data.network.model.*
+import com.infinity_coder.divcalendar.data.network.model.CurrencyRateNetModel
+import com.infinity_coder.divcalendar.data.network.model.NewsPostNetModel
+import com.infinity_coder.divcalendar.data.network.model.PaymentNetModel
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -13,14 +16,14 @@ interface DivCalendarApi {
         @Query("type") type: String,
         @Query("market") market: String,
         @Query("limit") limit: Int? = null
-    ): List<SecurityNetworkModel>
+    ): List<SecurityNetModel>
 
     @POST("posts")
-    suspend fun fetchPosts(@Body body: PostNetworkModel.Request): List<PostNetworkModel.Response>
+    suspend fun fetchPosts(@Body body: NewsPostNetModel.Request): List<NewsPostNetModel.Response>
 
     @GET("rate")
-    suspend fun fetchCurrencyRate(): CurrencyRateNetworkModel
+    suspend fun fetchCurrencyRate(): CurrencyRateNetModel
 
     @POST("payments")
-    suspend fun fetchPayments(@Body body: PaymentNetworkModel.Request): List<PaymentNetworkModel.Response>
+    suspend fun fetchPayments(@Body body: PaymentNetModel.Request): List<PaymentNetModel.Response>
 }

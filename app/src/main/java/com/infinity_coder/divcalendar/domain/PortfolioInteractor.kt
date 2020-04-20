@@ -1,10 +1,9 @@
 package com.infinity_coder.divcalendar.domain
 
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
-import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
 import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.filterNotNull
 
 class PortfolioInteractor {
 
@@ -25,7 +24,11 @@ class PortfolioInteractor {
     }
 
     fun getCurrentPortfolioName(): String {
-        return PortfolioRepository.getCurrentPortfolio()
+        return PortfolioRepository.getCurrentPortfolioName()
+    }
+
+    suspend fun getCurrentPortfolioId(): Long {
+        return PortfolioRepository.getCurrentPortfolioId()
     }
 
     suspend fun getPortfolioCount(): Int {
@@ -38,10 +41,13 @@ class PortfolioInteractor {
 
     suspend fun renamePortfolio(oldName: String, newName: String) {
         PortfolioRepository.renamePortfolio(oldName, newName)
+        if (PortfolioRepository.getCurrentPortfolioName() == oldName) {
+            PortfolioRepository.setCurrentPortfolio(newName)
+        }
     }
 
-    fun getCurrentPortfolio(): Flow<PortfolioWithSecurities> {
-        return PortfolioRepository.getAllPortfoliosWithSecurities()
-            .map { it.first { portfolio -> getCurrentPortfolioName() == portfolio.portfolio.name } }
+    fun getCurrentPortfolio(): Flow<PortfolioDbModel> {
+        return PortfolioRepository.getPortfolioWithSecurities(getCurrentPortfolioName())
+            .filterNotNull()
     }
 }

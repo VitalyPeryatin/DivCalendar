@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
-import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.SecurityInteractor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,8 +19,8 @@ class PortfolioViewModel : ViewModel() {
     val state: LiveData<Int>
         get() = _state
 
-    private val _portfolio = MutableLiveData<PortfolioWithSecurities>()
-    val portfolio: LiveData<PortfolioWithSecurities>
+    private val _portfolio = MutableLiveData<PortfolioDbModel>()
+    val portfolio: LiveData<PortfolioDbModel>
         get() = _portfolio
 
     private val securityInteractor = SecurityInteractor()
@@ -39,8 +39,9 @@ class PortfolioViewModel : ViewModel() {
             }.launchIn(viewModelScope)
     }
 
-    fun changeSecurityPackage(securityPackage: SecurityPackageDbModel) = viewModelScope.launch {
+    fun changeSecurityPackage(securityPackage: SecurityDbModel) = viewModelScope.launch {
         securityInteractor.changeSecurityPackage(securityPackage)
+        loadSecurities()
     }
 
     companion object {

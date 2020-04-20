@@ -15,7 +15,7 @@ data class FooterPaymentPresentationModel(
             FooterPaymentPresentationModel(
                 id = monthlyPayments.month,
                 income = monthlyPayments.payments.sumByDouble { payment -> payment.dividends }.toString(),
-                originalCurrency = monthlyPayments.payments.first().currency,
+                originalCurrency = monthlyPayments.payments.first().security!!.currency,
                 currentCurrency = ""
             )
     }

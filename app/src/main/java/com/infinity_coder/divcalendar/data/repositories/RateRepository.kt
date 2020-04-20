@@ -3,7 +3,7 @@ package com.infinity_coder.divcalendar.data.repositories
 import android.content.Context
 import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.network.RetrofitService
-import com.infinity_coder.divcalendar.data.network.model.CurrencyRateNetworkModel
+import com.infinity_coder.divcalendar.data.network.model.CurrencyRateNetModel
 import com.infinity_coder.divcalendar.presentation.App
 
 object RateRepository {
@@ -28,21 +28,21 @@ object RateRepository {
         saveRatesToPref(dbPosts)
     }
 
-    fun getRates(): CurrencyRateNetworkModel {
-        return CurrencyRateNetworkModel(
+    fun getRates(): CurrencyRateNetModel {
+        return CurrencyRateNetModel(
             rubToUsd = currencyPreferences.getFloat(RUB_TO_USD_KEY, 73.6f),
             usdToRub = currencyPreferences.getFloat(USD_TO_RUB_KEY, 0.012919896f)
         )
     }
 
-    private fun saveRatesToPref(rates: CurrencyRateNetworkModel) {
+    private fun saveRatesToPref(rates: CurrencyRateNetModel) {
         currencyPreferences.edit {
             putFloat(RUB_TO_USD_KEY, rates.rubToUsd)
             putFloat(USD_TO_RUB_KEY, rates.usdToRub)
         }
     }
 
-    private suspend fun getRatesFromNetwork(): CurrencyRateNetworkModel {
+    private suspend fun getRatesFromNetwork(): CurrencyRateNetModel {
         return divCalendarApi.fetchCurrencyRate()
     }
 

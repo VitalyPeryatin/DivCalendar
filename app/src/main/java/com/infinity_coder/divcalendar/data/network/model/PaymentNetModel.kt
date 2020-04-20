@@ -2,7 +2,7 @@ package com.infinity_coder.divcalendar.data.network.model
 
 import com.google.gson.annotations.SerializedName
 
-class PaymentNetworkModel {
+class PaymentNetModel {
 
     data class Request(
         @SerializedName("securities")
@@ -22,16 +22,10 @@ class PaymentNetworkModel {
         @SerializedName("date")
         val date: String,
 
-        @SerializedName("logo")
-        val logo: String,
-
         @SerializedName("forecast")
         val forecast: String,
 
         @SerializedName("name")
-        val ticker: String,
-
-        @SerializedName("currency")
-        val currency: String
+        val ticker: String
     )
 }

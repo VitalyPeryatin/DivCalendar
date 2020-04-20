@@ -1,6 +1,6 @@
 package com.infinity_coder.divcalendar.domain
 
-import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.data.repositories.SearchRepository
 import com.infinity_coder.divcalendar.presentation.search.model.QueryGroup
 import kotlinx.coroutines.flow.Flow
@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.flowOf
 
 class SearchInteractor {
 
-    suspend fun search(queryGroup: QueryGroup, limit: Int = DEFAULT_LIMIT): Flow<List<SecurityNetworkModel>> {
+    suspend fun search(queryGroup: QueryGroup, limit: Int = DEFAULT_LIMIT): Flow<List<SecurityNetModel>> {
         return if (queryGroup.query.length >= MIN_QUERY_LENGTH) {
             SearchRepository.search(queryGroup.query, queryGroup.securityType, queryGroup.market, limit)
         } else {

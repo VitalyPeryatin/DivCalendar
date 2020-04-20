@@ -11,8 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.db.model.PortfolioWithSecurities
-import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
+import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.presentation._common.executeIfSubscribed
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.viewModel
@@ -90,7 +90,7 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     }
 
     private fun getOnItemClickListener() = object : SecurityRecyclerAdapter.OnItemClickListener {
-        override fun onItemClick(securityPackage: SecurityPackageDbModel) {
+        override fun onItemClick(securityPackage: SecurityDbModel) {
             openChangePackageDialog(securityPackage)
         }
     }
@@ -110,13 +110,13 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
         }
     }
 
-    private fun openChangePackageDialog(securityPackage: SecurityPackageDbModel) {
+    private fun openChangePackageDialog(securityPackage: SecurityDbModel) {
         changePackageDialog = ChangeSecurityBottomDialog.newInstance(securityPackage)
         changePackageDialog?.show(childFragmentManager, ChangeSecurityBottomDialog::class.toString())
     }
 
-    private fun setPortfolio(portfolio: PortfolioWithSecurities) {
-        portfolioToolbar.subtitle = portfolio.portfolio.name
+    private fun setPortfolio(portfolio: PortfolioDbModel) {
+        portfolioToolbar.subtitle = portfolio.name
         val adapter = securitiesRecyclerView.adapter as? SecurityRecyclerAdapter
         adapter?.setSecurities(portfolio.securities)
     }
@@ -131,7 +131,7 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
         }
     }
 
-    override fun onChangePackageClick(securityPackage: SecurityPackageDbModel) {
+    override fun onChangePackageClick(securityPackage: SecurityDbModel) {
         viewModel.changeSecurityPackage(securityPackage)
         changePackageDialog?.dismiss()
     }

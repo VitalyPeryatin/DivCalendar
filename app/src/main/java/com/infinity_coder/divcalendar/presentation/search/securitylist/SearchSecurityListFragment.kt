@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.db.model.SecurityPackageDbModel
-import com.infinity_coder.divcalendar.data.network.model.SecurityNetworkModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.executeIfSubscribed
 import com.infinity_coder.divcalendar.presentation._common.viewModel
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
@@ -34,7 +34,7 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
     private lateinit var parentActivity: SearchSecurityActivity
 
     private val secClickListener = object : SecurityRecyclerAdapter.OnClickListener {
-        override fun onClick(security: SecurityNetworkModel) {
+        override fun onClick(security: SecurityNetModel) {
             addSecurityDialog = AddSecurityBottomDialog.newInstance(security)
             addSecurityDialog?.show(childFragmentManager, AddSecurityBottomDialog::class.toString())
         }
@@ -93,20 +93,20 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
         return parentViewModel.queryLiveData.value ?: ""
     }
 
-    override fun onAddSecPackageClick(securityPackage: SecurityPackageDbModel) {
+    override fun onAddSecPackageClick(securityPackage: SecurityDbModel) {
         viewModel.requestOnAppendSecurityPackage(securityPackage)
     }
 
-    private fun addSecurityPackage(securityPackage: SecurityPackageDbModel) {
+    private fun addSecurityPackage(securityPackage: SecurityDbModel) {
         viewModel.appendSecurityPackage(securityPackage)
         dismissAddSecurityDialog()
     }
 
-    private fun addSecurityPackageIfHasSubscription(securityPackage: SecurityPackageDbModel) {
+    private fun addSecurityPackageIfHasSubscription(securityPackage: SecurityDbModel) {
         executeIfSubscribed { addSecurityPackage(securityPackage) }
     }
 
-    private fun setSecurities(securities: List<SecurityNetworkModel>) {
+    private fun setSecurities(securities: List<SecurityNetModel>) {
         val adapter = securitiesRecyclerView.adapter as? SecurityRecyclerAdapter
         adapter?.setSecurities(securities)
     }

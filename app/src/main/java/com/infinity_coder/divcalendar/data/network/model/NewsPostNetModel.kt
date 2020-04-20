@@ -2,7 +2,7 @@ package com.infinity_coder.divcalendar.data.network.model
 
 import com.google.gson.annotations.SerializedName
 
-class PostNetworkModel {
+class NewsPostNetModel {
 
     data class Request(
         @SerializedName("securities")

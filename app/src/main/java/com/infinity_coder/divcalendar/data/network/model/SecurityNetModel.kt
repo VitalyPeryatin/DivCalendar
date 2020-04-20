@@ -2,7 +2,7 @@ package com.infinity_coder.divcalendar.data.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class SecurityNetworkModel(
+data class SecurityNetModel(
     @SerializedName("ticker")
     val ticker: String = "",
 
