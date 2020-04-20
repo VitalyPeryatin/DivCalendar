@@ -54,11 +54,14 @@ class CalendarViewModel : ViewModel() {
             .flowOn(Dispatchers.IO)
             .onStart { _state.value = VIEW_STATE_CALENDAR_LOADING }
             .onEach {
-                if (it.isEmpty()) {
-                    _state.value = VIEW_STATE_CALENDAR_EMPTY
-                } else {
-                    _payments.value = it
+                _payments.value = it
+                if (it.isNotEmpty()) {
                     _state.value = VIEW_STATE_CALENDAR_CONTENT
+                }
+            }
+            .onCompletion {
+                if (_payments.value!!.isEmpty()) {
+                    _state.value = VIEW_STATE_CALENDAR_EMPTY
                 }
             }
             .catch { handleError(it) }

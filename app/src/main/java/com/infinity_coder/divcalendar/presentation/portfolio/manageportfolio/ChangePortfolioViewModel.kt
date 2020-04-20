@@ -21,6 +21,7 @@ class ChangePortfolioViewModel : ViewModel() {
         get() = _portfolios
 
     val showDeletePortfolioDialogEvent = LiveEvent<PortfolioDbModel>()
+    val hideDeletePortfolioDialogEvent = LiveEvent<Unit?>()
     val errorMessageEvent = LiveEvent<Int>()
     val currentPortfolioEvent = LiveEvent<String>()
     val renamePortfolioEvent = LiveEvent<String>()
@@ -83,6 +84,7 @@ class ChangePortfolioViewModel : ViewModel() {
         val isCheckout = checkoutCurrentPortfolio(name)
         if (isCheckout) {
             portfolioInteractor.deletePortfolio(name)
+            hideDeletePortfolioDialogEvent.value = null
         }
     }
 

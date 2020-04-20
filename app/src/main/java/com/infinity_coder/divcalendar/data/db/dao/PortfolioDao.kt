@@ -15,7 +15,7 @@ abstract class PortfolioDao {
     abstract suspend fun updatePortfolio(portfolio: PortfolioDbModel)
 
     @Query("DELETE FROM ${PortfolioDbModel.TABLE_NAME} WHERE ${PortfolioDbModel.COLUMN_NAME} = :name")
-    abstract suspend fun deletePortfolio(name: String): Int
+    abstract suspend fun deletePortfolio(name: String)
 
     @Query("SELECT * FROM ${PortfolioDbModel.TABLE_NAME} WHERE ${PortfolioDbModel.COLUMN_NAME} = :name LIMIT 1")
     abstract fun getPortfolio(name: String): PortfolioDbModel?

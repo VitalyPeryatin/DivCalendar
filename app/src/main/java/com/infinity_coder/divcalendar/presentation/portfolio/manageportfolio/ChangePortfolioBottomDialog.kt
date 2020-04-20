@@ -24,6 +24,7 @@ class ChangePortfolioBottomDialog : BottomDialog(),
     DeletePortfolioDialog.DeletePortfolioClickListener {
 
     private var clickListener: OnChangePortfolioClickListener? = null
+    private var deletePortfolioDialog: DeletePortfolioDialog? = null
 
     val viewModel: ChangePortfolioViewModel by lazy {
         viewModel { ChangePortfolioViewModel() }
@@ -75,6 +76,7 @@ class ChangePortfolioBottomDialog : BottomDialog(),
 
         viewModel.portfolios.observe(viewLifecycleOwner, Observer(this::setPortfolios))
         viewModel.showDeletePortfolioDialogEvent.observe(viewLifecycleOwner, Observer(this::showDeletePortfolioDialog))
+        viewModel.hideDeletePortfolioDialogEvent.observe(viewLifecycleOwner, Observer { hideDeletePortfolioDialog() })
         viewModel.errorMessageEvent.observe(viewLifecycleOwner, Observer(this::showError))
         viewModel.currentPortfolioEvent.observe(viewLifecycleOwner, Observer(this::setCurrentPortfolio))
 
@@ -110,8 +112,13 @@ class ChangePortfolioBottomDialog : BottomDialog(),
     }
 
     private fun showDeletePortfolioDialog(portfolio: PortfolioDbModel) {
-        val dialog = DeletePortfolioDialog.newInstance(portfolio.name)
-        dialog.show(childFragmentManager, DeletePortfolioDialog::class.toString())
+        deletePortfolioDialog = DeletePortfolioDialog.newInstance(portfolio.name)
+        deletePortfolioDialog?.show(childFragmentManager, DeletePortfolioDialog::class.toString())
+    }
+
+    private fun hideDeletePortfolioDialog() {
+        deletePortfolioDialog?.dismiss()
+        deletePortfolioDialog = null
     }
 
     private fun initUI() {

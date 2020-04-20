@@ -53,11 +53,7 @@ object PortfolioRepository {
     }
 
     suspend fun deletePortfolio(name: String) {
-        try {
-            portfolioDao.deletePortfolio(name)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        portfolioDao.deletePortfolio(name)
     }
 
     suspend fun renamePortfolio(oldName: String, newName: String) {
