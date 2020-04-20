@@ -17,9 +17,6 @@ data class NewsPostDbModel(
     @ColumnInfo(name = COLUMN_LOGO)
     var logo: String = "",
 
-    @ColumnInfo(name = COLUMN_POSTER)
-    var poster: String = "",
-
     @ColumnInfo(name = COLUMN_SOURCE)
     var source: String = "",
 
@@ -44,7 +41,6 @@ data class NewsPostDbModel(
         const val COLUMN_TITLE = "title"
         const val COLUMN_TEXT = "text"
         const val COLUMN_LOGO = "logo"
-        const val COLUMN_POSTER = "poster"
         const val COLUMN_SOURCE = "source"
         const val COLUMN_DATE = "date"
         const val COLUMN_LINK = "link"
@@ -54,7 +50,6 @@ data class NewsPostDbModel(
             title = post.title,
             text = post.text,
             logo = post.logo,
-            poster = post.poster,
             source = post.source,
             date = post.date,
             link = post.link,

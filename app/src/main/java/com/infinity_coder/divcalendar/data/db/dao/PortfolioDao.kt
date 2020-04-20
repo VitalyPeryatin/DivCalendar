@@ -11,27 +11,24 @@ abstract class PortfolioDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract suspend fun insertPortfolio(portfolio: PortfolioDbModel)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun updatePortfolio(portfolio: PortfolioDbModel)
+    @Query("UPDATE ${PortfolioDbModel.TABLE_NAME} SET ${PortfolioDbModel.COLUMN_NAME} = :newName WHERE ${PortfolioDbModel.COLUMN_NAME} = :oldName")
+    abstract suspend fun renamePortfolio(oldName: String, newName: String)
 
     @Query("DELETE FROM ${PortfolioDbModel.TABLE_NAME} WHERE ${PortfolioDbModel.COLUMN_NAME} = :name")
     abstract suspend fun deletePortfolio(name: String)
 
     @Query("SELECT * FROM ${PortfolioDbModel.TABLE_NAME} WHERE ${PortfolioDbModel.COLUMN_NAME} = :name LIMIT 1")
-    abstract fun getPortfolio(name: String): PortfolioDbModel?
+    abstract suspend fun getPortfolioByName(name: String): PortfolioDbModel?
 
     @Transaction
-    open suspend fun getAllPortfoliosWithSecurities(): List<PortfolioDbModel> {
-        val portfolios = getAllPortfolios()
-        portfolios.forEach { it.securities = getSecurities(it.id) }
-        return portfolios
+    open suspend fun getPortfolioWithSecurities(name: String): PortfolioDbModel? {
+        val portfolio = getPortfolioByName(name) ?: return null
+        portfolio.securities = getSecurities(portfolio.id)
+        return portfolio
     }
 
     @Query("SELECT ${PortfolioDbModel.COLUMN_ID} FROM ${PortfolioDbModel.TABLE_NAME} WHERE ${PortfolioDbModel.COLUMN_NAME} = :name LIMIT 1")
     abstract suspend fun getPortfolioId(name: String): Long
-
-    @Query("SELECT * FROM ${PortfolioDbModel.TABLE_NAME}")
-    abstract suspend fun getAllPortfolios(): List<PortfolioDbModel>
 
     @Query("SELECT * FROM ${PortfolioDbModel.TABLE_NAME}")
     abstract fun getAllPortfoliosFlow(): Flow<List<PortfolioDbModel>>
@@ -44,7 +41,4 @@ abstract class PortfolioDao {
 
     @Query("SELECT count(*) FROM ${PortfolioDbModel.TABLE_NAME}")
     abstract suspend fun getPortfolioCount(): Int
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insertSecurities(securities: List<SecurityDbModel>)
 }

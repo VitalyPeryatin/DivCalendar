@@ -21,7 +21,8 @@ import kotlinx.android.synthetic.main.bottom_dialog_change_portfolio.*
 
 class ChangePortfolioBottomDialog : BottomDialog(),
     CreatePortfolioDialog.OnCreatePortfolioClickListener,
-    DeletePortfolioDialog.DeletePortfolioClickListener {
+    DeletePortfolioDialog.DeletePortfolioClickListener,
+    RenamePortfolioDialog.RenamePortfolioClickListener {
 
     private var clickListener: OnChangePortfolioClickListener? = null
     private var deletePortfolioDialog: DeletePortfolioDialog? = null
@@ -141,6 +142,10 @@ class ChangePortfolioBottomDialog : BottomDialog(),
 
     override fun onDelete(name: String) {
         viewModel.deletePortfolio(name)
+    }
+
+    override fun renamePortfolio(from: String, to: String) {
+        clickListener?.onPortfolioChange()
     }
 
     companion object {

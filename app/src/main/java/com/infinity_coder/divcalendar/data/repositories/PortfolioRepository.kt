@@ -6,7 +6,10 @@ import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.presentation.App
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flow
 
 @OptIn(ExperimentalCoroutinesApi::class)
 object PortfolioRepository {
@@ -15,10 +18,7 @@ object PortfolioRepository {
 
     private const val PORTFOLIO_PREF_NAME = "Portfolio"
     private const val PREF_CURRENT_PORTFOLIO = "current_portfolio"
-    private val portfolioPreferences = App.instance.getSharedPreferences(
-        PORTFOLIO_PREF_NAME,
-        Context.MODE_PRIVATE
-    )
+    private val portfolioPreferences = App.instance.getSharedPreferences(PORTFOLIO_PREF_NAME, Context.MODE_PRIVATE)
 
     suspend fun addPortfolio(portfolioName: String) {
         val portfolio = PortfolioDbModel(portfolioName)
@@ -26,15 +26,13 @@ object PortfolioRepository {
     }
 
     fun getAllPortfolios(): Flow<List<PortfolioDbModel>> {
-        return portfolioDao.getAllPortfoliosFlow().filterNotNull().distinctUntilChanged()
+        return portfolioDao.getAllPortfoliosFlow()
+            .filterNotNull()
+            .distinctUntilChanged()
     }
 
     suspend fun getAllPortfolioNames(): List<String> {
         return portfolioDao.getPortfolioNames()
-    }
-
-    private suspend fun getPortfolioByName(portfolioName: String): PortfolioDbModel? {
-        return getPortfolioWithSecurities(portfolioName).first()
     }
 
     fun setCurrentPortfolio(name: String) {
@@ -57,26 +55,14 @@ object PortfolioRepository {
     }
 
     suspend fun renamePortfolio(oldName: String, newName: String) {
-        val portfolio = getPortfolioByName(oldName)
-        if (portfolio != null) {
-            portfolio.name = newName
-            if (getCurrentPortfolioName() == oldName) {
-                setCurrentPortfolio(newName)
-            }
-            portfolioDao.updatePortfolio(portfolio)
-        }
+        portfolioDao.renamePortfolio(oldName, newName)
     }
 
-    fun getAllPortfoliosWithSecurities(): Flow<List<PortfolioDbModel>> = flow {
-        emit(portfolioDao.getAllPortfoliosWithSecurities())
+    fun getPortfolioWithSecurities(name: String): Flow<PortfolioDbModel?> = flow {
+        emit(portfolioDao.getPortfolioWithSecurities(name))
     }
 
     suspend fun getPortfolioCount(): Int {
         return portfolioDao.getPortfolioCount()
-    }
-
-    private fun getPortfolioWithSecurities(name: String): Flow<PortfolioDbModel> {
-        return getAllPortfoliosWithSecurities().map { it.first { portfolio -> portfolio.name == name } }
-            .distinctUntilChanged()
     }
 }

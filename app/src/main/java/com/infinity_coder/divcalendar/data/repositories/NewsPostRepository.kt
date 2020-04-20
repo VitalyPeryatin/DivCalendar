@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
-object NewsRepository {
+object NewsPostRepository {
 
     private val newsDao = DivCalendarDatabase.roomDatabase.newsDao
     private val securityDao = DivCalendarDatabase.roomDatabase.securityDao

@@ -25,9 +25,6 @@ class NewsPostNetModel {
         @SerializedName("logo")
         var logo: String = "",
 
-        @SerializedName("poster")
-        var poster: String = "",
-
         @SerializedName("source")
         var source: String = "",
 
