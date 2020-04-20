@@ -30,6 +30,7 @@ abstract class PaymentDao {
             dateTime.after(startDateTime) && dateTime.before(endDateTime)
         }.map {
             it.security = getSecurity(portfolioId, it.ticker)
+            it.dividends = it.dividends * it.security!!.count
             it
         }
     }
