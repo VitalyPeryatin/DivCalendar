@@ -7,7 +7,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitService {
-
     private const val DIV_CALENDAR_URL = "https://div-calendar-prod.herokuapp.com/"
 
     val divCalendarApi: DivCalendarApi by lazy {
