@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import com.infinity_coder.divcalendar.BuildConfig
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.SettingsRepository
-import com.infinity_coder.divcalendar.presentation._common.AbstractSubscriptionActivity
+import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation._common.extensions.isAppAvailable
 import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel

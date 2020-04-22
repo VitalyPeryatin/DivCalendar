@@ -7,7 +7,8 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.presentation._common.AbstractSubscriptionActivity
+import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
+import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
 import com.infinity_coder.divcalendar.presentation._common.extensions.hideAllFragments
 import com.infinity_coder.divcalendar.presentation._common.extensions.isAddedFragmentManager
 import com.infinity_coder.divcalendar.presentation.calendar.CalendarFragment
@@ -19,7 +20,7 @@ import java.lang.IllegalStateException
 
 class MainActivity : AbstractSubscriptionActivity() {
 
-    private val menuIdToFragment = mutableMapOf<Int,Fragment>()
+    private val menuIdToFragment = mutableMapOf<Int, Fragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +28,7 @@ class MainActivity : AbstractSubscriptionActivity() {
 
         if (savedInstanceState == null) {
             showFragment(getFragment(R.id.portfolioItem))
-        }else{
+        } else {
             restoreFragments()
         }
 
@@ -68,8 +69,8 @@ class MainActivity : AbstractSubscriptionActivity() {
         startActivity(intent)
     }
 
-    private fun getFragment(menuId:Int):Fragment{
-        if(menuIdToFragment.containsKey(menuId))
+    private fun getFragment(menuId: Int): Fragment {
+        if (menuIdToFragment.containsKey(menuId))
             return menuIdToFragment.getValue(menuId)
 
         menuIdToFragment[menuId] = when (menuId) {
@@ -88,17 +89,24 @@ class MainActivity : AbstractSubscriptionActivity() {
     private fun showFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             supportFragmentManager.hideAllFragments(this)
-            if(fragment.isAddedFragmentManager(supportFragmentManager)){
+            if (fragment.isAddedFragmentManager(supportFragmentManager)) {
                 show(fragment)
-            }else{
+                updateFragmentOnWhichTheySwitched(fragment)
+            } else {
                 add(R.id.fragmentContainerView, fragment)
             }
         }.commit()
     }
 
-    private fun restoreFragments(){
+    private fun updateFragmentOnWhichTheySwitched(fragment: Fragment) {
+        if (fragment is UpdateCallback) {
+            fragment.onUpdate()
+        }
+    }
+
+    private fun restoreFragments() {
         supportFragmentManager.fragments.forEach {
-            val menuId = when(it.javaClass.name.split(".").last()){
+            val menuId = when (it.javaClass.simpleName) {
                 "PortfolioFragment" -> R.id.portfolioItem
 
                 "CalendarFragment" -> R.id.calendarItem
@@ -108,7 +116,7 @@ class MainActivity : AbstractSubscriptionActivity() {
                 else -> null
             }
 
-            if(menuId != null)
+            if (menuId != null)
                 menuIdToFragment[menuId] = it
         }
     }

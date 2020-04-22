@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation._common
+package com.infinity_coder.divcalendar.presentation._common.base
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,7 @@ import com.anjlab.android.iab.v3.TransactionDetails
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.SubscriptionRepository
 import com.infinity_coder.divcalendar.domain.SubscriptionInteractor
+import com.infinity_coder.divcalendar.presentation._common.logException
 import com.infinity_coder.divcalendar.presentation.billing.BuySubscriptionActivity
 import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObservable
 import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObserver
@@ -25,7 +26,8 @@ abstract class AbstractSubscriptionActivity : AppCompatActivity(), BillingProces
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        billingProcessor = BillingProcessor(this, LICENSE_KEY, this)
+        billingProcessor = BillingProcessor(this,
+            LICENSE_KEY, this)
         billingProcessor?.initialize()
     }
 
@@ -68,7 +70,10 @@ abstract class AbstractSubscriptionActivity : AppCompatActivity(), BillingProces
     }
 
     override fun onBillingError(errorCode: Int, error: Throwable?) {
-        logException(this, error)
+        logException(
+            this,
+            error
+        )
     }
 
     override fun hasSubscription(): Boolean {
@@ -83,7 +88,9 @@ abstract class AbstractSubscriptionActivity : AppCompatActivity(), BillingProces
     override fun subscribe() {
         val isSubsUpdateSupported = billingProcessor?.isSubscriptionUpdateSupported == true
         if (isSubsUpdateSupported) {
-            billingProcessor?.subscribe(this, SUBSCRIPTION_ID)
+            billingProcessor?.subscribe(this,
+                SUBSCRIPTION_ID
+            )
         } else {
             val message = resources.getString(R.string.billing_unavailable)
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

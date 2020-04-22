@@ -47,7 +47,7 @@ fun clearLogFile() {
     }
 }
 
-fun md5(str:String):String{
+fun md5(str: String): String {
     return try {
         val messageDigest = MessageDigest.getInstance("MD5").run {
             update(str.toByteArray())
@@ -55,11 +55,11 @@ fun md5(str:String):String{
         }
 
         StringBuilder().apply {
-            for(i in messageDigest.indices){
+            for (i in messageDigest.indices) {
                 append(Integer.toHexString(0xFF and messageDigest[i].toInt()))
             }
         }.toString()
-    }catch (e:NoSuchAlgorithmException){
+    } catch (e: NoSuchAlgorithmException) {
         ""
     }
 }

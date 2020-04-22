@@ -1,7 +1,6 @@
 package com.infinity_coder.divcalendar.presentation.news
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,7 +54,7 @@ class NewsAdapter(
                 onItemClickListener?.onClick(post)
             }
 
-            separatorView.visibility = if(isLastItem) View.GONE else View.VISIBLE
+            separatorView.visibility = if (isLastItem) View.GONE else View.VISIBLE
         }
 
         private fun Context.getDate(date: String): String {

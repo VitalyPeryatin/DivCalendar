@@ -7,12 +7,12 @@ import com.infinity_coder.divcalendar.presentation._common.md5
 class NewsDiffUtilCallback(
     private val oldPosts: List<NewsPostDbModel>,
     private val newPosts: List<NewsPostDbModel>
-):DiffUtil.Callback(){
+) : DiffUtil.Callback() {
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldPost = oldPosts[oldItemPosition]
         val newPost = newPosts[newItemPosition]
-        return md5(oldPost.title+oldPost.text) == md5(newPost.title+newPost.text)
+        return md5(oldPost.title + oldPost.text) == md5(newPost.title + newPost.text)
     }
 
     override fun getOldListSize() = oldPosts.size
@@ -24,5 +24,4 @@ class NewsDiffUtilCallback(
         val newPost = newPosts[newItemPosition]
         return oldPost == newPost
     }
-
 }
