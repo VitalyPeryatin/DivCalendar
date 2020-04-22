@@ -1,9 +1,11 @@
 package com.infinity_coder.divcalendar.presentation.news
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.NewsPostDbModel
@@ -32,8 +34,10 @@ class NewsAdapter(
     }
 
     fun setPosts(posts: List<NewsPostDbModel>) {
+        val newsDiffUtilCallback = NewsDiffUtilCallback(this.newsPosts, posts)
+        val newsDiffResult = DiffUtil.calculateDiff(newsDiffUtilCallback)
         this.newsPosts = posts
-        notifyDataSetChanged()
+        newsDiffResult.dispatchUpdatesTo(this)
     }
 
     class NewsViewHolder(
@@ -51,9 +55,7 @@ class NewsAdapter(
                 onItemClickListener?.onClick(post)
             }
 
-            if (isLastItem) {
-                separatorView.visibility = View.GONE
-            }
+            separatorView.visibility = if(isLastItem) View.GONE else View.VISIBLE
         }
 
         private fun Context.getDate(date: String): String {

@@ -8,6 +8,9 @@ import com.infinity_coder.divcalendar.presentation.App
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
+import java.lang.StringBuilder
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,5 +44,22 @@ fun clearLogFile() {
 
     logFile.printWriter().use {
         it.print("")
+    }
+}
+
+fun md5(str:String):String{
+    return try {
+        val messageDigest = MessageDigest.getInstance("MD5").run {
+            update(str.toByteArray())
+            digest()
+        }
+
+        StringBuilder().apply {
+            for(i in messageDigest.indices){
+                append(Integer.toHexString(0xFF and messageDigest[i].toInt()))
+            }
+        }.toString()
+    }catch (e:NoSuchAlgorithmException){
+        ""
     }
 }

@@ -28,8 +28,8 @@ object RetrofitService {
         val actualizerInterceptor = ActualizerInterceptor()
         addInterceptor(loggingInterceptor)
         addInterceptor(actualizerInterceptor)
-        connectTimeout(15, TimeUnit.SECONDS)
-        readTimeout(15, TimeUnit.SECONDS)
-        writeTimeout(15, TimeUnit.SECONDS)
+        connectTimeout(20, TimeUnit.SECONDS)
+        readTimeout(20, TimeUnit.SECONDS)
+        writeTimeout(20, TimeUnit.SECONDS)
     }
 }

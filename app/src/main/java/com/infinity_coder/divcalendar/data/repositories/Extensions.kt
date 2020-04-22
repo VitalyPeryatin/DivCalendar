@@ -9,3 +9,10 @@ suspend fun <T> FlowCollector<T>.emitIf(
 ) {
     if (condition()) emit(value) else throw throwable
 }
+
+suspend fun <T> FlowCollector<T>.emitIf(
+    value: T,
+    condition: () -> Boolean
+) {
+    if (condition()) emit(value)
+}

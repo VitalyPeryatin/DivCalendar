@@ -1,6 +1,7 @@
 package com.infinity_coder.divcalendar.presentation.news
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -55,6 +56,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun updateState(state: Int) {
+        Log.d("NewsViewModelLog","state = $state")
         contentLayout.visibility = View.GONE
         loadingLayout.visibility = View.GONE
         emptyLayout.visibility = View.GONE

@@ -18,10 +18,9 @@ object NewsPostRepository {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getPosts(limit: Int, offset: Int): Flow<List<NewsPostDbModel>> = flow {
-        emit(getPostsFromNetworkAndSaveToDB(limit, offset))
-    }.catch {
         val postsFromDatabase = getPostsFromDatabase()
-        emitIf(postsFromDatabase, it) { postsFromDatabase.isNotEmpty() }
+        emitIf(postsFromDatabase){postsFromDatabase.isNotEmpty()}
+        emit(getPostsFromNetworkAndSaveToDB(limit, offset))
     }
 
     private suspend fun getPostsFromDatabase(): List<NewsPostDbModel> {
