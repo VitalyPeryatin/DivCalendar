@@ -11,9 +11,9 @@ import com.infinity_coder.divcalendar.BuildConfig
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.SettingsRepository
 import com.infinity_coder.divcalendar.presentation._common.AbstractSubscriptionActivity
-import com.infinity_coder.divcalendar.presentation._common.isAppAvailable
-import com.infinity_coder.divcalendar.presentation._common.setActionBar
-import com.infinity_coder.divcalendar.presentation._common.viewModel
+import com.infinity_coder.divcalendar.presentation._common.extensions.isAppAvailable
+import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
+import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation.billing.dialogs.BuySubscriptionDialog
 import com.infinity_coder.divcalendar.presentation.billing.dialogs.SubscriptionPurchasedDialog
 import com.infinity_coder.divcalendar.presentation.settings.dialogs.ReportErrorBottomDialog

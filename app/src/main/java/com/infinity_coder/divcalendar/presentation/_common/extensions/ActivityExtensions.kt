@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation._common
+package com.infinity_coder.divcalendar.presentation._common.extensions
 
 import android.app.Activity
 import android.content.pm.PackageManager

@@ -32,6 +32,7 @@
     <string name="bonds">Облигации</string>
     <string name="russian">Российские</string>
     <string name="foreign">Зарубежные</string>
+    <string name="add_security_successful">Пакет ценных бумаг успешно добавлен к Вам в портфель</string>
 
     <!--portfolio -->
     <string name="sec_count">%1$d шт.</string>

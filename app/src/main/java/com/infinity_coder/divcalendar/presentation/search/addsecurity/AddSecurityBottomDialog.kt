@@ -16,8 +16,8 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
-import com.infinity_coder.divcalendar.presentation._common.shake
-import com.infinity_coder.divcalendar.presentation._common.viewModel
+import com.infinity_coder.divcalendar.presentation._common.extensions.shake
+import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import kotlinx.android.synthetic.main.bottom_dialog_add_security.*
 
 class AddSecurityBottomDialog : BottomDialog() {

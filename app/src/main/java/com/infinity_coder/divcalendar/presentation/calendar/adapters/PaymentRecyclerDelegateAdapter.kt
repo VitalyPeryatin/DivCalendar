@@ -5,7 +5,7 @@ import android.view.View
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
-import com.infinity_coder.divcalendar.presentation._common.dpToPx
+import com.infinity_coder.divcalendar.presentation._common.extensions.dpToPx
 import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
 import kotlinx.android.synthetic.main.item_payment_calendar.*
 
