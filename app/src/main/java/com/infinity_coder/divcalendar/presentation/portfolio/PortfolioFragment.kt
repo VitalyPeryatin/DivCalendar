@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -13,13 +14,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
+import com.infinity_coder.divcalendar.data.repositories.RateRepository
+import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.extensions.executeIfSubscribed
 import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.ChangePortfolioBottomDialog
 import com.infinity_coder.divcalendar.presentation.portfolio.managesecurity.ChangeSecurityBottomDialog
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
+import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.fragment_portfolio.*
+import kotlinx.android.synthetic.main.fragment_portfolio.emptyLayout
+import kotlinx.android.synthetic.main.fragment_portfolio.rubRadioButton
+import kotlinx.android.synthetic.main.fragment_portfolio.usdRadioButton
 import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 
 class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
@@ -64,6 +71,7 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
 
         viewModel.portfolio.observe(viewLifecycleOwner, Observer(this::setPortfolio))
         viewModel.state.observe(viewLifecycleOwner, Observer(this::setState))
+        viewModel.totalPortfolioCost.observe(viewLifecycleOwner, Observer(this::setTotalPortfolioCost))
     }
 
     override fun onResume() {
@@ -77,6 +85,8 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
         val parentActivity = (activity as AppCompatActivity)
         parentActivity.setActionBar(portfolioToolbar)
 
+        initCurrencyRadioGroup()
+
         emptyLayout.emptyTextView.text = resources.getText(R.string.collect_portfolio)
 
         securitiesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -86,6 +96,27 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
         addSecurityButton.setOnClickListener {
             val intent = SearchSecurityActivity.getIntent(requireContext())
             startActivity(intent)
+        }
+    }
+
+    private fun initCurrencyRadioGroup() {
+        val checkedCurrencyRadioButton = when (viewModel.getDisplayCurrency()) {
+            RateRepository.RUB_RATE -> rubRadioButton
+            RateRepository.USD_RATE -> usdRadioButton
+            else -> null
+        }
+        checkedCurrencyRadioButton?.isChecked = true
+
+        rubRadioButton.setOnCheckedChangeListener(this::checkCurrency)
+        usdRadioButton.setOnCheckedChangeListener(this::checkCurrency)
+    }
+
+    private fun checkCurrency(radioButton: CompoundButton, isChecked: Boolean) {
+        if (!isChecked) return
+
+        when (radioButton) {
+            rubRadioButton -> viewModel.setDisplayCurrency(RateRepository.RUB_RATE)
+            usdRadioButton -> viewModel.setDisplayCurrency(RateRepository.USD_RATE)
         }
     }
 
@@ -129,6 +160,12 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
             PortfolioViewModel.VIEW_STATE_PORTFOLIO_CONTENT -> contentLayout.visibility = View.VISIBLE
             PortfolioViewModel.VIEW_STATE_PORTFOLIO_EMPTY -> emptyLayout.visibility = View.VISIBLE
         }
+    }
+
+    private fun setTotalPortfolioCost(totalPortfolioCost: Float) {
+        val currentCurrency = viewModel.getDisplayCurrency()
+        val totalPortfolioCostWithCurrency = SecurityCurrencyDelegate.getValueWithCurrency(requireContext(), totalPortfolioCost, currentCurrency)
+        totalPortfolioCostTextView.text = getString(R.string.total_portfolio_cost, totalPortfolioCostWithCurrency)
     }
 
     override fun onChangePackageClick(securityPackage: SecurityDbModel) {
