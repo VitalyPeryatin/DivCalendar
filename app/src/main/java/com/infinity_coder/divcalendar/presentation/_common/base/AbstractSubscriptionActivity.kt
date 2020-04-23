@@ -26,8 +26,7 @@ abstract class AbstractSubscriptionActivity : AppCompatActivity(), BillingProces
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        billingProcessor = BillingProcessor(this,
-            LICENSE_KEY, this)
+        billingProcessor = BillingProcessor(this, LICENSE_KEY, this)
         billingProcessor?.initialize()
     }
 
@@ -70,10 +69,7 @@ abstract class AbstractSubscriptionActivity : AppCompatActivity(), BillingProces
     }
 
     override fun onBillingError(errorCode: Int, error: Throwable?) {
-        logException(
-            this,
-            error
-        )
+        logException(this, error)
     }
 
     override fun hasSubscription(): Boolean {
@@ -88,9 +84,7 @@ abstract class AbstractSubscriptionActivity : AppCompatActivity(), BillingProces
     override fun subscribe() {
         val isSubsUpdateSupported = billingProcessor?.isSubscriptionUpdateSupported == true
         if (isSubsUpdateSupported) {
-            billingProcessor?.subscribe(this,
-                SUBSCRIPTION_ID
-            )
+            billingProcessor?.subscribe(this, SUBSCRIPTION_ID)
         } else {
             val message = resources.getString(R.string.billing_unavailable)
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

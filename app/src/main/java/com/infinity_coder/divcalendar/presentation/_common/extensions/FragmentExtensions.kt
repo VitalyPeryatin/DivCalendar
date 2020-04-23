@@ -16,16 +16,8 @@ fun Fragment.executeIfSubscribed(func: () -> Unit) {
     }
 }
 
-fun FragmentManager.hideAllFragments(ft: FragmentTransaction) {
+fun FragmentManager.hideAllFragments(transaction: FragmentTransaction) {
     fragments.forEach {
-        ft.hide(it)
+        transaction.hide(it)
     }
-}
-
-fun Fragment.isAddedFragmentManager(fm: FragmentManager): Boolean {
-    fm.fragments.forEach {
-        if (it == this)
-            return true
-    }
-    return false
 }

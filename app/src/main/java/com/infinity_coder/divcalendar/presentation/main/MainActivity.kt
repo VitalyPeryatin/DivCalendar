@@ -10,7 +10,6 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
 import com.infinity_coder.divcalendar.presentation._common.extensions.hideAllFragments
-import com.infinity_coder.divcalendar.presentation._common.extensions.isAddedFragmentManager
 import com.infinity_coder.divcalendar.presentation.calendar.CalendarFragment
 import com.infinity_coder.divcalendar.presentation.news.NewsFragment
 import com.infinity_coder.divcalendar.presentation.portfolio.PortfolioFragment
@@ -27,7 +26,7 @@ class MainActivity : AbstractSubscriptionActivity() {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            showFragment(getFragment(R.id.portfolioItem))
+            switchFragment(getFragment(R.id.portfolioItem))
         } else {
             restoreFragments()
         }
@@ -43,7 +42,7 @@ class MainActivity : AbstractSubscriptionActivity() {
             }
 
             val fragment = getFragment(it.itemId)
-            showFragment(fragment)
+            switchFragment(fragment)
 
             return@setOnNavigationItemSelectedListener true
         }
@@ -86,19 +85,19 @@ class MainActivity : AbstractSubscriptionActivity() {
         return menuIdToFragment.getValue(menuId)
     }
 
-    private fun showFragment(fragment: Fragment) {
+    private fun switchFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             supportFragmentManager.hideAllFragments(this)
-            if (fragment.isAddedFragmentManager(supportFragmentManager)) {
+            if (supportFragmentManager.fragments.contains(fragment)) {
                 show(fragment)
-                updateFragmentOnWhichTheySwitched(fragment)
+                updateFragment(fragment)
             } else {
                 add(R.id.fragmentContainerView, fragment)
             }
         }.commit()
     }
 
-    private fun updateFragmentOnWhichTheySwitched(fragment: Fragment) {
+    private fun updateFragment(fragment: Fragment) {
         if (fragment is UpdateCallback) {
             fragment.onUpdate()
         }
@@ -106,12 +105,12 @@ class MainActivity : AbstractSubscriptionActivity() {
 
     private fun restoreFragments() {
         supportFragmentManager.fragments.forEach {
-            val menuId = when (it.javaClass.simpleName) {
-                "PortfolioFragment" -> R.id.portfolioItem
+            val menuId = when (it) {
+                is PortfolioFragment -> R.id.portfolioItem
 
-                "CalendarFragment" -> R.id.calendarItem
+                is CalendarFragment -> R.id.calendarItem
 
-                "NewsFragment" -> R.id.newsItem
+                is NewsFragment -> R.id.newsItem
 
                 else -> null
             }
