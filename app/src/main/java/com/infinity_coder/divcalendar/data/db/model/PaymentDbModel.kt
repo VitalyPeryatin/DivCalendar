@@ -28,7 +28,7 @@ data class PaymentDbModel(
     val date: String,
 
     @ColumnInfo(name = COLUMN_FORECAST)
-    val forecast: String,
+    val forecast: Boolean,
 
     @ColumnInfo(name = COLUMN_TICKER)
     val ticker: String,
