@@ -16,18 +16,20 @@ class DecimalTextWatcher(
 
     @SuppressLint("SetTextI18n")
     override fun afterTextChanged(s: Editable?) {
-        val value = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(),"")
+        val str = s.toString()
+        val splitPart = str.split(".")
 
-        Log.d("DecimalTextLog","$hasFractionalPart  ${value.split(".")}")
-        if(hasFractionalPart && value.split(".").last().isEmpty()){
-            Log.d("DecimalTextLog","fuck")
-        }else{
-            val answer = formatter.format(value.toFloat()).replace(formatter.decimalFormatSymbols.decimalSeparator.toString(),".")
-            editText.removeTextChangedListener(this)
-            editText.setText(answer)
-            editText.setSelection(editText.length())
-            editText.addTextChangedListener(this)
+        if(str.isEmpty() || (hasFractionalPart && splitPart.last().isEmpty()))
+           return
+
+        if(splitPart.size == 2 && splitPart.last().length > formatter.maximumFractionDigits){
+            changeEditText { editText.setText(str.substring(0,str.length - 1)) }
+            return
         }
+
+        val value = str.replace(formatter.decimalFormatSymbols.groupingSeparator.toString(),"").toDouble()
+        val valueFormatted = formatter.format(value).replace(formatter.decimalFormatSymbols.decimalSeparator.toString(),".")
+        changeEditText { editText.setText(valueFormatted) }
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -37,4 +39,10 @@ class DecimalTextWatcher(
         hasFractionalPart = s.toString().contains(".")
     }
 
+    private fun changeEditText(func:()->Unit){
+        editText.removeTextChangedListener(this)
+        func.invoke()
+        editText.setSelection(editText.length())
+        editText.addTextChangedListener(this)
+    }
 }

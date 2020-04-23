@@ -10,12 +10,19 @@ import java.util.*
 
 object SecurityCurrencyDelegate {
 
-    fun getValueWithCurrency(context: Context, value: Float, currency: String, accuracy: Int = 2): String {
+    private const val ACCURACY = 2
+
+    val formatter:DecimalFormat
+
+    init {
         val formatSymbols = DecimalFormatSymbols(Locale.getDefault())
         formatSymbols.decimalSeparator = ','
         formatSymbols.groupingSeparator = ' '
-        val formatter = DecimalFormat("#,###.${"#".repeat(accuracy)}", formatSymbols)
-        val valueStr = formatter.format(value).toString()
+        formatter = DecimalFormat("#,###.${"#".repeat(ACCURACY)}", formatSymbols)
+    }
+
+    fun getValueWithCurrency(context: Context, value: Float, currency: String, accuracy: Int = 2): String {
+        val valueStr = formatter.format(value.toDouble()).toString()
         val currencyBadge = getCurrencyBadge(context, currency)
         return "$valueStr $currencyBadge"
     }

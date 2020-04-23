@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,10 +84,6 @@ class AddSecurityBottomDialog : BottomDialog() {
     private fun initUI() {
         nameTextView.text = security.name
 
-        val formatSymbols = DecimalFormatSymbols(Locale.getDefault())
-        formatSymbols.decimalSeparator = ','
-        formatSymbols.groupingSeparator = ' '
-        val formatter = DecimalFormat("#,###.${"#".repeat(5)}", formatSymbols)
         priceEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -95,11 +92,12 @@ class AddSecurityBottomDialog : BottomDialog() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val formatter = SecurityCurrencyDelegate.formatter
                 val price = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(),"").toFloatOrNull() ?: 0f
                 viewModel.setSecurityPrice(price)
             }
         })
-        priceEditText.addTextChangedListener(DecimalTextWatcher(priceEditText,formatter))
+        priceEditText.addTextChangedListener(DecimalTextWatcher(priceEditText, SecurityCurrencyDelegate.formatter))
 
         countEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
