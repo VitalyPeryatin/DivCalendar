@@ -15,10 +15,14 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
+import com.infinity_coder.divcalendar.presentation._common.DecimalTextWatcher
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.extensions.shake
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import kotlinx.android.synthetic.main.bottom_dialog_add_security.*
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.*
 
 class AddSecurityBottomDialog : BottomDialog() {
 
@@ -79,6 +83,10 @@ class AddSecurityBottomDialog : BottomDialog() {
     private fun initUI() {
         nameTextView.text = security.name
 
+        val formatSymbols = DecimalFormatSymbols(Locale.getDefault())
+        formatSymbols.decimalSeparator = ','
+        formatSymbols.groupingSeparator = ' '
+        val formatter = DecimalFormat("#,###.${"#".repeat(5)}", formatSymbols)
         priceEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -87,10 +95,11 @@ class AddSecurityBottomDialog : BottomDialog() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val price = s.toString().toFloatOrNull() ?: 0f
+                val price = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(),"").toFloatOrNull() ?: 0f
                 viewModel.setSecurityPrice(price)
             }
         })
+        priceEditText.addTextChangedListener(DecimalTextWatcher(priceEditText,formatter))
 
         countEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
