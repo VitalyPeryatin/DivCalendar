@@ -1,5 +1,6 @@
 package com.infinity_coder.divcalendar.presentation.calendar.adapters
 
+import android.annotation.SuppressLint
 import android.view.View
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.infinity_coder.divcalendar.R
@@ -16,6 +17,7 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
         return items[position] is PaymentPresentationModel
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBind(item: PaymentPresentationModel, viewHolder: KViewHolder) {
         viewHolder.run {
 
@@ -29,7 +31,12 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
 
             paymentName.text = item.name
             paymentCount.text = paymentCount.context.getString(R.string.count_securities, item.count)
-            paymentDate.text = item.date
+
+            if (item.forecast) {
+                paymentDate.text = "${item.date} *"
+            } else {
+                paymentDate.text = item.date
+            }
 
             paymentDividends.text = item.dividends
 

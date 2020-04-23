@@ -23,7 +23,7 @@ class PaymentNetModel {
         val date: String,
 
         @SerializedName("forecast")
-        val forecast: String,
+        val forecast: Boolean,
 
         @SerializedName("name")
         val ticker: String
