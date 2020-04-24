@@ -63,6 +63,7 @@
     <string name="not_new_portfolio_name_error">Portfolio name must be unique</string>
     <string name="edit_portfolio_with_name">Edit portfolio \'%s\'</string>
     <string name="small_count_portfolio">This is the only portfolio. You cannot delete it.</string>
+    <string name="total_portfolio_cost">Total: %s</string>
 
     <!-- settings -->
     <string name="settings">Settings</string>
