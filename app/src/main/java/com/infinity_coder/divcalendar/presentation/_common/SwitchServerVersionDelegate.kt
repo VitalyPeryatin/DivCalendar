@@ -38,5 +38,4 @@ object SwitchServerVersionDelegate {
         }
         Toast.makeText(App.context, message, Toast.LENGTH_SHORT).show()
     }
-
 }

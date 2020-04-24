@@ -18,7 +18,6 @@ object AppConfig {
     var serverConfig: String
         set(value) {
             appConfigPreferences.edit {
-
             }
             appConfigPreferences.edit {
                 if (value == DEV || value == PROD) {
