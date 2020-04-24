@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/contentLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -24,7 +24,63 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/portfolioToolbar">
+        app:layout_constraintTop_toBottomOf="@+id/portfolioToolbar"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            
+            <TextView
+                android:id="@+id/totalPortfolioCostTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="12dp"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_few_big"
+                tools:text="Итого: 10 382,24 P"/>
+            
+            <RadioGroup
+                android:id="@+id/currencyRadioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:orientation="horizontal"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
+
+                <RadioButton
+                    android:id="@+id/rubRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/radiobutton_selector_currency_rub"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/currency_name_rub" />
+
+                <RadioButton
+                    android:id="@+id/usdRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/radiobutton_selector_currency_usd"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/currency_name_usd" />
+            </RadioGroup>
+
+        </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/securitiesRecyclerView"
@@ -35,7 +91,7 @@
             android:paddingBottom="10dp"
             tools:listitem="@layout/item_security_portfolio" />
 
-    </FrameLayout>
+    </LinearLayout>
 
     <include
         android:id="@+id/emptyLayout"
