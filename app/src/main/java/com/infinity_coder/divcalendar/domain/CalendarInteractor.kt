@@ -1,8 +1,5 @@
 package com.infinity_coder.divcalendar.domain
 
-import android.graphics.BitmapFactory
-import android.graphics.Color
-import androidx.palette.graphics.Palette
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
@@ -10,8 +7,6 @@ import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.io.InputStream
-import java.net.URL
 import java.util.*
 
 class CalendarInteractor {
@@ -45,7 +40,7 @@ class CalendarInteractor {
 
     private fun groupAndSortPayments(payments: List<PaymentDbModel>): List<MonthlyPayment> {
         return payments.groupByDate()
-            .map(this::mapMonthWithPaymentsToMonthlyPayment)
+            .map { MonthlyPayment.from(it) }
             .sortedBy { it.month }
     }
 
@@ -54,26 +49,6 @@ class CalendarInteractor {
             Calendar.getInstance().apply { time = dateFormat.parse(it.date) ?: Date() }
                 .get(Calendar.MONTH)
         }.toList()
-    }
-
-    private fun mapMonthWithPaymentsToMonthlyPayment(monthWithPayments: Pair<Int, List<PaymentDbModel>>): MonthlyPayment {
-        val monthlyPayment = MonthlyPayment.from(monthWithPayments)
-        monthlyPayment.payments.forEach {
-            it.security?.let { security ->
-                security.color = getDominantColorFromImage(security.logo)
-            }
-        }
-        return monthlyPayment
-    }
-
-    private fun getDominantColorFromImage(url: String): Int {
-        return try {
-            val inputStream: InputStream = URL(url).openStream()
-            val image = BitmapFactory.decodeStream(inputStream)
-            Palette.from(image).generate().getDominantColor(0)
-        } catch (e: Exception) {
-            Color.BLACK
-        }
     }
 
     companion object {

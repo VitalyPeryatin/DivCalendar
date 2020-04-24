@@ -54,7 +54,8 @@ data class SecurityDbModel(
     @ColumnInfo(name = COLUMN_PORTFOLIO_ID)
     var portfolioId: Long = 0,
 
-    @ColumnInfo(name = COLUMN_COLOR) var color: Int = 0
+    @ColumnInfo(name = COLUMN_COLOR)
+    var color: Int = 0
 ) {
     companion object {
         const val TABLE_NAME = "Security"

@@ -6,14 +6,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
+import com.infinity_coder.divcalendar.domain.SecurityInteractor
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddSecurityViewModel : ViewModel() {
 
     private val _securityPackage = MutableLiveData<SecurityDbModel>()
     val securityPackage: LiveData<SecurityDbModel>
         get() = _securityPackage
+
+    private val securityInteractor = SecurityInteractor()
 
     val shakePriceEditText = LiveEvent<Void?>()
     val shakeCountEditText = LiveEvent<Void?>()
@@ -63,6 +68,9 @@ class AddSecurityViewModel : ViewModel() {
             }
             else -> {
                 val securityPackage = getSecurityPackage()
+                withContext(Dispatchers.IO) {
+                    securityPackage.color = securityInteractor.getColorForSecurityLogo(securityPackage.logo)
+                }
                 _securityPackage.value = securityPackage
             }
         }

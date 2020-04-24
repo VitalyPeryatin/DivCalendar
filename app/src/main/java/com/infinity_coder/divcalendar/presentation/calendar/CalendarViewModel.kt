@@ -45,14 +45,17 @@ class CalendarViewModel : ViewModel() {
         get() = _isIncludeTaxes
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun loadAllPayments(context: Context) = viewModelScope.launch {
+    fun loadAllPayments(context: Context) = viewModelScope.launch {
         val currentYearValue = _currentYear.value!!
         val includeTaxes = isIncludeTaxes.value ?: false
         calendarInteractor.getPayments(currentYearValue, includeTaxes)
             .onEach { cachedPayments = it }
             .map { paymentsMapper.mapToPresentationModel(context, cachedPayments) }
             .flowOn(Dispatchers.IO)
-            .onStart { _state.value = VIEW_STATE_CALENDAR_LOADING }
+            .onStart {
+                if (_state.value != VIEW_STATE_CALENDAR_CONTENT)
+                    _state.value = VIEW_STATE_CALENDAR_LOADING
+            }
             .onEach {
                 _payments.value = it
                 if (it.isNotEmpty()) {

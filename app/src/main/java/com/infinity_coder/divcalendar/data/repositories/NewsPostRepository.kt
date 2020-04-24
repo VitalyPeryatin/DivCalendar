@@ -6,7 +6,6 @@ import com.infinity_coder.divcalendar.data.network.RetrofitService
 import com.infinity_coder.divcalendar.data.network.model.NewsPostNetModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
 object NewsPostRepository {
@@ -18,10 +17,9 @@ object NewsPostRepository {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getPosts(limit: Int, offset: Int): Flow<List<NewsPostDbModel>> = flow {
-        emit(getPostsFromNetworkAndSaveToDB(limit, offset))
-    }.catch {
         val postsFromDatabase = getPostsFromDatabase()
-        emitIf(postsFromDatabase, it) { postsFromDatabase.isNotEmpty() }
+        emitIf(postsFromDatabase) { postsFromDatabase.isNotEmpty() }
+        emit(getPostsFromNetworkAndSaveToDB(limit, offset))
     }
 
     private suspend fun getPostsFromDatabase(): List<NewsPostDbModel> {

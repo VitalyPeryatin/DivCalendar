@@ -8,13 +8,14 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.NewsPostDbModel
+import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
 import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation.browser.BrowserActivity
 import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 
-class NewsFragment : Fragment(R.layout.fragment_news) {
+class NewsFragment : Fragment(R.layout.fragment_news), UpdateCallback {
 
     private val adapter = NewsAdapter()
 
@@ -37,6 +38,10 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
         viewModel.newsPost.observe(viewLifecycleOwner, Observer(this::updateNewsPosts))
         viewModel.state.observe(viewLifecycleOwner, Observer(this::updateState))
+        viewModel.loadNewsPosts()
+    }
+
+    override fun onUpdate() {
         viewModel.loadNewsPosts()
     }
 

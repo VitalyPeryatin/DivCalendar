@@ -19,7 +19,7 @@ class NewsViewModel : ViewModel() {
     val newsPost: LiveData<List<NewsPostDbModel>>
         get() = _newsPosts
 
-    private val _state = MutableLiveData(VIEW_STATE_NEWS_CONTENT)
+    private val _state = MutableLiveData<Int>()
     val state: LiveData<Int>
         get() = _state
 
@@ -29,7 +29,10 @@ class NewsViewModel : ViewModel() {
     fun loadNewsPosts() = viewModelScope.launch {
         newsInteractor.getPosts()
             .flowOn(Dispatchers.IO)
-            .onStart { _state.value = VIEW_STATE_NEWS_LOADING }
+            .onStart {
+                if (_state.value != VIEW_STATE_NEWS_CONTENT)
+                    _state.value = VIEW_STATE_NEWS_LOADING
+            }
             .onEach(this@NewsViewModel::collectPosts)
             .catch { handleError(it) }
             .launchIn(viewModelScope)
@@ -49,7 +52,7 @@ class NewsViewModel : ViewModel() {
         logException(this, error)
         if (error is HttpException) {
             _state.value = VIEW_STATE_NEWS_EMPTY_SECURITIES
-        } else {
+        } else if (_state.value != VIEW_STATE_NEWS_CONTENT) {
             _state.value = VIEW_STATE_NEWS_NO_NETWORK
         }
     }
