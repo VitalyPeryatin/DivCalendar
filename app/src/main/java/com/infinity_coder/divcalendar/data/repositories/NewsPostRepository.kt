@@ -13,7 +13,8 @@ object NewsPostRepository {
     private val newsDao = DivCalendarDatabase.roomDatabase.newsDao
     private val securityDao = DivCalendarDatabase.roomDatabase.securityDao
 
-    private val divCalendarApi = RetrofitService.divCalendarApi
+    private val divCalendarApi
+        get() = RetrofitService.divCalendarApi
 
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getPosts(limit: Int, offset: Int): Flow<List<NewsPostDbModel>> = flow {

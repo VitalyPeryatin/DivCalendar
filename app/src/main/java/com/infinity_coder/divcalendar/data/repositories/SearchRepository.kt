@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.flow
 
 object SearchRepository {
 
-    private val divCalendarApi = RetrofitService.divCalendarApi
+    private val divCalendarApi
+        get() = RetrofitService.divCalendarApi
 
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun search(

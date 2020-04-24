@@ -13,7 +13,8 @@ object RateRepository {
     private const val USD_TO_RUB_KEY = "usd_to_rub"
     private const val DISPLAY_CURRENCY_KEY = "display_currency"
 
-    private val divCalendarApi = RetrofitService.divCalendarApi
+    private val divCalendarApi
+        get() = RetrofitService.divCalendarApi
 
     const val RUB_RATE = "RUB"
     const val USD_RATE = "USD"

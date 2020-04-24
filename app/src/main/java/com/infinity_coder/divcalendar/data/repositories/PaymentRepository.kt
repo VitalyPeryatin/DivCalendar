@@ -17,7 +17,8 @@ object PaymentRepository {
     private val securityDao = DivCalendarDatabase.roomDatabase.securityDao
     private val paymentDao = DivCalendarDatabase.roomDatabase.paymentDao
 
-    private val divCalendarApi = RetrofitService.divCalendarApi
+    private val divCalendarApi
+        get() = RetrofitService.divCalendarApi
 
     private const val PAYMENTS_PREF_NAME = "Payments"
     private const val PREF_SELECTED_YEAR = "selected_year"

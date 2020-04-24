@@ -39,7 +39,7 @@ class App : Application() {
     }
 
     companion object {
-        const val DEFAULT_PORTFOLIO_NAME = "Default"
+        const val DEFAULT_PORTFOLIO_NAME = "Основной"
 
         private const val RATE_OUT_DATE_LIMIT = 30 * 60 * 1000L
 
