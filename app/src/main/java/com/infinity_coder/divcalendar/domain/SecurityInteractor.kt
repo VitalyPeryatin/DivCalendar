@@ -33,4 +33,8 @@ class SecurityInteractor {
         val portfolioId = portfolioInteractor.getCurrentPortfolioId()
         return SecurityRepository.getSecurityCount(portfolioId)
     }
+
+    fun getColorForSecurityLogo(logo: String): Int {
+        return SecurityRepository.getColorForSecurityLogo(logo)
+    }
 }

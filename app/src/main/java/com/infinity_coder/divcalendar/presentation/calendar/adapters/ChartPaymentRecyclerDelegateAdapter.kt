@@ -106,6 +106,6 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
     }
 
     companion object {
-        private const val ANIMATE_DURATION = 750
+        private const val ANIMATE_DURATION = 500
     }
 }
