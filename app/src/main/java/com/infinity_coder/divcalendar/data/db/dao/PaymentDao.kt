@@ -18,8 +18,8 @@ abstract class PaymentDao {
     @Query("SELECT * FROM ${PaymentDbModel.TABLE_NAME} WHERE ${PaymentDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId")
     abstract suspend fun getPayments(portfolioId: Long): List<PaymentDbModel>
 
-    @Query("SELECT * FROM ${SecurityDbModel.TABLE_NAME} WHERE ${SecurityDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId AND ${SecurityDbModel.COLUMN_SEC_ID} = :ticker")
-    abstract suspend fun getSecurity(portfolioId: Long, ticker: String): SecurityDbModel?
+    @Query("SELECT * FROM ${SecurityDbModel.TABLE_NAME} WHERE ${SecurityDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId AND ${SecurityDbModel.COLUMN_ISIN} = :isin")
+    abstract suspend fun getSecurity(portfolioId: Long, isin: String): SecurityDbModel?
 
     @Transaction
     open suspend fun getPaymentsWithSecurity(portfolioId: Long, startDate: String, endDate: String): List<PaymentDbModel> {
@@ -29,7 +29,7 @@ abstract class PaymentDao {
             val dateTime = DateFormatter.basicDateFormat.parse(it.date)!!
             dateTime.after(startDateTime) && dateTime.before(endDateTime)
         }.map {
-            it.security = getSecurity(portfolioId, it.ticker)
+            it.security = getSecurity(portfolioId, it.isin)
             it.dividends = it.dividends * it.security!!.count
             it
         }

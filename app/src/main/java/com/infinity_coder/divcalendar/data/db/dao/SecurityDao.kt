@@ -11,7 +11,7 @@ abstract class SecurityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun updateSecurityPackage(securityPackage: SecurityDbModel)
 
-    @Query("SELECT * FROM ${SecurityDbModel.TABLE_NAME} WHERE ${SecurityDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId AND ${SecurityDbModel.COLUMN_SEC_ID} = :secId")
+    @Query("SELECT * FROM ${SecurityDbModel.TABLE_NAME} WHERE ${SecurityDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId AND ${SecurityDbModel.COLUMN_TICKER} = :secId")
     abstract suspend fun getSecurityPackage(portfolioId: Long, secId: String): SecurityDbModel?
 
     @Query("SELECT * FROM ${SecurityDbModel.TABLE_NAME} WHERE ${SecurityDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId")
