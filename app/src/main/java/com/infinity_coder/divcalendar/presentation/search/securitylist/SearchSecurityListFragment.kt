@@ -34,7 +34,7 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
     private var addSecurityDialog: AddSecurityBottomDialog? = null
     private lateinit var parentActivity: SearchSecurityActivity
 
-    private val secClickListener = object : SecurityRecyclerAdapter.OnClickListener {
+    private val securityClickListener = object : SecurityRecyclerAdapter.OnClickListener {
         override fun onClick(security: SecurityNetModel) {
             addSecurityDialog = AddSecurityBottomDialog.newInstance(security)
             addSecurityDialog?.show(childFragmentManager, AddSecurityBottomDialog::class.toString())
@@ -69,7 +69,7 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
 
     private fun initUI() {
         securitiesRecyclerView.layoutManager = LinearLayoutManager(context)
-        securitiesRecyclerView.adapter = SecurityRecyclerAdapter(secClickListener)
+        securitiesRecyclerView.adapter = SecurityRecyclerAdapter(securityClickListener)
     }
 
     private fun updateQuery(query: String) {
@@ -94,7 +94,7 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
         return parentViewModel.queryLiveData.value ?: ""
     }
 
-    override fun onAddSecPackageClick(securityPackage: SecurityDbModel) {
+    override fun onAddSecurityClick(securityPackage: SecurityDbModel) {
         viewModel.requestOnAppendSecurityPackage(securityPackage)
     }
 

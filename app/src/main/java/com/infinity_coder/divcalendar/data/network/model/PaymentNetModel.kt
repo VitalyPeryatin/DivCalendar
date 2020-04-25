@@ -25,7 +25,10 @@ class PaymentNetModel {
         @SerializedName("forecast")
         val forecast: Boolean,
 
+        @SerializedName("isin")
+        var isin: String,
+
         @SerializedName("name")
-        val ticker: String
+        var name: String
     )
 }

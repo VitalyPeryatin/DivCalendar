@@ -37,6 +37,10 @@ object PaymentRepository {
     private suspend fun getPaymentsFromNetworkAndSaveToDb(currentPortfolioId: Long, startDate: String, endDate: String): List<PaymentDbModel> {
         val securities = securityDao.getSecurityPackagesForPortfolio(currentPortfolioId)
         val paymentsFromNetwork = getPaymentsFromNetwork(securities, startDate, endDate)
+            .map {
+                if (it.isin.isBlank()) it.isin = it.name
+                it
+            }
         val payments = paymentsFromNetwork.map {
             PaymentDbModel.from(currentPortfolioId, it)
         }

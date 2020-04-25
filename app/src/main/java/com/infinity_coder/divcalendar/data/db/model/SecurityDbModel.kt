@@ -5,15 +5,15 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.Index
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.COLUMN_ISIN
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.COLUMN_PORTFOLIO_ID
-import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.COLUMN_SEC_ID
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.INDEX_PORTFOLIO_ID
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.TABLE_NAME
 import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
 
 @Entity(
     tableName = TABLE_NAME,
-    primaryKeys = [COLUMN_SEC_ID, COLUMN_PORTFOLIO_ID],
+    primaryKeys = [COLUMN_ISIN, COLUMN_PORTFOLIO_ID],
     foreignKeys = [ForeignKey(
         entity = PortfolioDbModel::class,
         parentColumns = arrayOf(PortfolioDbModel.COLUMN_ID),
@@ -24,7 +24,10 @@ import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
 )
 data class SecurityDbModel(
 
-    @ColumnInfo(name = COLUMN_SEC_ID)
+    @ColumnInfo(name = COLUMN_ISIN)
+    val isin: String,
+
+    @ColumnInfo(name = COLUMN_TICKER)
     val ticker: String,
 
     @ColumnInfo(name = COLUMN_NAME)
@@ -60,7 +63,8 @@ data class SecurityDbModel(
     companion object {
         const val TABLE_NAME = "Security"
 
-        const val COLUMN_SEC_ID = "ticker"
+        const val COLUMN_TICKER = "ticker"
+        const val COLUMN_ISIN = "isin"
         const val COLUMN_NAME = "name"
         const val COLUMN_LOGO = "logo"
         const val COLUMN_COUNT = "count"

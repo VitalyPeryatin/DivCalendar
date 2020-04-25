@@ -40,7 +40,8 @@ class ChangeSecurityBottomDialog : BottomDialog() {
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
 
         security = SecurityNetModel(
-            ticker = requireArguments().getString(ARGUMENT_SEC_ID, ""),
+            isin = requireArguments().getString(ARGUMENT_ISIN, ""),
+            ticker = requireArguments().getString(ARGUMENT_TICKER, ""),
             name = requireArguments().getString(ARGUMENT_NAME, ""),
             logo = requireArguments().getString(ARGUMENT_LOGO, ""),
             yearYield = requireArguments().getFloat(ARGUMENT_YEAR_YIELD, 0f),
@@ -131,7 +132,8 @@ class ChangeSecurityBottomDialog : BottomDialog() {
 
     companion object {
 
-        private const val ARGUMENT_SEC_ID = "sec_id"
+        private const val ARGUMENT_ISIN = "isin"
+        private const val ARGUMENT_TICKER = "ticker"
         private const val ARGUMENT_NAME = "sec_name"
         private const val ARGUMENT_LOGO = "logo"
         private const val ARGUMENT_YEAR_YIELD = "year_yield"
@@ -143,7 +145,8 @@ class ChangeSecurityBottomDialog : BottomDialog() {
         fun newInstance(security: SecurityDbModel): ChangeSecurityBottomDialog {
             val dialog = ChangeSecurityBottomDialog()
             dialog.arguments = bundleOf(
-                ARGUMENT_SEC_ID to security.ticker,
+                ARGUMENT_ISIN to security.isin,
+                ARGUMENT_TICKER to security.ticker,
                 ARGUMENT_NAME to security.name,
                 ARGUMENT_LOGO to security.logo,
                 ARGUMENT_YEAR_YIELD to security.yearYield,

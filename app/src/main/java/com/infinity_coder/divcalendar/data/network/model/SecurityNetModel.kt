@@ -3,6 +3,9 @@ package com.infinity_coder.divcalendar.data.network.model
 import com.google.gson.annotations.SerializedName
 
 data class SecurityNetModel(
+
+    @SerializedName("isin") var isin: String = "",
+
     @SerializedName("ticker")
     val ticker: String = "",
 
