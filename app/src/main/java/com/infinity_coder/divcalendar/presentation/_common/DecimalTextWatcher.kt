@@ -9,10 +9,11 @@ import java.text.DecimalFormat
 
 class DecimalTextWatcher(
     private val editText:EditText,
-    private val formatter:DecimalFormat
+    private val formatter:DecimalFormat,
+    private val maxNumberInIntegerPart:Int? = null
 ):TextWatcher {
 
-    var hasFractionalPart = false
+    private var hasFractionalPart = false
 
     @SuppressLint("SetTextI18n")
     override fun afterTextChanged(s: Editable?) {
@@ -27,9 +28,21 @@ class DecimalTextWatcher(
             return
         }
 
-        val value = str.replace(formatter.decimalFormatSymbols.groupingSeparator.toString(),"").toDouble()
-        val valueFormatted = formatter.format(value).replace(formatter.decimalFormatSymbols.decimalSeparator.toString(),".")
-        changeEditText { editText.setText(valueFormatted) }
+        val value = str.replace(formatter.decimalFormatSymbols.groupingSeparator.toString(),"")
+
+        if(maxNumberInIntegerPart!= null && !hasFractionalPart && value.length > maxNumberInIntegerPart){
+            changeEditText {
+                val valueFormatted = formatter.format(value.substring(0,value.length - 1).toDouble())
+                    .replace(formatter.decimalFormatSymbols.decimalSeparator.toString(),".")
+                editText.setText(valueFormatted)
+            }
+            return
+        }
+
+        changeEditText {
+            val valueFormatted = formatter.format(value.toDouble()).replace(formatter.decimalFormatSymbols.decimalSeparator.toString(),".")
+            editText.setText(valueFormatted)
+        }
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

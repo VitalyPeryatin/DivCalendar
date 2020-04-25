@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,9 +20,6 @@ import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDeleg
 import com.infinity_coder.divcalendar.presentation._common.extensions.shake
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import kotlinx.android.synthetic.main.bottom_dialog_add_security.*
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.util.*
 
 class AddSecurityBottomDialog : BottomDialog() {
 
@@ -97,7 +93,7 @@ class AddSecurityBottomDialog : BottomDialog() {
                 viewModel.setSecurityPrice(price)
             }
         })
-        priceEditText.addTextChangedListener(DecimalTextWatcher(priceEditText, SecurityCurrencyDelegate.formatter))
+        priceEditText.addTextChangedListener(DecimalTextWatcher(priceEditText, SecurityCurrencyDelegate.formatter,MAX_NUMBER_IN_INTEGER_PART))
 
         countEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -150,6 +146,7 @@ class AddSecurityBottomDialog : BottomDialog() {
         private const val ARGUMENT_TYPE = "type"
 
         private const val SHAKE_AMPLITUDE = 8f
+        private const val MAX_NUMBER_IN_INTEGER_PART = 6
 
         fun newInstance(security: SecurityNetModel): AddSecurityBottomDialog {
             val dialog = AddSecurityBottomDialog()
