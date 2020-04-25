@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation._common
+package com.infinity_coder.divcalendar.presentation._common.base
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,7 @@ import com.anjlab.android.iab.v3.TransactionDetails
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.SubscriptionRepository
 import com.infinity_coder.divcalendar.domain.SubscriptionInteractor
+import com.infinity_coder.divcalendar.presentation._common.logException
 import com.infinity_coder.divcalendar.presentation.billing.BuySubscriptionActivity
 import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObservable
 import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObserver

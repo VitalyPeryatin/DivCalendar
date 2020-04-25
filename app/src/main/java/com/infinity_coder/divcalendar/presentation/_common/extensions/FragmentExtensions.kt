@@ -1,6 +1,8 @@
 package com.infinity_coder.divcalendar.presentation._common.extensions
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObservable
 import com.infinity_coder.divcalendar.presentation.billing.dialogs.BuySubscriptionDialog
 
@@ -11,5 +13,11 @@ fun Fragment.executeIfSubscribed(func: () -> Unit) {
     } else {
         val dialog = BuySubscriptionDialog.newInstance()
         dialog.show(childFragmentManager, BuySubscriptionDialog::class.toString())
+    }
+}
+
+fun FragmentManager.hideAllFragments(transaction: FragmentTransaction) {
+    fragments.forEach {
+        transaction.hide(it)
     }
 }

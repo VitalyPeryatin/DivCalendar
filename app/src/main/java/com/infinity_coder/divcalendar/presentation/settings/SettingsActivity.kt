@@ -10,7 +10,8 @@ import androidx.lifecycle.Observer
 import com.infinity_coder.divcalendar.BuildConfig
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.SettingsRepository
-import com.infinity_coder.divcalendar.presentation._common.AbstractSubscriptionActivity
+import com.infinity_coder.divcalendar.presentation._common.SwitchServerVersionDelegate
+import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation._common.extensions.isAppAvailable
 import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
@@ -38,6 +39,7 @@ class SettingsActivity : AbstractSubscriptionActivity() {
     private fun initUI() {
         setActionBar(settingsToolbar, hasBackNavigation = true)
         settingsToolbar.title = resources.getString(R.string.settings)
+        settingsToolbar.setOnClickListener { onToolbarClick() }
 
         taxesItem.itemTextView.text = resources.getString(R.string.account_for_taxes)
         taxesItem.settingsSwitch.text = viewModel.taxesValue
@@ -97,6 +99,12 @@ class SettingsActivity : AbstractSubscriptionActivity() {
 
     private fun updateIsAccountTaxes(isAccountTaxes: Boolean) {
         taxesItem.settingsSwitch.isChecked = isAccountTaxes
+    }
+
+    private fun onToolbarClick() {
+        if (BuildConfig.DEBUG) {
+            SwitchServerVersionDelegate.click()
+        }
     }
 
     companion object {
