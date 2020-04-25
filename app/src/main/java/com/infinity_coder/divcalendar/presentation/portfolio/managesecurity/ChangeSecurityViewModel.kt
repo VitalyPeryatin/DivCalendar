@@ -35,6 +35,7 @@ class ChangeSecurityViewModel : ViewModel() {
 
     private fun getSecurityPackage(count: Int, price: Float): SecurityDbModel {
         return SecurityDbModel(
+            isin = security.isin,
             ticker = security.ticker,
             name = security.name,
             logo = security.logo,

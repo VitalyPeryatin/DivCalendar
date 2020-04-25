@@ -14,9 +14,9 @@ import kotlinx.coroutines.withContext
 
 class AddSecurityViewModel : ViewModel() {
 
-    private val _securityPackage = MutableLiveData<SecurityDbModel>()
-    val securityPackage: LiveData<SecurityDbModel>
-        get() = _securityPackage
+    private val _securityMutableLiveData = MutableLiveData<SecurityDbModel>()
+    val securityLiveData: LiveData<SecurityDbModel>
+        get() = _securityMutableLiveData
 
     private val securityInteractor = SecurityInteractor()
 
@@ -47,7 +47,8 @@ class AddSecurityViewModel : ViewModel() {
         this.security = security
     }
 
-    private fun getSecurityPackage() = SecurityDbModel(
+    private fun buildSecurity() = SecurityDbModel(
+        isin = security.isin,
         ticker = security.ticker,
         name = security.name,
         logo = security.logo,
@@ -67,11 +68,11 @@ class AddSecurityViewModel : ViewModel() {
                 shakeCountEditText.postValue(null)
             }
             else -> {
-                val securityPackage = getSecurityPackage()
+                val security = buildSecurity()
                 withContext(Dispatchers.IO) {
-                    securityPackage.color = securityInteractor.getColorForSecurityLogo(securityPackage.logo)
+                    security.color = securityInteractor.getColorForSecurityLogo(security.logo)
                 }
-                _securityPackage.value = securityPackage
+                _securityMutableLiveData.value = security
             }
         }
     }
