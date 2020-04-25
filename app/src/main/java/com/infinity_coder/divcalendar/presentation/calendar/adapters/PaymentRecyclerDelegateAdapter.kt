@@ -41,9 +41,9 @@ class PaymentRecyclerDelegateAdapter(
             paymentCount.text = paymentCount.context.getString(R.string.count_securities, item.count)
 
             if (item.forecast) {
-                paymentDate.text = "${item.date} *"
+                paymentDate.text = "${item.presentationDate} *"
             } else {
-                paymentDate.text = item.date
+                paymentDate.text = item.presentationDate
             }
 
             paymentDividends.text = item.dividends

@@ -73,7 +73,7 @@ class ChangePaymentDialog : BottomDialog() {
             dialog.arguments = bundleOf(
                 SECURITY_ISIN to payment.isin,
                 SECURITY_NAME to payment.name,
-                PAYMENT_DATE to payment.entityDate,
+                PAYMENT_DATE to payment.databaseFieldDate,
                 PORTFOLIO_ID to payment.portfolioId
             )
             return dialog

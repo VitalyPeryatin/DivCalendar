@@ -7,11 +7,11 @@ data class PaymentPresentationModel(
     val isin: String = "",
     val name: String = "",
     val portfolioId: Long = 0L,
-    val entityDate: String = "",
+    val databaseFieldDate: String = "",
     val logo: String = "",
     val count: Int = 0,
     var dividends: String = "",
-    var date: String = "",
+    var presentationDate: String = "",
     val forecast: Boolean = false,
     val colorLogo: Int = 0,
     val originalCurrency: String = "",
@@ -29,11 +29,11 @@ data class PaymentPresentationModel(
                     isin = security.isin,
                     name = security.name,
                     portfolioId = security.portfolioId,
-                    entityDate = payment.date,
+                    databaseFieldDate = payment.date,
                     logo = security.logo,
                     count = payment.count ?: security.count,
                     dividends = payment.dividends.toString(),
-                    date = payment.date,
+                    presentationDate = payment.date,
                     forecast = payment.forecast,
                     colorLogo = security.color,
                     originalCurrency = security.currency,
@@ -44,7 +44,7 @@ data class PaymentPresentationModel(
         }
     }
 
-    override fun id() = name + date
+    override fun id() = name + presentationDate
 
     override fun content() = this
 }
