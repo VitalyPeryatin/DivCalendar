@@ -26,7 +26,7 @@ object RetrofitService {
     }
 
     private fun provideBaseUrl(): String {
-        if (!BuildConfig.DEBUG) return DIV_CALENDAR_URL_DEV
+        if (!BuildConfig.DEBUG) return DIV_CALENDAR_URL_PROD
 
         return when (AppConfig.serverConfig) {
             AppConfig.DEV -> DIV_CALENDAR_URL_DEV

@@ -10,7 +10,7 @@ object AppConfig {
     private const val APP_CONFIG_PREF_NAME = "AppConfig"
     private val appConfigPreferences = App.instance.getSharedPreferences(APP_CONFIG_PREF_NAME, Context.MODE_PRIVATE)
 
-    private const val PREF_KEY_APP_CONFIG_ = "appConfig"
+    private const val PREF_KEY_APP_CONFIG = "appConfig"
 
     const val DEV = "DEV"
     const val PROD = "PROD"
@@ -18,12 +18,10 @@ object AppConfig {
     var serverConfig: String
         set(value) {
             appConfigPreferences.edit {
-            }
-            appConfigPreferences.edit {
                 if (value == DEV || value == PROD) {
-                    putString(PREF_KEY_APP_CONFIG_, value)
+                    putString(PREF_KEY_APP_CONFIG, value)
                 }
             }
         }
-        get() = appConfigPreferences.getNotNullString(PREF_KEY_APP_CONFIG_, PROD)
+        get() = appConfigPreferences.getNotNullString(PREF_KEY_APP_CONFIG, PROD)
 }
