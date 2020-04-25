@@ -10,7 +10,7 @@ import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresen
 import kotlinx.android.synthetic.main.item_payment_calendar.*
 
 class PaymentRecyclerDelegateAdapter(
-    private val onItemClick: (item: PaymentPresentationModel) -> Unit
+    private val itemClickListener: OnItemClickListener? = null
 ) : KDelegateAdapter<PaymentPresentationModel>() {
 
     override fun getLayoutId() = R.layout.item_payment_calendar
@@ -33,7 +33,7 @@ class PaymentRecyclerDelegateAdapter(
 
             paymentRoot.setOnClickListener {
                 if (item.expired) {
-                    onItemClick(item)
+                    itemClickListener?.onItemClick(item)
                 }
             }
 
@@ -50,5 +50,9 @@ class PaymentRecyclerDelegateAdapter(
 
             SimpleGlide.loadImage(paymentLogo, item.logo, paymentLogo)
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(item: PaymentPresentationModel)
     }
 }

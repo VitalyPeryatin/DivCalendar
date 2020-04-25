@@ -32,6 +32,13 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
     private var items: Array<String> = arrayOf()
 
+    private val paymentClickListener = object : PaymentRecyclerDelegateAdapter.OnItemClickListener {
+        override fun onItemClick(item: PaymentPresentationModel) {
+            val dialog = ChangePaymentDialog.newInstance(item)
+            dialog.show(childFragmentManager, ChangePaymentDialog::class.toString())
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
@@ -78,16 +85,11 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
             .add(getChartAdapter())
             .add(DividerDelegateAdapter())
             .add(HeaderPaymentRecyclerDelegateAdapter())
-            .add(PaymentRecyclerDelegateAdapter(this::onPastPaymentClick))
+            .add(PaymentRecyclerDelegateAdapter(paymentClickListener))
             .add(FooterPaymentRecyclerDelegateAdapter())
             .build()
 
         emptySecuritiesLayout.emptyTextView.text = resources.getString(R.string.empty_securities)
-    }
-
-    private fun onPastPaymentClick(payment: PaymentPresentationModel) {
-        val dialog = ChangePaymentDialog.newInstance(payment)
-        dialog.show(childFragmentManager, ChangePaymentDialog::class.toString())
     }
 
     private fun initSpinnerYear() {
