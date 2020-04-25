@@ -11,6 +11,7 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation.calendar.CalendarFragment
 import com.infinity_coder.divcalendar.presentation.calendar.CalendarViewModel
+import com.infinity_coder.divcalendar.presentation.calendar.models.EditPaymentParams
 import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
 import kotlinx.android.synthetic.main.bottom_dialog_edit_payment.*
 
@@ -45,7 +46,8 @@ class ChangePaymentDialog : BottomDialog() {
 
         changePaymentsButton.setOnClickListener {
             val count = countEditText.text.toString().toInt()
-            parentViewModel.updatePastPayment(requireContext(), portfolioId, securityIsin, paymentDate, count)
+            val editPaymentParams = EditPaymentParams(portfolioId, securityIsin, paymentDate, count)
+            parentViewModel.updatePastPayment(requireContext(), editPaymentParams)
             dismiss()
         }
     }

@@ -2,7 +2,6 @@ package com.infinity_coder.divcalendar.presentation.calendar.models
 
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
-import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 
 data class PaymentPresentationModel(
     val isin: String = "",

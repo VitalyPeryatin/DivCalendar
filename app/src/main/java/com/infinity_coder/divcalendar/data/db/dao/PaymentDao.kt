@@ -16,16 +16,16 @@ abstract class PaymentDao {
     abstract suspend fun insertPastPayments(payments: List<PaymentDbModel>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insertFeaturePayments(payments: List<PaymentDbModel>)
+    abstract suspend fun insertFuturePayments(payments: List<PaymentDbModel>)
 
     @Transaction
     open suspend fun insert(payments: List<PaymentDbModel>) {
         val todayDate = getNowDate()
         val pastPayments = payments.filter { isPastDate(todayDate, it.date) }
-        val featurePayments = payments.filterNot { isPastDate(todayDate, it.date) }
+        val futurePayments = payments.filterNot { isPastDate(todayDate, it.date) }
 
         insertPastPayments(pastPayments)
-        insertFeaturePayments(featurePayments)
+        insertFuturePayments(futurePayments)
     }
 
     private fun isPastDate(nowDate: Date, paymentDateStr: String): Boolean {

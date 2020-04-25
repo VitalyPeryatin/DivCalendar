@@ -5,7 +5,8 @@ import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain._common.convertStingToDate
 import com.infinity_coder.divcalendar.domain._common.getNowDate
-import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
+import com.infinity_coder.divcalendar.presentation.calendar.models.EditPaymentParams
+import com.infinity_coder.divcalendar.presentation.calendar.models.MonthlyPayment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -32,11 +33,12 @@ class PaymentInteractor {
         return payments
     }
 
-    suspend fun updatePastPayment(portfolioId: Long, isin: String, date: String, count: Int) {
-        val paymentDate = convertStingToDate(date)
+    suspend fun updatePastPayment(editPaymentParams: EditPaymentParams) {
+        val paymentDate = convertStingToDate(editPaymentParams.date)
         if (paymentDate.before(getNowDate())) {
-            val payment = getPayment(portfolioId, isin, date)
-            payment.count = count
+            val payment = getPayment(editPaymentParams.portfolioId, editPaymentParams.isin, editPaymentParams.date).apply {
+                this.count = editPaymentParams.count
+            }
             PaymentRepository.updatePayment(payment)
         }
     }

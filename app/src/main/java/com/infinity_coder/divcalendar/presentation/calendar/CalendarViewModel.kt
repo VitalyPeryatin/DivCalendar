@@ -9,10 +9,11 @@ import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.domain.PaymentInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain.SettingsInteractor
-import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 import com.infinity_coder.divcalendar.presentation._common.logException
 import com.infinity_coder.divcalendar.presentation.calendar.mappers.PaymentsToPresentationModelMapper
+import com.infinity_coder.divcalendar.presentation.calendar.models.EditPaymentParams
 import com.infinity_coder.divcalendar.presentation.calendar.models.FooterPaymentPresentationModel
+import com.infinity_coder.divcalendar.presentation.calendar.models.MonthlyPayment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -21,7 +22,7 @@ import retrofit2.HttpException
 
 class CalendarViewModel : ViewModel() {
 
-    private val calendarInteractor = PaymentInteractor()
+    private val paymentInteractor = PaymentInteractor()
     private val rateInteractor = RateInteractor()
     private val settingsInteractor = SettingsInteractor()
 
@@ -33,7 +34,7 @@ class CalendarViewModel : ViewModel() {
     val payments: LiveData<List<IComparableItem>>
         get() = _payments
 
-    private val _currentYear = MutableLiveData(calendarInteractor.getSelectedYear())
+    private val _currentYear = MutableLiveData(paymentInteractor.getSelectedYear())
     val currentYear: LiveData<String>
         get() = _currentYear
 
@@ -48,7 +49,7 @@ class CalendarViewModel : ViewModel() {
     fun loadAllPayments(context: Context) = viewModelScope.launch {
         val currentYearValue = _currentYear.value!!
         val includeTaxes = isIncludeTaxes.value ?: false
-        calendarInteractor.getPayments(currentYearValue, includeTaxes)
+        paymentInteractor.getPayments(currentYearValue, includeTaxes)
             .onEach { cachedPayments = it }
             .map { paymentsMapper.mapToPresentationModel(context, cachedPayments) }
             .flowOn(Dispatchers.IO)
@@ -85,7 +86,7 @@ class CalendarViewModel : ViewModel() {
 
     fun selectYear(context: Context, selectedYear: String) {
         if (_currentYear.value == null || selectedYear != _currentYear.value) {
-            calendarInteractor.setSelectedYear(selectedYear)
+            paymentInteractor.setSelectedYear(selectedYear)
             _currentYear.value = selectedYear
             loadAllPayments(context)
         }
@@ -95,8 +96,8 @@ class CalendarViewModel : ViewModel() {
         return rateInteractor.getDisplayCurrency()
     }
 
-    fun updatePastPayment(context: Context, portfolioId: Long, isin: String, date: String, count: Int) = viewModelScope.launch {
-        calendarInteractor.updatePastPayment(portfolioId, isin, date, count)
+    fun updatePastPayment(context: Context, editPaymentParams: EditPaymentParams) = viewModelScope.launch {
+        paymentInteractor.updatePastPayment(editPaymentParams)
         loadAllPayments(context)
     }
 

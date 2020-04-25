@@ -11,10 +11,6 @@ fun convertStingToDate(dateStr: String): Date {
     return dateFormatter.parse(dateStr)!!
 }
 
-fun convertDateToString(date: Date): String {
-    return dateFormatter.format(date)
-}
-
 fun getNowDate(): Date {
     return Calendar.getInstance().apply {
         set(Calendar.HOUR, 0)
@@ -22,8 +18,4 @@ fun getNowDate(): Date {
         set(Calendar.SECOND, 0)
         set(Calendar.HOUR_OF_DAY, 0)
     }.time
-}
-
-fun getNowDateTime(): Date {
-    return Calendar.getInstance().time
 }

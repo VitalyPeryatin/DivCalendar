@@ -8,7 +8,6 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
-import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.extensions.sumByFloat
 import com.infinity_coder.divcalendar.presentation.calendar.models.*
@@ -52,7 +51,10 @@ class PaymentsToPresentationModelMapper {
                 payment.security = it.security
                 payment
             }
-            return@map MonthlyPayment(monthlyPayment.month, payments)
+            return@map MonthlyPayment(
+                monthlyPayment.month,
+                payments
+            )
         }
     }
 
@@ -115,7 +117,10 @@ class PaymentsToPresentationModelMapper {
     private fun getMonthlyPayments(monthlyPayments: List<MonthlyPayment>): List<MonthlyPayment> {
         return (0..11).map { numberMonth ->
             val payments = monthlyPayments.find { it.month == numberMonth }?.payments ?: listOf()
-            return@map MonthlyPayment(numberMonth, payments)
+            return@map MonthlyPayment(
+                numberMonth,
+                payments
+            )
         }
     }
 
