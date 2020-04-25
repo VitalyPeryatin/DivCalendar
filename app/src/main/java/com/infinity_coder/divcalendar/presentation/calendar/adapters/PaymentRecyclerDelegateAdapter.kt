@@ -9,7 +9,9 @@ import com.infinity_coder.divcalendar.presentation._common.extensions.dpToPx
 import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
 import kotlinx.android.synthetic.main.item_payment_calendar.*
 
-class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel>() {
+class PaymentRecyclerDelegateAdapter(
+    private val onItemClick: (item: PaymentPresentationModel) -> Unit
+) : KDelegateAdapter<PaymentPresentationModel>() {
 
     override fun getLayoutId() = R.layout.item_payment_calendar
 
@@ -24,6 +26,9 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
             if (item.expired) {
                 paymentBlackout.visibility = View.VISIBLE
                 paymentRoot.elevation = paymentRoot.context.dpToPx(1f)
+                paymentRoot.setOnClickListener {
+                    onItemClick(item)
+                }
             } else {
                 paymentBlackout.visibility = View.GONE
                 paymentRoot.elevation = paymentRoot.context.dpToPx(2f)

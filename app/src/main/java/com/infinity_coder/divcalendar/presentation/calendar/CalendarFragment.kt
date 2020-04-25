@@ -18,13 +18,15 @@ import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
 import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation.calendar.adapters.*
+import com.infinity_coder.divcalendar.presentation.calendar.dialogs.ChangePaymentDialog
+import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 import java.util.*
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
-    private val viewModel: CalendarViewModel by lazy {
+    val viewModel: CalendarViewModel by lazy {
         viewModel { CalendarViewModel() }
     }
 
@@ -76,11 +78,16 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
             .add(getChartAdapter())
             .add(DividerDelegateAdapter())
             .add(HeaderPaymentRecyclerDelegateAdapter())
-            .add(PaymentRecyclerDelegateAdapter())
+            .add(PaymentRecyclerDelegateAdapter(this::onPastPaymentClick))
             .add(FooterPaymentRecyclerDelegateAdapter())
             .build()
 
         emptySecuritiesLayout.emptyTextView.text = resources.getString(R.string.empty_securities)
+    }
+
+    private fun onPastPaymentClick(payment: PaymentPresentationModel) {
+        val dialog = ChangePaymentDialog.newInstance(payment)
+        dialog.show(childFragmentManager, ChangePaymentDialog::class.toString())
     }
 
     private fun initSpinnerYear() {

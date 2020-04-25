@@ -30,10 +30,10 @@ abstract class PaymentDao {
 
     private fun isPastDate(nowDate: Date, paymentDateStr: String): Boolean {
         val paymentDate = convertStingToDate(paymentDateStr)
-        return nowDate.before(paymentDate)
+        return paymentDate.before(nowDate)
     }
 
-    @Update(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun updatePayment(payment: PaymentDbModel)
 
     @Query("SELECT * FROM ${PaymentDbModel.TABLE_NAME} WHERE ${PaymentDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId")
@@ -45,6 +45,9 @@ abstract class PaymentDao {
     @Query("SELECT * FROM ${SecurityDbModel.TABLE_NAME} WHERE ${SecurityDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId AND ${SecurityDbModel.COLUMN_ISIN} = :isin")
     abstract suspend fun getSecurity(portfolioId: Long, isin: String): SecurityDbModel?
 
+    @Query("SELECT * FROM ${PaymentDbModel.TABLE_NAME} WHERE ${PaymentDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId AND ${PaymentDbModel.COLUMN_ISIN} = :isin AND ${PaymentDbModel.COLUMN_DATE} = :date")
+    abstract suspend fun getPayment(portfolioId: Long, isin: String, date: String): PaymentDbModel
+
     @Transaction
     open suspend fun getPaymentsWithSecurity(portfolioId: Long, startDate: String, endDate: String): List<PaymentDbModel> {
         val startDateTime = DateFormatter.basicDateFormat.parse(startDate)!!
@@ -54,7 +57,7 @@ abstract class PaymentDao {
             dateTime.after(startDateTime) && dateTime.before(endDateTime)
         }.map {
             it.security = getSecurity(portfolioId, it.isin)
-            it.dividends = it.dividends * it.security!!.count
+            it.dividends = it.dividends * (it.count ?: it.security?.count ?: 0)
             it
         }
     }

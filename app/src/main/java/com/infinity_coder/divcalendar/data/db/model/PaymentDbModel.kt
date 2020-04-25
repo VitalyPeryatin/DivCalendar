@@ -36,8 +36,7 @@ data class PaymentDbModel(
     @ColumnInfo(name = COLUMN_PORTFOLIO_ID)
     val portfolioId: Long,
 
-    @ColumnInfo(name = COLUMN_COUNT)
-    val count: Int? = null
+    @ColumnInfo(name = COLUMN_COUNT) var count: Int? = null
 ) {
     @Ignore
     var security: SecurityDbModel? = null

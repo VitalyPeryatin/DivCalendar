@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.delegateadapter.delegate.diff.IComparableItem
-import com.infinity_coder.divcalendar.domain.CalendarInteractor
+import com.infinity_coder.divcalendar.domain.PaymentInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain.SettingsInteractor
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
@@ -21,7 +21,7 @@ import retrofit2.HttpException
 
 class CalendarViewModel : ViewModel() {
 
-    private val calendarInteractor = CalendarInteractor()
+    private val calendarInteractor = PaymentInteractor()
     private val rateInteractor = RateInteractor()
     private val settingsInteractor = SettingsInteractor()
 
@@ -93,6 +93,11 @@ class CalendarViewModel : ViewModel() {
 
     fun getDisplayCurrency(): String {
         return rateInteractor.getDisplayCurrency()
+    }
+
+    fun updatePastPayment(context: Context, portfolioId: Long, isin: String, date: String, count: Int) = viewModelScope.launch {
+        calendarInteractor.updatePastPayment(portfolioId, isin, date, count)
+        loadAllPayments(context)
     }
 
     fun updateData(context: Context) {

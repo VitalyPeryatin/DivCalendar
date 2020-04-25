@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.*
 
-class CalendarInteractor {
+class PaymentInteractor {
 
     private val dateFormat = DateFormatter.basicDateFormat
 
@@ -32,11 +32,17 @@ class CalendarInteractor {
         return payments
     }
 
-    suspend fun updatePastPayment(payment: PaymentDbModel) {
-        val paymentDate = convertStingToDate(payment.date)
-        if (getNowDate().before(paymentDate)) {
+    suspend fun updatePastPayment(portfolioId: Long, isin: String, date: String, count: Int) {
+        val paymentDate = convertStingToDate(date)
+        if (paymentDate.before(getNowDate())) {
+            val payment = getPayment(portfolioId, isin, date)
+            payment.count = count
             PaymentRepository.updatePayment(payment)
         }
+    }
+
+    private suspend fun getPayment(portfolioId: Long, isin: String, date: String): PaymentDbModel {
+        return PaymentRepository.getPayment(portfolioId, isin, date)
     }
 
     fun setSelectedYear(selectedYear: String) {
