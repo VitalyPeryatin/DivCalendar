@@ -58,6 +58,10 @@ object PaymentRepository {
         return paymentsPreferences.getString(PREF_SELECTED_YEAR, DateFormatter.getCurrentYear())!!
     }
 
+    suspend fun updatePayment(payment: PaymentDbModel) {
+        paymentDao.updatePayment(payment)
+    }
+
     private suspend fun getPaymentsFromNetwork(securities: List<SecurityDbModel>, startDate: String, endDate: String): List<PaymentNetModel.Response> {
         val tickers = securities.map { it.ticker }
         val body = PaymentNetModel.Request(tickers, startDate, endDate)

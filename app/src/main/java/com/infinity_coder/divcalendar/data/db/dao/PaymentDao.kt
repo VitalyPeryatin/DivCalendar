@@ -4,13 +4,37 @@ import androidx.room.*
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
+import com.infinity_coder.divcalendar.domain._common.convertStingToDate
+import com.infinity_coder.divcalendar.domain._common.getNowDate
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 @Dao
 abstract class PaymentDao {
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    abstract suspend fun insertPastPayments(payments: List<PaymentDbModel>)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insert(payments: List<PaymentDbModel>)
+    abstract suspend fun insertFeaturePayments(payments: List<PaymentDbModel>)
+
+    @Transaction
+    open suspend fun insert(payments: List<PaymentDbModel>) {
+        val todayDate = getNowDate()
+        val pastPayments = payments.filter { isPastDate(todayDate, it.date) }
+        val featurePayments = payments.filterNot { isPastDate(todayDate, it.date) }
+
+        insertPastPayments(pastPayments)
+        insertFeaturePayments(featurePayments)
+    }
+
+    private fun isPastDate(nowDate: Date, paymentDateStr: String): Boolean {
+        val paymentDate = convertStingToDate(paymentDateStr)
+        return nowDate.before(paymentDate)
+    }
+
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    abstract suspend fun updatePayment(payment: PaymentDbModel)
 
     @Query("SELECT * FROM ${PaymentDbModel.TABLE_NAME} WHERE ${PaymentDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId")
     abstract fun getPaymentsFlow(portfolioId: Long): Flow<List<PaymentDbModel>>

@@ -3,6 +3,8 @@ package com.infinity_coder.divcalendar.domain
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
+import com.infinity_coder.divcalendar.domain._common.convertStingToDate
+import com.infinity_coder.divcalendar.domain._common.getNowDate
 import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -28,6 +30,13 @@ class CalendarInteractor {
             payments.forEach { it.dividends *= TAX_FACTOR }
         }
         return payments
+    }
+
+    suspend fun updatePastPayment(payment: PaymentDbModel) {
+        val paymentDate = convertStingToDate(payment.date)
+        if (getNowDate().before(paymentDate)) {
+            PaymentRepository.updatePayment(payment)
+        }
     }
 
     fun setSelectedYear(selectedYear: String) {
