@@ -1,6 +1,8 @@
 package com.infinity_coder.divcalendar.presentation.calendar.adapters
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.util.Log
 import android.view.View
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.infinity_coder.divcalendar.R
@@ -40,7 +42,12 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
 
             paymentDividends.text = item.dividends
 
-            SimpleGlide.loadImage(paymentLogo, item.logo, paymentLogo)
+            if(item.logo.isNotEmpty()) {
+                SimpleGlide.loadImage(paymentLogo, item.logo, paymentLogo)
+            }else{
+                paymentLogo.setImageResource(R.drawable.ic_default_security_logo_transparent_background)
+                paymentLogo.circleBackgroundColor = item.colorLogo
+            }
         }
     }
 }
