@@ -89,11 +89,11 @@ class AddSecurityBottomDialog : BottomDialog() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val formatter = SecurityCurrencyDelegate.formatter
-                val price = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(),"").toFloatOrNull() ?: 0f
+                val price = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "").toFloatOrNull() ?: 0f
                 viewModel.setSecurityPrice(price)
             }
         })
-        priceEditText.addTextChangedListener(DecimalTextWatcher(priceEditText, SecurityCurrencyDelegate.formatter,MAX_NUMBER_IN_INTEGER_PART))
+        priceEditText.addTextChangedListener(DecimalTextWatcher(priceEditText, SecurityCurrencyDelegate.formatter, MAX_NUMBER_IN_INTEGER_PART))
 
         countEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {

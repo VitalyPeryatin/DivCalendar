@@ -1,7 +1,6 @@
 package com.infinity_coder.divcalendar.presentation._common
 
 import android.content.Context
-import android.util.Log
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import java.text.DecimalFormat
@@ -12,7 +11,7 @@ object SecurityCurrencyDelegate {
 
     private const val ACCURACY = 2
 
-    val formatter:DecimalFormat
+    val formatter: DecimalFormat
 
     init {
         val formatSymbols = DecimalFormatSymbols(Locale.getDefault())

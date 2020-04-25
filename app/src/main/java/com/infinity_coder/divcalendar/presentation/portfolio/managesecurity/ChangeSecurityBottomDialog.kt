@@ -89,7 +89,7 @@ class ChangeSecurityBottomDialog : BottomDialog() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val formatter = SecurityCurrencyDelegate.formatter
-                val price = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(),"").toFloatOrNull() ?: 0f
+                val price = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "").toFloatOrNull() ?: 0f
                 viewModel.setPackageCost(price)
             }
         })
