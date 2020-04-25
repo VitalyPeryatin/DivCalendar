@@ -52,10 +52,7 @@ class PaymentsToPresentationModelMapper {
                 payment.security = it.security
                 payment
             }
-            return@map MonthlyPayment(
-                monthlyPayment.month,
-                payments
-            )
+            return@map MonthlyPayment(monthlyPayment.month, payments)
         }
     }
 
@@ -118,10 +115,7 @@ class PaymentsToPresentationModelMapper {
     private fun getMonthlyPayments(monthlyPayments: List<MonthlyPayment>): List<MonthlyPayment> {
         return (0..11).map { numberMonth ->
             val payments = monthlyPayments.find { it.month == numberMonth }?.payments ?: listOf()
-            return@map MonthlyPayment(
-                numberMonth,
-                payments
-            )
+            return@map MonthlyPayment(numberMonth, payments)
         }
     }
 

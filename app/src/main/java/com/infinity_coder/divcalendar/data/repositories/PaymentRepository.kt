@@ -29,7 +29,7 @@ object PaymentRepository {
 
         val cachedPayments = paymentDao.getPaymentsWithSecurity(currentPortfolioId, startDate, endDate)
         cachedPayments.forEach {
-            it.count = if (it.count == null) it.security?.count else it.count
+            if(it.count ==null) it.count = it.security?.count
         }
 
         emit(cachedPayments)
