@@ -1,6 +1,7 @@
 package com.infinity_coder.divcalendar.presentation
 
 import android.app.Application
+import android.content.Context
 import com.facebook.stetho.Stetho
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
@@ -17,6 +18,7 @@ class App : Application() {
         super.onCreate()
 
         instance = this
+        context = applicationContext
         registerActivityLifecycleCallbacks(AppActivityLifecycleCallbacks())
         initActualizer()
         clearLogFile()
@@ -37,11 +39,13 @@ class App : Application() {
     }
 
     companion object {
-        const val DEFAULT_PORTFOLIO_NAME = "Default"
+        const val DEFAULT_PORTFOLIO_NAME = "Основной"
 
         private const val RATE_OUT_DATE_LIMIT = 30 * 60 * 1000L
 
         lateinit var instance: App
+            private set
+        lateinit var context: Context
             private set
     }
 }
