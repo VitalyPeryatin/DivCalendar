@@ -34,7 +34,10 @@ data class PaymentDbModel(
     val isin: String,
 
     @ColumnInfo(name = COLUMN_PORTFOLIO_ID)
-    val portfolioId: Long
+    val portfolioId: Long,
+
+    @ColumnInfo(name = COLUMN_COUNT)
+    var count: Int? = null
 ) {
     @Ignore
     var security: SecurityDbModel? = null
@@ -47,6 +50,7 @@ data class PaymentDbModel(
         const val COLUMN_FORECAST = "forecast"
         const val COLUMN_ISIN = "isin"
         const val COLUMN_PORTFOLIO_ID = "portfolio_id"
+        const val COLUMN_COUNT = "count"
 
         const val INDEX_SECURITY = "security_index"
 

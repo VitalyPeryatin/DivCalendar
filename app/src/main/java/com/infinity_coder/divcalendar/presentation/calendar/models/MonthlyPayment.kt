@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.domain.models
+package com.infinity_coder.divcalendar.presentation.calendar.models
 
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 
@@ -9,8 +9,7 @@ data class MonthlyPayment(
     companion object {
         fun from(monthsWithPayments: Pair<Int, List<PaymentDbModel>>) =
             MonthlyPayment(
-                month = monthsWithPayments.first,
-                payments = monthsWithPayments.second
+                month = monthsWithPayments.first, payments = monthsWithPayments.second
             )
     }
 }

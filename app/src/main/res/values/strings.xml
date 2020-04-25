@@ -32,6 +32,7 @@
     <string name="dividends">+%1$.2f₽</string>
     <string name="taxes_included">Taxes included</string>
     <string name="taxes_excluding">Excluding taxes</string>
+    <string name="edit_payments">Edit payments</string>
 
     <!-- search -->
     <string name="total_price">Total price: %s</string>
