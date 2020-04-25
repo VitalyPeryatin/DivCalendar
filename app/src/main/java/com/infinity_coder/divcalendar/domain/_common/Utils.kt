@@ -19,3 +19,8 @@ fun getNowDate(): Date {
         set(Calendar.HOUR_OF_DAY, 0)
     }.time
 }
+
+fun isExpiredDate(dateStr: String): Boolean {
+    val paymentDate = convertStingToDate(dateStr)
+    return paymentDate.before(getNowDate())
+}

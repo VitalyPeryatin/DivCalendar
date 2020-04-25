@@ -26,12 +26,15 @@ class PaymentRecyclerDelegateAdapter(
             if (item.expired) {
                 paymentBlackout.visibility = View.VISIBLE
                 paymentRoot.elevation = paymentRoot.context.dpToPx(1f)
-                paymentRoot.setOnClickListener {
-                    onItemClick(item)
-                }
             } else {
                 paymentBlackout.visibility = View.GONE
                 paymentRoot.elevation = paymentRoot.context.dpToPx(2f)
+            }
+
+            paymentRoot.setOnClickListener {
+                if (item.expired) {
+                    onItemClick(item)
+                }
             }
 
             paymentName.text = item.name

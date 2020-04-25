@@ -4,10 +4,8 @@ import androidx.room.*
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
-import com.infinity_coder.divcalendar.domain._common.convertStingToDate
-import com.infinity_coder.divcalendar.domain._common.getNowDate
+import com.infinity_coder.divcalendar.domain._common.isExpiredDate
 import kotlinx.coroutines.flow.Flow
-import java.util.*
 
 @Dao
 abstract class PaymentDao {
@@ -20,17 +18,11 @@ abstract class PaymentDao {
 
     @Transaction
     open suspend fun insert(payments: List<PaymentDbModel>) {
-        val todayDate = getNowDate()
-        val pastPayments = payments.filter { isPastDate(todayDate, it.date) }
-        val futurePayments = payments.filterNot { isPastDate(todayDate, it.date) }
+        val pastPayments = payments.filter { isExpiredDate(it.date) }
+        val futurePayments = payments.filterNot { isExpiredDate(it.date) }
 
         insertPastPayments(pastPayments)
         insertFuturePayments(futurePayments)
-    }
-
-    private fun isPastDate(nowDate: Date, paymentDateStr: String): Boolean {
-        val paymentDate = convertStingToDate(paymentDateStr)
-        return paymentDate.before(nowDate)
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
