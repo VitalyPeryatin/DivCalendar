@@ -14,9 +14,15 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
+import com.infinity_coder.divcalendar.presentation._common.DecimalFormatStorage
+import com.infinity_coder.divcalendar.presentation._common.DecimalTextWatcher
 import com.infinity_coder.divcalendar.presentation._common.extensions.shake
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
+import kotlinx.android.synthetic.main.bottom_dialog_add_security.*
 import kotlinx.android.synthetic.main.bottom_dialog_remove_security.*
+import kotlinx.android.synthetic.main.bottom_dialog_remove_security.countEditText
+import kotlinx.android.synthetic.main.bottom_dialog_remove_security.nameTextView
+import kotlinx.android.synthetic.main.bottom_dialog_remove_security.priceEditText
 
 class ChangeSecurityBottomDialog : BottomDialog() {
 
@@ -83,10 +89,12 @@ class ChangeSecurityBottomDialog : BottomDialog() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val price = s.toString().toFloatOrNull() ?: 0f
+                val formatter = DecimalFormatStorage.formatter
+                val price = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "").toFloatOrNull() ?: 0f
                 viewModel.setPackageCost(price)
             }
         })
+        priceEditText.addTextChangedListener(DecimalTextWatcher(priceEditText, DecimalFormatStorage.formatter))
 
         countEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -96,10 +104,12 @@ class ChangeSecurityBottomDialog : BottomDialog() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, symCount: Int) {
-                val securitiesCount = s.toString().toIntOrNull() ?: 0
+                val formatter = DecimalFormatStorage.formatter
+                val securitiesCount = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "").toIntOrNull() ?: 0
                 viewModel.setPackageCount(securitiesCount)
             }
         })
+        countEditText.addTextChangedListener(DecimalTextWatcher(countEditText, DecimalFormatStorage.formatter, MAX_NUMBER_IN_INTEGER_PART_COUNT))
 
         changePackageButton.setOnClickListener {
             viewModel.changePackage()
@@ -133,6 +143,8 @@ class ChangeSecurityBottomDialog : BottomDialog() {
         private const val ARGUMENT_TYPE = "type"
 
         private const val SHAKE_AMPLITUDE = 8f
+
+        private const val MAX_NUMBER_IN_INTEGER_PART_COUNT = 9
 
         fun newInstance(security: SecurityDbModel): ChangeSecurityBottomDialog {
             val dialog = ChangeSecurityBottomDialog()

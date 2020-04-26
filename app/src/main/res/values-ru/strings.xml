@@ -18,7 +18,7 @@
     <string name="annual_income">Прибыль</string>
     <string name="annual_yield">Доход</string>
     <string name="monthly_income_label">Доход за месяц: +%s</string>
-    <string name="count_securities">%d шт.</string>
+    <string name="count_securities">%s шт.</string>
     <string name="dividends">+%1$.2f₽</string>
     <string name="taxes_included">С учетом налогов</string>
     <string name="taxes_excluding">Без учета налогов</string>
@@ -36,7 +36,7 @@
     <string name="add_security_successful">Пакет ценных бумаг успешно добавлен к Вам в портфель</string>
 
     <!--portfolio -->
-    <string name="sec_count">%1$d шт.</string>
+    <string name="sec_count">%s шт.</string>
     <string name="yield_in_year">%1$.2f\%% в год</string>
     <string name="change_package">Изменить пакет</string>
     <string name="delete_entire_package">Удалить весь пакет</string>

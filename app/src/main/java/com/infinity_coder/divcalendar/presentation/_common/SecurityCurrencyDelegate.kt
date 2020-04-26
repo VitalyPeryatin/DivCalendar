@@ -7,9 +7,10 @@ import java.text.DecimalFormat
 
 object SecurityCurrencyDelegate {
 
+    val formatter: DecimalFormat = DecimalFormatStorage.formatter
+
     fun getValueWithCurrency(context: Context, value: Float, currency: String, accuracy: Int = 2): String {
-        val formatter = DecimalFormat("0.${"#".repeat(accuracy)}")
-        val valueStr = formatter.format(value)
+        val valueStr = formatter.format(value.toDouble()).toString()
         val currencyBadge = getCurrencyBadge(context, currency)
         return "$valueStr $currencyBadge"
     }

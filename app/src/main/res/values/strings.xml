@@ -28,7 +28,7 @@
     <string name="annual_income">Income</string>
     <string name="annual_yield">Yield</string>
     <string name="monthly_income_label">Monthly income: +%s</string>
-    <string name="count_securities">%d pcs.</string>
+    <string name="count_securities">%s pcs.</string>
     <string name="dividends">+%1$.2f₽</string>
     <string name="taxes_included">Taxes included</string>
     <string name="taxes_excluding">Excluding taxes</string>
@@ -46,7 +46,7 @@
     <string name="add_security_successful">Securities package successfully added to your portfolio</string>
 
     <!--portfolio -->
-    <string name="sec_count">%1$d pcs.</string>
+    <string name="sec_count">%s pcs.</string>
     <string name="yield_in_year">%1$.2f\%% in year</string>
     <string name="change_package">Change package</string>
     <string name="delete_entire_package">Delete entire package</string>
