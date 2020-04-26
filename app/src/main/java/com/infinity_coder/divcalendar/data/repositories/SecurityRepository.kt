@@ -28,8 +28,8 @@ object SecurityRepository {
         securityDao.updateSecurityPackage(securityPackage)
     }
 
-    suspend fun getSecurityPackage(portfolioId: Long, secid: String): SecurityDbModel? {
-        return securityDao.getSecurityPackage(portfolioId, secid)
+    suspend fun getSecurity(portfolioId: Long, isin: String): SecurityDbModel? {
+        return securityDao.getSecurity(portfolioId, isin)
     }
 
     suspend fun getSecurityCount(portfolioId: Long): Int {
