@@ -9,7 +9,9 @@ import com.infinity_coder.divcalendar.presentation._common.extensions.dpToPx
 import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
 import kotlinx.android.synthetic.main.item_payment_calendar.*
 
-class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel>() {
+class PaymentRecyclerDelegateAdapter(
+    private val itemClickListener: OnItemClickListener? = null
+) : KDelegateAdapter<PaymentPresentationModel>() {
 
     override fun getLayoutId() = R.layout.item_payment_calendar
 
@@ -29,18 +31,28 @@ class PaymentRecyclerDelegateAdapter : KDelegateAdapter<PaymentPresentationModel
                 paymentRoot.elevation = paymentRoot.context.dpToPx(2f)
             }
 
+            paymentRoot.setOnClickListener {
+                if (item.expired) {
+                    itemClickListener?.onItemClick(item)
+                }
+            }
+
             paymentName.text = item.name
             paymentCount.text = paymentCount.context.getString(R.string.count_securities, item.count)
 
             if (item.forecast) {
-                paymentDate.text = "${item.date} *"
+                paymentDate.text = "${item.presentationDate} *"
             } else {
-                paymentDate.text = item.date
+                paymentDate.text = item.presentationDate
             }
 
             paymentDividends.text = item.dividends
 
             SimpleGlide.loadImage(paymentLogo, item.logo, paymentLogo)
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(item: PaymentPresentationModel)
     }
 }

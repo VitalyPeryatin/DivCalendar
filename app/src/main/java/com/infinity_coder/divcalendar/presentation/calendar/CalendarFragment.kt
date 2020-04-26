@@ -18,17 +18,26 @@ import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
 import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation.calendar.adapters.*
+import com.infinity_coder.divcalendar.presentation.calendar.dialogs.ChangePaymentDialog
+import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 import java.util.*
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
-    private val viewModel: CalendarViewModel by lazy {
+    val viewModel: CalendarViewModel by lazy {
         viewModel { CalendarViewModel() }
     }
 
     private var items: Array<String> = arrayOf()
+
+    private val paymentClickListener = object : PaymentRecyclerDelegateAdapter.OnItemClickListener {
+        override fun onItemClick(item: PaymentPresentationModel) {
+            val dialog = ChangePaymentDialog.newInstance(item)
+            dialog.show(childFragmentManager, ChangePaymentDialog::class.toString())
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,7 +85,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
             .add(getChartAdapter())
             .add(DividerDelegateAdapter())
             .add(HeaderPaymentRecyclerDelegateAdapter())
-            .add(PaymentRecyclerDelegateAdapter())
+            .add(PaymentRecyclerDelegateAdapter(paymentClickListener))
             .add(FooterPaymentRecyclerDelegateAdapter())
             .build()
 

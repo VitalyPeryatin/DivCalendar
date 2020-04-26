@@ -12,8 +12,8 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
 import com.infinity_coder.divcalendar.presentation.calendar.models.ChartPresentationModel
+import com.infinity_coder.divcalendar.presentation.calendar.models.MonthlyPayment
 import kotlinx.android.synthetic.main.item_chart_calendar.*
 
 class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationModel>(),

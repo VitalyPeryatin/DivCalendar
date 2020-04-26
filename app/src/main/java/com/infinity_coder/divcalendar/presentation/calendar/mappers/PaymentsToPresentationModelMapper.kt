@@ -8,7 +8,7 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
-import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
+import com.infinity_coder.divcalendar.domain._common.isExpiredDate
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.extensions.sumByFloat
 import com.infinity_coder.divcalendar.presentation.calendar.models.*
@@ -61,8 +61,8 @@ class PaymentsToPresentationModelMapper {
         val paymentsForMonth = PaymentPresentationModel.from(monthlyPayment)
         paymentsForMonth.forEach {
             it.currentCurrency = currentCurrency
-            it.expired = DateFormatter.isExpired(it.date)
-            it.date = context.getDate(it.date)
+            it.expired = isExpiredDate(it.presentationDate)
+            it.presentationDate = context.getDate(it.presentationDate)
             it.dividends = SecurityCurrencyDelegate.getValueWithCurrency(context, it.dividends, it.currentCurrency)
         }
         return paymentsForMonth

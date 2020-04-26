@@ -3,13 +3,16 @@ package com.infinity_coder.divcalendar.domain
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
-import com.infinity_coder.divcalendar.domain.models.MonthlyPayment
+import com.infinity_coder.divcalendar.domain._common.convertStingToDate
+import com.infinity_coder.divcalendar.domain._common.getNowDate
+import com.infinity_coder.divcalendar.presentation.calendar.models.EditPaymentParams
+import com.infinity_coder.divcalendar.presentation.calendar.models.MonthlyPayment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.*
 
-class CalendarInteractor {
+class PaymentInteractor {
 
     private val dateFormat = DateFormatter.basicDateFormat
 
@@ -28,6 +31,20 @@ class CalendarInteractor {
             payments.forEach { it.dividends *= TAX_FACTOR }
         }
         return payments
+    }
+
+    suspend fun updatePastPayment(editPaymentParams: EditPaymentParams) {
+        val paymentDate = convertStingToDate(editPaymentParams.date)
+        if (paymentDate.before(getNowDate())) {
+            val payment = getPayment(editPaymentParams.portfolioId, editPaymentParams.isin, editPaymentParams.date).apply {
+                this.count = editPaymentParams.count
+            }
+            PaymentRepository.updatePayment(payment)
+        }
+    }
+
+    private suspend fun getPayment(portfolioId: Long, isin: String, date: String): PaymentDbModel {
+        return PaymentRepository.getPayment(portfolioId, isin, date)
     }
 
     fun setSelectedYear(selectedYear: String) {
