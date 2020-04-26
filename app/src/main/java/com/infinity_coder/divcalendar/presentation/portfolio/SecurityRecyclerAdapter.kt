@@ -50,7 +50,6 @@ class SecurityRecyclerAdapter(
             securityTypeView.setBackgroundColor(securityColor)
             nameTextView.text = securityPackage.name
             nameTextView.isSelected = true
-            SimpleGlide.loadImage(logoImageView, securityPackage.logo, logoImageView)
             countTextView.text = resources.getString(R.string.sec_count, securityPackage.count)
             totalPriceTextView.text = SecurityCurrencyDelegate.getValueWithCurrency(
                 containerView.context,
@@ -58,6 +57,13 @@ class SecurityRecyclerAdapter(
                 securityPackage.currency
             )
             yearYieldTextView.text = resources.getString(R.string.yield_in_year, securityPackage.yearYield)
+
+            if (securityPackage.logo.isNotEmpty()) {
+                SimpleGlide.loadImage(logoImageView, securityPackage.logo, logoImageView)
+            } else {
+                logoImageView.setImageResource(R.drawable.ic_default_security_logo_transparent)
+                logoImageView.circleBackgroundColor = securityPackage.color
+            }
         }
     }
 

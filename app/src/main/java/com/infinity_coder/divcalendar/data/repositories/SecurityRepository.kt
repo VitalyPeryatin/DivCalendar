@@ -11,6 +11,9 @@ import kotlin.random.Random
 
 object SecurityRepository {
 
+    private const val COLOR_RANDOM_START = 50
+    private const val COLOR_RANDOM_END = 200
+
     private val securityDao = DivCalendarDatabase.roomDatabase.securityDao
 
     suspend fun deleteSecurityPackage(securityPackage: SecurityDbModel) {
@@ -43,10 +46,10 @@ object SecurityRepository {
         }
     }
 
-    private fun generateColor():Int{
-        val r = Random.nextInt(50,200)
-        val g = Random.nextInt(50,200)
-        val b = Random.nextInt(50,200)
+    private fun generateColor(): Int {
+        val r = Random.nextInt(COLOR_RANDOM_START, COLOR_RANDOM_END)
+        val g = Random.nextInt(COLOR_RANDOM_START, COLOR_RANDOM_END)
+        val b = Random.nextInt(COLOR_RANDOM_START, COLOR_RANDOM_END)
         return Color.rgb(r, g, b)
     }
 }
