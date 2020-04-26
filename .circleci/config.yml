@@ -20,7 +20,7 @@ jobs:
           command: base64 DivCalendarKey.jks > sd.txt
       - run:
           name: Read DivCalendarKey.jks
-          command: echo sd.txt
+          command: echo "$(<sd.txt )"
       - run:
           name: Create keystore.properies
           command: printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' $releaseKeyAlias $releaseKeyPassword $releaseKeyStore $releaseStorePassword > keystore.properties
