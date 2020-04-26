@@ -50,7 +50,12 @@ class PaymentRecyclerDelegateAdapter(
 
             paymentDividends.text = item.dividends
 
-            SimpleGlide.loadImage(paymentLogo, item.logo, paymentLogo)
+            if (item.logo.isNotEmpty()) {
+                SimpleGlide.loadImage(paymentLogo, item.logo, paymentLogo)
+            } else {
+                paymentLogo.setImageResource(R.drawable.ic_default_security_logo_transparent)
+                paymentLogo.circleBackgroundColor = item.colorLogo
+            }
         }
     }
 
