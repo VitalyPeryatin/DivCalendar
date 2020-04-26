@@ -7,8 +7,12 @@ import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import java.io.InputStream
 import java.net.URL
+import kotlin.random.Random
 
 object SecurityRepository {
+
+    private const val COLOR_RANDOM_START = 50
+    private const val COLOR_RANDOM_END = 200
 
     private val securityDao = DivCalendarDatabase.roomDatabase.securityDao
 
@@ -38,7 +42,14 @@ object SecurityRepository {
             val image = BitmapFactory.decodeStream(inputStream)
             Palette.from(image).generate().getDominantColor(0)
         } catch (e: Exception) {
-            Color.BLACK
+            generateColor()
         }
+    }
+
+    private fun generateColor(): Int {
+        val r = Random.nextInt(COLOR_RANDOM_START, COLOR_RANDOM_END)
+        val g = Random.nextInt(COLOR_RANDOM_START, COLOR_RANDOM_END)
+        val b = Random.nextInt(COLOR_RANDOM_START, COLOR_RANDOM_END)
+        return Color.rgb(r, g, b)
     }
 }
