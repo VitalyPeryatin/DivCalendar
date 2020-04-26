@@ -22,6 +22,7 @@
     <string name="dividends">+%1$.2f₽</string>
     <string name="taxes_included">С учетом налогов</string>
     <string name="taxes_excluding">Без учета налогов</string>
+    <string name="edit_payments">Редактировать выплаты</string>
 
     <!-- search -->
     <string name="total_price">Стоимость: %s</string>

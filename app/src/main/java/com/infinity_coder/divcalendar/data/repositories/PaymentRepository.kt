@@ -28,6 +28,10 @@ object PaymentRepository {
         val currentPortfolioId = PortfolioRepository.getCurrentPortfolioId()
 
         val cachedPayments = paymentDao.getPaymentsWithSecurity(currentPortfolioId, startDate, endDate)
+        cachedPayments.forEach {
+            if (it.count == null) it.count = it.security?.count
+        }
+
         emit(cachedPayments)
 
         val updatedPayments = getPaymentsFromNetworkAndSaveToDb(currentPortfolioId, startDate, endDate)
@@ -56,6 +60,14 @@ object PaymentRepository {
 
     fun getSelectedYear(): String {
         return paymentsPreferences.getString(PREF_SELECTED_YEAR, DateFormatter.getCurrentYear())!!
+    }
+
+    suspend fun updatePayment(payment: PaymentDbModel) {
+        paymentDao.updatePayment(payment)
+    }
+
+    suspend fun getPayment(portfolioId: Long, isin: String, date: String): PaymentDbModel {
+        return paymentDao.getPayment(portfolioId, isin, date)
     }
 
     private suspend fun getPaymentsFromNetwork(securities: List<SecurityDbModel>, startDate: String, endDate: String): List<PaymentNetModel.Response> {
