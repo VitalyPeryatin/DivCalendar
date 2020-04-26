@@ -9,7 +9,7 @@ import java.text.DecimalFormat
 class DecimalTextWatcher(
     private val editText: EditText,
     private val formatter: DecimalFormat,
-    private val maxNumberInIntegerPart: Int? = null
+    private val maxNumberInIntegerPart: Int = 12
 ) : TextWatcher {
 
     private var hasFractionalPart = false
@@ -29,7 +29,8 @@ class DecimalTextWatcher(
 
         val value = str.replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "")
 
-        if (maxNumberInIntegerPart != null && !hasFractionalPart && value.length > maxNumberInIntegerPart) {
+        // TODO рассмотреть ситуацию, когда уже число состоит из целой и дробной части, а пользователь возвращается к целой
+        if (!hasFractionalPart && value.length > maxNumberInIntegerPart) {
             changeEditText {
                 val valueFormatted = formatter.format(value.substring(0, value.length - 1).toDouble())
                     .replace(formatter.decimalFormatSymbols.decimalSeparator.toString(), ".")

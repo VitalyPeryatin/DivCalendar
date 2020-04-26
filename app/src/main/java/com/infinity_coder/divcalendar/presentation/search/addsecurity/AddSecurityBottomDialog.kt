@@ -15,6 +15,7 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
+import com.infinity_coder.divcalendar.presentation._common.DecimalFormatStorage
 import com.infinity_coder.divcalendar.presentation._common.DecimalTextWatcher
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.extensions.shake
@@ -89,12 +90,12 @@ class AddSecurityBottomDialog : BottomDialog() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val formatter = SecurityCurrencyDelegate.formatter
+                val formatter = DecimalFormatStorage.formatter
                 val price = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "").toFloatOrNull() ?: 0f
                 viewModel.setSecurityPrice(price)
             }
         })
-        priceEditText.addTextChangedListener(DecimalTextWatcher(priceEditText, SecurityCurrencyDelegate.formatter, MAX_NUMBER_IN_INTEGER_PART))
+        priceEditText.addTextChangedListener(DecimalTextWatcher(priceEditText, DecimalFormatStorage.formatter, MAX_NUMBER_IN_INTEGER_PART_PRICE))
 
         countEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -104,10 +105,12 @@ class AddSecurityBottomDialog : BottomDialog() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, symCount: Int) {
-                val securitiesCount = s.toString().toIntOrNull() ?: 0
+                val formatter = DecimalFormatStorage.formatter
+                val securitiesCount = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "").toIntOrNull() ?: 0
                 viewModel.setSecurityCount(securitiesCount)
             }
         })
+        countEditText.addTextChangedListener(DecimalTextWatcher(countEditText, DecimalFormatStorage.formatter, MAX_NUMBER_IN_INTEGER_PART_COUNT))
 
         addSecurityButton.setOnClickListener {
             viewModel.addSecurityPackage()
@@ -148,7 +151,8 @@ class AddSecurityBottomDialog : BottomDialog() {
         private const val ARGUMENT_TYPE = "type"
 
         private const val SHAKE_AMPLITUDE = 8f
-        private const val MAX_NUMBER_IN_INTEGER_PART = 6
+        private const val MAX_NUMBER_IN_INTEGER_PART_PRICE = 6
+        private const val MAX_NUMBER_IN_INTEGER_PART_COUNT = 9
 
         fun newInstance(security: SecurityNetModel): AddSecurityBottomDialog {
             val dialog = AddSecurityBottomDialog()

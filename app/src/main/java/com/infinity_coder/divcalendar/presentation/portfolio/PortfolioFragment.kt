@@ -166,6 +166,7 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
         val currentCurrency = viewModel.getDisplayCurrency()
         val totalPortfolioCostWithCurrency = SecurityCurrencyDelegate.getValueWithCurrency(requireContext(), totalPortfolioCost, currentCurrency)
         totalPortfolioCostTextView.text = getString(R.string.total_portfolio_cost, totalPortfolioCostWithCurrency)
+        totalPortfolioCostTextView.isSelected = true
     }
 
     override fun onChangePackageClick(securityPackage: SecurityDbModel) {

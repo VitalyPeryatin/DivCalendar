@@ -4,21 +4,10 @@ import android.content.Context
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.util.*
 
 object SecurityCurrencyDelegate {
 
-    private const val ACCURACY = 2
-
-    val formatter: DecimalFormat
-
-    init {
-        val formatSymbols = DecimalFormatSymbols(Locale.getDefault())
-        formatSymbols.decimalSeparator = ','
-        formatSymbols.groupingSeparator = ' '
-        formatter = DecimalFormat("#,###.${"#".repeat(ACCURACY)}", formatSymbols)
-    }
+    val formatter: DecimalFormat = DecimalFormatStorage.formatter
 
     fun getValueWithCurrency(context: Context, value: Float, currency: String, accuracy: Int = 2): String {
         val valueStr = formatter.format(value.toDouble()).toString()

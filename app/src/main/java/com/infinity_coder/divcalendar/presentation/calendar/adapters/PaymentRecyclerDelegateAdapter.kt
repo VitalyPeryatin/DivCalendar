@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.View
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.presentation._common.DecimalFormatStorage
 import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import com.infinity_coder.divcalendar.presentation._common.extensions.dpToPx
 import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
@@ -38,7 +39,8 @@ class PaymentRecyclerDelegateAdapter(
             }
 
             paymentName.text = item.name
-            paymentCount.text = paymentCount.context.getString(R.string.count_securities, item.count)
+            val count = DecimalFormatStorage.formatter.format(item.count)
+            paymentCount.text = paymentCount.context.getString(R.string.count_securities, count)
 
             if (item.forecast) {
                 paymentDate.text = "${item.presentationDate} *"
