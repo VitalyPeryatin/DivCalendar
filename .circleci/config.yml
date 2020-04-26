@@ -16,8 +16,11 @@ jobs:
           name: Create DivCalendarKey.jks
           command: echo $RELEASE_KEYSTORE_BASE64 | base64 -d > DivCalendarKey.jks
       - run:
+          name: Base64 DivCalendarKey.jks
+          command: base64 DivCalendarKey.jks > sd.txt
+      - run:
           name: Read DivCalendarKey.jks
-          command: echo DivCalendar.jks | base64
+          command: echo > sd.txt
       - run:
           name: Create keystore.properies
           command: printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' $releaseKeyAlias $releaseKeyPassword $releaseKeyStore $releaseStorePassword > keystore.properties
