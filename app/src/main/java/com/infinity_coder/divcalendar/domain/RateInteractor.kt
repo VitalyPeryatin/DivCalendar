@@ -19,7 +19,7 @@ class RateInteractor {
         RateRepository.saveDisplayCurrency(currency)
     }
 
-    suspend fun convertCurrencies(value: Float, from: String, to: String): Float {
+    suspend fun convertCurrencies(value: Double, from: String, to: String): Double {
         return when {
             from == RateRepository.USD_RATE && to == RateRepository.RUB_RATE -> {
                 value / getUsdToRubRate()

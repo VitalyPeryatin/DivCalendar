@@ -52,7 +52,7 @@ data class SecurityDbModel(
     var count: Int = 0,
 
     @ColumnInfo(name = COLUMN_TOTAL_PRICE)
-    var totalPrice: Float = 0f,
+    var totalPrice: Double = 0.0,
 
     @ColumnInfo(name = COLUMN_PORTFOLIO_ID)
     var portfolioId: Long = 0,

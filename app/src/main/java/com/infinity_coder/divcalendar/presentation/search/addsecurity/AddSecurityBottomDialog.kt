@@ -91,7 +91,7 @@ class AddSecurityBottomDialog : BottomDialog() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val formatter = DecimalFormatStorage.formatter
-                val price = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "").toFloatOrNull() ?: 0f
+                val price = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "").toDoubleOrNull() ?: 0.0
                 viewModel.setSecurityPrice(price)
             }
         })
@@ -118,7 +118,7 @@ class AddSecurityBottomDialog : BottomDialog() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setTotalPrice(price: Float?) {
+    private fun setTotalPrice(price: Double?) {
         if (price == null) return
         val priceWithCurrency = SecurityCurrencyDelegate.getValueWithCurrency(
             requireContext(),

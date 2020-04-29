@@ -25,8 +25,8 @@ class PortfolioViewModel : ViewModel() {
     val portfolio: LiveData<PortfolioDbModel>
         get() = _portfolio
 
-    private val _totalPortfolioCost = MutableLiveData<Float>()
-    val totalPortfolioCost: LiveData<Float>
+    private val _totalPortfolioCost = MutableLiveData<Double>()
+    val totalPortfolioCost: LiveData<Double>
         get() = _totalPortfolioCost
 
     private val securityInteractor = SecurityInteractor()
@@ -64,7 +64,7 @@ class PortfolioViewModel : ViewModel() {
 
     private suspend fun calculateTotalPortfolioCost(portfolio: PortfolioDbModel) {
         val currentCurrency = rateInteractor.getDisplayCurrency()
-        val totalCost = portfolio.securities.sumByFloat {
+        val totalCost = portfolio.securities.sumByDouble {
             rateInteractor.convertCurrencies(it.totalPrice, it.currency, currentCurrency)
         }
         _totalPortfolioCost.value = totalCost

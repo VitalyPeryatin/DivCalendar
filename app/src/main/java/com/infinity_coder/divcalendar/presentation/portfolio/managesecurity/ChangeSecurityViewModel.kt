@@ -18,10 +18,10 @@ class ChangeSecurityViewModel : ViewModel() {
 
     private lateinit var security: SecurityNetModel
 
-    private var cost: Float = 0f
+    private var cost: Double = 0.0
     private var count: Int = 0
 
-    fun setPackageCost(price: Float) {
+    fun setPackageCost(price: Double) {
         this.cost = price
     }
 
@@ -33,7 +33,7 @@ class ChangeSecurityViewModel : ViewModel() {
         this.security = security
     }
 
-    private fun getSecurityPackage(count: Int, price: Float): SecurityDbModel {
+    private fun getSecurityPackage(count: Int, price: Double): SecurityDbModel {
         return SecurityDbModel(
             isin = security.isin,
             ticker = security.ticker,
@@ -63,7 +63,7 @@ class ChangeSecurityViewModel : ViewModel() {
     }
 
     fun removePackage() {
-        val securityPackage = getSecurityPackage(0, 0f)
+        val securityPackage = getSecurityPackage(0, 0.0)
         _changeSecurityPackage.value = securityPackage
     }
 }

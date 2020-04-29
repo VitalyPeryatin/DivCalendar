@@ -9,14 +9,14 @@ object SecurityCurrencyDelegate {
 
     val formatter: DecimalFormat = DecimalFormatStorage.formatter
 
-    fun getValueWithCurrency(context: Context, value: Float, currency: String, accuracy: Int = 2): String {
-        val valueStr = formatter.format(value.toDouble()).toString()
+    fun getValueWithCurrency(context: Context, value: Double, currency: String, accuracy: Int = 2): String {
+        val valueStr = formatter.format(value).toString()
         val currencyBadge = getCurrencyBadge(context, currency)
         return "$valueStr $currencyBadge"
     }
 
     fun getValueWithCurrency(context: Context, value: String, currency: String, accuracy: Int = 2): String {
-        return getValueWithCurrency(context, value.toFloat(), currency, accuracy)
+        return getValueWithCurrency(context, value.toDouble(), currency, accuracy)
     }
 
     private fun getCurrencyBadge(context: Context, currency: String): String {
