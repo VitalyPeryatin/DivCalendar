@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation._common
+package com.infinity_coder.divcalendar.presentation._common.text_watchers
 
 import android.annotation.SuppressLint
 import android.text.Editable
