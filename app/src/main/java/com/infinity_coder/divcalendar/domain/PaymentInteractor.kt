@@ -19,8 +19,7 @@ class PaymentInteractor {
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getPayments(year: String, isIncludeTaxes: Boolean): Flow<List<MonthlyPayment>> {
         return PaymentRepository.getPayments(
-            "$year-01-01",
-            "$year-12-31"
+            "$year-01-01", "$year-12-31"
         )
             .map { calculateTaxesIfNeed(isIncludeTaxes, it) }
             .map { groupAndSortPayments(it) }
@@ -36,7 +35,11 @@ class PaymentInteractor {
     suspend fun updatePastPayment(editPaymentParams: EditPaymentParams) {
         val paymentDate = convertStingToDate(editPaymentParams.date)
         if (paymentDate.before(getNowDate())) {
-            val payment = getPayment(editPaymentParams.portfolioId, editPaymentParams.isin, editPaymentParams.date).apply {
+            val payment = getPayment(
+                editPaymentParams.portfolioId,
+                editPaymentParams.isin,
+                editPaymentParams.date
+            ).apply {
                 this.count = editPaymentParams.count
             }
             PaymentRepository.updatePayment(payment)
@@ -56,9 +59,20 @@ class PaymentInteractor {
     }
 
     private fun groupAndSortPayments(payments: List<PaymentDbModel>): List<MonthlyPayment> {
-        return payments.groupByDate()
-            .map { MonthlyPayment.from(it) }
-            .sortedBy { it.month }
+        return payments.groupByDate().map { MonthlyPayment.from(it) }.sortedBy {
+                it.payments = sortedMonthPayments(it.payments)
+                it.month
+            }
+    }
+
+    private fun sortedMonthPayments(payments: List<PaymentDbModel>): List<PaymentDbModel> {
+        return payments.sortedWith(compareBy({ monthPayment ->
+            convertStingToDate(monthPayment.date).time
+        }, { monthPayment ->
+            monthPayment.security?.name
+        }, { monthPayment ->
+            monthPayment.dividends
+        }))
     }
 
     private fun List<PaymentDbModel>.groupByDate(): List<Pair<Int, List<PaymentDbModel>>> {
