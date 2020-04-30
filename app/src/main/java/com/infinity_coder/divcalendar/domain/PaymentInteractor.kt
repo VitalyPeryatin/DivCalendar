@@ -66,13 +66,13 @@ class PaymentInteractor {
     }
 
     private fun sortedMonthPayments(payments: List<PaymentDbModel>): List<PaymentDbModel> {
-        return payments.sortedWith(compareBy({ monthPayment ->
-            convertStingToDate(monthPayment.date).time
-        }, { monthPayment ->
-            monthPayment.security?.name
-        }, { monthPayment ->
-            monthPayment.dividends
-        }))
+        val comparator = compareBy<PaymentDbModel> {
+            convertStingToDate(it.date).time
+        }
+            .thenBy { it.security?.name }
+            .thenByDescending { it.dividends }
+
+        return payments.sortedWith(comparator)
     }
 
     private fun List<PaymentDbModel>.groupByDate(): List<Pair<Int, List<PaymentDbModel>>> {
