@@ -3,8 +3,6 @@ package com.infinity_coder.divcalendar.presentation.search.addsecurity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,32 +85,25 @@ class AddSecurityBottomDialog : BottomDialog() {
     private fun initUI() {
         nameTextView.text = security.name
 
-        priceEditText.addTextChangedListener(DecimalPriceTextWatcher(priceEditText, DecimalFormatStorage.priceEditTextDecimalFormat))
-        priceEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
+        priceEditText.addTextChangedListener(object : DecimalPriceTextWatcher(priceEditText, DecimalFormatStorage.priceEditTextDecimalFormat) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                super.onTextChanged(s, start, before, count)
                 val formatter = DecimalFormatStorage.priceEditTextDecimalFormat
-                val price = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "").toDoubleOrNull() ?: 0.0
+                val price = priceEditText.text.toString()
+                    .replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "")
+                    .replace(currentSeparator.toString(), LOCAL_SEPARATOR.toString())
+                    .toDoubleOrNull() ?: 0.0
                 viewModel.setSecurityPrice(price)
             }
         })
 
-        countEditText.addTextChangedListener(DecimalCountTextWatcher(countEditText, DecimalFormatStorage.countEditTextDecimalFormat))
-        countEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, symCount: Int) {
+        countEditText.addTextChangedListener(object : DecimalCountTextWatcher(countEditText, DecimalFormatStorage.countEditTextDecimalFormat) {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                super.onTextChanged(s, start, before, count)
                 val decimalFormat = DecimalFormatStorage.countEditTextDecimalFormat
-                val securitiesCount = s.toString().replace(decimalFormat.decimalFormatSymbols.groupingSeparator.toString(), "").toIntOrNull() ?: 0
+                val securitiesCount = countEditText.text.toString()
+                    .replace(decimalFormat.decimalFormatSymbols.groupingSeparator.toString(), "")
+                    .toIntOrNull() ?: 0
                 viewModel.setSecurityCount(securitiesCount)
             }
         })

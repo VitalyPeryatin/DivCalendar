@@ -7,7 +7,7 @@ import android.util.Log
 import android.widget.EditText
 import java.text.DecimalFormat
 
-class DecimalPriceTextWatcher(
+open class DecimalPriceTextWatcher(
     private val editText: EditText,
     private val decimalFormat: DecimalFormat,
     private val maxNumberInIntegerPart: Int = 12,
@@ -17,7 +17,7 @@ class DecimalPriceTextWatcher(
     private var enteredNumericBeforeChange: String = ""
     private var selectionStartBeforeUserChange: Int = 0
     private var isAddition = false
-    private var currentSeparator = LOCAL_SEPARATOR
+    protected var currentSeparator = LOCAL_SEPARATOR
 
     override fun afterTextChanged(s: Editable?) {
     }
@@ -102,11 +102,10 @@ class DecimalPriceTextWatcher(
                         editText.setSelection(selectionStartBeforeChange)
                 }
                 else -> {
-                    if (enteredNumericBeforeChange.length == formattedEnteredNumeric.length){
+                    if (enteredNumericBeforeChange.length == formattedEnteredNumeric.length) {
                         editText.setSelection(selectionStartBeforeUserChange)
-                        Log.d("LogEdit","fuck")
-                    }
-                    else
+                        Log.d("LogEdit", "fuck")
+                    } else
                         editText.setSelection(selectionStartBeforeChange)
                 }
             }
@@ -144,17 +143,17 @@ class DecimalPriceTextWatcher(
         editText.addTextChangedListener(this)
     }
 
-    private fun defineCurrentSeparator(currentEnteredNumeric:String){
-        for(separator in POSSIBLE_SEPARATORS){
-            if(currentEnteredNumeric.contains(separator)){
+    private fun defineCurrentSeparator(currentEnteredNumeric: String) {
+        for (separator in POSSIBLE_SEPARATORS) {
+            if (currentEnteredNumeric.contains(separator)) {
                 currentSeparator = separator
             }
         }
     }
 
     companion object {
-        private const val LOCAL_SEPARATOR = '.'
-        private val POSSIBLE_SEPARATORS = listOf('.',',')
+        const val LOCAL_SEPARATOR = '.'
+        private val POSSIBLE_SEPARATORS = listOf('.', ',')
     }
 
     data class NumericParts(

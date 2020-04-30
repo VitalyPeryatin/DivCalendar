@@ -5,7 +5,7 @@ import android.text.TextWatcher
 import android.widget.EditText
 import java.text.DecimalFormat
 
-class DecimalCountTextWatcher(
+open class DecimalCountTextWatcher(
     private val editText: EditText,
     private val decimalFormat: DecimalFormat
 ) : TextWatcher {
