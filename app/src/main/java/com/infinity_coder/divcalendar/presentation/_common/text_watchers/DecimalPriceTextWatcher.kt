@@ -10,7 +10,7 @@ class DecimalPriceTextWatcher(
     private val editText: EditText,
     private val decimalFormat: DecimalFormat,
     private val maxNumberInIntegerPart: Int = 12,
-    private val maxNumberInFractionalPart: Int = 6
+    private val maxNumberInFractionalPart: Int = 100
 ) : TextWatcher {
 
     private var enteredNumericBeforeChange:String = ""
