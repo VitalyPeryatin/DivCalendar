@@ -22,6 +22,10 @@ import com.infinity_coder.divcalendar.presentation._common.extensions.shake
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalCountTextWatcher
 import kotlinx.android.synthetic.main.bottom_dialog_add_security.*
+import kotlinx.android.synthetic.main.bottom_dialog_add_security.countEditText
+import kotlinx.android.synthetic.main.bottom_dialog_add_security.nameTextView
+import kotlinx.android.synthetic.main.bottom_dialog_add_security.priceEditText
+import kotlinx.android.synthetic.main.bottom_dialog_remove_security.*
 
 class AddSecurityBottomDialog : BottomDialog() {
 
@@ -83,6 +87,7 @@ class AddSecurityBottomDialog : BottomDialog() {
     private fun initUI() {
         nameTextView.text = security.name
 
+        priceEditText.addTextChangedListener(DecimalPriceTextWatcher(priceEditText, DecimalFormatStorage.priceEditTextDecimalFormat))
         priceEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -91,18 +96,12 @@ class AddSecurityBottomDialog : BottomDialog() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val formatter = DecimalFormatStorage.formatter
+                val formatter = DecimalFormatStorage.priceEditTextDecimalFormat
                 val price = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "").toDoubleOrNull() ?: 0.0
                 viewModel.setSecurityPrice(price)
             }
         })
-        priceEditText.addTextChangedListener(
-            DecimalPriceTextWatcher(
-                priceEditText,
-                DecimalFormatStorage.formatter,
-                MAX_NUMBER_IN_INTEGER_PART_PRICE
-            )
-        )
+
         countEditText.addTextChangedListener(DecimalCountTextWatcher(countEditText, DecimalFormatStorage.countEditTextDecimalFormat))
         countEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -157,8 +156,6 @@ class AddSecurityBottomDialog : BottomDialog() {
         private const val ARGUMENT_TYPE = "type"
 
         private const val SHAKE_AMPLITUDE = 8f
-        private const val MAX_NUMBER_IN_INTEGER_PART_PRICE = 6
-        private const val MAX_NUMBER_IN_INTEGER_PART_COUNT = 9
 
         fun newInstance(security: SecurityNetModel): AddSecurityBottomDialog {
             val dialog = AddSecurityBottomDialog()

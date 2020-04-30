@@ -81,12 +81,7 @@ class ChangeSecurityBottomDialog : BottomDialog() {
     private fun initUI() {
         nameTextView.text = security.name
 
-        priceEditText.addTextChangedListener(
-            DecimalPriceTextWatcher(
-                priceEditText,
-                DecimalFormatStorage.priceEditTextDecimalFormat
-            )
-        )
+        priceEditText.addTextChangedListener(DecimalPriceTextWatcher(priceEditText, DecimalFormatStorage.priceEditTextDecimalFormat))
         priceEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -148,8 +143,6 @@ class ChangeSecurityBottomDialog : BottomDialog() {
         private const val ARGUMENT_TYPE = "type"
 
         private const val SHAKE_AMPLITUDE = 8f
-
-        private const val MAX_NUMBER_IN_INTEGER_PART_COUNT = 9
 
         fun newInstance(security: SecurityDbModel): ChangeSecurityBottomDialog {
             val dialog = ChangeSecurityBottomDialog()
