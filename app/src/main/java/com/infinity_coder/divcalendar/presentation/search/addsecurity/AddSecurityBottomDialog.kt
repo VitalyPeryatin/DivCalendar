@@ -16,7 +16,7 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.DecimalFormatStorage
-import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalTextWatcher
+import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalPriceTextWatcher
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.extensions.shake
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
@@ -97,13 +97,13 @@ class AddSecurityBottomDialog : BottomDialog() {
             }
         })
         priceEditText.addTextChangedListener(
-            DecimalTextWatcher(
+            DecimalPriceTextWatcher(
                 priceEditText,
                 DecimalFormatStorage.formatter,
                 MAX_NUMBER_IN_INTEGER_PART_PRICE
             )
         )
-        countEditText.addTextChangedListener(DecimalCountTextWatcher(countEditText, DecimalFormatStorage.countDecimalFormat))
+        countEditText.addTextChangedListener(DecimalCountTextWatcher(countEditText, DecimalFormatStorage.countEditTextDecimalFormat))
         countEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -112,7 +112,7 @@ class AddSecurityBottomDialog : BottomDialog() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, symCount: Int) {
-                val decimalFormat = DecimalFormatStorage.countDecimalFormat
+                val decimalFormat = DecimalFormatStorage.countEditTextDecimalFormat
                 val securitiesCount = s.toString().replace(decimalFormat.decimalFormatSymbols.groupingSeparator.toString(), "").toIntOrNull() ?: 0
                 viewModel.setSecurityCount(securitiesCount)
             }

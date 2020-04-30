@@ -10,7 +10,13 @@ object DecimalFormatStorage {
 
     private const val ACCURACY = 2
 
-    val countDecimalFormat by lazy {
+    val countEditTextDecimalFormat by lazy {
+        val formatSymbols = DecimalFormatSymbols(Locale.getDefault())
+        formatSymbols.groupingSeparator = ' '
+        DecimalFormat("#,###", formatSymbols)
+    }
+
+    val priceEditTextDecimalFormat by lazy {
         val formatSymbols = DecimalFormatSymbols(Locale.getDefault())
         formatSymbols.groupingSeparator = ' '
         DecimalFormat("#,###", formatSymbols)
