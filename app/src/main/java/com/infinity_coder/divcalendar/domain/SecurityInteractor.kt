@@ -17,15 +17,14 @@ class SecurityInteractor {
     }
 
     suspend fun appendSecurityPackage(newSecurityPackage: SecurityDbModel) {
-        val portfolioId = portfolioInteractor.getCurrentPortfolioId()
-        val securitiesPackage = SecurityRepository.getSecurityPackage(portfolioId, newSecurityPackage.ticker)
-        if (securitiesPackage == null) {
-            newSecurityPackage.portfolioId = portfolioId
+        val security = getSecurityByIsin(newSecurityPackage.isin)
+        if (security == null) {
+            newSecurityPackage.portfolioId = portfolioInteractor.getCurrentPortfolioId()
             SecurityRepository.addSecurityPackage(newSecurityPackage)
         } else {
-            securitiesPackage.count += newSecurityPackage.count
-            securitiesPackage.totalPrice += newSecurityPackage.totalPrice
-            SecurityRepository.updateSecurityPackage(securitiesPackage)
+            security.count += newSecurityPackage.count
+            security.totalPrice += newSecurityPackage.totalPrice
+            SecurityRepository.updateSecurityPackage(security)
         }
     }
 
@@ -36,5 +35,10 @@ class SecurityInteractor {
 
     fun getColorForSecurityLogo(logo: String): Int {
         return SecurityRepository.getColorForSecurityLogo(logo)
+    }
+
+    suspend fun getSecurityByIsin(isin: String): SecurityDbModel? {
+        val portfolioId = portfolioInteractor.getCurrentPortfolioId()
+        return SecurityRepository.getSecurity(portfolioId, isin)
     }
 }

@@ -1,5 +1,6 @@
 package com.infinity_coder.divcalendar.data.db.model
 
+import android.graphics.Color
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -58,7 +59,7 @@ data class SecurityDbModel(
     var portfolioId: Long = 0,
 
     @ColumnInfo(name = COLUMN_COLOR)
-    var color: Int = 0
+    var color: Int = Color.RED
 ) {
     companion object {
         const val TABLE_NAME = "Security"

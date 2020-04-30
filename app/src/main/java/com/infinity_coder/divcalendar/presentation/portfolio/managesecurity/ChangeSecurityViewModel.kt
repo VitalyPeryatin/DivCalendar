@@ -3,20 +3,24 @@ package com.infinity_coder.divcalendar.presentation.portfolio.managesecurity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
-import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
+import com.infinity_coder.divcalendar.domain.SecurityInteractor
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
+import kotlinx.coroutines.launch
 
 class ChangeSecurityViewModel : ViewModel() {
 
-    private val _changeSecurityPackage = MutableLiveData<SecurityDbModel>()
-    val changeSecurityPackage: LiveData<SecurityDbModel>
-        get() = _changeSecurityPackage
+    private val _changeSecurity = MutableLiveData<SecurityDbModel>()
+    val changeSecurity: LiveData<SecurityDbModel>
+        get() = _changeSecurity
 
     val shakePriceEditText = LiveEvent<Void?>()
     val shakeCountEditText = LiveEvent<Void?>()
 
-    private lateinit var security: SecurityNetModel
+    private val securityInteractor = SecurityInteractor()
+
+    private lateinit var securityIsin: String
 
     private var cost: Double = 0.0
     private var count: Int = 0
@@ -29,25 +33,18 @@ class ChangeSecurityViewModel : ViewModel() {
         this.count = count
     }
 
-    fun setSecurity(security: SecurityNetModel) {
-        this.security = security
+    fun setSecurityIsin(isin: String) {
+        this.securityIsin = isin
     }
 
-    private fun getSecurityPackage(count: Int, price: Double): SecurityDbModel {
-        return SecurityDbModel(
-            isin = security.isin,
-            ticker = security.ticker,
-            name = security.name,
-            logo = security.logo,
-            count = count,
-            totalPrice = price,
-            yearYield = security.yearYield,
-            currency = security.currency,
-            type = security.type
-        )
+    private suspend fun getSecurity(count: Int, price: Double): SecurityDbModel? {
+        return securityInteractor.getSecurityByIsin(securityIsin)?.apply {
+            this.count = count
+            this.totalPrice = price
+        }
     }
 
-    fun changePackage() {
+    fun changePackage() = viewModelScope.launch {
         when {
             cost <= 0 -> {
                 shakePriceEditText.postValue(null)
@@ -56,14 +53,18 @@ class ChangeSecurityViewModel : ViewModel() {
                 shakeCountEditText.postValue(null)
             }
             else -> {
-                val securityPackage = getSecurityPackage(count, cost)
-                _changeSecurityPackage.value = securityPackage
+                val security = getSecurity(count, cost)
+                if (security != null) {
+                    _changeSecurity.value = security
+                }
             }
         }
     }
 
-    fun removePackage() {
-        val securityPackage = getSecurityPackage(0, 0.0)
-        _changeSecurityPackage.value = securityPackage
+    fun removePackage() = viewModelScope.launch {
+        val security = getSecurity(0, 0.0)
+        if (security != null) {
+            _changeSecurity.value = security
+        }
     }
 }
