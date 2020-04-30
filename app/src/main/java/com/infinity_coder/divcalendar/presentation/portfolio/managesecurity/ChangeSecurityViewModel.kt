@@ -15,7 +15,6 @@ class ChangeSecurityViewModel : ViewModel() {
     val changeSecurity: LiveData<SecurityDbModel>
         get() = _changeSecurity
 
-
     val shakePriceEditText = LiveEvent<Void?>()
     val shakeCountEditText = LiveEvent<Void?>()
 
