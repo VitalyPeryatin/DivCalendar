@@ -104,7 +104,7 @@ open class DecimalPriceTextWatcher(
                 else -> {
                     if (enteredNumericBeforeChange.length == formattedEnteredNumeric.length) {
                         editText.setSelection(selectionStartBeforeUserChange)
-                        Log.d("LogEdit", "fuck")
+                        //TODO тут необходимо как-то проверять, что это был пробел, чтобы передвинуть курсор
                     } else
                         editText.setSelection(selectionStartBeforeChange)
                 }
