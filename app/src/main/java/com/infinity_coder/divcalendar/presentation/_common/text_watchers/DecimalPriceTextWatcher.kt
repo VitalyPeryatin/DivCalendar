@@ -13,8 +13,8 @@ class DecimalPriceTextWatcher(
     private val maxNumberInFractionalPart: Int = 100
 ) : TextWatcher {
 
-    private var enteredNumericBeforeChange:String = ""
-    private var selectionStartBeforeUserChange:Int = 0
+    private var enteredNumericBeforeChange: String = ""
+    private var selectionStartBeforeUserChange: Int = 0
     private var isAddition = false
 
     override fun afterTextChanged(s: Editable?) {
@@ -28,39 +28,39 @@ class DecimalPriceTextWatcher(
 
     @SuppressLint("SetTextI18n")
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        val enteredNumeric = s.toString().replace(decimalFormat.decimalFormatSymbols.groupingSeparator.toString(),"")
+        val enteredNumeric = s.toString().replace(decimalFormat.decimalFormatSymbols.groupingSeparator.toString(), "")
 
-        if(checkIfFirstCharacterSeparatorWhenAdding(enteredNumeric)
-            ||checkIfCountOfNumberInIntegerPartGreaterPossible(enteredNumeric)
-            || checkIfCountOfNumberInFractionalPartGreaterPossible(enteredNumeric)
-        ){
+        if (checkIfFirstCharacterSeparatorWhenAdding(enteredNumeric) ||
+            checkIfCountOfNumberInIntegerPartGreaterPossible(enteredNumeric) ||
+            checkIfCountOfNumberInFractionalPartGreaterPossible(enteredNumeric)
+        ) {
             returnThePastStateEditText()
             return
         }
 
-        if(checkIfFirstCharacterSeparatorWhenRemoved(enteredNumeric)) return
+        if (checkIfFirstCharacterSeparatorWhenRemoved(enteredNumeric)) return
 
-        if(enteredNumeric.isNotEmpty()) {
+        if (enteredNumeric.isNotEmpty()) {
             formatNumber(enteredNumeric)
         }
     }
 
-    private fun checkIfFirstCharacterSeparatorWhenAdding(enteredNumeric: String):Boolean {
+    private fun checkIfFirstCharacterSeparatorWhenAdding(enteredNumeric: String): Boolean {
         return enteredNumeric.isNotEmpty() && enteredNumeric.first() == EDIT_TEXT_SEPARATOR && isAddition
     }
 
-    private fun checkIfFirstCharacterSeparatorWhenRemoved(enteredNumeric: String):Boolean {
+    private fun checkIfFirstCharacterSeparatorWhenRemoved(enteredNumeric: String): Boolean {
         return enteredNumeric.isNotEmpty() && enteredNumeric.first() == EDIT_TEXT_SEPARATOR && !isAddition
     }
 
-    private fun checkIfCountOfNumberInIntegerPartGreaterPossible(enteredNumeric: String):Boolean{
+    private fun checkIfCountOfNumberInIntegerPartGreaterPossible(enteredNumeric: String): Boolean {
         val numericParts = getNumericParts(enteredNumeric)
         return numericParts.integerPart.length > maxNumberInIntegerPart
     }
 
-    private fun checkIfCountOfNumberInFractionalPartGreaterPossible(enteredNumeric: String):Boolean{
+    private fun checkIfCountOfNumberInFractionalPartGreaterPossible(enteredNumeric: String): Boolean {
         val numericParts = getNumericParts(enteredNumeric)
-        return if(numericParts.fractionalPart == null || numericParts.fractionalPart.isEmpty())
+        return if (numericParts.fractionalPart == null || numericParts.fractionalPart.isEmpty())
             false
         else
             numericParts.fractionalPart.length > maxNumberInFractionalPart
@@ -73,11 +73,11 @@ class DecimalPriceTextWatcher(
         }
     }
 
-    private fun formatNumber(enteredNumeric: String){
+    private fun formatNumber(enteredNumeric: String) {
         val numericParts = getNumericParts(enteredNumeric)
 
         val formattedEnteredNumeric = decimalFormat.format(numericParts.integerPart.toDouble()).run {
-            if(numericParts.fractionalPart!=null){
+            if (numericParts.fractionalPart != null) {
                 return@run "$this.${numericParts.fractionalPart}"
             }
             return@run this
@@ -91,13 +91,13 @@ class DecimalPriceTextWatcher(
                     editText.setSelection(selectionStartBeforeChange + 1)
                 }
                 checkIfSpaceIsRemoved(formattedEnteredNumeric) -> {
-                    if(selectionStartBeforeChange != 0)
+                    if (selectionStartBeforeChange != 0)
                         editText.setSelection(selectionStartBeforeChange - 1)
                     else
                         editText.setSelection(selectionStartBeforeChange)
                 }
                 else -> {
-                    if(enteredNumericBeforeChange.length == formattedEnteredNumeric.length)
+                    if (enteredNumericBeforeChange.length == formattedEnteredNumeric.length)
                         editText.setSelection(selectionStartBeforeUserChange)
                     else
                         editText.setSelection(selectionStartBeforeChange)
@@ -106,43 +106,43 @@ class DecimalPriceTextWatcher(
         }
     }
 
-    private fun checkIfSpaceIsAdded(formattedEnteredNumeric:String):Boolean{
+    private fun checkIfSpaceIsAdded(formattedEnteredNumeric: String): Boolean {
         val beforeSpace = enteredNumericBeforeChange.count { it == decimalFormat.decimalFormatSymbols.groupingSeparator }
         val afterSpace = formattedEnteredNumeric.count { it == decimalFormat.decimalFormatSymbols.groupingSeparator }
         return afterSpace > beforeSpace
     }
 
-    private fun checkIfSpaceIsRemoved(formattedEnteredNumeric:String):Boolean{
+    private fun checkIfSpaceIsRemoved(formattedEnteredNumeric: String): Boolean {
         val beforeSpace = enteredNumericBeforeChange.count { it == decimalFormat.decimalFormatSymbols.groupingSeparator }
         val afterSpace = formattedEnteredNumeric.count { it == decimalFormat.decimalFormatSymbols.groupingSeparator }
         return afterSpace < beforeSpace
     }
 
-    private fun getNumericParts(enteredNumeric: String):NumericParts{
-        val integerPart:String
-        var fractionalPart:String? = null
+    private fun getNumericParts(enteredNumeric: String): NumericParts {
+        val integerPart: String
+        var fractionalPart: String? = null
 
         enteredNumeric.split(EDIT_TEXT_SEPARATOR).run {
             integerPart = this[0]
-            if(this.size > 1)
+            if (this.size > 1)
                 fractionalPart = this[1]
         }
 
         return NumericParts(integerPart, fractionalPart)
     }
 
-    private fun changeEditText(func:()->Unit){
+    private fun changeEditText(func: () -> Unit) {
         editText.removeTextChangedListener(this)
         func.invoke()
         editText.addTextChangedListener(this)
     }
 
-    companion object{
+    companion object {
         private const val EDIT_TEXT_SEPARATOR = '.'
     }
 
     data class NumericParts(
-        val integerPart:String = "",
-        val fractionalPart:String? = null
+        val integerPart: String = "",
+        val fractionalPart: String? = null
     )
 }

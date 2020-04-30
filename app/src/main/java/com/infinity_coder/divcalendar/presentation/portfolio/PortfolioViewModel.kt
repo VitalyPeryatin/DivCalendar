@@ -9,7 +9,6 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain.SecurityInteractor
-import com.infinity_coder.divcalendar.presentation._common.extensions.sumByFloat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

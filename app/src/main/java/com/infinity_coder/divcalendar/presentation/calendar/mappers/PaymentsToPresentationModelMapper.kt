@@ -10,7 +10,6 @@ import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain._common.isExpiredDate
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
-import com.infinity_coder.divcalendar.presentation._common.extensions.sumByFloat
 import com.infinity_coder.divcalendar.presentation.calendar.models.*
 import kotlinx.coroutines.flow.first
 
