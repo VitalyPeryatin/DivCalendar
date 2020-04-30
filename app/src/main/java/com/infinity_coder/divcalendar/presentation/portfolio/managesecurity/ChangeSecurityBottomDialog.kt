@@ -12,43 +12,31 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
-import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.DecimalFormatStorage
 import com.infinity_coder.divcalendar.presentation._common.DecimalTextWatcher
 import com.infinity_coder.divcalendar.presentation._common.extensions.shake
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
-import kotlinx.android.synthetic.main.bottom_dialog_add_security.*
 import kotlinx.android.synthetic.main.bottom_dialog_remove_security.*
-import kotlinx.android.synthetic.main.bottom_dialog_remove_security.countEditText
-import kotlinx.android.synthetic.main.bottom_dialog_remove_security.nameTextView
-import kotlinx.android.synthetic.main.bottom_dialog_remove_security.priceEditText
 
 class ChangeSecurityBottomDialog : BottomDialog() {
 
     private var clickListener: OnClickListener? = null
 
-    private lateinit var security: SecurityNetModel
-
     private val viewModel: ChangeSecurityViewModel by lazy {
         viewModel { ChangeSecurityViewModel() }
     }
+
+    private lateinit var securityName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
 
-        security = SecurityNetModel(
-            isin = requireArguments().getString(ARGUMENT_ISIN, ""),
-            ticker = requireArguments().getString(ARGUMENT_TICKER, ""),
-            name = requireArguments().getString(ARGUMENT_NAME, ""),
-            logo = requireArguments().getString(ARGUMENT_LOGO, ""),
-            yearYield = requireArguments().getFloat(ARGUMENT_YEAR_YIELD, 0f),
-            currency = requireArguments().getString(ARGUMENT_CURRENCY, ""),
-            type = requireArguments().getString(ARGUMENT_TYPE, "")
-        )
-        viewModel.setSecurity(security)
+        securityName = requireArguments().getString(ARGUMENT_NAME, "")
+        val isin = requireArguments().getString(ARGUMENT_ISIN, "")
+        viewModel.setSecurityIsin(isin)
     }
 
     override fun onCreateView(
@@ -73,13 +61,13 @@ class ChangeSecurityBottomDialog : BottomDialog() {
 
         initUI()
 
-        viewModel.changeSecurityPackage.observe(viewLifecycleOwner, Observer(this::changePackage))
+        viewModel.changeSecurity.observe(viewLifecycleOwner, Observer(this::changePackage))
         viewModel.shakePriceEditText.observe(viewLifecycleOwner, Observer { shakePriceEditText() })
         viewModel.shakeCountEditText.observe(viewLifecycleOwner, Observer { shakeCountEditText() })
     }
 
     private fun initUI() {
-        nameTextView.text = security.name
+        nameTextView.text = securityName
 
         priceEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {

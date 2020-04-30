@@ -24,10 +24,11 @@ class AddSecurityViewModel : ViewModel() {
     val shakeCountEditText = LiveEvent<Void?>()
 
     private val securityTotalPriceLiveData = MutableLiveData(0f)
-    private lateinit var security: SecurityNetModel
 
     private var price: Float = 0f
     private var count: Int = 0
+
+    private lateinit var security: SecurityNetModel
 
     fun getTotalSecurityPriceLiveData(): LiveData<Float?> {
         return securityTotalPriceLiveData

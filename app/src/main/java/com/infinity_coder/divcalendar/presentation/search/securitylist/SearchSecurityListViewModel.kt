@@ -10,6 +10,7 @@ import com.infinity_coder.divcalendar.domain.SearchInteractor
 import com.infinity_coder.divcalendar.domain.SecurityInteractor
 import com.infinity_coder.divcalendar.domain.SubscriptionInteractor
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
+import com.infinity_coder.divcalendar.presentation._common.logException
 import com.infinity_coder.divcalendar.presentation.search.model.QueryGroup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -52,6 +53,7 @@ class SearchSecurityListViewModel : ViewModel() {
                 _searchedSecurities.value = it
             }
             .catch {
+                logException(this@SearchSecurityListViewModel, it)
                 _state.value = VIEW_STATE_SEARCH_SECURITY_NO_NETWORK
             }
             .onCompletion {
