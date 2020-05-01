@@ -68,7 +68,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/totalPriceTextView">
 
-        <com.infinity_coder.divcalendar.presentation._common.text_watchers.CurrencySuffixTextInputEditText
+        <com.infinity_coder.divcalendar.presentation._common.text_watchers.SuffixTextInputEditText
             android:id="@+id/priceEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

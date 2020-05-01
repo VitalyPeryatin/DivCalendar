@@ -6,7 +6,7 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import com.google.android.material.textfield.TextInputEditText
 
-class CurrencySuffixTextInputEditText : TextInputEditText {
+class SuffixTextInputEditText : TextInputEditText {
 
     var suffix = ""
 
