@@ -57,6 +57,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
     override fun onUpdate() {
         viewModel.loadAllPayments(requireContext())
+        calendarPaymentsRecyclerView.smoothScrollToPosition(0)
     }
 
     private fun initUI() {

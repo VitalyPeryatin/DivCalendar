@@ -84,7 +84,6 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
             setDrawValues(false)
         }
 
-        animateY(ANIMATE_DURATION)
         setData(data)
         setOnChartValueSelectedListener(this@ChartPaymentRecyclerDelegateAdapter)
         invalidate()
@@ -103,9 +102,5 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
 
     interface ChartItemClickListener {
         fun onClick(numberMonth: Int)
-    }
-
-    companion object {
-        private const val ANIMATE_DURATION = 500
     }
 }
