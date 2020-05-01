@@ -3,7 +3,6 @@ package com.infinity_coder.divcalendar.presentation._common.text_watchers
 import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.EditText
 import java.text.DecimalFormat
 
@@ -30,7 +29,7 @@ open class DecimalPriceTextWatcher(
 
     @SuppressLint("SetTextI18n")
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        defineCurrentSeparator(s.toString())
+        currentSeparator = returnCurrentSeparator(s.toString())
         val enteredNumeric = s.toString()
             .replace(decimalFormat.decimalFormatSymbols.groupingSeparator.toString(), "")
             .replace(currentSeparator.toString(), LOCAL_SEPARATOR.toString())
@@ -104,7 +103,7 @@ open class DecimalPriceTextWatcher(
                 else -> {
                     if (enteredNumericBeforeChange.length == formattedEnteredNumeric.length) {
                         editText.setSelection(selectionStartBeforeUserChange)
-                        //TODO тут необходимо как-то проверять, что это был пробел, чтобы передвинуть курсор
+                        // TODO тут необходимо как-то проверять, что это был пробел, чтобы передвинуть курсор
                     } else
                         editText.setSelection(selectionStartBeforeChange)
                 }
@@ -143,12 +142,8 @@ open class DecimalPriceTextWatcher(
         editText.addTextChangedListener(this)
     }
 
-    private fun defineCurrentSeparator(currentEnteredNumeric: String) {
-        for (separator in POSSIBLE_SEPARATORS) {
-            if (currentEnteredNumeric.contains(separator)) {
-                currentSeparator = separator
-            }
-        }
+    private fun returnCurrentSeparator(currentEnteredNumeric: String): Char {
+        return POSSIBLE_SEPARATORS.firstOrNull { currentEnteredNumeric.contains(it) } ?: LOCAL_SEPARATOR
     }
 
     companion object {
