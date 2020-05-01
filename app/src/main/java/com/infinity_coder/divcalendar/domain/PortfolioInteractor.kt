@@ -4,6 +4,7 @@ import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 
 class PortfolioInteractor {
 
@@ -49,5 +50,9 @@ class PortfolioInteractor {
     fun getCurrentPortfolio(): Flow<PortfolioDbModel> {
         return PortfolioRepository.getPortfolioWithSecurities(getCurrentPortfolioName())
             .filterNotNull()
+            .map {
+                it.securities = it.securities.sortedBy { security -> security.name }
+                it
+            }
     }
 }
