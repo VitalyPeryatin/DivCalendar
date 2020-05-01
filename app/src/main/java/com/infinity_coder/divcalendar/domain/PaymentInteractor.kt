@@ -59,7 +59,9 @@ class PaymentInteractor {
     }
 
     private fun groupAndSortPayments(payments: List<PaymentDbModel>): List<MonthlyPayment> {
-        return payments.groupByDate().map { MonthlyPayment.from(it) }.sortedBy {
+        return payments.groupByDate()
+            .map { MonthlyPayment.from(it) }
+            .sortedBy {
                 it.payments = sortedMonthPayments(it.payments)
                 it.month
             }
