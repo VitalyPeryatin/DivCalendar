@@ -79,8 +79,9 @@ class PaymentInteractor {
 
     private fun List<PaymentDbModel>.groupByDate(): List<Pair<Int, List<PaymentDbModel>>> {
         return groupBy {
-            Calendar.getInstance().apply { time = dateFormat.parse(it.date) ?: Date() }
-                .get(Calendar.MONTH)
+            Calendar.getInstance().apply {
+                time = dateFormat.parse(it.date) ?: Date()
+            }.get(Calendar.MONTH)
         }.toList()
     }
 
