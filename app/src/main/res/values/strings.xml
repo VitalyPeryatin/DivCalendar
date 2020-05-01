@@ -9,7 +9,7 @@
     <string name="enter_request">Enter your request</string>
     <string name="no_connection">No connection</string>
     <string name="empty_list">Empty list</string>
-    <string name="empty_securities">You don\'t have securities.\nAdd security to your portfolio!</string>
+    <string name="empty_securities">Your portfolio is empty. Add a security to it!</string>
     <string name="empty_payments">There are no payments on your securities for %s!</string>
 
     <string name="currency_rub_name" translatable="false">₽</string>
@@ -30,8 +30,8 @@
     <string name="monthly_income_label">Monthly income: +%s</string>
     <string name="count_securities">%s pcs.</string>
     <string name="dividends">+%1$.2f₽</string>
-    <string name="taxes_included">Taxes included</string>
-    <string name="taxes_excluding">Excluding taxes</string>
+    <string name="taxes_included">Accounting for taxes</string>
+    <string name="taxes_excluding">Ignoring taxes</string>
     <string name="edit_payments">Edit payments</string>
 
     <!-- search -->
@@ -43,7 +43,7 @@
     <string name="bonds">Bonds</string>
     <string name="russian">Russian</string>
     <string name="foreign">Foreign</string>
-    <string name="add_security_successful">Securities package successfully added to your portfolio</string>
+    <string name="add_security_successful">Successfully added a security package to the portfolio</string>
 
     <!--portfolio -->
     <string name="sec_count">%s pcs.</string>
@@ -74,7 +74,7 @@
     <string name="telegram_chat">Telegram chat</string>
     <string name="purchase_subscription">Purchase subscription</string>
     <string name="something_went_wrong">Something went wrong?</string>
-    <string name="tell_about_problem">Tell us about your problem and within 12 hours we will consider it!</string>
+    <string name="tell_about_problem">Tell us about your problem and within 12 hours we will review your report!</string>
     <string name="your_message">Your message…</string>
     <string name="send">Send</string>
     <string name="send_successful">Message successfully sent to developers</string>
