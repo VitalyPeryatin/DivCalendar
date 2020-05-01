@@ -4,7 +4,7 @@ import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 
 data class MonthlyPayment(
     val month: Int,
-    val payments: List<PaymentDbModel>
+    var payments: List<PaymentDbModel>
 ) {
     companion object {
         fun from(monthsWithPayments: Pair<Int, List<PaymentDbModel>>) =
