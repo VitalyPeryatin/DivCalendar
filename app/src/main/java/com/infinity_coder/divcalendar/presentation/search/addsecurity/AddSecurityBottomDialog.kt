@@ -14,16 +14,12 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.DecimalFormatStorage
-import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalPriceTextWatcher
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.extensions.shake
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalCountTextWatcher
+import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalPriceTextWatcher
 import kotlinx.android.synthetic.main.bottom_dialog_add_security.*
-import kotlinx.android.synthetic.main.bottom_dialog_add_security.countEditText
-import kotlinx.android.synthetic.main.bottom_dialog_add_security.nameTextView
-import kotlinx.android.synthetic.main.bottom_dialog_add_security.priceEditText
-import kotlinx.android.synthetic.main.bottom_dialog_remove_security.*
 
 class AddSecurityBottomDialog : BottomDialog() {
 
@@ -147,6 +143,8 @@ class AddSecurityBottomDialog : BottomDialog() {
         private const val ARGUMENT_TYPE = "type"
 
         private const val SHAKE_AMPLITUDE = 8f
+
+        const val TAG = "AddSecurityBottomDialog"
 
         fun newInstance(security: SecurityNetModel): AddSecurityBottomDialog {
             val dialog = AddSecurityBottomDialog()

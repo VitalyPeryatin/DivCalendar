@@ -12,7 +12,7 @@ fun Fragment.executeIfSubscribed(func: () -> Unit) {
         func()
     } else {
         val dialog = BuySubscriptionDialog.newInstance()
-        dialog.show(childFragmentManager, BuySubscriptionDialog::class.toString())
+        dialog.show(childFragmentManager, BuySubscriptionDialog.TAG)
     }
 }
 

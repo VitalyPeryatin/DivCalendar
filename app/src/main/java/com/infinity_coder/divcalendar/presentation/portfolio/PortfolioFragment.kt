@@ -22,18 +22,12 @@ import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.ChangePortfolioBottomDialog
 import com.infinity_coder.divcalendar.presentation.portfolio.managesecurity.ChangeSecurityBottomDialog
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
-import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.fragment_portfolio.*
-import kotlinx.android.synthetic.main.fragment_portfolio.emptyLayout
-import kotlinx.android.synthetic.main.fragment_portfolio.rubRadioButton
-import kotlinx.android.synthetic.main.fragment_portfolio.usdRadioButton
 import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 
 class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     ChangeSecurityBottomDialog.OnClickListener,
     ChangePortfolioBottomDialog.OnChangePortfolioClickListener {
-
-    private var changePackageDialog: ChangeSecurityBottomDialog? = null
 
     private val viewModel: PortfolioViewModel by lazy {
         viewModel { PortfolioViewModel() }
@@ -61,7 +55,7 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
 
     private fun openChangePortfolioDialog() {
         val changePortfolioDialog = ChangePortfolioBottomDialog.newInstance()
-        changePortfolioDialog.show(childFragmentManager, ChangePortfolioBottomDialog::class.toString())
+        changePortfolioDialog.show(childFragmentManager, ChangePortfolioBottomDialog.TAG)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -142,8 +136,8 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     }
 
     private fun openChangePackageDialog(securityPackage: SecurityDbModel) {
-        changePackageDialog = ChangeSecurityBottomDialog.newInstance(securityPackage)
-        changePackageDialog?.show(childFragmentManager, ChangeSecurityBottomDialog::class.toString())
+        val changePackageDialog = ChangeSecurityBottomDialog.newInstance(securityPackage)
+        changePackageDialog.show(childFragmentManager, ChangeSecurityBottomDialog.TAG)
     }
 
     private fun setPortfolio(portfolio: PortfolioDbModel) {
@@ -170,8 +164,9 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     }
 
     override fun onChangePackageClick(securityPackage: SecurityDbModel) {
+        val changePackageDialog = childFragmentManager.findFragmentByTag(ChangeSecurityBottomDialog.TAG) as ChangeSecurityBottomDialog
         viewModel.changeSecurityPackage(securityPackage)
-        changePackageDialog?.dismiss()
+        changePackageDialog.dismiss()
     }
 
     override fun onPortfolioChange() {

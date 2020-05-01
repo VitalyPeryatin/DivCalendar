@@ -61,6 +61,8 @@ class ReportErrorBottomDialog : BottomDialog() {
 
         private const val MAX_MESSAGE_LENGTH = 300
 
+        const val TAG = "ReportErrorBottomDialog"
+
         fun newInstance(): ReportErrorBottomDialog {
             return ReportErrorBottomDialog()
         }

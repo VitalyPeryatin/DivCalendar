@@ -57,10 +57,10 @@ class SettingsActivity : AbstractSubscriptionActivity() {
         subscribeItem.setOnClickListener {
             if (!hasSubscription()) {
                 val dialog = BuySubscriptionDialog.newInstance()
-                dialog.show(supportFragmentManager, BuySubscriptionDialog::class.toString())
+                dialog.show(supportFragmentManager, BuySubscriptionDialog.TAG)
             } else {
                 val dialog = SubscriptionPurchasedDialog.newInstance()
-                dialog.show(supportFragmentManager, SubscriptionPurchasedDialog::class.toString())
+                dialog.show(supportFragmentManager, SubscriptionPurchasedDialog.TAG)
             }
         }
 
@@ -69,7 +69,7 @@ class SettingsActivity : AbstractSubscriptionActivity() {
 
     private fun openSendReportDialog() {
         val dialog = ReportErrorBottomDialog.newInstance()
-        dialog.show(supportFragmentManager, ReportErrorBottomDialog::class.toString())
+        dialog.show(supportFragmentManager, ReportErrorBottomDialog.TAG)
     }
 
     private fun openTelegramChannel() {

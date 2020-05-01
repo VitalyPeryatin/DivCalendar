@@ -50,6 +50,9 @@ class BuySubscriptionDialog : DialogFragment(), PremiumSubscriptionObserver {
     }
 
     companion object {
+
+        const val TAG = "BuySubscriptionDialog"
+
         fun newInstance(): BuySubscriptionDialog {
             return BuySubscriptionDialog()
         }
