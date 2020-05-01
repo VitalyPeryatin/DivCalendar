@@ -68,6 +68,8 @@ class ChangePaymentDialog : BottomDialog() {
         private const val PAYMENT_DATE = "date"
         private const val PORTFOLIO_ID = "portfolio_id"
 
+        const val TAG = "ChangePaymentDialog"
+
         fun newInstance(payment: PaymentPresentationModel): ChangePaymentDialog {
             val dialog = ChangePaymentDialog()
             dialog.arguments = bundleOf(

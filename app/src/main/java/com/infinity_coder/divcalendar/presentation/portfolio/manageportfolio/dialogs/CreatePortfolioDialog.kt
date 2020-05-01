@@ -64,6 +64,9 @@ class CreatePortfolioDialog : DialogFragment() {
     }
 
     companion object {
+
+        const val TAG = "CreatePortfolioDialog"
+
         fun newInstance(): CreatePortfolioDialog {
             return CreatePortfolioDialog()
         }

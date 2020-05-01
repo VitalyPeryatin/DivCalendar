@@ -12,15 +12,11 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.DecimalFormatStorage
-import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalPriceTextWatcher
 import com.infinity_coder.divcalendar.presentation._common.extensions.shake
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalCountTextWatcher
-import kotlinx.android.synthetic.main.bottom_dialog_add_security.*
+import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalPriceTextWatcher
 import kotlinx.android.synthetic.main.bottom_dialog_remove_security.*
-import kotlinx.android.synthetic.main.bottom_dialog_remove_security.countEditText
-import kotlinx.android.synthetic.main.bottom_dialog_remove_security.nameTextView
-import kotlinx.android.synthetic.main.bottom_dialog_remove_security.priceEditText
 
 class ChangeSecurityBottomDialog : BottomDialog() {
 
@@ -127,6 +123,8 @@ class ChangeSecurityBottomDialog : BottomDialog() {
         private const val ARGUMENT_TYPE = "type"
 
         private const val SHAKE_AMPLITUDE = 8f
+
+        const val TAG = "ChangeSecurityBottomDialog"
 
         fun newInstance(security: SecurityDbModel): ChangeSecurityBottomDialog {
             val dialog = ChangeSecurityBottomDialog()

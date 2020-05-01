@@ -55,6 +55,8 @@ class DeletePortfolioDialog : DialogFragment() {
 
         private const val ARGUMENT_PORTFOLIO_NAME = "portfolio_name"
 
+        const val TAG = "DeletePortfolioDialog"
+
         fun newInstance(name: String): DeletePortfolioDialog {
             val dialog = DeletePortfolioDialog()
             dialog.arguments = bundleOf(ARGUMENT_PORTFOLIO_NAME to name)
