@@ -54,7 +54,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/nameTextView">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.infinity_coder.divcalendar.presentation._common.text_watchers.CurrencySuffixTextInputEditText
             android:id="@+id/priceEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

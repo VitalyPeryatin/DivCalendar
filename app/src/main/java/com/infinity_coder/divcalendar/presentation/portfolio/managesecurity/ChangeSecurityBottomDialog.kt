@@ -12,11 +12,15 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.DecimalFormatStorage
+import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.extensions.shake
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalCountTextWatcher
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalPriceTextWatcher
 import kotlinx.android.synthetic.main.bottom_dialog_remove_security.*
+import kotlinx.android.synthetic.main.bottom_dialog_remove_security.countEditText
+import kotlinx.android.synthetic.main.bottom_dialog_remove_security.nameTextView
+import kotlinx.android.synthetic.main.bottom_dialog_remove_security.priceEditText
 
 class ChangeSecurityBottomDialog : BottomDialog() {
 
@@ -27,6 +31,7 @@ class ChangeSecurityBottomDialog : BottomDialog() {
     }
 
     private lateinit var securityName: String
+    private lateinit var securityCurrency: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +39,7 @@ class ChangeSecurityBottomDialog : BottomDialog() {
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
 
         securityName = requireArguments().getString(ARGUMENT_NAME, "")
+        securityCurrency = requireArguments().getString(ARGUMENT_CURRENCY, "")
         val isin = requireArguments().getString(ARGUMENT_ISIN, "")
         viewModel.setSecurityIsin(isin)
     }
@@ -68,6 +74,7 @@ class ChangeSecurityBottomDialog : BottomDialog() {
     private fun initUI() {
         nameTextView.text = securityName
 
+        priceEditText.suffix = " ${SecurityCurrencyDelegate.getCurrencyBadge(requireContext(),securityCurrency)}"
         priceEditText.addTextChangedListener(object : DecimalPriceTextWatcher(priceEditText, DecimalFormatStorage.priceEditTextDecimalFormat) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 super.onTextChanged(s, start, before, count)
