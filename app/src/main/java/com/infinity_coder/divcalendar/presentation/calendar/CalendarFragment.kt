@@ -2,15 +2,19 @@ package com.infinity_coder.divcalendar.presentation.calendar
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.delegateadapter.delegate.diff.DiffUtilCompositeAdapter
 import com.example.delegateadapter.delegate.diff.IComparableItem
+import com.google.android.material.snackbar.Snackbar
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.presentation._common.SpinnerInteractionListener
@@ -32,6 +36,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
     private var items: Array<String> = arrayOf()
 
+    private var activeSnackbar:Snackbar? = null
+
     private val paymentClickListener = object : PaymentRecyclerDelegateAdapter.OnItemClickListener {
         override fun onItemClick(item: PaymentPresentationModel) {
             val dialog = ChangePaymentDialog.newInstance(item)
@@ -47,6 +53,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         viewModel.payments.observe(viewLifecycleOwner, Observer(this::updatePayments))
         viewModel.currentYear.observe(viewLifecycleOwner, Observer(this::updateCurrentYear))
         viewModel.isIncludeTaxes.observe(viewLifecycleOwner, Observer(this::setIsIncludedTexes))
+        viewModel.showShackbar.observe(viewLifecycleOwner, Observer{showSnackbar(it)})
     }
 
     override fun onStart() {
@@ -188,6 +195,16 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
             CalendarViewModel.VIEW_STATE_CALENDAR_EMPTY_SECURITIES -> {
                 emptySecuritiesLayout.visibility = View.VISIBLE
             }
+        }
+    }
+
+    private fun showSnackbar(show:Boolean){
+        if(show){
+            activeSnackbar = Snackbar.make(calendarRoot, R.string.refresh_content, Snackbar.LENGTH_INDEFINITE)
+            activeSnackbar?.show()
+        }else{
+            activeSnackbar?.dismiss()
+            activeSnackbar = null
         }
     }
 

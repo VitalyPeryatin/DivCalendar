@@ -9,6 +9,7 @@ import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.domain.PaymentInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain.SettingsInteractor
+import com.infinity_coder.divcalendar.presentation._common.LiveEvent
 import com.infinity_coder.divcalendar.presentation._common.logException
 import com.infinity_coder.divcalendar.presentation.calendar.mappers.PaymentsToPresentationModelMapper
 import com.infinity_coder.divcalendar.presentation.calendar.models.EditPaymentParams
@@ -38,6 +39,8 @@ class CalendarViewModel : ViewModel() {
     val currentYear: LiveData<String>
         get() = _currentYear
 
+    val showShackbar = LiveEvent<Boolean>()
+
     private var cachedPayments: List<MonthlyPayment> = emptyList()
     private val paymentsMapper = PaymentsToPresentationModelMapper()
 
@@ -56,6 +59,8 @@ class CalendarViewModel : ViewModel() {
             .onStart {
                 if (_state.value != VIEW_STATE_CALENDAR_CONTENT)
                     _state.value = VIEW_STATE_CALENDAR_LOADING
+                else
+                   showShackbar.value = true
             }
             .onEach {
                 _payments.value = it
@@ -67,6 +72,7 @@ class CalendarViewModel : ViewModel() {
                 if (_payments.value!!.isEmpty()) {
                     _state.value = VIEW_STATE_CALENDAR_EMPTY
                 }
+                showShackbar.value = false
             }
             .catch { handleError(it) }
             .launchIn(viewModelScope)
