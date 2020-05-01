@@ -4,7 +4,7 @@ import com.example.delegateadapter.delegate.diff.IComparableItem
 
 data class ChartPresentationModel(
     val annualIncome: String,
-    val annualYield: Float,
+    val annualYield: Double,
     val currentCurrency: String,
     val monthlyPayments: List<MonthlyPayment>,
     val colors: List<Int>,

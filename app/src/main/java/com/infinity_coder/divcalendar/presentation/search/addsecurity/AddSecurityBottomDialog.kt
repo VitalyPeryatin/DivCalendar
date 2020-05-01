@@ -3,8 +3,6 @@ package com.infinity_coder.divcalendar.presentation.search.addsecurity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +14,16 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.DecimalFormatStorage
-import com.infinity_coder.divcalendar.presentation._common.DecimalTextWatcher
+import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalPriceTextWatcher
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.extensions.shake
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
+import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalCountTextWatcher
 import kotlinx.android.synthetic.main.bottom_dialog_add_security.*
+import kotlinx.android.synthetic.main.bottom_dialog_add_security.countEditText
+import kotlinx.android.synthetic.main.bottom_dialog_add_security.nameTextView
+import kotlinx.android.synthetic.main.bottom_dialog_add_security.priceEditText
+import kotlinx.android.synthetic.main.bottom_dialog_remove_security.*
 
 class AddSecurityBottomDialog : BottomDialog() {
 
@@ -82,35 +85,28 @@ class AddSecurityBottomDialog : BottomDialog() {
     private fun initUI() {
         nameTextView.text = security.name
 
-        priceEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
+        priceEditText.addTextChangedListener(object : DecimalPriceTextWatcher(priceEditText, DecimalFormatStorage.priceEditTextDecimalFormat) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val formatter = DecimalFormatStorage.formatter
-                val price = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "").toFloatOrNull() ?: 0f
+                super.onTextChanged(s, start, before, count)
+                val formatter = DecimalFormatStorage.priceEditTextDecimalFormat
+                val price = priceEditText.text.toString()
+                    .replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "")
+                    .replace(currentSeparator.toString(), LOCAL_SEPARATOR.toString())
+                    .toDoubleOrNull() ?: 0.0
                 viewModel.setSecurityPrice(price)
             }
         })
-        priceEditText.addTextChangedListener(DecimalTextWatcher(priceEditText, DecimalFormatStorage.formatter, MAX_NUMBER_IN_INTEGER_PART_PRICE))
 
-        countEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, symCount: Int) {
-                val formatter = DecimalFormatStorage.formatter
-                val securitiesCount = s.toString().replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "").toIntOrNull() ?: 0
+        countEditText.addTextChangedListener(object : DecimalCountTextWatcher(countEditText, DecimalFormatStorage.countEditTextDecimalFormat) {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                super.onTextChanged(s, start, before, count)
+                val decimalFormat = DecimalFormatStorage.countEditTextDecimalFormat
+                val securitiesCount = countEditText.text.toString()
+                    .replace(decimalFormat.decimalFormatSymbols.groupingSeparator.toString(), "")
+                    .toIntOrNull() ?: 0
                 viewModel.setSecurityCount(securitiesCount)
             }
         })
-        countEditText.addTextChangedListener(DecimalTextWatcher(countEditText, DecimalFormatStorage.formatter, MAX_NUMBER_IN_INTEGER_PART_COUNT))
 
         addSecurityButton.setOnClickListener {
             viewModel.addSecurityPackage()
@@ -118,7 +114,7 @@ class AddSecurityBottomDialog : BottomDialog() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setTotalPrice(price: Float?) {
+    private fun setTotalPrice(price: Double?) {
         if (price == null) return
         val priceWithCurrency = SecurityCurrencyDelegate.getValueWithCurrency(
             requireContext(),
@@ -151,8 +147,6 @@ class AddSecurityBottomDialog : BottomDialog() {
         private const val ARGUMENT_TYPE = "type"
 
         private const val SHAKE_AMPLITUDE = 8f
-        private const val MAX_NUMBER_IN_INTEGER_PART_PRICE = 6
-        private const val MAX_NUMBER_IN_INTEGER_PART_COUNT = 9
 
         fun newInstance(security: SecurityNetModel): AddSecurityBottomDialog {
             val dialog = AddSecurityBottomDialog()

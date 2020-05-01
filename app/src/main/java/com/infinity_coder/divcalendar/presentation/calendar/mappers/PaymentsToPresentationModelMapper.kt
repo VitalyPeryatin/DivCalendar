@@ -10,7 +10,6 @@ import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain._common.isExpiredDate
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
-import com.infinity_coder.divcalendar.presentation._common.extensions.sumByFloat
 import com.infinity_coder.divcalendar.presentation.calendar.models.*
 import kotlinx.coroutines.flow.first
 
@@ -48,7 +47,7 @@ class PaymentsToPresentationModelMapper {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         return monthlyPayments.map { monthlyPayment ->
             val payments = monthlyPayment.payments.map {
-                val payment = it.copy(dividends = rateInteractor.convertCurrencies(it.dividends.toFloat(), it.security!!.currency, currentCurrency).toDouble())
+                val payment = it.copy(dividends = rateInteractor.convertCurrencies(it.dividends, it.security!!.currency, currentCurrency))
                 payment.security = it.security
                 payment
             }
@@ -91,21 +90,21 @@ class PaymentsToPresentationModelMapper {
         return ChartPresentationModel(annualIncomeStr, annualYield, currentCurrency, allMonthlyPayments, colors)
     }
 
-    private fun sumMonthPayments(monthlyPayments: List<MonthlyPayment>): Float {
-        return monthlyPayments.sumByFloat { paymentsForMonth ->
-            paymentsForMonth.payments.sumByFloat { it.dividends.toFloat() }
+    private fun sumMonthPayments(monthlyPayments: List<MonthlyPayment>): Double {
+        return monthlyPayments.sumByDouble { paymentsForMonth ->
+            paymentsForMonth.payments.sumByDouble { it.dividends }
         }
     }
 
-    private suspend fun getCosts(): Float {
+    private suspend fun getCosts(): Double {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val securities = portfolioInteractor.getCurrentPortfolio().first().securities
-        return securities.sumByFloat {
+        return securities.sumByDouble {
             getTotalPriceForCurrentCurrency(currentCurrency, it)
         }
     }
 
-    private suspend fun getTotalPriceForCurrentCurrency(currentCurrency: String, securityDbModel: SecurityDbModel): Float {
+    private suspend fun getTotalPriceForCurrentCurrency(currentCurrency: String, securityDbModel: SecurityDbModel): Double {
         return if (securityDbModel.currency == currentCurrency)
             securityDbModel.totalPrice
         else

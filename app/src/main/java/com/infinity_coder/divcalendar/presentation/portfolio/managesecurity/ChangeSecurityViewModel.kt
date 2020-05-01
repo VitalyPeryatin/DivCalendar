@@ -22,10 +22,10 @@ class ChangeSecurityViewModel : ViewModel() {
 
     private lateinit var securityIsin: String
 
-    private var cost: Float = 0f
+    private var cost: Double = 0.0
     private var count: Int = 0
 
-    fun setPackageCost(price: Float) {
+    fun setPackageCost(price: Double) {
         this.cost = price
     }
 
@@ -37,7 +37,7 @@ class ChangeSecurityViewModel : ViewModel() {
         this.securityIsin = isin
     }
 
-    private suspend fun getSecurity(count: Int, price: Float): SecurityDbModel? {
+    private suspend fun getSecurity(count: Int, price: Double): SecurityDbModel? {
         return securityInteractor.getSecurityByIsin(securityIsin)?.apply {
             this.count = count
             this.totalPrice = price
@@ -62,7 +62,7 @@ class ChangeSecurityViewModel : ViewModel() {
     }
 
     fun removePackage() = viewModelScope.launch {
-        val security = getSecurity(0, 0f)
+        val security = getSecurity(0, 0.0)
         if (security != null) {
             _changeSecurity.value = security
         }

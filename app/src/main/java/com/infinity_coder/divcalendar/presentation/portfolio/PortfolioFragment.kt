@@ -162,7 +162,7 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
         }
     }
 
-    private fun setTotalPortfolioCost(totalPortfolioCost: Float) {
+    private fun setTotalPortfolioCost(totalPortfolioCost: Double) {
         val currentCurrency = viewModel.getDisplayCurrency()
         val totalPortfolioCostWithCurrency = SecurityCurrencyDelegate.getValueWithCurrency(requireContext(), totalPortfolioCost, currentCurrency)
         totalPortfolioCostTextView.text = getString(R.string.total_portfolio_cost, totalPortfolioCostWithCurrency)
