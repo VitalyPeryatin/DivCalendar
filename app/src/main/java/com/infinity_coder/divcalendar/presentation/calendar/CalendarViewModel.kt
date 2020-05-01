@@ -9,22 +9,27 @@ import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.domain.PaymentInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain.SettingsInteractor
+import com.infinity_coder.divcalendar.presentation._common.LiveEvent
 import com.infinity_coder.divcalendar.presentation._common.logException
 import com.infinity_coder.divcalendar.presentation.calendar.mappers.PaymentsToPresentationModelMapper
 import com.infinity_coder.divcalendar.presentation.calendar.models.EditPaymentParams
 import com.infinity_coder.divcalendar.presentation.calendar.models.FooterPaymentPresentationModel
 import com.infinity_coder.divcalendar.presentation.calendar.models.MonthlyPayment
+import com.infinity_coder.divcalendar.presentation.export_sheet.ExcelPaymentsFileCreator
+import com.infinity_coder.divcalendar.presentation.export_sheet.PaymentsFileCreator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.io.File
 
 class CalendarViewModel : ViewModel() {
 
     private val paymentInteractor = PaymentInteractor()
     private val rateInteractor = RateInteractor()
     private val settingsInteractor = SettingsInteractor()
+    private var paymentsFileCreator: PaymentsFileCreator? = null
 
     private val _state = MutableLiveData<Int>()
     val state: LiveData<Int>
@@ -44,6 +49,8 @@ class CalendarViewModel : ViewModel() {
     private val _isIncludeTaxes = MutableLiveData<Boolean?>(null)
     val isIncludeTaxes: LiveData<Boolean?>
         get() = _isIncludeTaxes
+
+    val sendFileEvent = LiveEvent<File?>()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun loadAllPayments(context: Context) = viewModelScope.launch {
@@ -76,6 +83,13 @@ class CalendarViewModel : ViewModel() {
         return _payments.value!!.indexOfFirst {
             it is FooterPaymentPresentationModel && it.id == monthNumber
         }
+    }
+
+    fun exportData(context: Context) = viewModelScope.launch {
+
+        paymentsFileCreator = ExcelPaymentsFileCreator(context)
+        val exportFilePath = paymentsFileCreator?.create() ?: return@launch
+        sendFileEvent.value = exportFilePath
     }
 
     fun setDisplayCurrency(context: Context, currency: String) = viewModelScope.launch {

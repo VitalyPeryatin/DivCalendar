@@ -38,6 +38,17 @@ object PaymentRepository {
         emit(updatedPayments)
     }
 
+    suspend fun getAllCachedPayments(): List<PaymentDbModel> {
+        val currentPortfolioId = PortfolioRepository.getCurrentPortfolioId()
+
+        val cachedPayments = paymentDao.getAllPaymentsWithSecurity(currentPortfolioId)
+        cachedPayments.forEach {
+            if (it.count == null) it.count = it.security?.count
+        }
+
+        return cachedPayments
+    }
+
     private suspend fun getPaymentsFromNetworkAndSaveToDb(currentPortfolioId: Long, startDate: String, endDate: String): List<PaymentDbModel> {
         val securities = securityDao.getSecurityPackagesForPortfolio(currentPortfolioId)
         val paymentsFromNetwork = getPaymentsFromNetwork(securities, startDate, endDate)

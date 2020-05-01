@@ -33,6 +33,7 @@
     <string name="taxes_included">Accounting for taxes</string>
     <string name="taxes_excluding">Ignoring taxes</string>
     <string name="edit_payments">Edit payments</string>
+    <string name="export_payments">Export payments</string>
 
     <!-- search -->
     <string name="total_price">Total price: %s</string>

@@ -23,6 +23,7 @@
     <string name="taxes_included">С учетом налогов</string>
     <string name="taxes_excluding">Без учета налогов</string>
     <string name="edit_payments">Редактировать выплаты</string>
+    <string name="export_payments">Выгрузить выплаты</string>
 
     <!-- search -->
     <string name="total_price">Стоимость: %s</string>

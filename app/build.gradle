@@ -26,6 +26,15 @@ android {
         versionName "v1.0.2-alpha"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
     }
 
     signingConfigs {
@@ -108,7 +117,7 @@ dependencies {
     // Room
     implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation 'androidx.room:room-runtime:2.2.5'
-    implementation 'com.google.firebase:firebase-database:19.2.1'
+    implementation 'com.google.firebase:firebase-database:19.3.0'
     implementation 'com.google.firebase:firebase-storage:19.1.1'
     kapt 'androidx.room:room-compiler:2.2.5'
     implementation 'androidx.room:room-ktx:2.2.5'
@@ -120,9 +129,9 @@ dependencies {
     implementation "com.google.code.gson:gson:2.8.6"
 
     // Firebase
-    implementation "com.google.firebase:firebase-core:17.3.0"
-    implementation "com.google.firebase:firebase-analytics:17.3.0"
-    implementation "com.google.firebase:firebase-crashlytics:17.0.0-beta04"
+    implementation "com.google.firebase:firebase-core:17.4.0"
+    implementation "com.google.firebase:firebase-analytics:17.4.0"
+    implementation "com.google.firebase:firebase-crashlytics:17.0.0"
 
     // CircleImageView
     implementation "de.hdodenhof:circleimageview:3.0.1"
@@ -159,4 +168,7 @@ dependencies {
 
     // Simple billing library
     implementation "com.anjlab.android.iab.v3:library:1.0.44"
+
+    // MultiDex
+    implementation 'com.android.support:multidex:1.0.3'
 }

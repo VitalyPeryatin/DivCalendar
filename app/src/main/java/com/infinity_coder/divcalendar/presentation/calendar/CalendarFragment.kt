@@ -1,10 +1,16 @@
 package com.infinity_coder.divcalendar.presentation.calendar
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,9 +28,12 @@ import com.infinity_coder.divcalendar.presentation.calendar.dialogs.ChangePaymen
 import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.layout_stub_empty.view.*
+import java.io.File
 import java.util.*
 
-class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
+
+class CalendarFragment : Fragment(R.layout.fragment_calendar),
+    UpdateCallback {
 
     val viewModel: CalendarViewModel by lazy {
         viewModel { CalendarViewModel() }
@@ -39,6 +48,12 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
@@ -47,12 +62,45 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         viewModel.payments.observe(viewLifecycleOwner, Observer(this::updatePayments))
         viewModel.currentYear.observe(viewLifecycleOwner, Observer(this::updateCurrentYear))
         viewModel.isIncludeTaxes.observe(viewLifecycleOwner, Observer(this::setIsIncludedTexes))
+        viewModel.sendFileEvent.observe(viewLifecycleOwner, Observer(this::sendFile))
     }
 
     override fun onStart() {
         super.onStart()
 
         viewModel.updateData(requireContext())
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.calendar, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.uploadItem -> {
+                viewModel.exportData(requireContext())
+            }
+        }
+        return true
+    }
+
+    private fun sendFile(file: File?) {
+        if (file == null) return
+
+        val fileUri = FileProvider.getUriForFile(
+            context!!, context!!.applicationContext.packageName.toString() + ".provider", file
+        )
+        val intentShareFileBuilder = ShareCompat.IntentBuilder.from(requireActivity())
+            .setType("application/*")
+            .setStream(fileUri)
+            .intent
+            .setAction(Intent.ACTION_SEND)
+            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+        val exportPayments = resources.getString(R.string.export_payments)
+
+        startActivity(Intent.createChooser(intentShareFileBuilder, exportPayments))
     }
 
     override fun onUpdate() {
@@ -67,12 +115,11 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
         initSpinnerYear()
 
-        val checkedCurrencyRadioButton =
-            when (viewModel.getDisplayCurrency()) {
-                RateRepository.RUB_RATE -> rubRadioButton
-                RateRepository.USD_RATE -> usdRadioButton
-                else -> null
-            }
+        val checkedCurrencyRadioButton = when (viewModel.getDisplayCurrency()) {
+            RateRepository.RUB_RATE -> rubRadioButton
+            RateRepository.USD_RATE -> usdRadioButton
+            else -> null
+        }
 
         checkedCurrencyRadioButton?.isChecked = true
 
@@ -86,8 +133,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
             .add(DividerDelegateAdapter())
             .add(HeaderPaymentRecyclerDelegateAdapter())
             .add(PaymentRecyclerDelegateAdapter(paymentClickListener))
-            .add(FooterPaymentRecyclerDelegateAdapter())
-            .build()
+            .add(FooterPaymentRecyclerDelegateAdapter()).build()
 
         emptySecuritiesLayout.emptyTextView.text = resources.getString(R.string.empty_securities)
     }
@@ -111,8 +157,14 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         if (!isChecked) return
 
         when (radioButton) {
-            rubRadioButton -> viewModel.setDisplayCurrency(requireContext(), RateRepository.RUB_RATE)
-            usdRadioButton -> viewModel.setDisplayCurrency(requireContext(), RateRepository.USD_RATE)
+            rubRadioButton -> viewModel.setDisplayCurrency(
+                requireContext(),
+                RateRepository.RUB_RATE
+            )
+            usdRadioButton -> viewModel.setDisplayCurrency(
+                requireContext(),
+                RateRepository.USD_RATE
+            )
         }
     }
 

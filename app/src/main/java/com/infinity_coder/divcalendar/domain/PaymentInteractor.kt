@@ -25,6 +25,16 @@ class PaymentInteractor {
             .map { groupAndSortPayments(it) }
     }
 
+    suspend fun getAllPayments(portfolioId: Long): List<PaymentDbModel> {
+        val comparator = compareBy<PaymentDbModel> {
+            convertStingToDate(it.date).time
+        }
+            .thenBy { it.security?.name }
+            .thenByDescending { it.dividends }
+
+        return PaymentRepository.getAllCachedPayments().sortedWith(comparator)
+    }
+
     private fun calculateTaxesIfNeed(isIncludeTaxes: Boolean, payments: List<PaymentDbModel>): List<PaymentDbModel> {
         if (isIncludeTaxes) {
             payments.forEach { it.dividends *= TAX_FACTOR }

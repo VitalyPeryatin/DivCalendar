@@ -22,6 +22,17 @@ abstract class PortfolioDao {
 
     @Transaction
     open suspend fun getPortfolioWithSecurities(name: String): PortfolioDbModel? {
+        return getPortfolioWithSecuritiesByName(name)
+    }
+
+    @Transaction
+    open suspend fun getAllPortfoliosWithSecurities(): List<PortfolioDbModel> {
+        return getPortfolioNames().mapNotNull { name ->
+            getPortfolioWithSecuritiesByName(name)
+        }
+    }
+
+    private suspend fun getPortfolioWithSecuritiesByName(name: String): PortfolioDbModel? {
         val portfolio = getPortfolioByName(name) ?: return null
         portfolio.securities = getSecurities(portfolio.id)
         return portfolio
