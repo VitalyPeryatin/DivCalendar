@@ -20,7 +20,7 @@ class SuffixTextInputEditText : TextInputEditText {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        if (textIsNotEmpty()) {
+        if (this.isFocused || textIsNotEmpty()) {
             val suffixPosition = paint.measureText(text.toString()) + paddingLeft
             canvas?.drawText(suffix, suffixPosition, baseline.toFloat(), paint)
         }
