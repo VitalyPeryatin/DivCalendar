@@ -53,6 +53,7 @@ class AddSecurityViewModel : ViewModel() {
         ticker = security.ticker,
         name = security.name,
         logo = security.logo,
+        exchange = security.exchange,
         count = count,
         totalPrice = price * count,
         yearYield = security.yearYield,

@@ -1,7 +1,7 @@
 package com.infinity_coder.divcalendar.presentation
 
-import android.app.Application
 import android.content.Context
+import androidx.multidex.MultiDexApplication
 import com.facebook.stetho.Stetho
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
@@ -10,7 +10,7 @@ import com.infinity_coder.divcalendar.presentation._common.clearLogFile
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class App : Application() {
+class App : MultiDexApplication() {
 
     private val portfolioInteractor = PortfolioInteractor()
 
@@ -39,7 +39,7 @@ class App : Application() {
     }
 
     companion object {
-        const val DEFAULT_PORTFOLIO_NAME = "Основной"
+        const val DEFAULT_PORTFOLIO_NAME = "Основной портфель"
 
         private const val RATE_OUT_DATE_LIMIT = 30 * 60 * 1000L
 
