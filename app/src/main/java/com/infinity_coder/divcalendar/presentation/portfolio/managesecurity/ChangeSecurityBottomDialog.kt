@@ -8,23 +8,24 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.DecimalFormatStorage
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.extensions.shake
-import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalCountTextWatcher
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalPriceTextWatcher
 import kotlinx.android.synthetic.main.bottom_dialog_remove_security.*
+import kotlin.math.abs
 
 class ChangeSecurityBottomDialog : BottomDialog() {
 
     private var clickListener: OnClickListener? = null
 
-    private val viewModel: ChangeSecurityViewModel by lazy {
-        viewModel { ChangeSecurityViewModel() }
+    val viewModel: ChangeSecurityViewModel by lazy {
+        ViewModelProvider(this).get(ChangeSecurityViewModel::class.java)
     }
 
     private lateinit var securityName: String
@@ -42,6 +43,7 @@ class ChangeSecurityBottomDialog : BottomDialog() {
         securityCount = requireArguments().getInt(ARGUMENT_COUNT, 0)
         securityTotalPrice = requireArguments().getDouble(ARGUMENT_TOTAL_PRICE, 0.0)
         val isin = requireArguments().getString(ARGUMENT_ISIN, "")
+
         viewModel.setSecurityIsin(isin)
     }
 
@@ -65,11 +67,10 @@ class ChangeSecurityBottomDialog : BottomDialog() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initUI()
-
         viewModel.changeSecurity.observe(viewLifecycleOwner, Observer(this::changePackage))
         viewModel.shakePriceEditText.observe(viewLifecycleOwner, Observer { shakePriceEditText() })
         viewModel.shakeCountEditText.observe(viewLifecycleOwner, Observer { shakeCountEditText() })
+        initUI()
     }
 
     private fun initUI() {
@@ -93,7 +94,7 @@ class ChangeSecurityBottomDialog : BottomDialog() {
             }
         }
 
-        val priceString = if (securityTotalPrice % 1 == 0.0) {
+        val priceString = if (abs(securityTotalPrice % 1 - 0.0) < DecimalFormatStorage.EPS_ACCURACY) {
             securityTotalPrice.toInt().toString()
         } else {
             securityTotalPrice.toString()

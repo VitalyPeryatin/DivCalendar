@@ -24,6 +24,8 @@ object PaymentRepository {
     private const val PREF_SELECTED_YEAR = "selected_year"
     private val paymentsPreferences = App.instance.getSharedPreferences(PAYMENTS_PREF_NAME, Context.MODE_PRIVATE)
 
+    val lastSecuritiesReceived = mutableMapOf<String, List<SecurityDbModel>>()
+
     suspend fun getPayments(startDate: String, endDate: String): Flow<List<PaymentDbModel>> = flow {
         val currentPortfolioId = PortfolioRepository.getCurrentPortfolioId()
 
@@ -34,8 +36,19 @@ object PaymentRepository {
 
         emit(cachedPayments)
 
-        val updatedPayments = getPaymentsFromNetworkAndSaveToDb(currentPortfolioId, startDate, endDate)
-        emit(updatedPayments)
+        if (isNeedUpdateData(currentPortfolioId, startDate, endDate)) {
+            val updatedPayments = getPaymentsFromNetworkAndSaveToDb(currentPortfolioId, startDate, endDate)
+            emit(updatedPayments)
+        }
+    }
+
+    private suspend fun isNeedUpdateData(currentPortfolioId: Long, startDate: String, endDate: String): Boolean {
+        if (!lastSecuritiesReceived.containsKey("$startDate$endDate"))
+            return true
+
+        val security = securityDao.getSecurityPackagesForPortfolio(currentPortfolioId)
+
+        return security != lastSecuritiesReceived["$startDate$endDate"]
     }
 
     suspend fun getAllCachedPayments(portfolioId: Long): List<PaymentDbModel> {
@@ -50,6 +63,7 @@ object PaymentRepository {
 
     private suspend fun getPaymentsFromNetworkAndSaveToDb(currentPortfolioId: Long, startDate: String, endDate: String): List<PaymentDbModel> {
         val securities = securityDao.getSecurityPackagesForPortfolio(currentPortfolioId)
+
         val paymentsFromNetwork = getPaymentsFromNetwork(securities, startDate, endDate)
             .map {
                 if (it.isin.isBlank()) it.isin = it.name
@@ -58,6 +72,9 @@ object PaymentRepository {
         val payments = paymentsFromNetwork.map {
             PaymentDbModel.from(currentPortfolioId, it)
         }
+
+        lastSecuritiesReceived["$startDate$endDate"] = securities
+
         paymentDao.insert(payments)
         return paymentDao.getPaymentsWithSecurity(currentPortfolioId, startDate, endDate)
     }

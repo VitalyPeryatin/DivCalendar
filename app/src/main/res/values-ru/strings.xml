@@ -56,6 +56,7 @@
     <string name="edit_portfolio_with_name">Редактирование портфеля \'%s\'</string>
     <string name="small_count_portfolio">Это единственный портфель. Вы не можете его удалить.</string>
     <string name="total_portfolio_cost">Итого: %s</string>
+    <string name="refresh_content">Идет обновление данных…</string>
 
     <!-- settings -->
     <string name="settings">Настройки</string>

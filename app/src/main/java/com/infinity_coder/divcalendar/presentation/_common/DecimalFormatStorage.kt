@@ -9,6 +9,7 @@ import java.util.*
 object DecimalFormatStorage {
 
     private const val ACCURACY = 2
+    const val EPS_ACCURACY = 0.0000001
 
     val countEditTextDecimalFormat by lazy {
         val formatSymbols = DecimalFormatSymbols(Locale.getDefault())
@@ -22,12 +23,9 @@ object DecimalFormatStorage {
         DecimalFormat("#,###", formatSymbols)
     }
 
-    val formatter: DecimalFormat
-
-    init {
+    val formatter: DecimalFormat by lazy {
         val formatSymbols = DecimalFormatSymbols(Locale.getDefault())
-        formatSymbols.decimalSeparator = ','
         formatSymbols.groupingSeparator = ' '
-        formatter = DecimalFormat("#,###.${"#".repeat(ACCURACY)}", formatSymbols)
+        DecimalFormat("#,###.${"#".repeat(ACCURACY)}", formatSymbols)
     }
 }

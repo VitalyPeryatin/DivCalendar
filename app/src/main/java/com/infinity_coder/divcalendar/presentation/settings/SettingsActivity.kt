@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.infinity_coder.divcalendar.BuildConfig
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.SettingsRepository
@@ -14,7 +15,6 @@ import com.infinity_coder.divcalendar.presentation._common.SwitchServerVersionDe
 import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation._common.extensions.isAppAvailable
 import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
-import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation.billing.dialogs.BuySubscriptionDialog
 import com.infinity_coder.divcalendar.presentation.billing.dialogs.SubscriptionPurchasedDialog
 import com.infinity_coder.divcalendar.presentation.settings.dialogs.ReportErrorBottomDialog
@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.item_settings_switch.view.*
 class SettingsActivity : AbstractSubscriptionActivity() {
 
     val viewModel: SettingsViewModel by lazy {
-        viewModel { SettingsViewModel() }
+        ViewModelProvider(this).get(SettingsViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

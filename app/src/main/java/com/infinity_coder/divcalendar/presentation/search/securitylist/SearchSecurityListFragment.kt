@@ -6,13 +6,13 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.extensions.executeIfSubscribed
 import com.infinity_coder.divcalendar.presentation._common.extensions.showSuccessfulToast
-import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityViewModel
 import com.infinity_coder.divcalendar.presentation.search.adapters.SecurityRecyclerAdapter
@@ -27,8 +27,9 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
     AddSecurityBottomDialog.OnDialogClickListener {
 
     private lateinit var parentViewModel: SearchSecurityViewModel
-    private val viewModel: SearchSecurityListViewModel by lazy {
-        viewModel { SearchSecurityListViewModel() }
+
+    val viewModel: SearchSecurityListViewModel by lazy {
+        ViewModelProvider(this).get(SearchSecurityListViewModel::class.java)
     }
 
     private lateinit var parentActivity: SearchSecurityActivity
@@ -45,13 +46,12 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
 
         parentActivity = context as SearchSecurityActivity
         parentViewModel = parentActivity.viewModel
+
         viewModel.securityType = arguments!!.getString(SECURITY_TYPE_ARGUMENT, "")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initUI()
 
         parentViewModel.queryLiveData.observe(viewLifecycleOwner, Observer(this::updateQuery))
         parentViewModel.marketLiveData.observe(viewLifecycleOwner, Observer(this::updateMarket))
@@ -59,6 +59,7 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
         viewModel.state.observe(viewLifecycleOwner, Observer(this::setState))
         viewModel.addSecurity.observe(viewLifecycleOwner, Observer(this::addSecurityPackage))
         viewModel.addSecurityIfHasSubscription.observe(viewLifecycleOwner, Observer(this::addSecurityPackageIfHasSubscription))
+        initUI()
     }
 
     override fun onResume() {

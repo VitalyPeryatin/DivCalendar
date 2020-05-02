@@ -46,6 +46,8 @@ class CalendarViewModel : ViewModel() {
     val currentYear: LiveData<String>
         get() = _currentYear
 
+    val showShackbar = LiveEvent<Boolean>()
+
     private var cachedPayments: List<MonthlyPayment> = emptyList()
     private val paymentsMapper = PaymentsToPresentationModelMapper()
 
@@ -82,6 +84,33 @@ class CalendarViewModel : ViewModel() {
                 if (_payments.value!!.isEmpty()) {
                     _state.value = VIEW_STATE_CALENDAR_EMPTY
                 }
+            }
+            .catch { handleError(it) }
+            .launchIn(viewModelScope)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun refresh(context: Context) = viewModelScope.launch {
+        val currentYearValue = _currentYear.value!!
+        val includeTaxes = isIncludeTaxes.value ?: false
+        paymentInteractor.getPayments(currentYearValue, includeTaxes)
+            .onEach { cachedPayments = it }
+            .map { paymentsMapper.mapToPresentationModel(context, cachedPayments) }
+            .flowOn(Dispatchers.IO)
+            .onEach {
+                _payments.value = it
+                if (it.isNotEmpty()) {
+                    _state.value = VIEW_STATE_CALENDAR_CONTENT
+                }
+
+                if (showShackbar.value != null && !showShackbar.value!!)
+                    showShackbar.value = true
+            }
+            .onCompletion {
+                if (_payments.value!!.isEmpty()) {
+                    _state.value = VIEW_STATE_CALENDAR_EMPTY
+                }
+                showShackbar.value = false
             }
             .catch { handleError(it) }
             .launchIn(viewModelScope)

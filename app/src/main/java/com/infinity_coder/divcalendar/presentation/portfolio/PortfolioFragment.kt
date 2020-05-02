@@ -9,6 +9,7 @@ import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
@@ -16,9 +17,9 @@ import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
+import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
 import com.infinity_coder.divcalendar.presentation._common.extensions.executeIfSubscribed
 import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
-import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.ChangePortfolioBottomDialog
 import com.infinity_coder.divcalendar.presentation.portfolio.managesecurity.ChangeSecurityBottomDialog
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
@@ -27,15 +28,26 @@ import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 
 class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     ChangeSecurityBottomDialog.OnClickListener,
-    ChangePortfolioBottomDialog.OnChangePortfolioClickListener {
+    ChangePortfolioBottomDialog.OnChangePortfolioClickListener,
+    UpdateCallback {
 
-    private val viewModel: PortfolioViewModel by lazy {
-        viewModel { PortfolioViewModel() }
+    val viewModel: PortfolioViewModel by lazy {
+        ViewModelProvider(this).get(PortfolioViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.loadSecurities()
+    }
+
+    override fun onUpdate() {
+        initCurrencyRadioGroup()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -61,17 +73,10 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initUI()
-
         viewModel.portfolio.observe(viewLifecycleOwner, Observer(this::setPortfolio))
         viewModel.state.observe(viewLifecycleOwner, Observer(this::setState))
         viewModel.totalPortfolioCost.observe(viewLifecycleOwner, Observer(this::setTotalPortfolioCost))
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        viewModel.loadSecurities()
+        initUI()
     }
 
     private fun initUI() {
@@ -80,6 +85,9 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
         parentActivity.setActionBar(portfolioToolbar)
 
         initCurrencyRadioGroup()
+
+        rubRadioButton.setOnCheckedChangeListener(this::checkCurrency)
+        usdRadioButton.setOnCheckedChangeListener(this::checkCurrency)
 
         emptyLayout.emptyTextView.text = resources.getText(R.string.collect_portfolio)
 
@@ -100,9 +108,6 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
             else -> null
         }
         checkedCurrencyRadioButton?.isChecked = true
-
-        rubRadioButton.setOnCheckedChangeListener(this::checkCurrency)
-        usdRadioButton.setOnCheckedChangeListener(this::checkCurrency)
     }
 
     private fun checkCurrency(radioButton: CompoundButton, isChecked: Boolean) {

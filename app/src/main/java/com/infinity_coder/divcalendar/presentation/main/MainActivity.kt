@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
@@ -19,12 +20,14 @@ import java.lang.IllegalStateException
 
 class MainActivity : AbstractSubscriptionActivity() {
 
+    lateinit var viewModel: MainViewModel
+
     private val menuIdToFragment = mutableMapOf<Int, Fragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         if (savedInstanceState == null) {
             switchFragment(getFragment(R.id.portfolioItem))
         } else {
@@ -73,11 +76,11 @@ class MainActivity : AbstractSubscriptionActivity() {
             return menuIdToFragment.getValue(menuId)
 
         menuIdToFragment[menuId] = when (menuId) {
-            R.id.portfolioItem -> PortfolioFragment()
+            R.id.portfolioItem -> PortfolioFragment() as Fragment
 
-            R.id.calendarItem -> CalendarFragment()
+            R.id.calendarItem -> CalendarFragment() as Fragment
 
-            R.id.newsItem -> NewsFragment()
+            R.id.newsItem -> NewsFragment() as Fragment
 
             else -> throw IllegalStateException("this menu does not exist")
         }

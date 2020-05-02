@@ -36,6 +36,10 @@ class PaymentInteractor {
             .sortedWith(comparator)
     }
 
+    fun clearPaymentSession() {
+        PaymentRepository.lastSecuritiesReceived.clear()
+    }
+
     private fun calculateTaxesIfNeed(isIncludeTaxes: Boolean, payments: List<PaymentDbModel>): List<PaymentDbModel> {
         if (isIncludeTaxes) {
             payments.forEach { it.dividends *= TAX_FACTOR }

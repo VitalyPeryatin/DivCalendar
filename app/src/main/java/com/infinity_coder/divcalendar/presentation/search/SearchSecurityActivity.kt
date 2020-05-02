@@ -8,19 +8,19 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation._common.SecurityMarketDelegate
 import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
-import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation.search.adapters.SearchSecurityPagerAdapter
 import kotlinx.android.synthetic.main.activity_search_securities.*
 
 class SearchSecurityActivity : AbstractSubscriptionActivity() {
 
     val viewModel: SearchSecurityViewModel by lazy {
-        viewModel { SearchSecurityViewModel() }
+        ViewModelProvider(this).get(SearchSecurityViewModel::class.java)
     }
 
     private lateinit var securityPagerAdapter: SearchSecurityPagerAdapter

@@ -66,6 +66,7 @@
     <string name="edit_portfolio_with_name">Edit portfolio \'%s\'</string>
     <string name="small_count_portfolio">This is the only portfolio. You cannot delete it.</string>
     <string name="total_portfolio_cost">Total: %s</string>
+    <string name="refresh_content">Data is being updated…</string>
 
     <!-- settings -->
     <string name="settings">Settings</string>

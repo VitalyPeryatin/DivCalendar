@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
-import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.adapter.ChangePortfolioRecyclerAdapter
 import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.dialogs.CreatePortfolioDialog
 import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.dialogs.DeletePortfolioDialog
@@ -28,7 +28,7 @@ class ChangePortfolioBottomDialog : BottomDialog(),
     private var deletePortfolioDialog: DeletePortfolioDialog? = null
 
     val viewModel: ChangePortfolioViewModel by lazy {
-        viewModel { ChangePortfolioViewModel() }
+        ViewModelProvider(this).get(ChangePortfolioViewModel::class.java)
     }
 
     private val portfoliosAdapter = ChangePortfolioRecyclerAdapter(object : ChangePortfolioRecyclerAdapter.OnItemClickListener {
