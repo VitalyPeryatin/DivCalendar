@@ -116,7 +116,7 @@ class CalendarViewModel : ViewModel() {
             .launchIn(viewModelScope)
     }
 
-    fun loadPortfolioName() {
+    private fun loadPortfolioName() {
         val portfolioName = portfolioInteractor.getCurrentPortfolioName()
         portfolioNameTitleEvent.value = portfolioName
     }
