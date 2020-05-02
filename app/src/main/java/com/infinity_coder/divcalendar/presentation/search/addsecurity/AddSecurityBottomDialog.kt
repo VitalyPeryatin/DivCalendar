@@ -106,7 +106,7 @@ class AddSecurityBottomDialog : BottomDialog() {
                 viewModel.setSecurityCount(securitiesCount)
             }
         })
-        if(countEditText.requestFocus()) {
+        if (countEditText.requestFocus()) {
             activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         }
 
