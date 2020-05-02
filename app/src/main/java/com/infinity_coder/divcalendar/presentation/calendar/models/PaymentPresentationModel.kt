@@ -44,7 +44,7 @@ data class PaymentPresentationModel(
         }
     }
 
-    override fun id() = name + presentationDate
+    override fun id() = isin + presentationDate
 
     override fun content() = this
 }

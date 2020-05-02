@@ -10,6 +10,7 @@ import android.view.WindowManager
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
@@ -17,7 +18,6 @@ import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.DecimalFormatStorage
 import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.extensions.shake
-import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalCountTextWatcher
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalPriceTextWatcher
 import kotlinx.android.synthetic.main.bottom_dialog_add_security.*
@@ -28,8 +28,8 @@ class AddSecurityBottomDialog : BottomDialog() {
 
     private lateinit var security: SecurityNetModel
 
-    private val viewModel: AddSecurityViewModel by lazy {
-        viewModel { AddSecurityViewModel() }
+    val viewModel: AddSecurityViewModel by lazy {
+        ViewModelProvider(this).get(AddSecurityViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +42,7 @@ class AddSecurityBottomDialog : BottomDialog() {
             ticker = requireArguments().getString(ARGUMENT_TICKER, ""),
             name = requireArguments().getString(ARGUMENT_NAME, ""),
             logo = requireArguments().getString(ARGUMENT_LOGO, ""),
+            exchange = requireArguments().getString(ARGUMENT_EXCHANGE, ""),
             yearYield = requireArguments().getFloat(ARGUMENT_YEAR_YIELD, 0f),
             currency = requireArguments().getString(ARGUMENT_CURRENCY, ""),
             type = requireArguments().getString(ARGUMENT_TYPE, ""),
@@ -72,17 +73,17 @@ class AddSecurityBottomDialog : BottomDialog() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initUI()
-
         viewModel.getTotalSecurityPriceLiveData().observe(viewLifecycleOwner, Observer(this::setTotalPrice))
         viewModel.securityLiveData.observe(viewLifecycleOwner, Observer(this::addSecurity))
         viewModel.shakePriceEditText.observe(viewLifecycleOwner, Observer { shakePriceEditText() })
         viewModel.shakeCountEditText.observe(viewLifecycleOwner, Observer { shakeCountEditText() })
+        initUI()
     }
 
     private fun initUI() {
         nameTextView.text = security.name
 
+        priceEditText.suffix = " ${SecurityCurrencyDelegate.getCurrencyBadge(requireContext(),security.currency)}"
         priceEditText.addTextChangedListener(object : DecimalPriceTextWatcher(priceEditText, DecimalFormatStorage.priceEditTextDecimalFormat) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 super.onTextChanged(s, start, before, count)
@@ -94,6 +95,12 @@ class AddSecurityBottomDialog : BottomDialog() {
                 viewModel.setSecurityPrice(price)
             }
         })
+        priceEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus && priceEditText.text.toString().isEmpty()) {
+                priceEditText.setText("0")
+            }
+        }
+
         priceEditText.setText(security.currentPrice.toString())
 
         countEditText.addTextChangedListener(object : DecimalCountTextWatcher(countEditText, DecimalFormatStorage.countEditTextDecimalFormat) {
@@ -144,6 +151,7 @@ class AddSecurityBottomDialog : BottomDialog() {
         private const val ARGUMENT_TICKER = "ticker"
         private const val ARGUMENT_NAME = "sec_name"
         private const val ARGUMENT_LOGO = "logo"
+        private const val ARGUMENT_EXCHANGE = "exchange"
         private const val ARGUMENT_YEAR_YIELD = "year_yield"
         private const val ARGUMENT_CURRENCY = "currency"
         private const val ARGUMENT_TYPE = "type"
@@ -160,6 +168,7 @@ class AddSecurityBottomDialog : BottomDialog() {
                 ARGUMENT_TICKER to security.ticker,
                 ARGUMENT_NAME to security.name,
                 ARGUMENT_LOGO to security.logo,
+                ARGUMENT_EXCHANGE to security.exchange,
                 ARGUMENT_YEAR_YIELD to security.yearYield,
                 ARGUMENT_CURRENCY to security.currency,
                 ARGUMENT_TYPE to security.type,

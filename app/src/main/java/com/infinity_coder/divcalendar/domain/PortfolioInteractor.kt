@@ -16,6 +16,10 @@ class PortfolioInteractor {
         return PortfolioRepository.getAllPortfolios()
     }
 
+    suspend fun getAllPortfoliosWithSecurities(): List<PortfolioDbModel> {
+        return PortfolioRepository.getAllPortfoliosWithSecurity()
+    }
+
     suspend fun getAllPortfolioNames(): List<String> {
         return PortfolioRepository.getAllPortfolioNames()
     }

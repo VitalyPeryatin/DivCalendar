@@ -8,25 +8,30 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.DecimalFormatStorage
+import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.extensions.shake
-import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalCountTextWatcher
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalPriceTextWatcher
 import kotlinx.android.synthetic.main.bottom_dialog_remove_security.*
+import kotlin.math.abs
 
 class ChangeSecurityBottomDialog : BottomDialog() {
 
     private var clickListener: OnClickListener? = null
 
-    private val viewModel: ChangeSecurityViewModel by lazy {
-        viewModel { ChangeSecurityViewModel() }
+    val viewModel: ChangeSecurityViewModel by lazy {
+        ViewModelProvider(this).get(ChangeSecurityViewModel::class.java)
     }
 
     private lateinit var securityName: String
+    private lateinit var securityCurrency: String
+    private var securityCount: Int = 0
+    private var securityTotalPrice: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +39,11 @@ class ChangeSecurityBottomDialog : BottomDialog() {
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
 
         securityName = requireArguments().getString(ARGUMENT_NAME, "")
+        securityCurrency = requireArguments().getString(ARGUMENT_CURRENCY, "")
+        securityCount = requireArguments().getInt(ARGUMENT_COUNT, 0)
+        securityTotalPrice = requireArguments().getDouble(ARGUMENT_TOTAL_PRICE, 0.0)
         val isin = requireArguments().getString(ARGUMENT_ISIN, "")
+
         viewModel.setSecurityIsin(isin)
     }
 
@@ -58,16 +67,16 @@ class ChangeSecurityBottomDialog : BottomDialog() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initUI()
-
         viewModel.changeSecurity.observe(viewLifecycleOwner, Observer(this::changePackage))
         viewModel.shakePriceEditText.observe(viewLifecycleOwner, Observer { shakePriceEditText() })
         viewModel.shakeCountEditText.observe(viewLifecycleOwner, Observer { shakeCountEditText() })
+        initUI()
     }
 
     private fun initUI() {
         nameTextView.text = securityName
 
+        priceEditText.suffix = " ${SecurityCurrencyDelegate.getCurrencyBadge(requireContext(),securityCurrency)}"
         priceEditText.addTextChangedListener(object : DecimalPriceTextWatcher(priceEditText, DecimalFormatStorage.priceEditTextDecimalFormat) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 super.onTextChanged(s, start, before, count)
@@ -79,6 +88,18 @@ class ChangeSecurityBottomDialog : BottomDialog() {
                 viewModel.setPackageCost(price)
             }
         })
+        priceEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus && priceEditText.text.toString().isEmpty()) {
+                priceEditText.setText("0")
+            }
+        }
+
+        val priceString = if (abs(securityTotalPrice % 1 - 0.0) < DecimalFormatStorage.EPS_ACCURACY) {
+            securityTotalPrice.toInt().toString()
+        } else {
+            securityTotalPrice.toString()
+        }
+        priceEditText.setText(priceString)
 
         countEditText.addTextChangedListener(object : DecimalCountTextWatcher(countEditText, DecimalFormatStorage.countEditTextDecimalFormat) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -90,6 +111,8 @@ class ChangeSecurityBottomDialog : BottomDialog() {
                 viewModel.setPackageCount(securitiesCount)
             }
         })
+
+        countEditText.setText(securityCount.toString())
 
         changePackageButton.setOnClickListener {
             viewModel.changePackage()
@@ -115,12 +138,10 @@ class ChangeSecurityBottomDialog : BottomDialog() {
     companion object {
 
         private const val ARGUMENT_ISIN = "isin"
-        private const val ARGUMENT_TICKER = "ticker"
-        private const val ARGUMENT_NAME = "sec_name"
-        private const val ARGUMENT_LOGO = "logo"
-        private const val ARGUMENT_YEAR_YIELD = "year_yield"
+        private const val ARGUMENT_NAME = "name"
         private const val ARGUMENT_CURRENCY = "currency"
-        private const val ARGUMENT_TYPE = "type"
+        private const val ARGUMENT_TOTAL_PRICE = "total_price"
+        private const val ARGUMENT_COUNT = "count"
 
         private const val SHAKE_AMPLITUDE = 8f
 
@@ -130,12 +151,10 @@ class ChangeSecurityBottomDialog : BottomDialog() {
             val dialog = ChangeSecurityBottomDialog()
             dialog.arguments = bundleOf(
                 ARGUMENT_ISIN to security.isin,
-                ARGUMENT_TICKER to security.ticker,
                 ARGUMENT_NAME to security.name,
-                ARGUMENT_LOGO to security.logo,
-                ARGUMENT_YEAR_YIELD to security.yearYield,
                 ARGUMENT_CURRENCY to security.currency,
-                ARGUMENT_TYPE to security.type
+                ARGUMENT_TOTAL_PRICE to security.totalPrice,
+                ARGUMENT_COUNT to security.count
             )
             return dialog
         }

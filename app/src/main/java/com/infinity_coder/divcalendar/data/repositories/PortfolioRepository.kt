@@ -31,6 +31,10 @@ object PortfolioRepository {
             .distinctUntilChanged()
     }
 
+    suspend fun getAllPortfoliosWithSecurity(): List<PortfolioDbModel> {
+        return portfolioDao.getAllPortfoliosWithSecurities()
+    }
+
     suspend fun getAllPortfolioNames(): List<String> {
         return portfolioDao.getPortfolioNames()
     }

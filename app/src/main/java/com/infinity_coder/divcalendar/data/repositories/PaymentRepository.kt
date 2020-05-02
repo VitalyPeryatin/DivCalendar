@@ -1,7 +1,6 @@
 package com.infinity_coder.divcalendar.data.repositories
 
 import android.content.Context
-import android.util.Log
 import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
@@ -25,7 +24,7 @@ object PaymentRepository {
     private const val PREF_SELECTED_YEAR = "selected_year"
     private val paymentsPreferences = App.instance.getSharedPreferences(PAYMENTS_PREF_NAME, Context.MODE_PRIVATE)
 
-    private val isinsLastSecuritiesReceived = mutableMapOf<String, List<String>>()
+    val lastSecuritiesReceived = mutableMapOf<String, List<SecurityDbModel>>()
 
     suspend fun getPayments(startDate: String, endDate: String): Flow<List<PaymentDbModel>> = flow {
         val currentPortfolioId = PortfolioRepository.getCurrentPortfolioId()
@@ -37,41 +36,44 @@ object PaymentRepository {
 
         emit(cachedPayments)
 
-        Log.d("PaymentRepositoryLog","isins")
-        isinsLastSecuritiesReceived["$startDate$endDate"]?.forEach {
-            Log.d("PaymentRepositoryLog",it.toString())
-        }
-
-        val isins = securityDao.getSecurityPackagesForPortfolio(currentPortfolioId).map { it.isin }
-
-        if(isinsLastSecuritiesReceived.containsKey("$startDate$endDate")) {
+        if (isNeedUpdateData(currentPortfolioId, startDate, endDate)) {
             val updatedPayments = getPaymentsFromNetworkAndSaveToDb(currentPortfolioId, startDate, endDate)
             emit(updatedPayments)
         }
     }
 
-    /*private suspend fun isNeedUpdateData(currentPortfolioId: Long, startDate: String, endDate: String):Boolean{
-        if(!isinsLastSecuritiesReceived.containsKey("$startDate$endDate")) return true
+    private suspend fun isNeedUpdateData(currentPortfolioId: Long, startDate: String, endDate: String): Boolean {
+        if (!lastSecuritiesReceived.containsKey("$startDate$endDate"))
+            return true
 
-        securityDao.getSecurityPackagesForPortfolio(currentPortfolioId).map { it.isin }.forEach {
+        val security = securityDao.getSecurityPackagesForPortfolio(currentPortfolioId)
 
+        return security != lastSecuritiesReceived["$startDate$endDate"]
+    }
+
+    suspend fun getAllCachedPayments(portfolioId: Long): List<PaymentDbModel> {
+
+        val cachedPayments = paymentDao.getAllPaymentsWithSecurity(portfolioId)
+        cachedPayments.forEach {
+            if (it.count == null) it.count = it.security?.count
         }
 
-    }*/
+        return cachedPayments
+    }
 
     private suspend fun getPaymentsFromNetworkAndSaveToDb(currentPortfolioId: Long, startDate: String, endDate: String): List<PaymentDbModel> {
         val securities = securityDao.getSecurityPackagesForPortfolio(currentPortfolioId)
+
         val paymentsFromNetwork = getPaymentsFromNetwork(securities, startDate, endDate)
             .map {
-                if (it.isin.isBlank())
-                    it.isin = it.name
+                if (it.isin.isBlank()) it.isin = it.name
                 it
             }
         val payments = paymentsFromNetwork.map {
             PaymentDbModel.from(currentPortfolioId, it)
         }
 
-        isinsLastSecuritiesReceived["$startDate$endDate"] = securities.map { it.isin }
+        lastSecuritiesReceived["$startDate$endDate"] = securities
 
         paymentDao.insert(payments)
         return paymentDao.getPaymentsWithSecurity(currentPortfolioId, startDate, endDate)
