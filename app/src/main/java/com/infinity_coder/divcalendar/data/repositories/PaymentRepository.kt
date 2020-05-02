@@ -38,10 +38,9 @@ object PaymentRepository {
         emit(updatedPayments)
     }
 
-    suspend fun getAllCachedPayments(): List<PaymentDbModel> {
-        val currentPortfolioId = PortfolioRepository.getCurrentPortfolioId()
+    suspend fun getAllCachedPayments(portfolioId: Long): List<PaymentDbModel> {
 
-        val cachedPayments = paymentDao.getAllPaymentsWithSecurity(currentPortfolioId)
+        val cachedPayments = paymentDao.getAllPaymentsWithSecurity(portfolioId)
         cachedPayments.forEach {
             if (it.count == null) it.count = it.security?.count
         }
