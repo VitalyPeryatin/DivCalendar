@@ -95,6 +95,12 @@ class AddSecurityBottomDialog : BottomDialog() {
                 viewModel.setSecurityPrice(price)
             }
         })
+        priceEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus && priceEditText.text.toString().isEmpty()) {
+                priceEditText.setText("0")
+            }
+        }
+
         priceEditText.setText(security.currentPrice.toString())
 
         countEditText.addTextChangedListener(object : DecimalCountTextWatcher(countEditText, DecimalFormatStorage.countEditTextDecimalFormat) {

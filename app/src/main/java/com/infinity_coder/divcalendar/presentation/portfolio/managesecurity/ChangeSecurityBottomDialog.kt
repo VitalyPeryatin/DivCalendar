@@ -17,6 +17,7 @@ import com.infinity_coder.divcalendar.presentation._common.extensions.shake
 import com.infinity_coder.divcalendar.presentation._common.extensions.viewModel
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalCountTextWatcher
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalPriceTextWatcher
+import kotlinx.android.synthetic.main.bottom_dialog_add_security.*
 import kotlinx.android.synthetic.main.bottom_dialog_remove_security.*
 import kotlinx.android.synthetic.main.bottom_dialog_remove_security.countEditText
 import kotlinx.android.synthetic.main.bottom_dialog_remove_security.nameTextView
@@ -86,6 +87,13 @@ class ChangeSecurityBottomDialog : BottomDialog() {
                 viewModel.setPackageCost(price)
             }
         })
+        priceEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus && priceEditText.text.toString().isEmpty()) {
+                priceEditText.setText("0")
+            }
+        }
+
+        priceEditText.setText("0")
 
         countEditText.addTextChangedListener(object : DecimalCountTextWatcher(countEditText, DecimalFormatStorage.countEditTextDecimalFormat) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
