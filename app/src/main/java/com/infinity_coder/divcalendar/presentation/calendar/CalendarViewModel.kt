@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.domain.PaymentInteractor
+import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain.SettingsInteractor
 import com.infinity_coder.divcalendar.presentation._common.logException
@@ -25,6 +26,7 @@ class CalendarViewModel : ViewModel() {
     private val paymentInteractor = PaymentInteractor()
     private val rateInteractor = RateInteractor()
     private val settingsInteractor = SettingsInteractor()
+    private val portfolioInteractor = PortfolioInteractor()
 
     private val _state = MutableLiveData<Int>()
     val state: LiveData<Int>
@@ -47,8 +49,15 @@ class CalendarViewModel : ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun loadAllPayments(context: Context) = viewModelScope.launch {
+
+        if (portfolioInteractor.isCurrentPortfolioEmpty()) {
+            _state.value = VIEW_STATE_CALENDAR_EMPTY
+            return@launch
+        }
+
         val currentYearValue = _currentYear.value!!
         val includeTaxes = isIncludeTaxes.value ?: false
+
         paymentInteractor.getPayments(currentYearValue, includeTaxes)
             .onEach { cachedPayments = it }
             .map { paymentsMapper.mapToPresentationModel(context, cachedPayments) }

@@ -98,7 +98,7 @@ class PaymentsToPresentationModelMapper {
 
     private suspend fun getCosts(): Double {
         val currentCurrency = rateInteractor.getDisplayCurrency()
-        val securities = portfolioInteractor.getCurrentPortfolio().first().securities
+        val securities = portfolioInteractor.getCurrentPortfolioFlow().first().securities
         return securities.sumByDouble {
             getTotalPriceForCurrentCurrency(currentCurrency, it)
         }

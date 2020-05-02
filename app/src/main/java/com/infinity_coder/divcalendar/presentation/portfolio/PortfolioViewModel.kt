@@ -34,7 +34,7 @@ class PortfolioViewModel : ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun loadSecurities() = viewModelScope.launch {
-        portfolioInteractor.getCurrentPortfolio()
+        portfolioInteractor.getCurrentPortfolioFlow()
             .onEach {
                 _portfolio.value = it
                 calculateTotalPortfolioCost(it)
