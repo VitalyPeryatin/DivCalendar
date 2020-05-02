@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.File
 
@@ -97,6 +98,12 @@ class CalendarViewModel : ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun refresh(context: Context) = viewModelScope.launch {
+
+        if (portfolioInteractor.isCurrentPortfolioEmpty()) {
+            _state.value = VIEW_STATE_CALENDAR_EMPTY
+            return@launch
+        }
+
         val currentYearValue = _currentYear.value!!
         val includeTaxes = isIncludeTaxes.value ?: false
         paymentInteractor.getPayments(currentYearValue, includeTaxes)
@@ -133,11 +140,12 @@ class CalendarViewModel : ViewModel() {
         }
     }
 
-    fun exportData(context: Context) = viewModelScope.launch {
-
+    fun exportData(context: Context) = viewModelScope.launch(Dispatchers.IO) {
         paymentsFileCreator = ExcelPaymentsFileCreator(context)
         val exportFilePath = paymentsFileCreator?.create() ?: return@launch
-        sendFileEvent.value = exportFilePath
+        withContext(Dispatchers.Main) {
+            sendFileEvent.value = exportFilePath
+        }
     }
 
     fun setDisplayCurrency(context: Context, currency: String) = viewModelScope.launch {
