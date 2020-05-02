@@ -83,6 +83,7 @@ class AddSecurityBottomDialog : BottomDialog() {
     private fun initUI() {
         nameTextView.text = security.name
 
+        priceEditText.suffix = " ${SecurityCurrencyDelegate.getCurrencyBadge(requireContext(),security.currency)}"
         priceEditText.addTextChangedListener(object : DecimalPriceTextWatcher(priceEditText, DecimalFormatStorage.priceEditTextDecimalFormat) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 super.onTextChanged(s, start, before, count)
@@ -94,6 +95,12 @@ class AddSecurityBottomDialog : BottomDialog() {
                 viewModel.setSecurityPrice(price)
             }
         })
+        priceEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus && priceEditText.text.toString().isEmpty()) {
+                priceEditText.setText("0")
+            }
+        }
+
         priceEditText.setText(security.currentPrice.toString())
 
         countEditText.addTextChangedListener(object : DecimalCountTextWatcher(countEditText, DecimalFormatStorage.countEditTextDecimalFormat) {
