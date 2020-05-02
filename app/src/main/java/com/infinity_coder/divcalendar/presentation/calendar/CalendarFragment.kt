@@ -41,7 +41,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
     private val paymentClickListener = object : PaymentRecyclerDelegateAdapter.OnItemClickListener {
         override fun onItemClick(item: PaymentPresentationModel) {
             val dialog = ChangePaymentDialog.newInstance(item)
-            dialog.show(childFragmentManager, ChangePaymentDialog::class.toString())
+            dialog.show(childFragmentManager, ChangePaymentDialog.TAG)
         }
     }
 

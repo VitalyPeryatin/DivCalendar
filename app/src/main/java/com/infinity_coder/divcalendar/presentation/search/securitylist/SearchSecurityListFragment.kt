@@ -31,13 +31,12 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
         viewModel { SearchSecurityListViewModel() }
     }
 
-    private var addSecurityDialog: AddSecurityBottomDialog? = null
     private lateinit var parentActivity: SearchSecurityActivity
 
     private val securityClickListener = object : SecurityRecyclerAdapter.OnClickListener {
         override fun onClick(security: SecurityNetModel) {
-            addSecurityDialog = AddSecurityBottomDialog.newInstance(security)
-            addSecurityDialog?.show(childFragmentManager, AddSecurityBottomDialog::class.toString())
+            val addSecurityDialog = AddSecurityBottomDialog.newInstance(security)
+            addSecurityDialog.show(childFragmentManager, AddSecurityBottomDialog.TAG)
         }
     }
 
@@ -126,8 +125,8 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
     }
 
     private fun dismissAddSecurityDialog() {
+        val addSecurityDialog = childFragmentManager.findFragmentByTag(AddSecurityBottomDialog.TAG) as? AddSecurityBottomDialog
         addSecurityDialog?.dismiss()
-        addSecurityDialog = null
     }
 
     companion object {

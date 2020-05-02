@@ -84,6 +84,8 @@ class RenamePortfolioDialog : DialogFragment() {
 
         private const val ARGUMENT_PORTFOLIO_NAME = "portfolio_name"
 
+        const val TAG = "RenamePortfolioDialog"
+
         fun newInstance(name: String): RenamePortfolioDialog {
             val dialog = RenamePortfolioDialog()
             dialog.arguments = bundleOf(ARGUMENT_PORTFOLIO_NAME to name)

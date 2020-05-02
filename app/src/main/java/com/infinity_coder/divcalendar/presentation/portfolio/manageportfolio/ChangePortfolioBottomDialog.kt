@@ -109,12 +109,12 @@ class ChangePortfolioBottomDialog : BottomDialog(),
 
     private fun showRenamePortfolioDialog(portfolio: PortfolioDbModel) {
         val dialog = RenamePortfolioDialog.newInstance(portfolio.name)
-        dialog.show(childFragmentManager, RenamePortfolioDialog::class.toString())
+        dialog.show(childFragmentManager, RenamePortfolioDialog.TAG)
     }
 
     private fun showDeletePortfolioDialog(portfolio: PortfolioDbModel) {
         deletePortfolioDialog = DeletePortfolioDialog.newInstance(portfolio.name)
-        deletePortfolioDialog?.show(childFragmentManager, DeletePortfolioDialog::class.toString())
+        deletePortfolioDialog?.show(childFragmentManager, DeletePortfolioDialog.TAG)
     }
 
     private fun hideDeletePortfolioDialog() {
@@ -133,7 +133,7 @@ class ChangePortfolioBottomDialog : BottomDialog(),
 
     private fun showCreateNewPortfolioDialog() {
         val createPortfolioDialog = CreatePortfolioDialog.newInstance()
-        createPortfolioDialog.show(childFragmentManager, CreatePortfolioDialog::class.toString())
+        createPortfolioDialog.show(childFragmentManager, CreatePortfolioDialog.TAG)
     }
 
     override fun onPortfolioCreated(portfolioName: String) {
@@ -149,6 +149,9 @@ class ChangePortfolioBottomDialog : BottomDialog(),
     }
 
     companion object {
+
+        const val TAG = "ChangePortfolioBottomDialog"
+
         fun newInstance(): ChangePortfolioBottomDialog {
             return ChangePortfolioBottomDialog()
         }

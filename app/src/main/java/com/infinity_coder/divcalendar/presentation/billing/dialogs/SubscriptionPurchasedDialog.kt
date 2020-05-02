@@ -21,6 +21,9 @@ class SubscriptionPurchasedDialog : DialogFragment() {
     }
 
     companion object {
+
+        const val TAG = "SubscriptionPurchasedDialog"
+
         fun newInstance(): SubscriptionPurchasedDialog {
             return SubscriptionPurchasedDialog()
         }
