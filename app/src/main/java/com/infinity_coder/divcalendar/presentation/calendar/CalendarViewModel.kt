@@ -61,6 +61,12 @@ class CalendarViewModel : ViewModel() {
     @OptIn(ExperimentalCoroutinesApi::class)
     fun loadAllPayments(context: Context) = viewModelScope.launch {
 
+        if (portfolioInteractor.isCurrentPortfolioEmpty()) {
+            _state.value = VIEW_STATE_CALENDAR_EMPTY
+            return@launch
+        }
+
+
         loadPortfolioName()
 
         val currentYearValue = _currentYear.value!!
