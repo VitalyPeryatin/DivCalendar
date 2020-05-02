@@ -53,4 +53,13 @@ abstract class PaymentDao {
             it
         }
     }
+
+    @Transaction
+    open suspend fun getAllPaymentsWithSecurity(portfolioId: Long): List<PaymentDbModel> {
+        return getPayments(portfolioId).map {
+            it.security = getSecurity(portfolioId, it.isin)
+            it.dividends = it.dividends * (it.count ?: it.security?.count ?: 0)
+            it
+        }
+    }
 }
