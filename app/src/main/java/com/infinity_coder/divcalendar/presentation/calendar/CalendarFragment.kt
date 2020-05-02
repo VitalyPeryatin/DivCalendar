@@ -31,7 +31,6 @@ import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 import java.io.File
 import java.util.*
 
-
 class CalendarFragment : Fragment(R.layout.fragment_calendar),
     UpdateCallback {
 
@@ -134,7 +133,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar),
             .add(DividerDelegateAdapter())
             .add(HeaderPaymentRecyclerDelegateAdapter())
             .add(PaymentRecyclerDelegateAdapter(paymentClickListener))
-            .add(FooterPaymentRecyclerDelegateAdapter()).build()
+            .add(FooterPaymentRecyclerDelegateAdapter())
+            .build()
 
         emptySecuritiesLayout.emptyTextView.text = resources.getString(R.string.empty_securities)
     }

@@ -34,7 +34,6 @@ class ExcelPaymentsFileCreator(private val context: Context) : PaymentsFileCreat
             addPaymentsSheet(workbook, portfolio)
 
             saveWorkbook(workbook, files, portfolio.name)
-
         }
         return getPackedFile(files)
     }
@@ -99,7 +98,7 @@ class ExcelPaymentsFileCreator(private val context: Context) : PaymentsFileCreat
         portfolio.securities.forEachIndexed { index, security ->
             val type = when (security.type) {
                 SecurityTypeDelegate.SECURITY_TYPE_STOCK -> resources.getString(R.string.cell_value_stock)
-                SecurityTypeDelegate.SECURITY_TYPE_BOND-> resources.getString(R.string.cell_value_bond)
+                SecurityTypeDelegate.SECURITY_TYPE_BOND -> resources.getString(R.string.cell_value_bond)
                 else -> "-"
             }
 
