@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -44,7 +45,8 @@ class AddSecurityBottomDialog : BottomDialog() {
             exchange = requireArguments().getString(ARGUMENT_EXCHANGE, ""),
             yearYield = requireArguments().getFloat(ARGUMENT_YEAR_YIELD, 0f),
             currency = requireArguments().getString(ARGUMENT_CURRENCY, ""),
-            type = requireArguments().getString(ARGUMENT_TYPE, "")
+            type = requireArguments().getString(ARGUMENT_TYPE, ""),
+            currentPrice = requireArguments().getDouble(ARGUMENT_CURRENT_PRICE, 0.0)
         )
         viewModel.setSecurity(security)
     }
@@ -82,6 +84,7 @@ class AddSecurityBottomDialog : BottomDialog() {
     private fun initUI() {
         nameTextView.text = security.name
 
+        priceEditText.suffix = " ${SecurityCurrencyDelegate.getCurrencyBadge(requireContext(),security.currency)}"
         priceEditText.addTextChangedListener(object : DecimalPriceTextWatcher(priceEditText, DecimalFormatStorage.priceEditTextDecimalFormat) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 super.onTextChanged(s, start, before, count)
@@ -93,6 +96,13 @@ class AddSecurityBottomDialog : BottomDialog() {
                 viewModel.setSecurityPrice(price)
             }
         })
+        priceEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus && priceEditText.text.toString().isEmpty()) {
+                priceEditText.setText("0")
+            }
+        }
+
+        priceEditText.setText(security.currentPrice.toString())
 
         countEditText.addTextChangedListener(object : DecimalCountTextWatcher(countEditText, DecimalFormatStorage.countEditTextDecimalFormat) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -104,6 +114,9 @@ class AddSecurityBottomDialog : BottomDialog() {
                 viewModel.setSecurityCount(securitiesCount)
             }
         })
+        if (countEditText.requestFocus()) {
+            activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+        }
 
         addSecurityButton.setOnClickListener {
             viewModel.addSecurityPackage()
@@ -143,6 +156,7 @@ class AddSecurityBottomDialog : BottomDialog() {
         private const val ARGUMENT_YEAR_YIELD = "year_yield"
         private const val ARGUMENT_CURRENCY = "currency"
         private const val ARGUMENT_TYPE = "type"
+        private const val ARGUMENT_CURRENT_PRICE = "current_price"
 
         private const val SHAKE_AMPLITUDE = 8f
 
@@ -158,7 +172,8 @@ class AddSecurityBottomDialog : BottomDialog() {
                 ARGUMENT_EXCHANGE to security.exchange,
                 ARGUMENT_YEAR_YIELD to security.yearYield,
                 ARGUMENT_CURRENCY to security.currency,
-                ARGUMENT_TYPE to security.type
+                ARGUMENT_TYPE to security.type,
+                ARGUMENT_CURRENT_PRICE to security.currentPrice
             )
             return dialog
         }

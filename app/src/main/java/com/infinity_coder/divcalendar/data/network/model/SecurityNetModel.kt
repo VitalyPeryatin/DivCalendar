@@ -4,7 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class SecurityNetModel(
 
-    @SerializedName("isin") var isin: String = "",
+    @SerializedName("isin")
+    var isin: String = "",
 
     @SerializedName("ticker")
     val ticker: String = "",
@@ -25,5 +26,8 @@ data class SecurityNetModel(
     val exchange: String = "",
 
     @SerializedName("currency")
-    val currency: String = ""
+    val currency: String = "",
+
+    @SerializedName("price")
+    val currentPrice: Double? = null
 )

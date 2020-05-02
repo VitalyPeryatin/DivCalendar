@@ -19,7 +19,7 @@ object SecurityCurrencyDelegate {
         return getValueWithCurrency(context, value.toDouble(), currency, accuracy)
     }
 
-    private fun getCurrencyBadge(context: Context, currency: String): String {
+    fun getCurrencyBadge(context: Context, currency: String): String {
         return when (currency) {
             RateRepository.RUB_RATE -> context.resources.getString(R.string.currency_rub_name)
             RateRepository.USD_RATE -> context.resources.getString(R.string.currency_usd_name)
