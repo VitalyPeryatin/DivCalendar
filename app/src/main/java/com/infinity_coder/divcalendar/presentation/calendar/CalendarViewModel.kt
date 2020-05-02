@@ -100,9 +100,7 @@ class CalendarViewModel : ViewModel() {
 
     fun exportData(context: Context) = viewModelScope.launch {
 
-        paymentsFileCreator = ExcelPaymentsFileCreator(
-            context
-        )
+        paymentsFileCreator = ExcelPaymentsFileCreator(context)
         val exportFilePath = paymentsFileCreator?.create() ?: return@launch
         sendFileEvent.value = exportFilePath
     }

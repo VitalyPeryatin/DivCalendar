@@ -158,14 +158,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar),
         if (!isChecked) return
 
         when (radioButton) {
-            rubRadioButton -> viewModel.setDisplayCurrency(
-                requireContext(),
-                RateRepository.RUB_RATE
-            )
-            usdRadioButton -> viewModel.setDisplayCurrency(
-                requireContext(),
-                RateRepository.USD_RATE
-            )
+            rubRadioButton -> viewModel.setDisplayCurrency(requireContext(), RateRepository.RUB_RATE)
+            usdRadioButton -> viewModel.setDisplayCurrency(requireContext(), RateRepository.USD_RATE)
         }
     }
 

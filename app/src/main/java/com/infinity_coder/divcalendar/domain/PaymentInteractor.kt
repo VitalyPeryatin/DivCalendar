@@ -25,7 +25,7 @@ class PaymentInteractor {
             .map { groupAndSortPayments(it) }
     }
 
-    suspend fun getAllPayments(portfolioId: Long): List<PaymentDbModel> {
+    suspend fun getAllPayments(): List<PaymentDbModel> {
         val comparator = compareBy<PaymentDbModel> {
             convertStingToDate(it.date).time
         }
