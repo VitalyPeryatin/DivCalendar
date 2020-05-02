@@ -81,6 +81,36 @@
     <string name="send_successful">Message successfully sent to developers</string>
     <string name="symbol_count">Characters: %1$d</string>
 
+    <!-- export file -->
+    <string name="title_sheet_portfolio">Portfolio</string>
+    <string name="title_sheet_payments">Payments</string>
+
+    <string name="title_portfolio_value_isin" translatable="false">ISIN</string>
+    <string name="title_portfolio_value_name">Name</string>
+    <string name="title_portfolio_value_ticker">Ticker</string>
+    <string name="title_portfolio_value_type">Type</string>
+    <string name="title_portfolio_value_exchange">Exchange</string>
+    <string name="title_portfolio_value_logo">Logo</string>
+    <string name="title_portfolio_value_annual_yield">Annual yield</string>
+    <string name="title_portfolio_value_count">Count</string>
+    <string name="title_portfolio_value_total_price">Total price</string>
+    <string name="title_portfolio_value_currency">Currency</string>
+
+    <string name="title_payments_value_isin" translatable="false">ISIN</string>
+    <string name="title_payments_value_security">Security</string>
+    <string name="title_payments_value_count">Count</string>
+    <string name="title_payments_value_approved">Approved</string>
+    <string name="title_payments_value_data">Payment date</string>
+    <string name="title_payments_value_diviens">Dividends</string>
+    <string name="title_payments_value_currency">Currency</string>
+
+    <string name="cell_value_no">No</string>
+    <string name="cell_value_yes">Yes</string>
+    <string name="cell_value_stock">Stock</string>
+    <string name="cell_value_bond">Bond</string>
+
+    <string name="final_file_name">DivCalendar - Payments</string>
+
     <!-- billing -->
     <string name="purchase">Purchase</string>
     <string name="purchase_subscription_title">Want to purchase a subscription?</string>

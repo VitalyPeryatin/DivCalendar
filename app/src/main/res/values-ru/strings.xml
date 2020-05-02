@@ -71,6 +71,33 @@
     <string name="send_successful">Сообщение успешно отправлено разработчикам</string>
     <string name="symbol_count">Количество символов: %1$d</string>
 
+    <!-- export file -->
+    <string name="title_sheet_portfolio">Портфель</string>
+    <string name="title_sheet_payments">Выплаты</string>
+    <string name="title_portfolio_value_name">Название</string>
+    <string name="title_portfolio_value_ticker">Тикер</string>
+    <string name="title_portfolio_value_type">Тип</string>
+    <string name="title_portfolio_value_exchange">Биржа</string>
+    <string name="title_portfolio_value_logo">Логотип</string>
+    <string name="title_portfolio_value_annual_yield">Годовая доходность</string>
+    <string name="title_portfolio_value_count">Кол-во</string>
+    <string name="title_portfolio_value_total_price">Сумма вложений</string>
+    <string name="title_portfolio_value_currency">Валюта</string>
+
+    <string name="title_payments_value_security">Бумага</string>
+    <string name="title_payments_value_count">Кол-во</string>
+    <string name="title_payments_value_approved">Утверждено</string>
+    <string name="title_payments_value_data">Дата выплаты</string>
+    <string name="title_payments_value_diviens">Выплата</string>
+    <string name="title_payments_value_currency">Валюта</string>
+
+    <string name="cell_value_no">Нет</string>
+    <string name="cell_value_yes">Да</string>
+    <string name="cell_value_stock">Акция</string>
+    <string name="cell_value_bond">Облигация</string>
+
+    <string name="final_file_name">DivCalendar - Выплаты</string>
+
     <!-- billing -->
     <string name="purchase">Приобрести</string>
     <string name="purchase_subscription_title">Хотите приобрести подписку? </string>

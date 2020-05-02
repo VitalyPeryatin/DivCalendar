@@ -39,7 +39,7 @@ class App : MultiDexApplication() {
     }
 
     companion object {
-        const val DEFAULT_PORTFOLIO_NAME = "Основной"
+        const val DEFAULT_PORTFOLIO_NAME = "Основной портфель"
 
         private const val RATE_OUT_DATE_LIMIT = 30 * 60 * 1000L
 

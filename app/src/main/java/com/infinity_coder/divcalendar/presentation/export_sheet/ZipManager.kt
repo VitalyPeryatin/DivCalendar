@@ -6,7 +6,8 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
 object ZipManager {
-    private const val BUFFER_SIZE = 6 * 1024
+    private const val BYTE_SIZE = 1024
+    private const val BUFFER_SIZE = 6 * BYTE_SIZE
 
     fun zip(files: List<File>, zipName: String): File? {
         val zipFile = File(App.context.filesDir, zipName)
@@ -15,8 +16,8 @@ object ZipManager {
         }
         zipFile.createNewFile()
 
-        val out = ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile)))
-        out.use { outputStream ->
+        val zipOutputStream = ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile)))
+        zipOutputStream.use { outputStream ->
             val data = ByteArray(BUFFER_SIZE)
             for (file in files) {
                 val inputStream = FileInputStream(file)

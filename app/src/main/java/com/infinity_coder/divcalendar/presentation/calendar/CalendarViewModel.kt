@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.domain.PaymentInteractor
+import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain.SettingsInteractor
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
@@ -15,8 +16,8 @@ import com.infinity_coder.divcalendar.presentation.calendar.mappers.PaymentsToPr
 import com.infinity_coder.divcalendar.presentation.calendar.models.EditPaymentParams
 import com.infinity_coder.divcalendar.presentation.calendar.models.FooterPaymentPresentationModel
 import com.infinity_coder.divcalendar.presentation.calendar.models.MonthlyPayment
-import com.infinity_coder.divcalendar.presentation.export_sheet.ExcelPaymentsFileCreator
 import com.infinity_coder.divcalendar.presentation.export_sheet.PaymentsFileCreator
+import com.infinity_coder.divcalendar.presentation.export_sheet.excel.ExcelPaymentsFileCreator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -29,6 +30,8 @@ class CalendarViewModel : ViewModel() {
     private val paymentInteractor = PaymentInteractor()
     private val rateInteractor = RateInteractor()
     private val settingsInteractor = SettingsInteractor()
+    private val portfolioInteractor = PortfolioInteractor()
+
     private var paymentsFileCreator: PaymentsFileCreator? = null
 
     private val _state = MutableLiveData<Int>()
@@ -51,11 +54,16 @@ class CalendarViewModel : ViewModel() {
         get() = _isIncludeTaxes
 
     val sendFileEvent = LiveEvent<File?>()
+    val portfolioNameTitleEvent = LiveEvent<String>()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun loadAllPayments(context: Context) = viewModelScope.launch {
+
+        loadPortfolioName()
+
         val currentYearValue = _currentYear.value!!
         val includeTaxes = isIncludeTaxes.value ?: false
+
         paymentInteractor.getPayments(currentYearValue, includeTaxes)
             .onEach { cachedPayments = it }
             .map { paymentsMapper.mapToPresentationModel(context, cachedPayments) }
@@ -79,6 +87,11 @@ class CalendarViewModel : ViewModel() {
             .launchIn(viewModelScope)
     }
 
+    fun loadPortfolioName() {
+        val portfolioName = portfolioInteractor.getCurrentPortfolioName()
+        portfolioNameTitleEvent.value = portfolioName
+    }
+
     fun getFooterPositionByMonthNumber(monthNumber: Int): Int {
         return _payments.value!!.indexOfFirst {
             it is FooterPaymentPresentationModel && it.id == monthNumber
@@ -87,7 +100,9 @@ class CalendarViewModel : ViewModel() {
 
     fun exportData(context: Context) = viewModelScope.launch {
 
-        paymentsFileCreator = ExcelPaymentsFileCreator(context)
+        paymentsFileCreator = ExcelPaymentsFileCreator(
+            context
+        )
         val exportFilePath = paymentsFileCreator?.create() ?: return@launch
         sendFileEvent.value = exportFilePath
     }

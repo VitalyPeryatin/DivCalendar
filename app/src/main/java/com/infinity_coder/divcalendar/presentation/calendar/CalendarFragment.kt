@@ -63,6 +63,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar),
         viewModel.currentYear.observe(viewLifecycleOwner, Observer(this::updateCurrentYear))
         viewModel.isIncludeTaxes.observe(viewLifecycleOwner, Observer(this::setIsIncludedTexes))
         viewModel.sendFileEvent.observe(viewLifecycleOwner, Observer(this::sendFile))
+        viewModel.portfolioNameTitleEvent.observe(viewLifecycleOwner, Observer(this::setPortfolioName))
     }
 
     override fun onStart() {
@@ -198,6 +199,10 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar),
         val state = calendarPaymentsRecyclerView.layoutManager!!.onSaveInstanceState()
         (calendarPaymentsRecyclerView.adapter as DiffUtilCompositeAdapter).swapData(payments)
         calendarPaymentsRecyclerView.layoutManager!!.onRestoreInstanceState(state)
+    }
+
+    private fun setPortfolioName(portfolioName: String) {
+        calendarToolbar.subtitle = portfolioName
     }
 
     private fun updateCurrentYear(year: String) {
