@@ -1,0 +1,184 @@
+package com.infinity_coder.divcalendar.presentation.search.addsecurity
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import androidx.core.os.bundleOf
+import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
+import com.infinity_coder.divcalendar.presentation._common.BottomDialog
+import com.infinity_coder.divcalendar.presentation._common.DecimalFormatStorage
+import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
+import com.infinity_coder.divcalendar.presentation._common.extensions.shake
+import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalCountTextWatcher
+import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalPriceTextWatcher
+import kotlinx.android.synthetic.main.bottom_dialog_add_security.*
+
+class AddSecurityBottomDialog : BottomDialog() {
+
+    private var clickListener: OnDialogClickListener? = null
+
+    private lateinit var security: SecurityNetModel
+
+    val viewModel: AddSecurityViewModel by lazy {
+        ViewModelProvider(this).get(AddSecurityViewModel::class.java)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
+
+        security = SecurityNetModel(
+            isin = requireArguments().getString(ARGUMENT_ISIN, ""),
+            ticker = requireArguments().getString(ARGUMENT_TICKER, ""),
+            name = requireArguments().getString(ARGUMENT_NAME, ""),
+            logo = requireArguments().getString(ARGUMENT_LOGO, ""),
+            exchange = requireArguments().getString(ARGUMENT_EXCHANGE, ""),
+            yearYield = requireArguments().getFloat(ARGUMENT_YEAR_YIELD, 0f),
+            currency = requireArguments().getString(ARGUMENT_CURRENCY, ""),
+            type = requireArguments().getString(ARGUMENT_TYPE, ""),
+            currentPrice = requireArguments().getDouble(ARGUMENT_CURRENT_PRICE, 0.0)
+        )
+        viewModel.setSecurity(security)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.bottom_dialog_add_security, container, false)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        val parentFragment = parentFragment
+        if (parentFragment is OnDialogClickListener) {
+            clickListener = parentFragment
+        } else if (context is OnDialogClickListener) {
+            clickListener = context
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.getTotalSecurityPriceLiveData().observe(viewLifecycleOwner, Observer(this::setTotalPrice))
+        viewModel.securityLiveData.observe(viewLifecycleOwner, Observer(this::addSecurity))
+        viewModel.shakePriceEditText.observe(viewLifecycleOwner, Observer { shakePriceEditText() })
+        viewModel.shakeCountEditText.observe(viewLifecycleOwner, Observer { shakeCountEditText() })
+        initUI()
+    }
+
+    private fun initUI() {
+        nameTextView.text = security.name
+
+        priceEditText.suffix = " ${SecurityCurrencyDelegate.getCurrencyBadge(requireContext(),security.currency)}"
+        priceEditText.addTextChangedListener(object : DecimalPriceTextWatcher(priceEditText, DecimalFormatStorage.priceEditTextDecimalFormat) {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                super.onTextChanged(s, start, before, count)
+                val formatter = DecimalFormatStorage.priceEditTextDecimalFormat
+                val price = priceEditText.text.toString()
+                    .replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "")
+                    .replace(currentSeparator.toString(), LOCAL_SEPARATOR.toString())
+                    .toDoubleOrNull() ?: 0.0
+                viewModel.setSecurityPrice(price)
+            }
+        })
+        priceEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus && priceEditText.text.toString().isEmpty()) {
+                priceEditText.setText("0")
+            }
+        }
+
+        priceEditText.setText(security.currentPrice.toString())
+
+        countEditText.addTextChangedListener(object : DecimalCountTextWatcher(countEditText, DecimalFormatStorage.countEditTextDecimalFormat) {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                super.onTextChanged(s, start, before, count)
+                val decimalFormat = DecimalFormatStorage.countEditTextDecimalFormat
+                val securitiesCount = countEditText.text.toString()
+                    .replace(decimalFormat.decimalFormatSymbols.groupingSeparator.toString(), "")
+                    .toIntOrNull() ?: 0
+                viewModel.setSecurityCount(securitiesCount)
+            }
+        })
+        if (countEditText.requestFocus()) {
+            activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+        }
+
+        addSecurityButton.setOnClickListener {
+            viewModel.addSecurityPackage()
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setTotalPrice(price: Double?) {
+        if (price == null) return
+        val priceWithCurrency = SecurityCurrencyDelegate.getValueWithCurrency(
+            requireContext(),
+            price,
+            security.currency
+        )
+        totalPriceTextView.text = resources.getString(R.string.total_price, priceWithCurrency)
+    }
+
+    private fun addSecurity(security: SecurityDbModel) {
+        clickListener?.onAddSecurityClick(security)
+    }
+
+    private fun shakePriceEditText() {
+        priceEditText.shake(SHAKE_AMPLITUDE)
+    }
+
+    private fun shakeCountEditText() {
+        countEditText.shake(SHAKE_AMPLITUDE)
+    }
+
+    companion object {
+
+        private const val ARGUMENT_ISIN = "isin"
+        private const val ARGUMENT_TICKER = "ticker"
+        private const val ARGUMENT_NAME = "sec_name"
+        private const val ARGUMENT_LOGO = "logo"
+        private const val ARGUMENT_EXCHANGE = "exchange"
+        private const val ARGUMENT_YEAR_YIELD = "year_yield"
+        private const val ARGUMENT_CURRENCY = "currency"
+        private const val ARGUMENT_TYPE = "type"
+        private const val ARGUMENT_CURRENT_PRICE = "current_price"
+
+        private const val SHAKE_AMPLITUDE = 8f
+
+        const val TAG = "AddSecurityBottomDialog"
+
+        fun newInstance(security: SecurityNetModel): AddSecurityBottomDialog {
+            val dialog = AddSecurityBottomDialog()
+            dialog.arguments = bundleOf(
+                ARGUMENT_ISIN to security.isin,
+                ARGUMENT_TICKER to security.ticker,
+                ARGUMENT_NAME to security.name,
+                ARGUMENT_LOGO to security.logo,
+                ARGUMENT_EXCHANGE to security.exchange,
+                ARGUMENT_YEAR_YIELD to security.yearYield,
+                ARGUMENT_CURRENCY to security.currency,
+                ARGUMENT_TYPE to security.type,
+                ARGUMENT_CURRENT_PRICE to security.currentPrice
+            )
+            return dialog
+        }
+    }
+
+    interface OnDialogClickListener {
+        fun onAddSecurityClick(securityPackage: SecurityDbModel)
+    }
+}

@@ -1,0 +1,7 @@
+# http://editorconfig.org
+root = true
+
+[*.{kt,kts}]
+max_line_length=off
+indent_size=4
+insert_final_newline=unset

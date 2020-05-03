@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DivCalendar</string>
+
+    <!-- common -->
+    <string name="portfolio">Портфель</string>
+    <string name="calendar">Календарь</string>
+    <string name="news">Новости</string>
+    <string name="add">Добавить</string>
+    <string name="enter_request">Введите запрос</string>
+    <string name="no_connection">Нет интернет соединения</string>
+    <string name="empty_list">Список пуст</string>
+    <string name="empty_securities">У вас нет ни одной ценной бумаги.\nДобавьте ценную бумагу себе в портфель!</string>
+    <string name="empty_payments">На %s год выплаты по Вашим ценным бумагам отсутствуют!</string>
+
+    <!--calendar screen-->
+    <string name="payout_chart">График выплат</string>
+    <string name="annual_income">Прибыль</string>
+    <string name="annual_yield">Доход</string>
+    <string name="monthly_income_label">Доход за месяц: +%s</string>
+    <string name="count_securities">%s шт.</string>
+    <string name="dividends">+%1$.2f₽</string>
+    <string name="taxes_included">С учетом налогов</string>
+    <string name="taxes_excluding">Без учета налогов</string>
+    <string name="edit_payments">Редактировать выплаты</string>
+    <string name="export_payments">Выгрузить выплаты</string>
+
+    <!-- search -->
+    <string name="total_price">Стоимость: %s</string>
+    <string name="count">Количество</string>
+    <string name="price">Цена</string>
+    <string name="start_search">Начните поиск</string>
+    <string name="stocks">Акции</string>
+    <string name="bonds">Облигации</string>
+    <string name="russian">Российские</string>
+    <string name="foreign">Зарубежные</string>
+    <string name="add_security_successful">Пакет ценных бумаг успешно добавлен к Вам в портфель</string>
+
+    <!--portfolio -->
+    <string name="sec_count">%s шт.</string>
+    <string name="yield_in_year">%1$.2f\%% в год</string>
+    <string name="change_package">Изменить пакет</string>
+    <string name="delete_entire_package">Удалить весь пакет</string>
+    <string name="cost">Стоимость</string>
+    <string name="new_portfolio">Новый портфель</string>
+    <string name="name">Название</string>
+    <string name="create_new_portfolio">Создание портфеля</string>
+    <string name="delete">Удалить</string>
+    <string name="create">Создать</string>
+    <string name="collect_portfolio">Соберите портфель</string>
+    <string name="change">Изменить</string>
+    <string name="cancel">Отмена</string>
+    <string name="sure_remove_portfolio">Вы точно хотите удалить портфель \'%s\'? </string>
+    <string name="empty_portfolio_name_error">В названии портфеля должна быть хотя бы одна буква</string>
+    <string name="not_new_portfolio_name_error">Название портфеля должно быть уникальным</string>
+    <string name="edit_portfolio_with_name">Редактирование портфеля \'%s\'</string>
+    <string name="small_count_portfolio">Это единственный портфель. Вы не можете его удалить.</string>
+    <string name="total_portfolio_cost">Итого: %s</string>
+    <string name="refresh_content">Идет обновление данных…</string>
+
+    <!-- settings -->
+    <string name="settings">Настройки</string>
+    <string name="account_for_taxes">Учитывать налоги</string>
+    <string name="feedback">Обратная связь</string>
+    <string name="email_developers">Написать разработчикам</string>
+    <string name="telegram_chat">Telegram-чат</string>
+    <string name="purchase_subscription">Приобрести подписку</string>
+    <string name="something_went_wrong">Что-то пошло не так?</string>
+    <string name="tell_about_problem">Расскажите нам о своей проблеме и в течение 12 часов мы рассмотрим её!</string>
+    <string name="your_message">Ваше сообщение…</string>
+    <string name="send">Отправить</string>
+    <string name="send_successful">Сообщение успешно отправлено разработчикам</string>
+    <string name="symbol_count">Количество символов: %1$d</string>
+
+    <!-- export file -->
+    <string name="title_sheet_portfolio">Портфель</string>
+    <string name="title_sheet_payments">Выплаты</string>
+    <string name="title_portfolio_value_name">Название</string>
+    <string name="title_portfolio_value_ticker">Тикер</string>
+    <string name="title_portfolio_value_type">Тип</string>
+    <string name="title_portfolio_value_exchange">Биржа</string>
+    <string name="title_portfolio_value_logo">Логотип</string>
+    <string name="title_portfolio_value_annual_yield">Годовая доходность</string>
+    <string name="title_portfolio_value_count">Кол-во</string>
+    <string name="title_portfolio_value_total_price">Сумма вложений</string>
+    <string name="title_portfolio_value_currency">Валюта</string>
+
+    <string name="title_payments_value_security">Бумага</string>
+    <string name="title_payments_value_count">Кол-во</string>
+    <string name="title_payments_value_approved">Утверждено</string>
+    <string name="title_payments_value_data">Дата выплаты</string>
+    <string name="title_payments_value_diviens">Выплата</string>
+    <string name="title_payments_value_currency">Валюта</string>
+
+    <string name="cell_value_no">Нет</string>
+    <string name="cell_value_yes">Да</string>
+    <string name="cell_value_stock">Акция</string>
+    <string name="cell_value_bond">Облигация</string>
+
+    <string name="final_file_name">DivCalendar - Выплаты</string>
+
+    <!-- billing -->
+    <string name="purchase">Приобрести</string>
+    <string name="purchase_subscription_title">Хотите приобрести подписку? </string>
+    <string name="purchase_subscription_description">
+        В премиум-версии приложения Вам будет доступно: \n\n
+
+        · Создание нескольких портфелей \n
+        · Редактирование портфеля \n
+        · Добавление в портфель более 3-х ценных бумаг
+    </string>
+    <string name="billing_unavailable">Ваше устройство не поддерживает приобретение подписок</string>
+    <string name="subscription_purchased">У Вас уже есть подписка</string>
+    <string name="week_free">Неделя бесплатно</string>
+    <string name="actual_company_news">Актуальные новости компаний</string>
+    <string name="subscription_details">Подробнее о подписке</string>
+    <string name="current_payout_information">Актуальная информация о регулярных выплатах</string>
+    <string name="next_subscription_price">Далее 149 руб в месяц</string>
+    <string name="follow_the_news">Следите за новостями тех компаний, которые могут повлиять на ваши доходы</string>
+    <string name="multiply_finances">Умножайте свои финансы</string>
+    <string name="stay_on_top_of_latest_dividend">Будьте в курсе последних новостей о дивидендных и купонных выплатах</string>
+    <string name="seven_days_free">7 дней бесплатно с подпиской Premium</string>
+    <string name="first_charge_info">Первое списание будет, когда закончится бесплатный период. Отменить можно в любой момент</string>
+    <string name="please_wait">Пожалуйста, подождите…</string>
+
+</resources>

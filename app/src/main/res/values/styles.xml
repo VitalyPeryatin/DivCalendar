@@ -1,11 +1,55 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="textColorPrimary">@color/black</item>
+        <item name="textColorSecondary">@color/grey</item>
+        <item name="android:textColorPrimary">@color/grey</item>
+        <item name="toolbarStyle">@style/AppToolbar</item>
+        <item name="android:dialogTheme">@style/Base.Dialog</item>
+        <item name="colorControlNormal">@color/grey</item>
+    </style>
+
+    <style name="BottomDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetModalStyleSmallCorners</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="BottomSheetModalStyleSmallCorners" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet</item>
+    </style>
+
+    <style name="TextInputTheme">
+        <item name="colorControlActivated">@color/colorAccent</item>
+    </style>
+
+    <style name="AppToolbar" parent="BaseToolbar">
+        <item name="android:background">@color/background</item>
+    </style>
+
+    <style name="BaseToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:theme">?attr/actionBarTheme</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+
+    <style name="BaseTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowMinWidthMajor">97%</item>
+        <item name="android:windowMinWidthMinor">97%</item>
+        <item name="dialogCornerRadius">6dp</item>
+    </style>
+
+    <style name="Base.Dialog" parent="DialogStyle">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColorSecondary">@color/grey</item>
     </style>
 
 </resources>
