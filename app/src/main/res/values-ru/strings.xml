@@ -121,5 +121,6 @@
     <string name="stay_on_top_of_latest_dividend">Будьте в курсе последних новостей о дивидендных и купонных выплатах</string>
     <string name="seven_days_free">7 дней бесплатно с подпиской Premium</string>
     <string name="first_charge_info">Первое списание будет, когда закончится бесплатный период. Отменить можно в любой момент</string>
+    <string name="please_wait">Пожалуйста, подождите…</string>
 
 </resources>

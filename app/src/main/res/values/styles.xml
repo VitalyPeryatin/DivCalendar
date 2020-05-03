@@ -43,7 +43,7 @@
     <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowMinWidthMajor">97%</item>
         <item name="android:windowMinWidthMinor">97%</item>
-        <item name="dialogCornerRadius">5dp</item>
+        <item name="dialogCornerRadius">6dp</item>
     </style>
 
     <style name="Base.Dialog" parent="DialogStyle">

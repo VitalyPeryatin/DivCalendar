@@ -27,14 +27,14 @@ import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
 import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
 import com.infinity_coder.divcalendar.presentation.calendar.adapters.*
 import com.infinity_coder.divcalendar.presentation.calendar.dialogs.ChangePaymentDialog
+import com.infinity_coder.divcalendar.presentation.calendar.dialogs.LoadingDialog
 import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 import java.io.File
 import java.util.*
 
-class CalendarFragment : Fragment(R.layout.fragment_calendar),
-    UpdateCallback {
+class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
     val viewModel: CalendarViewModel by lazy {
         ViewModelProvider(this).get(CalendarViewModel::class.java)
@@ -68,6 +68,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar),
         viewModel.sendFileEvent.observe(viewLifecycleOwner, Observer(this::sendFile))
         viewModel.portfolioNameTitleEvent.observe(viewLifecycleOwner, Observer(this::setPortfolioName))
         viewModel.showShackbar.observe(viewLifecycleOwner, Observer { showSnackbar(it) })
+        viewModel.showLoadingDialogEvent.observe(viewLifecycleOwner, Observer(this::setIsShowLoadingDialog))
     }
 
     override fun onStart() {
@@ -106,6 +107,24 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar),
         val exportPayments = resources.getString(R.string.export_payments)
 
         startActivity(Intent.createChooser(intentShareFileBuilder, exportPayments))
+    }
+
+    private fun setIsShowLoadingDialog(isShow: Boolean = false) {
+        if (isShow) {
+            showLoadingDialog()
+        } else {
+            hideLoadingDialog()
+        }
+    }
+
+    private fun showLoadingDialog() {
+        val dialog = LoadingDialog.newInstance()
+        dialog.show(childFragmentManager, LoadingDialog.TAG)
+    }
+
+    private fun hideLoadingDialog() {
+        val dialog = childFragmentManager.findFragmentByTag(LoadingDialog.TAG) as? LoadingDialog
+        dialog?.dismiss()
     }
 
     override fun onUpdate() {

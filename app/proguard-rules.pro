@@ -142,6 +142,7 @@
 
 -keep class org.apache.poi.** { *; }
 -keep class org.apache.xmlbeans.** { *; }
+-keep class org.openxmlformats.** { *; }
 
 -keep class org.openxmlformats.schemas.spreadsheetml.x2006.main.CommentsDocument { *; }
 -keep class org.openxmlformats.schemas.spreadsheetml.x2006.main.CTAuthors { *; }

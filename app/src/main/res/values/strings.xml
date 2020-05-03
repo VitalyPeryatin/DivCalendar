@@ -134,5 +134,6 @@
     <string name="stay_on_top_of_latest_dividend">Stay on top of the latest dividend and coupon payment news</string>
     <string name="seven_days_free">7 days for free with a Premium subscription</string>
     <string name="first_charge_info">The first charge will be when the free period ends. You can cancel at any time.</string>
+    <string name="please_wait">Please wait…</string>
 
 </resources>

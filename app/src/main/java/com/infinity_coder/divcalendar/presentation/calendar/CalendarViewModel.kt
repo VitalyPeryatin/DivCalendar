@@ -22,7 +22,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.File
 
@@ -58,6 +57,7 @@ class CalendarViewModel : ViewModel() {
 
     val sendFileEvent = LiveEvent<File?>()
     val portfolioNameTitleEvent = LiveEvent<String>()
+    val showLoadingDialogEvent = LiveEvent<Boolean>()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun loadAllPayments(context: Context, isRefresh: Boolean = false) = viewModelScope.launch {
@@ -114,11 +114,11 @@ class CalendarViewModel : ViewModel() {
     }
 
     fun exportData(context: Context) = viewModelScope.launch(Dispatchers.IO) {
+        showLoadingDialogEvent.postValue(true)
         paymentsFileCreator = ExcelPaymentsFileCreator(context)
         val exportFilePath = paymentsFileCreator?.create() ?: return@launch
-        withContext(Dispatchers.Main) {
-            sendFileEvent.value = exportFilePath
-        }
+        showLoadingDialogEvent.postValue(false)
+        sendFileEvent.postValue(exportFilePath)
     }
 
     fun setDisplayCurrency(context: Context, currency: String) = viewModelScope.launch {
