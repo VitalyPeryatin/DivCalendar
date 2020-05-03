@@ -60,15 +60,14 @@ class CalendarViewModel : ViewModel() {
     val portfolioNameTitleEvent = LiveEvent<String>()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun loadAllPayments(context: Context) = viewModelScope.launch {
+    fun loadAllPayments(context: Context, isRefresh: Boolean = false) = viewModelScope.launch {
+
+        loadPortfolioName()
 
         if (portfolioInteractor.isCurrentPortfolioEmpty()) {
             _state.value = VIEW_STATE_CALENDAR_EMPTY
             return@launch
         }
-
-
-        loadPortfolioName()
 
         val currentYearValue = _currentYear.value!!
         val includeTaxes = isIncludeTaxes.value ?: false
@@ -86,44 +85,18 @@ class CalendarViewModel : ViewModel() {
                 if (it.isNotEmpty()) {
                     _state.value = VIEW_STATE_CALENDAR_CONTENT
                 }
-            }
-            .onCompletion {
-                if (_payments.value!!.isEmpty()) {
-                    _state.value = VIEW_STATE_CALENDAR_EMPTY
-                }
-            }
-            .catch { handleError(it) }
-            .launchIn(viewModelScope)
-    }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun refresh(context: Context) = viewModelScope.launch {
-
-        if (portfolioInteractor.isCurrentPortfolioEmpty()) {
-            _state.value = VIEW_STATE_CALENDAR_EMPTY
-            return@launch
-        }
-
-        val currentYearValue = _currentYear.value!!
-        val includeTaxes = isIncludeTaxes.value ?: false
-        paymentInteractor.getPayments(currentYearValue, includeTaxes)
-            .onEach { cachedPayments = it }
-            .map { paymentsMapper.mapToPresentationModel(context, cachedPayments) }
-            .flowOn(Dispatchers.IO)
-            .onEach {
-                _payments.value = it
-                if (it.isNotEmpty()) {
-                    _state.value = VIEW_STATE_CALENDAR_CONTENT
-                }
-
-                if (showShackbar.value != null && !showShackbar.value!!)
+                if (isRefresh && showShackbar.value != null && !showShackbar.value!!)
                     showShackbar.value = true
             }
             .onCompletion {
                 if (_payments.value!!.isEmpty()) {
                     _state.value = VIEW_STATE_CALENDAR_EMPTY
                 }
-                showShackbar.value = false
+
+                if (isRefresh) {
+                    showShackbar.value = false
+                }
             }
             .catch { handleError(it) }
             .launchIn(viewModelScope)

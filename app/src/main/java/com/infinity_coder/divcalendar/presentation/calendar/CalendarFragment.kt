@@ -2,11 +2,11 @@ package com.infinity_coder.divcalendar.presentation.calendar
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
-import android.widget.CompoundButton
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
+import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
@@ -21,6 +21,7 @@ import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.google.android.material.snackbar.Snackbar
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
+import com.infinity_coder.divcalendar.presentation.App
 import com.infinity_coder.divcalendar.presentation._common.SpinnerInteractionListener
 import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
 import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
@@ -93,7 +94,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar),
         if (file == null) return
 
         val fileUri = FileProvider.getUriForFile(
-            context!!, context!!.applicationContext.packageName.toString() + ".provider", file
+            requireContext(), App.context.packageName.toString() + ".provider", file
         )
         val intentShareFileBuilder = ShareCompat.IntentBuilder.from(requireActivity())
             .setType("application/*")
@@ -109,7 +110,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar),
 
     override fun onUpdate() {
         initCurrencyRadioButton()
-        viewModel.refresh(requireContext())
+        viewModel.loadAllPayments(requireContext(), isRefresh = true)
         calendarPaymentsRecyclerView.smoothScrollToPosition(0)
     }
 
