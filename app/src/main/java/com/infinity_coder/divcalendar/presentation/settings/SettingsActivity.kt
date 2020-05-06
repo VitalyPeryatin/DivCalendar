@@ -15,6 +15,7 @@ import com.infinity_coder.divcalendar.presentation._common.SwitchServerVersionDe
 import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation._common.extensions.isAppAvailable
 import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
+import com.infinity_coder.divcalendar.presentation._common.extensions.showSuccessfulToast
 import com.infinity_coder.divcalendar.presentation.billing.dialogs.BuySubscriptionDialog
 import com.infinity_coder.divcalendar.presentation.billing.dialogs.SubscriptionPurchasedDialog
 import com.infinity_coder.divcalendar.presentation.settings.dialogs.ReportErrorBottomDialog
@@ -53,6 +54,8 @@ class SettingsActivity : AbstractSubscriptionActivity() {
         telegramChatItem.setOnClickListener { openTelegramChannel() }
         feedbackItem.itemTextView.text = resources.getString(R.string.feedback)
         feedbackItem.setOnClickListener { openSendReportDialog() }
+        dataCastItem.itemTextView.text = resources.getString(R.string.send_data_cast_to_developers)
+        dataCastItem.setOnClickListener { sendDataCast() }
         subscribeItem.itemTextView.text = resources.getString(R.string.purchase_subscription)
         subscribeItem.setOnClickListener {
             if (!hasSubscription()) {
@@ -70,6 +73,12 @@ class SettingsActivity : AbstractSubscriptionActivity() {
     private fun openSendReportDialog() {
         val dialog = ReportErrorBottomDialog.newInstance()
         dialog.show(supportFragmentManager, ReportErrorBottomDialog.TAG)
+    }
+
+    private fun sendDataCast() {
+        val parenViewModel = SettingsViewModel()
+        parenViewModel.sendDataCast()
+        applicationContext.showSuccessfulToast(layoutInflater, R.string.data_cast_send_successful)
     }
 
     private fun openTelegramChannel() {

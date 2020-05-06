@@ -40,6 +40,9 @@ abstract class PaymentDao {
     @Query("SELECT * FROM ${PaymentDbModel.TABLE_NAME} WHERE ${PaymentDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId AND ${PaymentDbModel.COLUMN_ISIN} = :isin AND ${PaymentDbModel.COLUMN_DATE} = :date")
     abstract suspend fun getPayment(portfolioId: Long, isin: String, date: String): PaymentDbModel
 
+    @Query("SELECT * FROM ${PaymentDbModel.TABLE_NAME}")
+    abstract suspend fun getAllPayments() : List<PaymentDbModel>
+
     @Transaction
     open suspend fun getPaymentsWithSecurity(portfolioId: Long, startDate: String, endDate: String): List<PaymentDbModel> {
         val startDateTime = DateFormatter.basicDateFormat.parse(startDate)!!

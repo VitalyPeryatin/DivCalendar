@@ -63,6 +63,7 @@
     <string name="account_for_taxes">Учитывать налоги</string>
     <string name="feedback">Обратная связь</string>
     <string name="email_developers">Написать разработчикам</string>
+    <string name="send_data_cast_to_developers">Отправить слепок данных разработчикам</string>
     <string name="telegram_chat">Telegram-чат</string>
     <string name="purchase_subscription">Приобрести подписку</string>
     <string name="something_went_wrong">Что-то пошло не так?</string>
@@ -70,6 +71,7 @@
     <string name="your_message">Ваше сообщение…</string>
     <string name="send">Отправить</string>
     <string name="send_successful">Сообщение успешно отправлено разработчикам</string>
+    <string name="data_cast_send_successful">Слепок данных успешно отправлен разработчикам</string>
     <string name="symbol_count">Количество символов: %1$d</string>
 
     <!-- export file -->

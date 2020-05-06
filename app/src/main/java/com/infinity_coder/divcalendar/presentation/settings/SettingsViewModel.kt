@@ -23,4 +23,8 @@ class SettingsViewModel : ViewModel() {
     fun reportError(message: String) {
         settingsInteractor.reportError(message)
     }
+
+    fun sendDataCast() {
+        settingsInteractor.sendDataCast()
+    }
 }

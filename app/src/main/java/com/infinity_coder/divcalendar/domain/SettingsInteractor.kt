@@ -14,4 +14,8 @@ class SettingsInteractor {
     fun reportError(message: String) {
         SettingsRepository.reportError(message)
     }
+
+    fun sendDataCast() {
+        SettingsRepository.sendDataCast()
+    }
 }
