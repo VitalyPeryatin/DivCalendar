@@ -19,5 +19,5 @@ abstract class NewsPostDao {
     abstract suspend fun getPosts(tickers: List<String>): List<NewsPostDbModel>
 
     @Query("SELECT * FROM ${NewsPostDbModel.TABLE_NAME}")
-    abstract suspend fun getAllNews() : List<NewsPostDbModel>
+    abstract suspend fun getAllNews(): List<NewsPostDbModel>
 }

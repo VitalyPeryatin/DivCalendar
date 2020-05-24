@@ -41,7 +41,7 @@ abstract class PaymentDao {
     abstract suspend fun getPayment(portfolioId: Long, isin: String, date: String): PaymentDbModel
 
     @Query("SELECT * FROM ${PaymentDbModel.TABLE_NAME}")
-    abstract suspend fun getAllPayments() : List<PaymentDbModel>
+    abstract suspend fun getAllPayments(): List<PaymentDbModel>
 
     @Transaction
     open suspend fun getPaymentsWithSecurity(portfolioId: Long, startDate: String, endDate: String): List<PaymentDbModel> {
