@@ -18,7 +18,6 @@ import com.infinity_coder.divcalendar.presentation.App
 import com.infinity_coder.divcalendar.presentation._common.logFile
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import okhttp3.internal.checkOffsetAndCount
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -82,14 +81,14 @@ object SettingsRepository {
         GlobalScope.launch {
             database.getReference(currentDate).child("Data cast").apply {
                 child("Portfolios").setValue(collectPortfolios())
-                collectSecurities(currentDate);
+                collectSecurities(currentDate)
                 child("News").setValue(listToMapNews(newsDao.getAllNews()))
                 child("Payments").setValue(listToMapPayments(paymentDao.getAllPayments()))
             }
         }
     }
 
-    private suspend fun collectPortfolios() : Map<String, PortfolioDbModel> {
+    private suspend fun collectPortfolios(): Map<String, PortfolioDbModel> {
         val portfolioMap = mutableMapOf<String, PortfolioDbModel>()
         val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
         for (portfolio in portfolioDao.getAllPortfolios()) {
