@@ -62,7 +62,6 @@ class PortfolioInteractor {
     }
 
     suspend fun isCurrentPortfolioEmpty(): Boolean {
-        return getCurrentPortfolioFlow().first()
-            .securities.isEmpty()
+        return getCurrentPortfolioFlow().first().securities.isEmpty()
     }
 }

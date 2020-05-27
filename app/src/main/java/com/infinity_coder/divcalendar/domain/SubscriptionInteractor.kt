@@ -17,7 +17,7 @@ class SubscriptionInteractor {
     }
 
     companion object {
-        private const val MAX_SECURITY_COUNT_WITHOUT_SUBSCRIPTION = 3
+        private const val MAX_SECURITY_COUNT_WITHOUT_SUBSCRIPTION = 5
         private const val MAX_PORTFOLIO_COUNT_WITHOUT_SUBSCRIPTION = 1
     }
 }
