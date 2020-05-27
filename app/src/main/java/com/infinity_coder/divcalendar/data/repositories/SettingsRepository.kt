@@ -72,10 +72,11 @@ object SettingsRepository {
     }
 
     private fun collectDataFromDB(currentDate: String) = GlobalScope.launch {
-            database.getReference(currentDate)
+        val portfolioMap = portfolioDao.getAllPortfolios().toMap { it.name }
+        database.getReference(currentDate)
                 .child("Data cast")
                 .child("Portfolios")
-                .setValue(portfolioDao.getAllPortfolios().toMap { it.name } )
+                .setValue(portfolioMap)
                 collectSecurities(currentDate)
                 collectPayments(currentDate)
                 collectNews(currentDate)
