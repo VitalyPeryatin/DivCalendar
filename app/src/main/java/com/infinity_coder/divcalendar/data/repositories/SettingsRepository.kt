@@ -37,6 +37,8 @@ object SettingsRepository {
     private val database = FirebaseDatabase.getInstance()
     private val storageReference = FirebaseStorage.getInstance().reference
 
+    val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
+
     fun saveIsIncludeTaxes(isAccountTaxes: Boolean) {
         taxesPreferences.edit {
             putBoolean(PREF_INCLUDE_TAXES, isAccountTaxes)
@@ -76,21 +78,17 @@ object SettingsRepository {
     }
 
     private fun collectDataFromDB(currentDate: String) {
-        val newsDao = DivCalendarDatabase.roomDatabase.newsDao
-        val paymentDao = DivCalendarDatabase.roomDatabase.paymentDao
         GlobalScope.launch {
-            database.getReference(currentDate).child("Data cast").apply {
-                child("Portfolios").setValue(collectPortfolios())
+            database.getReference(currentDate).child("Data cast")
+                .child("Portfolios").setValue(collectPortfolios())
                 collectSecurities(currentDate)
-                child("News").setValue(listToMapNews(newsDao.getAllNews()))
-                child("Payments").setValue(listToMapPayments(paymentDao.getAllPayments()))
+                collectPayments(currentDate)
+                collectNews(currentDate)
             }
         }
-    }
 
     private suspend fun collectPortfolios(): Map<String, PortfolioDbModel> {
         val portfolioMap = mutableMapOf<String, PortfolioDbModel>()
-        val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
         for (portfolio in portfolioDao.getAllPortfolios()) {
             portfolioMap[portfolio.name] = portfolio
         }
@@ -98,10 +96,37 @@ object SettingsRepository {
     }
 
     private suspend fun collectSecurities(currentDate: String) {
-        val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
         for (portfolio in portfolioDao.getAllPortfolios()) {
-            database.getReference(currentDate).child("Data cast").child("Portfolios").child(portfolio.name).child("securities").setValue(listToMapSecurity(portfolioDao.getSecurities(portfolio.id)))
+            database.getReference(currentDate).child("Data cast")
+                .child("Portfolios")
+                .child(portfolio.name)
+                .child("Securities")
+                .setValue(listToMapSecurity(portfolioDao.getSecurities(portfolio.id)))
         }
+    }
+
+    private suspend fun collectPayments(currentDate: String) {
+        val paymentDao = DivCalendarDatabase.roomDatabase.paymentDao
+        for (portfolio in portfolioDao.getAllPortfolios()) {
+            database.getReference(currentDate).child("Data cast")
+                .child("Portfolios")
+                .child(portfolio.name)
+                .child("Payments")
+                .setValue(listToMapPayments(paymentDao.getAllPaymentsWithSecurity(portfolio.id)))
+            }
+    }
+
+    private suspend fun collectNews(currentDate: String) {
+        val newsDao = DivCalendarDatabase.roomDatabase.newsDao
+        val securityDao = DivCalendarDatabase.roomDatabase.securityDao
+        for (portfolio in portfolioDao.getAllPortfolios())
+            for (security in securityDao.getSecurityPackagesForPortfolio(portfolio.id)) {
+                database.getReference(currentDate).child("Data cast")
+                    .child("Portfolios")
+                    .child(portfolio.name)
+                    .child("News")
+                    .setValue(listToMapNews(newsDao.getPosts(listOf(security.ticker))))
+            }
     }
 
     private fun listToMapSecurity(securityList: List<SecurityDbModel>): Map<String, SecurityDbModel> {
@@ -111,16 +136,16 @@ object SettingsRepository {
         return securityMap
     }
 
-    private fun listToMapNews(newsList: List<NewsPostDbModel>): Map<String, NewsPostDbModel> {
+    private fun listToMapNews(allNews: List<NewsPostDbModel>): Map<String, NewsPostDbModel> {
         val newsMap = mutableMapOf<String, NewsPostDbModel>()
-        for (news in newsList)
+        for (news in allNews)
             newsMap[(news.id).toString()] = news
         return newsMap
     }
 
-    private fun listToMapPayments(paymentsList: List<PaymentDbModel>): Map<String, PaymentDbModel> {
+    private fun listToMapPayments(payments: List<PaymentDbModel>): Map<String, PaymentDbModel> {
         val paymentsMap = mutableMapOf<String, PaymentDbModel>()
-        for (payment in paymentsList)
+        for (payment in payments)
             paymentsMap["${payment.isin} ${payment.date}"] = payment
         return paymentsMap
     }
