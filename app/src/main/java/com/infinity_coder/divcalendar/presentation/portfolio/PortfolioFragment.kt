@@ -80,7 +80,7 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     }
 
     private fun initUI() {
-        portfolioToolbar.title = requireContext().resources.getString(R.string.portfolio)
+        portfolioToolbar.title = getString(R.string.portfolio)
         val parentActivity = (activity as AppCompatActivity)
         parentActivity.setActionBar(portfolioToolbar)
 

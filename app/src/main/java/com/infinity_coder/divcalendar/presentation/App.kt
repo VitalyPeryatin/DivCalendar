@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.multidex.MultiDexApplication
 import com.facebook.stetho.Stetho
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
+import com.infinity_coder.divcalendar.domain.DefaultPortfolioInteractor
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain._common.Actualizer
 import com.infinity_coder.divcalendar.presentation._common.clearLogFile
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 class App : MultiDexApplication() {
 
     private val portfolioInteractor = PortfolioInteractor()
+    private val defaultPortfolioInteractor = DefaultPortfolioInteractor()
 
     override fun onCreate() {
         super.onCreate()
@@ -24,15 +26,18 @@ class App : MultiDexApplication() {
         instance = this
         context = applicationContext
         registerActivityLifecycleCallbacks(AppActivityLifecycleCallbacks())
-        initActualizer()
+
+        Actualizer.subscribe(RateRepository::updateRates, RATE_OUT_DATE_LIMIT)
+        Stetho.initializeWithDefaults(this)
+
+        addDefaultPortfolioOnFirstLogin()
+
         clearLogFile()
     }
 
-    private fun initActualizer() {
-        Actualizer.subscribe(RateRepository::updateRates, RATE_OUT_DATE_LIMIT)
-        Stetho.initializeWithDefaults(this)
-        GlobalScope.launch {
-            portfolioInteractor.addDefaultPortfolio()
+    private fun addDefaultPortfolioOnFirstLogin() = GlobalScope.launch {
+        if (portfolioInteractor.getPortfolioCount() == 0) {
+            defaultPortfolioInteractor.addDefaultPortfolio()
         }
     }
 
