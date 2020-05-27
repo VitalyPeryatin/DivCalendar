@@ -49,12 +49,6 @@ object SettingsRepository {
         return taxesPreferences.getBoolean(PREF_INCLUDE_TAXES, false)
     }
 
-    private fun sendLogs(fileName: String) {
-        val file = Uri.fromFile(logFile)
-        val storageRef: StorageReference = storageReference.child("logs/$fileName.txt")
-        storageRef.putFile(file)
-    }
-
     fun reportError(message: String) {
         val currentDate = dateFormatter.format(Date())
         database.getReference(currentDate).apply {
@@ -81,13 +75,17 @@ object SettingsRepository {
             database.getReference(currentDate)
                 .child("Data cast")
                 .child("Portfolios")
-                .setValue(listToMapPortfolios())
+                .setValue(portfolioDao.getAllPortfolios().toMap { it.name } )
                 collectSecurities(currentDate)
                 collectPayments(currentDate)
                 collectNews(currentDate)
             }
 
-    private suspend fun listToMapPortfolios(): Map<String, PortfolioDbModel> { return portfolioDao.getAllPortfolios().toMap { it.name } }
+    private fun sendLogs(fileName: String) {
+        val file = Uri.fromFile(logFile)
+        val storageRef: StorageReference = storageReference.child("logs/$fileName.txt")
+        storageRef.putFile(file)
+    }
 
     private suspend fun collectSecurities(currentDate: String) {
         for (portfolio in portfolioDao.getAllPortfolios()) {
