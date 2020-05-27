@@ -1,6 +1,7 @@
 package com.infinity_coder.divcalendar.presentation.portfolio
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -80,7 +81,7 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     }
 
     private fun initUI() {
-        portfolioToolbar.title = context!!.resources.getString(R.string.portfolio)
+        portfolioToolbar.title = requireContext().resources.getString(R.string.portfolio)
         val parentActivity = (activity as AppCompatActivity)
         parentActivity.setActionBar(portfolioToolbar)
 

@@ -31,19 +31,12 @@ class App : MultiDexApplication() {
     private fun initActualizer() {
         Actualizer.subscribe(RateRepository::updateRates, RATE_OUT_DATE_LIMIT)
         Stetho.initializeWithDefaults(this)
-
-        addDefaultPortfolio()
-    }
-
-    private fun addDefaultPortfolio() = GlobalScope.launch {
-        if (portfolioInteractor.getCurrentPortfolioName().isEmpty()) {
-            portfolioInteractor.addPortfolio(DEFAULT_PORTFOLIO_NAME)
-            portfolioInteractor.setCurrentPortfolio(DEFAULT_PORTFOLIO_NAME)
+        GlobalScope.launch {
+            portfolioInteractor.addDefaultPortfolio()
         }
     }
 
     companion object {
-        const val DEFAULT_PORTFOLIO_NAME = "Основной портфель"
 
         private const val RATE_OUT_DATE_LIMIT = 30 * 60 * 1000L
 
