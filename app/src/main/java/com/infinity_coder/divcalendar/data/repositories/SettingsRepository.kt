@@ -10,6 +10,7 @@ import com.google.firebase.storage.BuildConfig
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
+import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.presentation.App
 import com.infinity_coder.divcalendar.presentation._common.logFile
 import kotlinx.coroutines.GlobalScope
@@ -34,6 +35,9 @@ object SettingsRepository {
     private val storageReference = FirebaseStorage.getInstance().reference
 
     private val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
+    private val newsDao = DivCalendarDatabase.roomDatabase.newsDao
+    private val securityDao = DivCalendarDatabase.roomDatabase.securityDao
+    private val paymentDao = DivCalendarDatabase.roomDatabase.paymentDao
 
     fun saveIsIncludeTaxes(isAccountTaxes: Boolean) {
         taxesPreferences.edit {
@@ -73,47 +77,51 @@ object SettingsRepository {
         }
     }
 
-    private fun collectDataFromDB(currentDate: String) {
-        GlobalScope.launch {
-            database.getReference(currentDate).child("Data cast")
-                .child("Portfolios").setValue(portfolioDao.getAllPortfolios().toMap { it.name })
+    private fun collectDataFromDB(currentDate: String) = GlobalScope.launch {
+            database.getReference(currentDate)
+                .child("Data cast")
+                .child("Portfolios")
+                .setValue(listToMapPortfolios())
                 collectSecurities(currentDate)
                 collectPayments(currentDate)
                 collectNews(currentDate)
             }
-        }
+
+    private suspend fun listToMapPortfolios(): Map<String, PortfolioDbModel> { return portfolioDao.getAllPortfolios().toMap { it.name } }
 
     private suspend fun collectSecurities(currentDate: String) {
         for (portfolio in portfolioDao.getAllPortfolios()) {
+            val securitiesMap = portfolioDao.getSecurities(portfolio.id).toMap { it.name }
             database.getReference(currentDate).child("Data cast")
                 .child("Portfolios")
                 .child(portfolio.name)
                 .child("Securities")
-                .setValue(portfolioDao.getSecurities(portfolio.id).toMap { it.name })
+                .setValue(securitiesMap)
         }
     }
 
     private suspend fun collectPayments(currentDate: String) {
-        val paymentDao = DivCalendarDatabase.roomDatabase.paymentDao
         for (portfolio in portfolioDao.getAllPortfolios()) {
-            database.getReference(currentDate).child("Data cast")
+            val paymentsMap = paymentDao.getAllPaymentsWithSecurity(portfolio.id).toMap { "${it.isin} ${it.date}" }
+            database.getReference(currentDate)
+                .child("Data cast")
                 .child("Portfolios")
                 .child(portfolio.name)
                 .child("Payments")
-                .setValue(paymentDao.getAllPaymentsWithSecurity(portfolio.id).toMap { "${it.isin} ${it.date}" })
-            }
+                .setValue(paymentsMap)
+        }
     }
 
     private suspend fun collectNews(currentDate: String) {
-        val newsDao = DivCalendarDatabase.roomDatabase.newsDao
-        val securityDao = DivCalendarDatabase.roomDatabase.securityDao
         for (portfolio in portfolioDao.getAllPortfolios())
             for (security in securityDao.getSecurityPackagesForPortfolio(portfolio.id)) {
-                database.getReference(currentDate).child("Data cast")
+                val newsMap = newsDao.getPosts(listOf(security.ticker)).toMap { it.id.toString() }
+                database.getReference(currentDate)
+                    .child("Data cast")
                     .child("Portfolios")
                     .child(portfolio.name)
                     .child("News")
-                    .setValue(newsDao.getPosts(listOf(security.ticker)).toMap { it.id.toString() })
+                    .setValue(newsMap)
             }
     }
 
