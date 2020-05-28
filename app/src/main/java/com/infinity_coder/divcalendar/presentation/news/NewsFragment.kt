@@ -26,7 +26,6 @@ class NewsFragment : Fragment(R.layout.fragment_news), UpdateCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        newsToolbar.title = context!!.resources.getString(R.string.news)
         val parentActivity = (activity as AppCompatActivity)
         parentActivity.setActionBar(newsToolbar)
 

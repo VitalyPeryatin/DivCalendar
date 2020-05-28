@@ -5,7 +5,7 @@
     <!-- common -->
     <string name="portfolio">Портфель</string>
     <string name="calendar">Календарь</string>
-    <string name="news">Новости</string>
+    <string name="help">Помощь</string>
     <string name="add">Добавить</string>
     <string name="enter_request">Введите запрос</string>
     <string name="no_connection">Нет интернет соединения</string>

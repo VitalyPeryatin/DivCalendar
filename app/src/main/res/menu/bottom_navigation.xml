@@ -12,8 +12,8 @@
         android:iconTint="@color/white"
         android:title="@string/calendar" />
     <item
-        android:id="@+id/newsItem"
-        android:icon="@drawable/ic_news"
+        android:id="@+id/helpItem"
+        android:icon="@drawable/ic_help"
         android:iconTint="@color/white"
-        android:title="@string/news" />
+        android:title="@string/help" />
 </menu>
