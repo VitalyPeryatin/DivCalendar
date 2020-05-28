@@ -9,10 +9,10 @@
     android:clickable="true"
     android:focusable="true">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/itemImageView"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
@@ -22,18 +22,23 @@
 
     <TextView
         android:id="@+id/itemTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="8dp"
         android:fontFamily="@font/roboto"
         android:textColor="?attr/textColorPrimary"
         android:textSize="@dimen/font_normal"
+        android:singleLine="true"
+        android:ellipsize="end"
         app:layout_constraintBottom_toBottomOf="@+id/itemImageView"
+        app:layout_constraintEnd_toStartOf="@+id/imageView5"
         app:layout_constraintStart_toEndOf="@+id/itemImageView"
         app:layout_constraintTop_toTopOf="@+id/itemImageView"
         tools:text="Item" />
 
     <ImageView
+        android:id="@+id/imageView5"
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:layout_marginEnd="16dp"
