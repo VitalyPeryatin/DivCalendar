@@ -27,26 +27,14 @@
                 android:elevation="2dp">
 
                 <include
-                    android:id="@+id/taxesItem"
-                    layout="@layout/item_settings_switch"
+                    android:id="@+id/telegramQuestionItem"
+                    layout="@layout/item_help_normal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <include
-                    android:id="@+id/feedbackItem"
-                    layout="@layout/item_settings_normal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <include
-                    android:id="@+id/telegramChatItem"
-                    layout="@layout/item_settings_normal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <include
-                    android:id="@+id/subscribeItem"
-                    layout="@layout/item_settings_normal"
+                    android:id="@+id/helpToUseItem"
+                    layout="@layout/item_help_forward"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>

@@ -6,7 +6,7 @@ import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.domain.PaymentInteractor
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain._common.convertStingToDate
-import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
+import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityTypeDelegate
 import com.infinity_coder.divcalendar.presentation.export_sheet.PaymentsFileCreator
 import com.infinity_coder.divcalendar.presentation.export_sheet.ZipManager
 import kotlinx.coroutines.Dispatchers

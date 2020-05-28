@@ -57,7 +57,11 @@
     <string name="small_count_portfolio">Это единственный портфель. Вы не можете его удалить.</string>
     <string name="total_portfolio_cost">Итого: %s</string>
     <string name="refresh_content">Идет обновление данных…</string>
-
+    
+    <!--help-->
+    <string name="telegram_question">Задать вопрос в Telegram чате</string>
+    <string name="help_to_use">Как пользоваться DivCalendar?</string>
+    
     <!-- settings -->
     <string name="settings">Настройки</string>
     <string name="account_for_taxes">Учитывать налоги</string>

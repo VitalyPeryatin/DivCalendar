@@ -12,8 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
-import com.infinity_coder.divcalendar.presentation._common.SecurityMarketDelegate
-import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
+import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityMarketDelegate
+import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityTypeDelegate
 import com.infinity_coder.divcalendar.presentation.search.adapters.SearchSecurityPagerAdapter
 import kotlinx.android.synthetic.main.activity_search_securities.*
 

@@ -49,8 +49,7 @@ class SettingsActivity : AbstractSubscriptionActivity() {
         taxesItem.setOnClickListener {
             taxesItem.settingsSwitch.isChecked = !taxesItem.settingsSwitch.isChecked
         }
-        telegramChatItem.itemTextView.text = resources.getString(R.string.telegram_chat)
-        telegramChatItem.setOnClickListener { openTelegramChannel() }
+
         feedbackItem.itemTextView.text = resources.getString(R.string.feedback)
         feedbackItem.setOnClickListener { openSendReportDialog() }
         subscribeItem.itemTextView.text = resources.getString(R.string.purchase_subscription)
@@ -70,19 +69,6 @@ class SettingsActivity : AbstractSubscriptionActivity() {
     private fun openSendReportDialog() {
         val dialog = ReportErrorBottomDialog.newInstance()
         dialog.show(supportFragmentManager, ReportErrorBottomDialog.TAG)
-    }
-
-    private fun openTelegramChannel() {
-        val telegramIntent = Intent(Intent.ACTION_VIEW, Uri.parse(SettingsRepository.TELEGRAM_GROUP_LINK))
-
-        val telegramPackage = "org.telegram.messenger"
-        val telegramXPackage = "org.thunderdog.challegram"
-        if (isAppAvailable(telegramPackage)) {
-            telegramIntent.setPackage(telegramPackage)
-        } else if (isAppAvailable(telegramXPackage)) {
-            telegramIntent.setPackage(telegramXPackage)
-        }
-        startActivity(telegramIntent)
     }
 
     private fun tryShowCurrentVersion() {

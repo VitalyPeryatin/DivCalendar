@@ -15,12 +15,3 @@ fun AppCompatActivity.setActionBar(toolbar: Toolbar, hasBackNavigation: Boolean 
         }
     }
 }
-
-fun Activity.isAppAvailable(appName: String?): Boolean {
-    return try {
-        packageManager.getPackageInfo(appName, PackageManager.GET_ACTIVITIES)
-        true
-    } catch (e: PackageManager.NameNotFoundException) {
-        false
-    }
-}

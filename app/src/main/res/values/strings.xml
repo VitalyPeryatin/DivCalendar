@@ -68,6 +68,10 @@
     <string name="total_portfolio_cost">Total: %s</string>
     <string name="refresh_content">Data is being updated…</string>
 
+    <!--help-->
+    <string name="telegram_question">Ask a question in Telegram chat</string>
+    <string name="help_to_use">How to use DivCalendar?</string>
+
     <!-- settings -->
     <string name="settings">Settings</string>
     <string name="account_for_taxes">Account for taxes</string>
