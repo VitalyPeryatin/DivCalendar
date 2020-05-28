@@ -52,4 +52,7 @@ abstract class PortfolioDao {
 
     @Query("SELECT count(*) FROM ${PortfolioDbModel.TABLE_NAME}")
     abstract suspend fun getPortfolioCount(): Int
+
+    @Query("SELECT * FROM ${PortfolioDbModel.TABLE_NAME}")
+    abstract suspend fun getAllPortfolios(): List<PortfolioDbModel>
 }
