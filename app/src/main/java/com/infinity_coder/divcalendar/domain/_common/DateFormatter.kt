@@ -8,7 +8,7 @@ object DateFormatter {
 
     @SuppressLint("ConstantLocale")
     val basicDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    
+
     fun formatDate(dateStr: String, months: Array<String>): String {
         val date = basicDateFormat.parse(dateStr) ?: Date()
         val calendar = Calendar.getInstance()

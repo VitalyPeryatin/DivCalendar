@@ -16,10 +16,9 @@ import com.infinity_coder.divcalendar.R
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_page.*
 
-
 class OnboardingPageAdapter(
     private val onboardingPageCallback: OnboardingPageCallback?
-):RecyclerView.Adapter<OnboardingPageAdapter.OnboardingPageViewHolder>(){
+) : RecyclerView.Adapter<OnboardingPageAdapter.OnboardingPageViewHolder>() {
 
     private val pages = mutableListOf<OnboardingPageModel>()
 
@@ -35,27 +34,27 @@ class OnboardingPageAdapter(
         holder.bind(pages[position])
     }
 
-    fun update(data:List<OnboardingPageModel>){
+    fun update(data: List<OnboardingPageModel>) {
         pages.clear()
         pages.addAll(data)
         notifyDataSetChanged()
     }
 
-    inner class OnboardingPageViewHolder(override val containerView: View):RecyclerView.ViewHolder(containerView), LayoutContainer{
+    inner class OnboardingPageViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        fun bind(page:OnboardingPageModel){
+        fun bind(page: OnboardingPageModel) {
             iconImageView.setImageResource(page.icon)
             titleTextView.setText(page.title)
 
-            if(page.message == R.string.onboarding_help_message) {
+            if (page.message == R.string.onboarding_help_message) {
                 messageTextView.text = createLink(messageTextView.context, page.message)
                 messageTextView.movementMethod = LinkMovementMethod.getInstance()
-            }else{
+            } else {
                 messageTextView.setText(page.message)
             }
         }
 
-        private fun createLink(context: Context,message:Int):SpannableString{
+        private fun createLink(context: Context, message: Int): SpannableString {
             val fullText = context.getText(message) as SpannedString
             val spannableString = SpannableString(fullText)
             val annotations = fullText.getSpans(0, fullText.length, Annotation::class.java)
@@ -81,9 +80,8 @@ class OnboardingPageAdapter(
         }
     }
 
-    interface OnboardingPageCallback{
+    interface OnboardingPageCallback {
 
         fun onClickTelegramChannelLink()
-
     }
 }

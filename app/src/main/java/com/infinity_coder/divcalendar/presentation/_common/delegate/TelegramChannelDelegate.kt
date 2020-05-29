@@ -3,7 +3,6 @@ package com.infinity_coder.divcalendar.presentation._common.delegate
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.infinity_coder.divcalendar.data.repositories.SettingsRepository
 import com.infinity_coder.divcalendar.presentation._common.extensions.isAppAvailable
 
 object TelegramChannelDelegate {
@@ -12,7 +11,7 @@ object TelegramChannelDelegate {
     private const val TELEGRAM_PACKAGE = "org.telegram.messenger"
     private const val TELEGRAM_X_PACKAGE = "org.thunderdog.challegram"
 
-    fun getOpenTelegramChannelIntent(context:Context):Intent{
+    fun getOpenTelegramChannelIntent(context: Context): Intent {
         val telegramIntent = Intent(Intent.ACTION_VIEW, Uri.parse(TELEGRAM_GROUP_LINK))
 
         if (context.isAppAvailable(TELEGRAM_PACKAGE)) {
@@ -23,5 +22,4 @@ object TelegramChannelDelegate {
 
         return telegramIntent
     }
-
 }

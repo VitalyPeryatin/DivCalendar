@@ -5,9 +5,9 @@ import androidx.annotation.StringRes
 
 data class OnboardingPageModel(
     @DrawableRes
-    val icon:Int,
+    val icon: Int,
     @StringRes
-    val title:Int,
+    val title: Int,
     @StringRes
-    val message:Int
+    val message: Int
 )

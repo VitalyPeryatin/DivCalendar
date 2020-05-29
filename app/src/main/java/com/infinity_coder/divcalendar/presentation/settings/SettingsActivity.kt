@@ -2,7 +2,6 @@ package com.infinity_coder.divcalendar.presentation.settings
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -10,10 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.infinity_coder.divcalendar.BuildConfig
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.repositories.SettingsRepository
 import com.infinity_coder.divcalendar.presentation._common.SwitchServerVersionDelegate
 import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
-import com.infinity_coder.divcalendar.presentation._common.extensions.isAppAvailable
 import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
 import com.infinity_coder.divcalendar.presentation.billing.dialogs.BuySubscriptionDialog
 import com.infinity_coder.divcalendar.presentation.billing.dialogs.SubscriptionPurchasedDialog

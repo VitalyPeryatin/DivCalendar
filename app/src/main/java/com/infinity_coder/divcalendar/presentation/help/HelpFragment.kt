@@ -30,5 +30,4 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
             startActivity(Intent(requireContext(), OnboardingActivity::class.java))
         }
     }
-
 }
