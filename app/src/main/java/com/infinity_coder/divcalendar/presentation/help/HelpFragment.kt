@@ -1,6 +1,5 @@
 package com.infinity_coder.divcalendar.presentation.help
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -21,13 +20,15 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         telegramQuestionItem.itemTextView.text = getString(R.string.telegram_question)
         telegramQuestionItem.itemImageView.setImageResource(R.drawable.ic_telegram)
         telegramQuestionItem.setOnClickListener {
-            startActivity(TelegramChannelDelegate.getOpenTelegramChannelIntent(requireContext()))
+            val intent = TelegramChannelDelegate.getOpenTelegramChannelIntent(requireContext())
+            startActivity(intent)
         }
 
         helpToUseItem.itemTextView.text = getString(R.string.help_to_use)
         helpToUseItem.itemImageView.setImageResource(R.drawable.ic_help_to_use)
         helpToUseItem.setOnClickListener {
-            startActivity(Intent(requireContext(), OnboardingActivity::class.java))
+            val intent = OnboardingActivity.getIntent(requireContext())
+            startActivity(intent)
         }
     }
 }

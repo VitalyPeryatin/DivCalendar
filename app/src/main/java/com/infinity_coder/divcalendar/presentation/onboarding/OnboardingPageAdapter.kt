@@ -25,7 +25,7 @@ class OnboardingPageAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OnboardingPageViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_page, parent, false)
-        return OnboardingPageViewHolder(view)
+        return OnboardingPageViewHolder(view, onboardingPageCallback)
     }
 
     override fun getItemCount(): Int = pages.size
@@ -40,7 +40,10 @@ class OnboardingPageAdapter(
         notifyDataSetChanged()
     }
 
-    inner class OnboardingPageViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+    class OnboardingPageViewHolder(
+        override val containerView: View,
+        private val onboardingPageCallback: OnboardingPageCallback?
+    ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         fun bind(page: OnboardingPageModel) {
             iconImageView.setImageResource(page.icon)

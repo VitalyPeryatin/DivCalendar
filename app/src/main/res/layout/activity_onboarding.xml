@@ -41,7 +41,7 @@
         <TextView
             android:id="@+id/fartherButton"
             android:layout_width="match_parent"
-            android:layout_height="44dp"
+            android:layout_height="55dp"
             android:background="@drawable/bg_onboarding_farther_button"
             android:gravity="center"
             android:clickable="true"
@@ -54,7 +54,7 @@
         <TextView
             android:id="@+id/endButton"
             android:layout_width="match_parent"
-            android:layout_height="44dp"
+            android:layout_height="55dp"
             android:background="@drawable/bg_onboarding_end_button"
             android:gravity="center"
             android:clickable="true"

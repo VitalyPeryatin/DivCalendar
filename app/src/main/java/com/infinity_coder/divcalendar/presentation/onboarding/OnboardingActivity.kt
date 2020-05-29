@@ -1,5 +1,7 @@
 package com.infinity_coder.divcalendar.presentation.onboarding
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -43,7 +45,8 @@ class OnboardingActivity : AppCompatActivity() {
     private fun initViewPager() {
         val adapter = OnboardingPageAdapter(object : OnboardingPageAdapter.OnboardingPageCallback {
             override fun onClickTelegramChannelLink() {
-                startActivity(TelegramChannelDelegate.getOpenTelegramChannelIntent(this@OnboardingActivity))
+                val intent = TelegramChannelDelegate.getOpenTelegramChannelIntent(this@OnboardingActivity)
+                startActivity(intent)
             }
         })
         adapter.update(pages)
@@ -62,10 +65,15 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     companion object {
+
         private val pages = listOf(
             OnboardingPageModel(R.drawable.onboarding_portfolio_image, R.string.onboarding_portfolio_title, R.string.onboarding_portfolio_message),
             OnboardingPageModel(R.drawable.onboarding_calendar_image, R.string.onboarding_calendar_title, R.string.onboarding_calendar_message),
             OnboardingPageModel(R.drawable.onboarding_help_image, R.string.onboarding_help_title, R.string.onboarding_help_message)
         )
+
+        fun getIntent(context: Context): Intent {
+            return Intent(context, OnboardingActivity::class.java)
+        }
     }
 }

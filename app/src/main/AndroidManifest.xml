@@ -22,6 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".presentation.search.SearchSecurityActivity"
             android:launchMode="singleTask"
@@ -30,8 +31,11 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
+
         <activity android:name=".presentation.onboarding.OnboardingActivity"/>
+
         <activity android:name=".presentation.settings.SettingsActivity" />
+
         <activity android:name=".presentation.billing.BuySubscriptionActivity" />
 
         <meta-data

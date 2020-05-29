@@ -73,14 +73,14 @@
     <string name="help_to_use">How to use DivCalendar?</string>
 
     <!--onboarding-->
-    <string name="onboarding_portfolio_title">Портфель</string>
-    <string name="onboarding_calendar_title">Календарь</string>
-    <string name="onboarding_help_title">Возникла проблема?</string>
-    <string name="onboarding_portfolio_message">На вкладке \"Портфель\" Вы можете\nдобавить Ваши финансовые инструменты</string>
-    <string name="onboarding_calendar_message">На вкладке \"Календарь\" Вы можете\nпосмотреть годовой план дивидендов</string>
-    <string name="onboarding_help_message">В нашем Telegram чате мы оперативно\nотвечаем на все поступающие вопросы!</string>
-    <string name="onboarding_farther_button">Далее</string>
-    <string name="onboarding_end_button">Понятно</string>
+    <string name="onboarding_portfolio_title">Portfolio</string>
+    <string name="onboarding_calendar_title">Calendar</string>
+    <string name="onboarding_help_title">Having a problem?</string>
+    <string name="onboarding_portfolio_message">On the \"Portfolio\" tab you can\nadd your financial instruments</string>
+    <string name="onboarding_calendar_message">On the \"Calendar\" tab you can\nsee the annual dividend plan</string>
+    <string name="onboarding_help_message">In our <annotation type="help_link">Telegram chat</annotation> we promptly\nanswer all incoming questions!</string>
+    <string name="onboarding_farther_button">Further</string>
+    <string name="onboarding_end_button">Got it</string>
 
     <!-- settings -->
     <string name="settings">Settings</string>
