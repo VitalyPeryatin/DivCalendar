@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation._common
+package com.infinity_coder.divcalendar.presentation._common.delegate
 
 import android.content.Context
 import androidx.core.content.ContextCompat
@@ -9,7 +9,10 @@ object SecurityTypeDelegate {
     const val SECURITY_TYPE_STOCK = "stock"
     const val SECURITY_TYPE_BOND = "bond"
 
-    val securityTypes = arrayOf(SECURITY_TYPE_STOCK, SECURITY_TYPE_BOND)
+    val securityTypes = arrayOf(
+        SECURITY_TYPE_STOCK,
+        SECURITY_TYPE_BOND
+    )
 
     @Suppress("DEPRECATION")
     fun getColor(context: Context, securityType: String): Int {
@@ -30,5 +33,10 @@ object SecurityTypeDelegate {
     }
 
     fun getTitles(context: Context): List<String> =
-        securityTypes.map { getTitle(context, it) }
+        securityTypes.map {
+            getTitle(
+                context,
+                it
+            )
+        }
 }

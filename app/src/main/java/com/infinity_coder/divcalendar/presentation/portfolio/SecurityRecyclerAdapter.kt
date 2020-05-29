@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.presentation._common.DecimalFormatStorage
-import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
-import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
+import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityCurrencyDelegate
+import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityTypeDelegate
 import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_security_portfolio.*

@@ -10,7 +10,7 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.CO
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.COLUMN_PORTFOLIO_ID
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.INDEX_PORTFOLIO_ID
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.TABLE_NAME
-import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
+import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityTypeDelegate
 
 @Entity(
     tableName = TABLE_NAME,

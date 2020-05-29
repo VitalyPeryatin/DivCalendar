@@ -9,7 +9,7 @@ import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain._common.isExpiredDate
-import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
+import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation.calendar.models.*
 import kotlinx.coroutines.flow.first
 

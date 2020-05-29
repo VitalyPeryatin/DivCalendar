@@ -5,7 +5,7 @@
     <!-- common -->
     <string name="portfolio">Портфель</string>
     <string name="calendar">Календарь</string>
-    <string name="news">Новости</string>
+    <string name="help">Помощь</string>
     <string name="add">Добавить</string>
     <string name="enter_request">Введите запрос</string>
     <string name="no_connection">Нет интернет соединения</string>
@@ -57,7 +57,21 @@
     <string name="small_count_portfolio">Это единственный портфель. Вы не можете его удалить.</string>
     <string name="total_portfolio_cost">Итого: %s</string>
     <string name="refresh_content">Идет обновление данных…</string>
-
+    
+    <!--help-->
+    <string name="telegram_question">Задать вопрос в Telegram чате</string>
+    <string name="help_to_use">Как пользоваться DivCalendar?</string>
+    
+    <!--onboarding-->
+    <string name="onboarding_portfolio_title">Портфель</string>
+    <string name="onboarding_calendar_title">Календарь</string>
+    <string name="onboarding_help_title">Возникла проблема?</string>
+    <string name="onboarding_portfolio_message">На вкладке \"Портфель\" Вы можете\nдобавить Ваши финансовые инструменты</string>
+    <string name="onboarding_calendar_message">На вкладке \"Календарь\" Вы можете\nпосмотреть годовой план дивидендов</string>
+    <string name="onboarding_help_message">В нашем <annotation type="help_link">Telegram чате</annotation> мы оперативно\nотвечаем на все поступающие вопросы!</string>
+    <string name="onboarding_farther_button">Далее</string>
+    <string name="onboarding_end_button">Понятно</string>
+    
     <!-- settings -->
     <string name="settings">Настройки</string>
     <string name="account_for_taxes">Учитывать налоги</string>

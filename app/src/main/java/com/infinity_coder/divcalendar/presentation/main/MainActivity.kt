@@ -12,7 +12,7 @@ import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscrip
 import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
 import com.infinity_coder.divcalendar.presentation._common.extensions.hideAllFragments
 import com.infinity_coder.divcalendar.presentation.calendar.CalendarFragment
-import com.infinity_coder.divcalendar.presentation.news.NewsFragment
+import com.infinity_coder.divcalendar.presentation.help.HelpFragment
 import com.infinity_coder.divcalendar.presentation.portfolio.PortfolioFragment
 import com.infinity_coder.divcalendar.presentation.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -76,11 +76,11 @@ class MainActivity : AbstractSubscriptionActivity() {
             return menuIdToFragment.getValue(menuId)
 
         menuIdToFragment[menuId] = when (menuId) {
-            R.id.portfolioItem -> PortfolioFragment() as Fragment
+            R.id.portfolioItem -> PortfolioFragment()
 
-            R.id.calendarItem -> CalendarFragment() as Fragment
+            R.id.calendarItem -> CalendarFragment()
 
-            R.id.newsItem -> NewsFragment() as Fragment
+            R.id.helpItem -> HelpFragment()
 
             else -> throw IllegalStateException("this menu does not exist")
         }
@@ -113,7 +113,7 @@ class MainActivity : AbstractSubscriptionActivity() {
 
                 is CalendarFragment -> R.id.calendarItem
 
-                is NewsFragment -> R.id.newsItem
+                is HelpFragment -> R.id.helpItem
 
                 else -> null
             }

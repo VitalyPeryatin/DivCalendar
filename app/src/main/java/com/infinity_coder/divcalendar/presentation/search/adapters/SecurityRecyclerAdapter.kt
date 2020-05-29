@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
-import com.infinity_coder.divcalendar.presentation._common.SecurityTypeDelegate
+import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityTypeDelegate
 import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_security_search.*

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".presentation.onboarding.OnboardingActivity">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/onboardingViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/indicator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
+        android:id="@+id/indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/containerForButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:spi_dotSelectedColor="@color/colorActive"
+        app:spi_dotColor="@color/light_gray"
+        app:spi_dotSize="8dp"
+        app:spi_dotSpacing="16dp" />
+
+    <FrameLayout
+        android:id="@+id/containerForButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/fartherButton"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@drawable/bg_onboarding_farther_button"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/onboarding_farther_button"
+            android:textSize="@dimen/font_normal"
+            android:textColor="@color/colorActive"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/endButton"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@drawable/bg_onboarding_end_button"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/onboarding_end_button"
+            android:textSize="@dimen/font_normal"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
