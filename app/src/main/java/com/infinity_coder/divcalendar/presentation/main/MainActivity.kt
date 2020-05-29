@@ -76,11 +76,11 @@ class MainActivity : AbstractSubscriptionActivity() {
             return menuIdToFragment.getValue(menuId)
 
         menuIdToFragment[menuId] = when (menuId) {
-            R.id.portfolioItem -> PortfolioFragment() as Fragment
+            R.id.portfolioItem -> PortfolioFragment()
 
-            R.id.calendarItem -> CalendarFragment() as Fragment
+            R.id.calendarItem -> CalendarFragment()
 
-            R.id.helpItem -> HelpFragment() as Fragment
+            R.id.helpItem -> HelpFragment()
 
             else -> throw IllegalStateException("this menu does not exist")
         }

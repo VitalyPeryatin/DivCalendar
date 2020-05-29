@@ -58,7 +58,7 @@ class SearchSecurityActivity : AbstractSubscriptionActivity() {
             queryEditText.text.clear()
         }
         queryEditText.addTextChangedListener(getQueryTextWatcher())
-        queryEditText.setOnEditorActionListener { v, actionId, event ->
+        queryEditText.setOnEditorActionListener { _, _, _ ->
             queryEditText.clearFocus()
             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(queryEditText.windowToken, 0)

@@ -48,10 +48,8 @@ class OnboardingPageAdapter(
             titleTextView.setText(page.title)
 
             if(page.message == R.string.onboarding_help_message) {
-                messageTextView.apply{
-                    text = createLink(context, page.message)
-                    movementMethod = LinkMovementMethod.getInstance()
-                }
+                messageTextView.text = createLink(messageTextView.context, page.message)
+                messageTextView.movementMethod = LinkMovementMethod.getInstance()
             }else{
                 messageTextView.setText(page.message)
             }
@@ -60,40 +58,23 @@ class OnboardingPageAdapter(
         private fun createLink(context: Context,message:Int):SpannableString{
             val fullText = context.getText(message) as SpannedString
             val spannableString = SpannableString(fullText)
-
             val annotations = fullText.getSpans(0, fullText.length, Annotation::class.java)
 
             val clickableSpan = object : ClickableSpan() {
                 override fun onClick(widget: View) {
                     onboardingPageCallback?.onClickTelegramChannelLink()
                 }
-
-                override fun updateDrawState(ds: TextPaint) {
-
-                }
             }
-            annotations?.find {
-                it.value == "help_link"
-            }?.let {
-                spannableString.apply {
-                    setSpan(
-                        clickableSpan,
-                        fullText.getSpanStart(it),
-                        fullText.getSpanEnd(it),
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    setSpan(
-                        ForegroundColorSpan(ContextCompat.getColor(context, R.color.colorAccent)),
-                        fullText.getSpanStart(it),
-                        fullText.getSpanEnd(it),
-                        0
-                    )
-                    setSpan(
-                        UnderlineSpan(),
-                        fullText.getSpanStart(it),
-                        fullText.getSpanEnd(it),
-                        0
-                    )
+            val colorSpan = ForegroundColorSpan(ContextCompat.getColor(context, R.color.colorAccent))
+            val underlineSpan = UnderlineSpan()
+
+            annotations?.find { it.value == "help_link" }?.let {
+                val startIndex = fullText.getSpanStart(it)
+                val endIndex = fullText.getSpanEnd(it)
+                spannableString.run {
+                    setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    setSpan(colorSpan, startIndex, endIndex, 0)
+                    setSpan(underlineSpan, startIndex, endIndex, 0)
                 }
             }
             return spannableString

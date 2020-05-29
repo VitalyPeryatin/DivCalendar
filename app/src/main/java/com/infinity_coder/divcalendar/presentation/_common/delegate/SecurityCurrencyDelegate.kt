@@ -8,24 +8,16 @@ import java.text.DecimalFormat
 
 object SecurityCurrencyDelegate {
 
-    val formatter: DecimalFormat = DecimalFormatStorage.formatter
+    private val formatter: DecimalFormat = DecimalFormatStorage.formatter
 
-    fun getValueWithCurrency(context: Context, value: Double, currency: String, accuracy: Int = 2): String {
+    fun getValueWithCurrency(context: Context, value: Double, currency: String): String {
         val valueStr = formatter.format(value).toString()
-        val currencyBadge = getCurrencyBadge(
-            context,
-            currency
-        )
+        val currencyBadge = getCurrencyBadge(context, currency)
         return "$valueStr $currencyBadge"
     }
 
-    fun getValueWithCurrency(context: Context, value: String, currency: String, accuracy: Int = 2): String {
-        return getValueWithCurrency(
-            context,
-            value.toDouble(),
-            currency,
-            accuracy
-        )
+    fun getValueWithCurrency(context: Context, value: String, currency: String): String {
+        return getValueWithCurrency(context, value.toDouble(), currency)
     }
 
     fun getCurrencyBadge(context: Context, currency: String): String {
