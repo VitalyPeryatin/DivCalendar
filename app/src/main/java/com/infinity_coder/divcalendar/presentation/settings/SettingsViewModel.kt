@@ -15,9 +15,18 @@ class SettingsViewModel : ViewModel() {
     val isAccountTaxes: LiveData<Boolean>
         get() = _isAccountTaxes
 
+    private val _hideCopecks = MutableLiveData(settingsInteractor.hideCopecks())
+    val hideCopecks: LiveData<Boolean>
+        get() = _hideCopecks
+
     fun saveIsAccountTaxes(isAccountTaxes: Boolean) {
         _isAccountTaxes.value = isAccountTaxes
         settingsInteractor.saveIsAccountTaxes(isAccountTaxes)
+    }
+
+    fun saveHideCopecks(hideCopecks: Boolean) {
+        _hideCopecks.value = hideCopecks
+        settingsInteractor.saveHideCopecks(hideCopecks)
     }
 
     fun reportError(message: String) {

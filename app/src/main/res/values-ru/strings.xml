@@ -75,6 +75,7 @@
     <!-- settings -->
     <string name="settings">Настройки</string>
     <string name="account_for_taxes">Учитывать налоги</string>
+    <string name="hide_copecks">Прятать копейки</string>
     <string name="feedback">Обратная связь</string>
     <string name="email_developers">Написать разработчикам</string>
     <string name="telegram_chat">Telegram-чат</string>

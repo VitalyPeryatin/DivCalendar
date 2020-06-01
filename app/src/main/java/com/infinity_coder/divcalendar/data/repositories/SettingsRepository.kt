@@ -19,15 +19,16 @@ import java.util.*
 
 object SettingsRepository {
 
-    private const val TAXES_PREFERENCES_NAME = "Settings"
+    private const val OPTIONS_PREFERENCES_NAME = "Settings"
     private const val SUBSCRIPTION_PREFERENCES_NAME = "SubscriptionFile"
     private const val PREF_INCLUDE_TAXES = "is_include_taxes"
+    private const val PREF_HIDE_COPECKS = "hide_copecks"
     private const val PREF_HAS_SUBSCRIPTION = "has_subscription"
 
     @SuppressLint("ConstantLocale")
     private val dateFormatter = SimpleDateFormat("yyyy-MM-dd hh:mm:ss:SS", Locale.getDefault())
 
-    private val taxesPreferences = App.instance.getSharedPreferences(TAXES_PREFERENCES_NAME, Context.MODE_PRIVATE)
+    private val optionsPreferences = App.instance.getSharedPreferences(OPTIONS_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
     private val database = FirebaseDatabase.getInstance()
     private val storageReference = FirebaseStorage.getInstance().reference
@@ -36,13 +37,23 @@ object SettingsRepository {
     private val paymentDao = DivCalendarDatabase.roomDatabase.paymentDao
 
     fun saveIsIncludeTaxes(isAccountTaxes: Boolean) {
-        taxesPreferences.edit {
+        optionsPreferences.edit {
             putBoolean(PREF_INCLUDE_TAXES, isAccountTaxes)
         }
     }
 
+    fun saveHideCopecks(hideCopecks: Boolean) {
+        optionsPreferences.edit {
+            putBoolean(PREF_HIDE_COPECKS, hideCopecks)
+        }
+    }
+
     fun isIncludeTaxes(): Boolean {
-        return taxesPreferences.getBoolean(PREF_INCLUDE_TAXES, false)
+        return optionsPreferences.getBoolean(PREF_INCLUDE_TAXES, false)
+    }
+
+    fun hideCopecks(): Boolean {
+        return optionsPreferences.getBoolean(PREF_HIDE_COPECKS, false)
     }
 
     fun reportError(message: String) {
@@ -63,7 +74,10 @@ object SettingsRepository {
     private fun collectDataFromSharedPreferences(currentDate: String) {
         database.getReference(currentDate).apply {
             child(SUBSCRIPTION_PREFERENCES_NAME).child(PREF_HAS_SUBSCRIPTION).setValue(SubscriptionRepository.hasSubscription())
-            child(TAXES_PREFERENCES_NAME).child(PREF_INCLUDE_TAXES).setValue(isIncludeTaxes())
+            child(OPTIONS_PREFERENCES_NAME).apply {
+                child(PREF_INCLUDE_TAXES).setValue(isIncludeTaxes())
+                child(PREF_HIDE_COPECKS).setValue(hideCopecks())
+            }
         }
     }
 

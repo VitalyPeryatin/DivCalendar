@@ -30,6 +30,7 @@ class SettingsActivity : AbstractSubscriptionActivity() {
 
         initUI()
 
+        viewModel.hideCopecks.observe(this, Observer(this::updateHideCopecks))
         viewModel.isAccountTaxes.observe(this, Observer(this::updateIsAccountTaxes))
     }
 
@@ -45,6 +46,14 @@ class SettingsActivity : AbstractSubscriptionActivity() {
         }
         taxesItem.setOnClickListener {
             taxesItem.settingsSwitch.isChecked = !taxesItem.settingsSwitch.isChecked
+        }
+
+        hideCopecksItem.itemTextView.text = resources.getString(R.string.hide_copecks)
+        hideCopecksItem.settingsSwitch.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.saveHideCopecks(isChecked)
+        }
+        hideCopecksItem.setOnClickListener {
+            hideCopecksItem.settingsSwitch.isChecked = !hideCopecksItem.settingsSwitch.isChecked
         }
 
         feedbackItem.itemTextView.text = resources.getString(R.string.feedback)
@@ -82,6 +91,10 @@ class SettingsActivity : AbstractSubscriptionActivity() {
 
     private fun updateIsAccountTaxes(isAccountTaxes: Boolean) {
         taxesItem.settingsSwitch.isChecked = isAccountTaxes
+    }
+
+    private fun updateHideCopecks(hideCopecks: Boolean) {
+        hideCopecksItem.settingsSwitch.isChecked = hideCopecks
     }
 
     private fun onToolbarClick() {

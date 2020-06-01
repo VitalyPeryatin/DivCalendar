@@ -34,6 +34,12 @@
                     android:layout_height="wrap_content" />
 
                 <include
+                    android:id="@+id/hideCopecksItem"
+                    layout="@layout/item_settings_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
                     android:id="@+id/feedbackItem"
                     layout="@layout/item_settings_normal"
                     android:layout_width="match_parent"
