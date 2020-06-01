@@ -75,9 +75,8 @@ class CalendarViewModel : ViewModel() {
 
         val currentYearValue = _currentYear.value!!
         val includeTaxes = isIncludeTaxes.value ?: false
-        val hideCopecks = hideCopecks.value ?: false
 
-        paymentInteractor.getPayments(currentYearValue, includeTaxes, hideCopecks)
+        paymentInteractor.getPayments(currentYearValue, includeTaxes)
             .onEach { cachedPayments = it }
             .map { paymentsMapper.mapToPresentationModel(context, cachedPayments) }
             .flowOn(Dispatchers.IO)
@@ -152,7 +151,7 @@ class CalendarViewModel : ViewModel() {
     fun updateData(context: Context) {
         val newIsIncludedTaxes = settingsInteractor.isIncludeTaxes()
 
-        val newHideCopecks = settingsInteractor.hideCopecks()
+        val newHideCopecks = settingsInteractor.isHideCopecks()
 
         val hasNewData = (newIsIncludedTaxes != isIncludeTaxes.value || newHideCopecks != hideCopecks.value)
 

@@ -11,12 +11,12 @@ class SettingsInteractor {
         return SettingsRepository.isIncludeTaxes()
     }
 
-    fun hideCopecks(): Boolean {
-        return SettingsRepository.hideCopecks()
+    fun isHideCopecks(): Boolean {
+        return SettingsRepository.isHideCopecks()
     }
 
     fun saveHideCopecks(hideCopecks: Boolean) {
-        SettingsRepository.saveHideCopecks(hideCopecks)
+        SettingsRepository.saveIsHideCopecks(hideCopecks)
     }
 
     fun reportError(message: String) {

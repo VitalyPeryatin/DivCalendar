@@ -17,12 +17,11 @@ class PaymentInteractor {
     private val dateFormat = DateFormatter.basicDateFormat
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun getPayments(year: String, isIncludeTaxes: Boolean, hideCopecks: Boolean): Flow<List<MonthlyPayment>> {
+    suspend fun getPayments(year: String, isIncludeTaxes: Boolean): Flow<List<MonthlyPayment>> {
         return PaymentRepository.getPayments(
             "$year-01-01", "$year-12-31"
         )
             .map { calculateTaxesIfNeed(isIncludeTaxes, it) }
-            .map { hideCopecksIfNeed(hideCopecks, it) }
             .map { groupAndSortPayments(it) }
     }
 
@@ -45,12 +44,6 @@ class PaymentInteractor {
         if (isIncludeTaxes) {
             payments.forEach { it.dividends *= TAX_FACTOR }
         }
-        return payments
-    }
-
-    private fun hideCopecksIfNeed(hideCopecks: Boolean, payments: List<PaymentDbModel>): List<PaymentDbModel> {
-        if (hideCopecks)
-            payments.forEach { it.dividends -= it.dividends % 1 }
         return payments
     }
 

@@ -42,7 +42,7 @@ object SettingsRepository {
         }
     }
 
-    fun saveHideCopecks(hideCopecks: Boolean) {
+    fun saveIsHideCopecks(hideCopecks: Boolean) {
         optionsPreferences.edit {
             putBoolean(PREF_HIDE_COPECKS, hideCopecks)
         }
@@ -52,7 +52,7 @@ object SettingsRepository {
         return optionsPreferences.getBoolean(PREF_INCLUDE_TAXES, false)
     }
 
-    fun hideCopecks(): Boolean {
+    fun isHideCopecks(): Boolean {
         return optionsPreferences.getBoolean(PREF_HIDE_COPECKS, false)
     }
 
@@ -76,7 +76,7 @@ object SettingsRepository {
             child(SUBSCRIPTION_PREFERENCES_NAME).child(PREF_HAS_SUBSCRIPTION).setValue(SubscriptionRepository.hasSubscription())
             child(OPTIONS_PREFERENCES_NAME).apply {
                 child(PREF_INCLUDE_TAXES).setValue(isIncludeTaxes())
-                child(PREF_HIDE_COPECKS).setValue(hideCopecks())
+                child(PREF_HIDE_COPECKS).setValue(isHideCopecks())
             }
         }
     }

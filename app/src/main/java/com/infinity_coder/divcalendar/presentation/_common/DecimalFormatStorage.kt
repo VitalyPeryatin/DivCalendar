@@ -28,4 +28,10 @@ object DecimalFormatStorage {
         formatSymbols.groupingSeparator = ' '
         DecimalFormat("#,###.${"#".repeat(ACCURACY)}", formatSymbols)
     }
+
+    val formatterWithoutPoints: DecimalFormat by lazy {
+        val formatSymbols = DecimalFormatSymbols(Locale.getDefault())
+        formatSymbols.groupingSeparator = ' '
+        DecimalFormat("#", formatSymbols)
+    }
 }
