@@ -23,7 +23,6 @@ object SettingsRepository {
     private const val SUBSCRIPTION_PREFERENCES_NAME = "SubscriptionFile"
     private const val PREF_INCLUDE_TAXES = "is_include_taxes"
     private const val PREF_HAS_SUBSCRIPTION = "has_subscription"
-    const val TELEGRAM_GROUP_LINK = "https://t.me/joinchat/H2bVmxsrivVBQ0rqv0AWIg"
 
     @SuppressLint("ConstantLocale")
     private val dateFormatter = SimpleDateFormat("yyyy-MM-dd hh:mm:ss:SS", Locale.getDefault())
@@ -34,8 +33,6 @@ object SettingsRepository {
     private val storageReference = FirebaseStorage.getInstance().reference
 
     private val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
-    private val newsDao = DivCalendarDatabase.roomDatabase.newsDao
-    private val securityDao = DivCalendarDatabase.roomDatabase.securityDao
     private val paymentDao = DivCalendarDatabase.roomDatabase.paymentDao
 
     fun saveIsIncludeTaxes(isAccountTaxes: Boolean) {
@@ -78,7 +75,6 @@ object SettingsRepository {
                 .setValue(portfolioMap)
                 collectSecurities(currentDate)
                 collectPayments(currentDate)
-                collectNews(currentDate)
             }
 
     private fun sendLogs(fileName: String) {
@@ -108,19 +104,6 @@ object SettingsRepository {
                 .child("Payments")
                 .setValue(paymentsMap)
         }
-    }
-
-    private suspend fun collectNews(currentDate: String) {
-        for (portfolio in portfolioDao.getAllPortfolios())
-            for (security in securityDao.getSecurityPackagesForPortfolio(portfolio.id)) {
-                val newsMap = newsDao.getPosts(listOf(security.ticker)).toMap { it.id.toString() }
-                database.getReference(currentDate)
-                    .child("Data cast")
-                    .child("Portfolios")
-                    .child(portfolio.name)
-                    .child("News")
-                    .setValue(newsMap)
-            }
     }
 
     private fun <T> List<T>.toMap(getKey: (T) -> String): Map <String, T> {

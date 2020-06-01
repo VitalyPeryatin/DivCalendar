@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation._common
+package com.infinity_coder.divcalendar.presentation._common.delegate
 
 import android.content.Context
 import com.infinity_coder.divcalendar.R
@@ -8,7 +8,10 @@ object SecurityMarketDelegate {
     const val SECURITY_MARKET_RUSSIAN = "russian"
     const val SECURITY_MARKET_FOREIGN = "foreign"
 
-    private val securityMarkets = arrayOf(SECURITY_MARKET_RUSSIAN, SECURITY_MARKET_FOREIGN)
+    private val securityMarkets = arrayOf(
+        SECURITY_MARKET_RUSSIAN,
+        SECURITY_MARKET_FOREIGN
+    )
 
     private fun getTitle(context: Context, market: String): String {
         return when (market) {
@@ -19,7 +22,12 @@ object SecurityMarketDelegate {
     }
 
     fun getTitles(context: Context): List<String> =
-        securityMarkets.map { getTitle(context, it) }
+        securityMarkets.map {
+            getTitle(
+                context,
+                it
+            )
+        }
 
     fun getMarketByTitle(context: Context, title: String): String {
         return when (title) {

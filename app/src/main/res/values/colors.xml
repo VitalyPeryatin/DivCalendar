@@ -12,6 +12,7 @@
 
     <color name="white">#ffffff</color>
     <color name="black">#202020</color>
+    <color name="light_gray">#EFEFEF</color>
     <color name="grey">#6f6f6f</color>
     <color name="red">#CB2431</color>
     <color name="green">#00B07D</color>

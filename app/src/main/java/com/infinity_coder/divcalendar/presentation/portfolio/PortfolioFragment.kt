@@ -16,7 +16,7 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
-import com.infinity_coder.divcalendar.presentation._common.SecurityCurrencyDelegate
+import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
 import com.infinity_coder.divcalendar.presentation._common.extensions.executeIfSubscribed
 import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar

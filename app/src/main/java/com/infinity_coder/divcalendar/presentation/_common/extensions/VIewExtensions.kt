@@ -3,6 +3,7 @@ package com.infinity_coder.divcalendar.presentation._common.extensions
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,15 @@ fun Context.showSuccessfulToast(layoutInflater: LayoutInflater, message: Int) {
         setGravity(Gravity.FILL_HORIZONTAL or Gravity.BOTTOM, 0, 0)
         view = toastView
     }.show()
+}
+
+fun Context.isAppAvailable(appName: String): Boolean {
+    return try {
+        packageManager.getPackageInfo(appName, PackageManager.GET_ACTIVITIES)
+        true
+    } catch (e: PackageManager.NameNotFoundException) {
+        false
+    }
 }
 
 fun Context.dpToPx(dp: Float) = dp * resources.displayMetrics.density
