@@ -32,6 +32,6 @@ object DecimalFormatStorage {
     val formatterWithoutPoints: DecimalFormat by lazy {
         val formatSymbols = DecimalFormatSymbols(Locale.getDefault())
         formatSymbols.groupingSeparator = ' '
-        DecimalFormat("#", formatSymbols)
+        DecimalFormat("#,###", formatSymbols)
     }
 }

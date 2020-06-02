@@ -24,9 +24,9 @@ class SettingsViewModel : ViewModel() {
         settingsInteractor.saveIsAccountTaxes(isAccountTaxes)
     }
 
-    fun saveHideCopecks(hideCopecks: Boolean) {
-        _hideCopecks.value = hideCopecks
-        settingsInteractor.saveHideCopecks(hideCopecks)
+    fun saveIsHideCopecks(isHideCopecks: Boolean) {
+        _hideCopecks.value = isHideCopecks
+        settingsInteractor.saveIsHideCopecks(isHideCopecks)
     }
 
     fun reportError(message: String) {

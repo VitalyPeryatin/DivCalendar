@@ -55,9 +55,7 @@ class CalendarViewModel : ViewModel() {
     val isIncludeTaxes: LiveData<Boolean?>
         get() = _isIncludeTaxes
 
-    private val _hideCopecks = MutableLiveData<Boolean?>(null)
-    val hideCopecks: LiveData<Boolean?>
-        get() = _hideCopecks
+    private var _isHideCopecks = settingsInteractor.isHideCopecks()
 
     val sendFileEvent = LiveEvent<File?>()
     val portfolioNameTitleEvent = LiveEvent<String>()
@@ -151,13 +149,13 @@ class CalendarViewModel : ViewModel() {
     fun updateData(context: Context) {
         val newIsIncludedTaxes = settingsInteractor.isIncludeTaxes()
 
-        val newHideCopecks = settingsInteractor.isHideCopecks()
+        val newIsHideCopecks = settingsInteractor.isHideCopecks()
 
-        val hasNewData = (newIsIncludedTaxes != isIncludeTaxes.value || newHideCopecks != hideCopecks.value)
+        val hasNewData = (newIsIncludedTaxes != isIncludeTaxes.value || newIsHideCopecks != _isHideCopecks)
 
         _isIncludeTaxes.value = newIsIncludedTaxes
 
-        _hideCopecks.value = newHideCopecks
+        _isHideCopecks = newIsHideCopecks
 
         if (hasNewData) {
             loadAllPayments(context)

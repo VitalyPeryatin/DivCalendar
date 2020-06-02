@@ -50,7 +50,7 @@ class SettingsActivity : AbstractSubscriptionActivity() {
 
         hideCopecksItem.itemTextView.text = resources.getString(R.string.hide_copecks)
         hideCopecksItem.settingsSwitch.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.saveHideCopecks(isChecked)
+            viewModel.saveIsHideCopecks(isChecked)
         }
         hideCopecksItem.setOnClickListener {
             hideCopecksItem.settingsSwitch.isChecked = !hideCopecksItem.settingsSwitch.isChecked

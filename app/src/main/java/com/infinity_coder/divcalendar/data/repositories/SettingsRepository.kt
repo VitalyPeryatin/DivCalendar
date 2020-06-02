@@ -22,7 +22,7 @@ object SettingsRepository {
     private const val OPTIONS_PREFERENCES_NAME = "Settings"
     private const val SUBSCRIPTION_PREFERENCES_NAME = "SubscriptionFile"
     private const val PREF_INCLUDE_TAXES = "is_include_taxes"
-    private const val PREF_HIDE_COPECKS = "hide_copecks"
+    private const val PREF_HIDE_COPECKS = "is_hide_copecks"
     private const val PREF_HAS_SUBSCRIPTION = "has_subscription"
 
     @SuppressLint("ConstantLocale")
@@ -42,9 +42,9 @@ object SettingsRepository {
         }
     }
 
-    fun saveIsHideCopecks(hideCopecks: Boolean) {
+    fun saveIsHideCopecks(isHideCopecks: Boolean) {
         optionsPreferences.edit {
-            putBoolean(PREF_HIDE_COPECKS, hideCopecks)
+            putBoolean(PREF_HIDE_COPECKS, isHideCopecks)
         }
     }
 

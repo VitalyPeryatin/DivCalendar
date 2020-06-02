@@ -15,8 +15,8 @@ class SettingsInteractor {
         return SettingsRepository.isHideCopecks()
     }
 
-    fun saveHideCopecks(hideCopecks: Boolean) {
-        SettingsRepository.saveIsHideCopecks(hideCopecks)
+    fun saveIsHideCopecks(ishideCopecks: Boolean) {
+        SettingsRepository.saveIsHideCopecks(ishideCopecks)
     }
 
     fun reportError(message: String) {
