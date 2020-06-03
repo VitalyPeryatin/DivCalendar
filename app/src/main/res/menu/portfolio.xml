@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/sortingPortfolioItem"
+        android:id="@+id/sortPortfolioItem"
         android:icon="@drawable/ic_sorting"
         app:showAsAction="always"
         android:title=""

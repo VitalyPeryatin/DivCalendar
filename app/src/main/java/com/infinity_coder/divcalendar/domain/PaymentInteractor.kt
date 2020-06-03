@@ -2,6 +2,7 @@ package com.infinity_coder.divcalendar.domain
 
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
+import com.infinity_coder.divcalendar.data.repositories.SettingsRepository
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain._common.convertStingToDate
 import com.infinity_coder.divcalendar.domain._common.getNowDate
@@ -17,9 +18,9 @@ class PaymentInteractor {
     private val dateFormat = DateFormatter.basicDateFormat
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun getPayments(year: String, isIncludeTaxes: Boolean): Flow<List<MonthlyPayment>> {
+    suspend fun getPayments(year: String): Flow<List<MonthlyPayment>> {
         return PaymentRepository.getPayments("$year-01-01", "$year-12-31")
-            .map { calculateTaxesIfNeed(isIncludeTaxes, it) }
+            .map { calculateTaxesIfNeed(it) }
             .map { groupAndSortPayments(it) }
     }
 
@@ -38,7 +39,8 @@ class PaymentInteractor {
         PaymentRepository.lastSecuritiesReceived.clear()
     }
 
-    private fun calculateTaxesIfNeed(isIncludeTaxes: Boolean, payments: List<PaymentDbModel>): List<PaymentDbModel> {
+    private fun calculateTaxesIfNeed(payments: List<PaymentDbModel>): List<PaymentDbModel> {
+        val isIncludeTaxes = SettingsRepository.isIncludeTaxes()
         if (isIncludeTaxes) {
             payments.forEach { it.dividends *= TAX_FACTOR }
         }

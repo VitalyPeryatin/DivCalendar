@@ -61,7 +61,7 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
         when (item.itemId) {
             R.id.changePortfolioItem -> executeIfSubscribed(this::openChangePortfolioDialog)
 
-            R.id.sortingPortfolioItem -> openSortingPortfolioDialog()
+            R.id.sortPortfolioItem -> openSortingPortfolioDialog()
 
             else -> return super.onOptionsItemSelected(item)
         }

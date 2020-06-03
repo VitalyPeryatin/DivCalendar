@@ -6,6 +6,7 @@ import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.domain.models.SortType
 import com.infinity_coder.divcalendar.presentation.App
+import com.infinity_coder.divcalendar.presentation._common.extensions.getNotNullString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -74,19 +75,19 @@ object PortfolioRepository {
 
     fun setCurrentSortType(sortType: SortType) {
         portfolioPreferences.edit {
-            putString(PREF_CURRENT_TYPE_SORT, sortType.javaClass.simpleName)
+            putString(PREF_CURRENT_TYPE_SORT, sortType.name)
         }
     }
 
     fun getCurrentSortType(): SortType {
-        return when (portfolioPreferences.getString(PREF_CURRENT_TYPE_SORT, SortType.PaymentDate.javaClass.simpleName)!!) {
-            SortType.PaymentDate.javaClass.simpleName -> SortType.PaymentDate
+        return when (portfolioPreferences.getNotNullString(PREF_CURRENT_TYPE_SORT, SortType.PAYMENT_DATE.name)) {
+            SortType.PAYMENT_DATE.name -> SortType.PAYMENT_DATE
 
-            SortType.Alphabetically.javaClass.simpleName -> SortType.Alphabetically
+            SortType.PROFITABILITY.name -> SortType.PROFITABILITY
 
-            SortType.Profitability.javaClass.simpleName -> SortType.Profitability
+            SortType.ALPHABETICALLY.name -> SortType.ALPHABETICALLY
 
-            else -> SortType.PaymentDate
+            else -> SortType.PAYMENT_DATE
         }
     }
 }

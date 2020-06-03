@@ -41,6 +41,7 @@ captures/
 .idea/caches
 .idea/modules.xml
 .idea/navEditor.xml
+.idea/jarRepositories.xml
 
 # Keystore files
 *.jks

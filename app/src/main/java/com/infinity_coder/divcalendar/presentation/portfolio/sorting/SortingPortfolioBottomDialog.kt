@@ -6,18 +6,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.domain.models.SortType
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import kotlinx.android.synthetic.main.bottom_dialog_sorting_portfolio.*
+import kotlinx.android.synthetic.main.fragment_portfolio.*
 
 class SortingPortfolioBottomDialog : BottomDialog() {
 
     private var callback: SortingPortfolioCallback? = null
 
-    val viewModel: SortingPortfolioViewModel by lazy {
+    private val viewModel: SortingPortfolioViewModel by lazy {
         ViewModelProvider(this).get(SortingPortfolioViewModel::class.java)
     }
 
@@ -46,18 +49,18 @@ class SortingPortfolioBottomDialog : BottomDialog() {
         super.onViewCreated(view, savedInstanceState)
 
         sortTypeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.nextPayoutDateRadioButton -> viewModel.setCurrentSortType(SortType.PaymentDate)
-                R.id.profitabilityRadioButton -> viewModel.setCurrentSortType(SortType.Profitability)
-                R.id.alphabeticallyRadioButton -> viewModel.setCurrentSortType(SortType.Alphabetically)
+            when(checkedId){
+                R.id.nextPayoutDateRadioButton -> viewModel.setCurrentSortType(SortType.PAYMENT_DATE)
+                R.id.profitabilityRadioButton -> viewModel.setCurrentSortType(SortType.PROFITABILITY)
+                R.id.alphabeticallyRadioButton -> viewModel.setCurrentSortType(SortType.ALPHABETICALLY)
             }
         }
 
         sortTypeRadioGroup.clearCheck()
         val radioButton = when (viewModel.getCurrentSortType()) {
-            is SortType.PaymentDate -> nextPayoutDateRadioButton
-            is SortType.Profitability -> profitabilityRadioButton
-            is SortType.Alphabetically -> alphabeticallyRadioButton
+            SortType.PAYMENT_DATE -> nextPayoutDateRadioButton
+            SortType.PROFITABILITY -> profitabilityRadioButton
+            SortType.ALPHABETICALLY -> alphabeticallyRadioButton
         }
         radioButton.isChecked = true
     }

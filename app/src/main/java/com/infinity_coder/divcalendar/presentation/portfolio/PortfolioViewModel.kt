@@ -37,7 +37,7 @@ class PortfolioViewModel : ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun loadSecurities() = viewModelScope.launch {
-        portfolioInteractor.getCurrentSortingPortfolioFlow()
+        portfolioInteractor.getCurrentSortedPortfolioFlow()
             .onStart {
                 _state.value = VIEW_STATE_PORTFOLIO_PROGRESS
             }

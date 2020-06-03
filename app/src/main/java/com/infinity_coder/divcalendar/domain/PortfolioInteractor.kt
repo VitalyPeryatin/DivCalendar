@@ -59,15 +59,10 @@ class PortfolioInteractor {
     }
 
     fun getCurrentPortfolioFlow(): Flow<PortfolioDbModel> {
-        return PortfolioRepository.getPortfolioWithSecurities(getCurrentPortfolioName())
-            .filterNotNull()
-            .map {
-                it.securities = it.securities.sortedBy(SecurityDbModel::name)
-                it
-            }
+        return PortfolioRepository.getPortfolioWithSecurities(getCurrentPortfolioName()).filterNotNull()
     }
 
-    fun getCurrentSortingPortfolioFlow(): Flow<PortfolioDbModel> {
+    fun getCurrentSortedPortfolioFlow(): Flow<PortfolioDbModel> {
         return PortfolioRepository.getPortfolioWithSecurities(getCurrentPortfolioName())
             .filterNotNull()
             .map {
@@ -79,7 +74,7 @@ class PortfolioInteractor {
 
     private suspend fun sortSecuritiesInPortfolio(securities: List<SecurityDbModel>, sortType: SortType): List<SecurityDbModel> {
         return when (sortType) {
-            is SortType.PaymentDate -> {
+            SortType.PAYMENT_DATE -> {
                 val payments = PaymentRepository.getPaymentForCurrentYear()
                     .sortedBy { convertStingToDate(it.date).time }
                     .filterNot { isExpiredDate(it.date) }
@@ -93,10 +88,10 @@ class PortfolioInteractor {
                         payments.indexOf(payment)
                 }
             }
-            is SortType.Profitability -> {
+            SortType.PROFITABILITY -> {
                 securities.sortedByDescending(SecurityDbModel::yearYield)
             }
-            is SortType.Alphabetically -> {
+            SortType.ALPHABETICALLY -> {
                 securities.sortedBy(SecurityDbModel::name)
             }
         }
