@@ -1,6 +1,5 @@
 package com.infinity_coder.divcalendar.domain
 
-import android.util.Log
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetModel
@@ -78,17 +77,17 @@ class PortfolioInteractor {
             }
     }
 
-    private suspend fun sortSecuritiesInPortfolio(securities:List<SecurityDbModel>,sortType: SortType):List<SecurityDbModel>{
-        return when(sortType){
+    private suspend fun sortSecuritiesInPortfolio(securities: List<SecurityDbModel>, sortType: SortType): List<SecurityDbModel> {
+        return when (sortType) {
             is SortType.PaymentDate -> {
                 val payments = PaymentRepository.getPaymentForCurrentYear()
                     .sortedBy { convertStingToDate(it.date).time }
                     .filterNot { isExpiredDate(it.date) }
-                    .distinctBy (PaymentNetModel.Response ::isin)
+                    .distinctBy(PaymentNetModel.Response ::isin)
 
-                securities.sortedBy {security ->
-                    val payment = payments.find { it.isin == security.isin}
-                    if(payment == null)
+                securities.sortedBy { security ->
+                    val payment = payments.find { it.isin == security.isin }
+                    if (payment == null)
                         Int.MAX_VALUE
                     else
                         payments.indexOf(payment)
@@ -107,12 +106,11 @@ class PortfolioInteractor {
         return getCurrentPortfolioFlow().first().securities.isEmpty()
     }
 
-    fun setCurrentSortType(sortType: SortType){
+    fun setCurrentSortType(sortType: SortType) {
         PortfolioRepository.setCurrentSortType(sortType)
     }
 
     fun getCurrentSortType(): SortType {
         return PortfolioRepository.getCurrentSortType()
     }
-
 }

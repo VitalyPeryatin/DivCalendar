@@ -13,7 +13,7 @@ import com.infinity_coder.divcalendar.domain.models.SortType
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import kotlinx.android.synthetic.main.bottom_dialog_sorting_portfolio.*
 
-class SortingPortfolioBottomDialog:BottomDialog() {
+class SortingPortfolioBottomDialog : BottomDialog() {
 
     private var callback: SortingPortfolioCallback? = null
 
@@ -46,7 +46,7 @@ class SortingPortfolioBottomDialog:BottomDialog() {
         super.onViewCreated(view, savedInstanceState)
 
         sortTypeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-            when(checkedId){
+            when (checkedId) {
                 R.id.nextPayoutDateRadioButton -> viewModel.setCurrentSortType(SortType.PaymentDate)
                 R.id.profitabilityRadioButton -> viewModel.setCurrentSortType(SortType.Profitability)
                 R.id.alphabeticallyRadioButton -> viewModel.setCurrentSortType(SortType.Alphabetically)
@@ -54,7 +54,7 @@ class SortingPortfolioBottomDialog:BottomDialog() {
         }
 
         sortTypeRadioGroup.clearCheck()
-        val radioButton = when(viewModel.getCurrentSortType()){
+        val radioButton = when (viewModel.getCurrentSortType()) {
             is SortType.PaymentDate -> nextPayoutDateRadioButton
             is SortType.Profitability -> profitabilityRadioButton
             is SortType.Alphabetically -> alphabeticallyRadioButton
@@ -64,7 +64,7 @@ class SortingPortfolioBottomDialog:BottomDialog() {
 
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
-        if(viewModel.isUpdatePortfolio()){
+        if (viewModel.isUpdatePortfolio()) {
             callback?.onUpdatePortfolio()
         }
     }
@@ -78,7 +78,7 @@ class SortingPortfolioBottomDialog:BottomDialog() {
         }
     }
 
-    interface SortingPortfolioCallback{
+    interface SortingPortfolioCallback {
         fun onUpdatePortfolio()
     }
 }

@@ -72,14 +72,14 @@ object PortfolioRepository {
         return portfolioDao.getPortfolioCount()
     }
 
-    fun setCurrentSortType(sortType: SortType){
+    fun setCurrentSortType(sortType: SortType) {
         portfolioPreferences.edit {
             putString(PREF_CURRENT_TYPE_SORT, sortType.javaClass.simpleName)
         }
     }
 
-    fun getCurrentSortType():SortType{
-        return when(portfolioPreferences.getString(PREF_CURRENT_TYPE_SORT, SortType.PaymentDate.javaClass.simpleName)!!){
+    fun getCurrentSortType(): SortType {
+        return when (portfolioPreferences.getString(PREF_CURRENT_TYPE_SORT, SortType.PaymentDate.javaClass.simpleName)!!) {
             SortType.PaymentDate.javaClass.simpleName -> SortType.PaymentDate
 
             SortType.Alphabetically.javaClass.simpleName -> SortType.Alphabetically
