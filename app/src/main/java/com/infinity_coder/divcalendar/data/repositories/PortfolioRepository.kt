@@ -1,9 +1,11 @@
 package com.infinity_coder.divcalendar.data.repositories
 
 import android.content.Context
+import android.util.Log
 import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
+import com.infinity_coder.divcalendar.domain.models.SortType
 import com.infinity_coder.divcalendar.presentation.App
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -18,6 +20,7 @@ object PortfolioRepository {
 
     private const val PORTFOLIO_PREF_NAME = "Portfolio"
     private const val PREF_CURRENT_PORTFOLIO = "current_portfolio"
+    private const val PREF_CURRENT_TYPE_SORT = "current_type_sort"
     private val portfolioPreferences = App.instance.getSharedPreferences(PORTFOLIO_PREF_NAME, Context.MODE_PRIVATE)
 
     suspend fun addPortfolio(portfolioName: String) {
@@ -68,5 +71,23 @@ object PortfolioRepository {
 
     suspend fun getPortfolioCount(): Int {
         return portfolioDao.getPortfolioCount()
+    }
+
+    fun setCurrentSortType(sortType: SortType){
+        portfolioPreferences.edit {
+            putString(PREF_CURRENT_TYPE_SORT, sortType.javaClass.simpleName)
+        }
+    }
+
+    fun getCurrentSortType():SortType{
+        return when(portfolioPreferences.getString(PREF_CURRENT_TYPE_SORT, SortType.NextPayoutDate.javaClass.simpleName)!!){
+            SortType.NextPayoutDate.javaClass.simpleName -> SortType.NextPayoutDate
+
+            SortType.SizeOfNextPayout.javaClass.simpleName -> SortType.SizeOfNextPayout
+
+            SortType.Profitability.javaClass.simpleName -> SortType.Profitability
+
+            else -> SortType.NextPayoutDate
+        }
     }
 }

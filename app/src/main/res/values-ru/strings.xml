@@ -57,6 +57,10 @@
     <string name="small_count_portfolio">Это единственный портфель. Вы не можете его удалить.</string>
     <string name="total_portfolio_cost">Итого: %s</string>
     <string name="refresh_content">Идет обновление данных…</string>
+    <string name="sort_portfolio">Сортировать</string>
+    <string name="sort_portfolio_by_next_payout_date">По дате ближайшей выплаты</string>
+    <string name="sort_portfolio_by_size_of_next_payout">По размеру ближайших выплат</string>
+    <string name="sort_portfolio_by_profitability">По доходности</string>
     
     <!--help-->
     <string name="telegram_question">Задать вопрос в Telegram чате</string>

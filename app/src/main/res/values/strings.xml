@@ -67,6 +67,10 @@
     <string name="small_count_portfolio">This is the only portfolio. You cannot delete it.</string>
     <string name="total_portfolio_cost">Total: %s</string>
     <string name="refresh_content">Data is being updated…</string>
+    <string name="sort_portfolio">Sort</string>
+    <string name="sort_portfolio_by_next_payout_date">By the date of the next payment</string>
+    <string name="sort_portfolio_by_size_of_next_payout">By the size of the nearest payments</string>
+    <string name="sort_portfolio_by_profitability">By profitability</string>
 
     <!--help-->
     <string name="telegram_question">Ask a question in Telegram chat</string>

@@ -1,7 +1,9 @@
 package com.infinity_coder.divcalendar.domain
 
+import android.util.Log
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
+import com.infinity_coder.divcalendar.domain.models.SortType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -56,6 +58,7 @@ class PortfolioInteractor {
         return PortfolioRepository.getPortfolioWithSecurities(getCurrentPortfolioName())
             .filterNotNull()
             .map {
+                Log.d("SortTypeLog", PortfolioRepository.getCurrentSortType().toString())
                 it.securities = it.securities.sortedBy { security -> security.name }
                 it
             }
@@ -64,4 +67,13 @@ class PortfolioInteractor {
     suspend fun isCurrentPortfolioEmpty(): Boolean {
         return getCurrentPortfolioFlow().first().securities.isEmpty()
     }
+
+    fun setCurrentSortType(sortType: SortType){
+        PortfolioRepository.setCurrentSortType(sortType)
+    }
+
+    fun getCurrentSortType(): SortType {
+        return PortfolioRepository.getCurrentSortType()
+    }
+
 }
