@@ -125,11 +125,7 @@ class AddSecurityBottomDialog : BottomDialog() {
     @SuppressLint("SetTextI18n")
     private fun setTotalPrice(price: Double?) {
         if (price == null) return
-        val priceWithCurrency = SecurityCurrencyDelegate.getValueWithCurrency(
-            requireContext(),
-            price,
-            security.currency
-        )
+        val priceWithCurrency = SecurityCurrencyDelegate.getValueWithCurrency(requireContext(), price, security.currency)
         totalPriceTextView.text = resources.getString(R.string.total_price, priceWithCurrency)
     }
 

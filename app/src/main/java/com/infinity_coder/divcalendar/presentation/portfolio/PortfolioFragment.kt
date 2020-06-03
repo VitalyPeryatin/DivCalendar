@@ -175,7 +175,7 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
 
     private fun setTotalPortfolioCost(totalPortfolioCost: Double) {
         val currentCurrency = viewModel.getDisplayCurrency()
-        val totalPortfolioCostWithCurrency = SecurityCurrencyDelegate.getValueWithCurrency(requireContext(), totalPortfolioCost, currentCurrency)
+        val totalPortfolioCostWithCurrency = SecurityCurrencyDelegate.getValueWithCurrencyConsiderCopecks(requireContext(), totalPortfolioCost, currentCurrency)
         totalPortfolioCostTextView.text = getString(R.string.total_portfolio_cost, totalPortfolioCostWithCurrency)
         totalPortfolioCostTextView.isSelected = true
     }

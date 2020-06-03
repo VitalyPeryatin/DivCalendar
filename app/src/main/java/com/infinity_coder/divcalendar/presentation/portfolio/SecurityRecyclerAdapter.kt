@@ -51,9 +51,9 @@ class SecurityRecyclerAdapter(
             securityTypeView.setBackgroundColor(securityColor)
             nameTextView.text = securityPackage.name
             nameTextView.isSelected = true
-            val count = DecimalFormatStorage.formatter.format(securityPackage.count)
+            val count = DecimalFormatStorage.formatterWithPoints.format(securityPackage.count)
             countTextView.text = resources.getString(R.string.sec_count, count)
-            totalPriceTextView.text = SecurityCurrencyDelegate.getValueWithCurrency(
+            totalPriceTextView.text = SecurityCurrencyDelegate.getValueWithCurrencyConsiderCopecks(
                 containerView.context,
                 securityPackage.totalPrice,
                 securityPackage.currency

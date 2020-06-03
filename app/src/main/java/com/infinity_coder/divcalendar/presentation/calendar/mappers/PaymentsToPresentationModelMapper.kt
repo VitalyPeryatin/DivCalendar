@@ -62,7 +62,7 @@ class PaymentsToPresentationModelMapper {
             it.currentCurrency = currentCurrency
             it.expired = isExpiredDate(it.presentationDate)
             it.presentationDate = context.getDate(it.presentationDate)
-            it.dividends = SecurityCurrencyDelegate.getValueWithCurrency(context, it.dividends, it.currentCurrency)
+            it.dividends = SecurityCurrencyDelegate.getValueWithCurrencyConsiderCopecks(context, it.dividends, it.currentCurrency)
         }
         return paymentsForMonth
     }
@@ -76,7 +76,7 @@ class PaymentsToPresentationModelMapper {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val totalPayments = FooterPaymentPresentationModel.from(monthlyPayment)
         totalPayments.currentCurrency = currentCurrency
-        totalPayments.income = SecurityCurrencyDelegate.getValueWithCurrency(context, totalPayments.income, totalPayments.currentCurrency)
+        totalPayments.income = SecurityCurrencyDelegate.getValueWithCurrencyConsiderCopecks(context, totalPayments.income, totalPayments.currentCurrency)
         return totalPayments
     }
 
@@ -84,7 +84,7 @@ class PaymentsToPresentationModelMapper {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val annualIncome = sumMonthPayments(monthlyPayments)
         val annualYield = (annualIncome / getCosts()) * 100
-        val annualIncomeStr = SecurityCurrencyDelegate.getValueWithCurrency(context, annualIncome, currentCurrency)
+        val annualIncomeStr = SecurityCurrencyDelegate.getValueWithCurrencyConsiderCopecks(context, annualIncome, currentCurrency)
         val allMonthlyPayments = getMonthlyPayments(monthlyPayments)
         val colors = getChartBarColors(allMonthlyPayments)
         return ChartPresentationModel(annualIncomeStr, annualYield, currentCurrency, allMonthlyPayments, colors)

@@ -9,22 +9,28 @@ import java.text.DecimalFormat
 
 object SecurityCurrencyDelegate {
 
-    private val formatter: DecimalFormat = DecimalFormatStorage.formatter
+    private val formatterWithPoints: DecimalFormat = DecimalFormatStorage.formatterWithPoints
     private val formatterWithoutPoints: DecimalFormat = DecimalFormatStorage.formatterWithoutPoints
     private val settingsRepository = SettingsRepository
 
     fun getValueWithCurrency(context: Context, value: Double, currency: String): String {
-        val valueStr: String =
-            if (settingsRepository.isHideCopecks())
-                formatterWithoutPoints.format(value).toString()
-            else
-                formatter.format(value).toString()
+        val valueStr: String = formatterWithPoints.format(value).toString()
         val currencyBadge = getCurrencyBadge(context, currency)
         return "$valueStr $currencyBadge"
     }
 
-    fun getValueWithCurrency(context: Context, value: String, currency: String): String {
-        return getValueWithCurrency(context, value.toDouble(), currency)
+    fun getValueWithCurrencyConsiderCopecks(context: Context, value: Double, currency: String): String {
+        val valueStr: String =
+            if (settingsRepository.isHideCopecks())
+                formatterWithoutPoints.format(value).toString()
+            else
+                formatterWithPoints.format(value).toString()
+        val currencyBadge = getCurrencyBadge(context, currency)
+        return "$valueStr $currencyBadge"
+    }
+
+    fun getValueWithCurrencyConsiderCopecks(context: Context, value: String, currency: String): String {
+        return getValueWithCurrencyConsiderCopecks(context, value.toDouble(), currency)
     }
 
     fun getCurrencyBadge(context: Context, currency: String): String {
