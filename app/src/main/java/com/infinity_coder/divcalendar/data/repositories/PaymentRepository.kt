@@ -11,6 +11,7 @@ import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.presentation.App
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.util.*
 
 object PaymentRepository {
 
@@ -25,6 +26,13 @@ object PaymentRepository {
     private val paymentsPreferences = App.instance.getSharedPreferences(PAYMENTS_PREF_NAME, Context.MODE_PRIVATE)
 
     val lastSecuritiesReceived = mutableMapOf<String, List<SecurityDbModel>>()
+
+    suspend fun getPaymentForCurrentYear(): List<PaymentNetModel.Response>{
+        val currentPortfolioId = PortfolioRepository.getCurrentPortfolioId()
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+        val securities = securityDao.getSecurityPackagesForPortfolio(currentPortfolioId)
+        return getPaymentsFromNetwork(securities, "$currentYear-01-01", "$currentYear-12-31")
+    }
 
     suspend fun getPayments(startDate: String, endDate: String): Flow<List<PaymentDbModel>> = flow {
         val currentPortfolioId = PortfolioRepository.getCurrentPortfolioId()

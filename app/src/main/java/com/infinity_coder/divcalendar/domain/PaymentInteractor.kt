@@ -18,9 +18,7 @@ class PaymentInteractor {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getPayments(year: String, isIncludeTaxes: Boolean): Flow<List<MonthlyPayment>> {
-        return PaymentRepository.getPayments(
-            "$year-01-01", "$year-12-31"
-        )
+        return PaymentRepository.getPayments("$year-01-01", "$year-12-31")
             .map { calculateTaxesIfNeed(isIncludeTaxes, it) }
             .map { groupAndSortPayments(it) }
     }

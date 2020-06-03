@@ -3,7 +3,6 @@ package com.infinity_coder.divcalendar.presentation.portfolio.sorting
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.domain.models.SortType
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
-import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.ChangePortfolioBottomDialog
 import kotlinx.android.synthetic.main.bottom_dialog_sorting_portfolio.*
 
 class SortingPortfolioBottomDialog:BottomDialog() {
@@ -49,17 +47,17 @@ class SortingPortfolioBottomDialog:BottomDialog() {
 
         sortTypeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             when(checkedId){
-                R.id.nextPayoutDateRadioButton -> viewModel.setCurrentSortType(SortType.NextPayoutDate)
-                R.id.sizeOfNextPayoutRadioButton -> viewModel.setCurrentSortType(SortType.SizeOfNextPayout)
+                R.id.nextPayoutDateRadioButton -> viewModel.setCurrentSortType(SortType.PaymentDate)
                 R.id.profitabilityRadioButton -> viewModel.setCurrentSortType(SortType.Profitability)
+                R.id.alphabeticallyRadioButton -> viewModel.setCurrentSortType(SortType.Alphabetically)
             }
         }
 
         sortTypeRadioGroup.clearCheck()
         val radioButton = when(viewModel.getCurrentSortType()){
-            is SortType.NextPayoutDate -> nextPayoutDateRadioButton
-            is SortType.SizeOfNextPayout -> sizeOfNextPayoutRadioButton
+            is SortType.PaymentDate -> nextPayoutDateRadioButton
             is SortType.Profitability -> profitabilityRadioButton
+            is SortType.Alphabetically -> alphabeticallyRadioButton
         }
         radioButton.isChecked = true
     }

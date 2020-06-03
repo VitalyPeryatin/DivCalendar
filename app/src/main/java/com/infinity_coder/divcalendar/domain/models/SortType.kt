@@ -1,7 +1,7 @@
 package com.infinity_coder.divcalendar.domain.models
 
 sealed class SortType {
-    object NextPayoutDate: SortType()
-    object SizeOfNextPayout: SortType()
+    object PaymentDate: SortType()
     object Profitability: SortType()
+    object Alphabetically: SortType()
 }

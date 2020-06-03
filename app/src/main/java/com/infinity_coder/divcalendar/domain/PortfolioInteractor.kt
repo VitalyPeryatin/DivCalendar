@@ -2,7 +2,12 @@ package com.infinity_coder.divcalendar.domain
 
 import android.util.Log
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
+import com.infinity_coder.divcalendar.data.network.model.PaymentNetModel
+import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
 import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
+import com.infinity_coder.divcalendar.domain._common.convertStingToDate
+import com.infinity_coder.divcalendar.domain._common.isExpiredDate
 import com.infinity_coder.divcalendar.domain.models.SortType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
@@ -58,10 +63,44 @@ class PortfolioInteractor {
         return PortfolioRepository.getPortfolioWithSecurities(getCurrentPortfolioName())
             .filterNotNull()
             .map {
-                Log.d("SortTypeLog", PortfolioRepository.getCurrentSortType().toString())
-                it.securities = it.securities.sortedBy { security -> security.name }
+                it.securities = it.securities.sortedBy(SecurityDbModel::name)
                 it
             }
+    }
+
+    fun getCurrentSortingPortfolioFlow(): Flow<PortfolioDbModel> {
+        return PortfolioRepository.getPortfolioWithSecurities(getCurrentPortfolioName())
+            .filterNotNull()
+            .map {
+                val sortType = PortfolioRepository.getCurrentSortType()
+                it.securities = sortSecuritiesInPortfolio(it.securities, sortType)
+                it
+            }
+    }
+
+    private suspend fun sortSecuritiesInPortfolio(securities:List<SecurityDbModel>,sortType: SortType):List<SecurityDbModel>{
+        return when(sortType){
+            is SortType.PaymentDate -> {
+                val payments = PaymentRepository.getPaymentForCurrentYear()
+                    .sortedBy { convertStingToDate(it.date).time }
+                    .filterNot { isExpiredDate(it.date) }
+                    .distinctBy (PaymentNetModel.Response ::isin)
+
+                securities.sortedBy {security ->
+                    val payment = payments.find { it.isin == security.isin}
+                    if(payment == null)
+                        Int.MAX_VALUE
+                    else
+                        payments.indexOf(payment)
+                }
+            }
+            is SortType.Profitability -> {
+                securities.sortedByDescending(SecurityDbModel::yearYield)
+            }
+            is SortType.Alphabetically -> {
+                securities.sortedBy(SecurityDbModel::name)
+            }
+        }
     }
 
     suspend fun isCurrentPortfolioEmpty(): Boolean {

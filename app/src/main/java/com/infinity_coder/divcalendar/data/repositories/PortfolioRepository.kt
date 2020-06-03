@@ -1,7 +1,6 @@
 package com.infinity_coder.divcalendar.data.repositories
 
 import android.content.Context
-import android.util.Log
 import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
@@ -80,14 +79,14 @@ object PortfolioRepository {
     }
 
     fun getCurrentSortType():SortType{
-        return when(portfolioPreferences.getString(PREF_CURRENT_TYPE_SORT, SortType.NextPayoutDate.javaClass.simpleName)!!){
-            SortType.NextPayoutDate.javaClass.simpleName -> SortType.NextPayoutDate
+        return when(portfolioPreferences.getString(PREF_CURRENT_TYPE_SORT, SortType.PaymentDate.javaClass.simpleName)!!){
+            SortType.PaymentDate.javaClass.simpleName -> SortType.PaymentDate
 
-            SortType.SizeOfNextPayout.javaClass.simpleName -> SortType.SizeOfNextPayout
+            SortType.Alphabetically.javaClass.simpleName -> SortType.Alphabetically
 
             SortType.Profitability.javaClass.simpleName -> SortType.Profitability
 
-            else -> SortType.NextPayoutDate
+            else -> SortType.PaymentDate
         }
     }
 }

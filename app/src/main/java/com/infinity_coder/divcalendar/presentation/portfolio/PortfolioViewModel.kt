@@ -9,9 +9,12 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain.SecurityInteractor
+import com.infinity_coder.divcalendar.presentation._common.logException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class PortfolioViewModel : ViewModel() {
@@ -34,7 +37,10 @@ class PortfolioViewModel : ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun loadSecurities() = viewModelScope.launch {
-        portfolioInteractor.getCurrentPortfolioFlow()
+        portfolioInteractor.getCurrentSortingPortfolioFlow()
+            .onStart {
+                _state.value = VIEW_STATE_PORTFOLIO_PROGRESS
+            }
             .onEach {
                 _portfolio.value = it
                 calculateTotalPortfolioCost(it)
@@ -43,7 +49,12 @@ class PortfolioViewModel : ViewModel() {
                 } else {
                     _state.value = VIEW_STATE_PORTFOLIO_CONTENT
                 }
-            }.launchIn(viewModelScope)
+            }
+            .catch {
+                logException(this, it)
+                _state.value = VIEW_STATE_PORTFOLIO_NO_NETWORK
+            }
+            .launchIn(viewModelScope)
     }
 
     fun changeSecurityPackage(securityPackage: SecurityDbModel) = viewModelScope.launch {
@@ -70,7 +81,9 @@ class PortfolioViewModel : ViewModel() {
     }
 
     companion object {
-        const val VIEW_STATE_PORTFOLIO_CONTENT = 1
-        const val VIEW_STATE_PORTFOLIO_EMPTY = 2
+        const val VIEW_STATE_PORTFOLIO_PROGRESS = 1
+        const val VIEW_STATE_PORTFOLIO_CONTENT = 2
+        const val VIEW_STATE_PORTFOLIO_EMPTY = 3
+        const val VIEW_STATE_PORTFOLIO_NO_NETWORK = 4
     }
 }
