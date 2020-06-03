@@ -85,6 +85,7 @@
     <!-- settings -->
     <string name="settings">Settings</string>
     <string name="account_for_taxes">Account for taxes</string>
+    <string name="hide_copecks">Hide copecks</string>
     <string name="feedback">Feedback</string>
     <string name="email_developers">Email developers</string>
     <string name="telegram_chat">Telegram chat</string>
