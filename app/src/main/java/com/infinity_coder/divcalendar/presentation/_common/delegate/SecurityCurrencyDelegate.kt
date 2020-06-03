@@ -3,15 +3,22 @@ package com.infinity_coder.divcalendar.presentation._common.delegate
 import android.content.Context
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
+import com.infinity_coder.divcalendar.data.repositories.SettingsRepository
 import com.infinity_coder.divcalendar.presentation._common.DecimalFormatStorage
 import java.text.DecimalFormat
 
 object SecurityCurrencyDelegate {
 
     private val formatter: DecimalFormat = DecimalFormatStorage.formatter
+    private val formatterWithoutPoints: DecimalFormat = DecimalFormatStorage.formatterWithoutPoints
+    private val settingsRepository = SettingsRepository
 
     fun getValueWithCurrency(context: Context, value: Double, currency: String): String {
-        val valueStr = formatter.format(value).toString()
+        val valueStr: String =
+            if (settingsRepository.isHideCopecks())
+                formatterWithoutPoints.format(value).toString()
+            else
+                formatter.format(value).toString()
         val currencyBadge = getCurrencyBadge(context, currency)
         return "$valueStr $currencyBadge"
     }
