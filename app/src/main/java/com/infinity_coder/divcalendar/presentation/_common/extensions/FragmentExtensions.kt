@@ -16,8 +16,8 @@ fun Fragment.executeIfSubscribed(func: () -> Unit) {
     }
 }
 
-fun Fragment.executeIfResumed(func: () -> Unit){
-    if(isResumed){
+fun Fragment.executeIfResumed(func: () -> Unit) {
+    if (isResumed) {
         func()
     }
 }

@@ -52,7 +52,7 @@ class SearchSecurityActivity : AbstractSubscriptionActivity() {
         }
     }
 
-    private fun initSegmentedButton(){
+    private fun initSegmentedButton() {
         segmentedButton {
             initialCheckedIndex = SecurityMarketDelegate.getMarketIndex(viewModel.getCurrentMarket())
 
@@ -65,8 +65,8 @@ class SearchSecurityActivity : AbstractSubscriptionActivity() {
         }
     }
 
-    private fun initQueryEditText(){
-        queryEditText.addTextChangedListener(object : OpenTextWatcher(){
+    private fun initQueryEditText() {
+        queryEditText.addTextChangedListener(object : OpenTextWatcher() {
             override fun afterTextChanged(s: Editable?) {
                 val query = s.toString()
                 clearButton.visibility(!query.isBlank())

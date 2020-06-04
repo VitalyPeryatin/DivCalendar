@@ -17,7 +17,7 @@ class SearchInteractor {
         }
     }
 
-    private fun mapSecurities(securities: List<SecurityNetModel>): List<SecurityNetModel>{
+    private fun mapSecurities(securities: List<SecurityNetModel>): List<SecurityNetModel> {
         securities.forEach {
             if (it.isin.isBlank())
                 it.isin = it.ticker

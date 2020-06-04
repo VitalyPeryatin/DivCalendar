@@ -10,10 +10,8 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.CO
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.COLUMN_PORTFOLIO_ID
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.INDEX_PORTFOLIO_ID
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.TABLE_NAME
-import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.from
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_TYPE_STOCK
-import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityTypeDelegate
 
 @Entity(
     tableName = TABLE_NAME,
@@ -81,7 +79,7 @@ data class SecurityDbModel(
 
         const val INDEX_PORTFOLIO_ID = "portfolio_id_index"
 
-        fun from(security: SecurityNetModel): SecurityDbModel{
+        fun from(security: SecurityNetModel): SecurityDbModel {
             return SecurityDbModel(
                 isin = security.isin,
                 ticker = security.ticker,

@@ -13,7 +13,7 @@ object SecurityMarketDelegate {
         return securityMarkets.first()
     }
 
-    fun getTitles(context: Context): List<String>{
+    fun getTitles(context: Context): List<String> {
         return securityMarkets.map { getTitle(context, it) }
     }
 

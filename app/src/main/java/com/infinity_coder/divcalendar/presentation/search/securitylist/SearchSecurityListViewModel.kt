@@ -48,7 +48,6 @@ class SearchSecurityListViewModel : ViewModel() {
             }
             .onCompletion { _state.value = VIEW_STATE_SEARCH_SECURITY_CONTENT }
             .launchIn(viewModelScope)
-
     }
 
     companion object {

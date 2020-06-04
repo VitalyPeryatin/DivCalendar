@@ -63,7 +63,7 @@ class AddSecurityBottomDialog : BottomDialog() {
         executeIfSubscribed { viewModel.appendSecurityPackage(securityPackage) }
     }
 
-    private fun onSuccess(){
+    private fun onSuccess() {
         dismiss()
         requireContext().showSuccessfulToast(layoutInflater, R.string.add_security_successful)
     }
@@ -80,7 +80,7 @@ class AddSecurityBottomDialog : BottomDialog() {
         }
     }
 
-    private fun initPriceEditText(){
+    private fun initPriceEditText() {
         priceEditText.suffix = " ${SecurityCurrencyDelegate.getCurrencyBadge(requireContext(),security.currency)}"
 
         priceEditText.addTextChangedListener(object : DecimalPriceTextWatcher(priceEditText, DecimalFormatStorage.priceEditTextDecimalFormat) {
@@ -104,7 +104,7 @@ class AddSecurityBottomDialog : BottomDialog() {
         priceEditText.setText(security.currentPrice.toString())
     }
 
-    private fun initCountEditText(){
+    private fun initCountEditText() {
         countEditText.addTextChangedListener(object : DecimalCountTextWatcher(countEditText, DecimalFormatStorage.countEditTextDecimalFormat) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 super.onTextChanged(s, start, before, count)

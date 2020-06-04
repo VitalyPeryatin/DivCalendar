@@ -61,7 +61,7 @@ class AddSecurityViewModel : ViewModel() {
         }
     }
 
-    private fun buildSecurity(securityNetModel: SecurityNetModel):SecurityDbModel {
+    private fun buildSecurity(securityNetModel: SecurityNetModel): SecurityDbModel {
         return SecurityDbModel.from(securityNetModel).let {
             it.count = count
             it.totalPrice = price * count

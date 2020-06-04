@@ -3,7 +3,7 @@ package com.infinity_coder.divcalendar.presentation._common.text_watchers
 import android.text.Editable
 import android.text.TextWatcher
 
-open class OpenTextWatcher:TextWatcher {
+open class OpenTextWatcher : TextWatcher {
     override fun afterTextChanged(s: Editable?) {
     }
 

@@ -6,7 +6,6 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_TYPE_BOND
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_TYPE_STOCK
 
-
 object SecurityTypeDelegate {
 
     val securityTypes = arrayOf(SECURITY_TYPE_STOCK, SECURITY_TYPE_BOND)
@@ -20,7 +19,7 @@ object SecurityTypeDelegate {
         return ContextCompat.getColor(context, colorId)
     }
 
-    fun getTitle(context: Context, position:Int): String {
+    fun getTitle(context: Context, position: Int): String {
         return getTitle(context, securityTypes[position])
     }
 
@@ -32,12 +31,11 @@ object SecurityTypeDelegate {
         }
     }
 
-    fun getCellValueForExcel(context: Context, type: String): String{
+    fun getCellValueForExcel(context: Context, type: String): String {
         return when (type) {
             SECURITY_TYPE_STOCK -> context.resources.getString(R.string.cell_value_stock)
             SECURITY_TYPE_BOND -> context.resources.getString(R.string.cell_value_bond)
             else -> "-"
         }
     }
-
 }

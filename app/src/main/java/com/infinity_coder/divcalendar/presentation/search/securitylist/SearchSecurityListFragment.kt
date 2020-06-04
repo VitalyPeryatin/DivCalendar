@@ -2,7 +2,6 @@ package com.infinity_coder.divcalendar.presentation.search.securitylist
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -10,11 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.extensions.executeIfResumed
-import com.infinity_coder.divcalendar.presentation._common.extensions.executeIfSubscribed
-import com.infinity_coder.divcalendar.presentation._common.extensions.showSuccessfulToast
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityViewModel
 import com.infinity_coder.divcalendar.presentation.search.adapters.SecurityRecyclerAdapter

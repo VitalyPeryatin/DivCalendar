@@ -32,8 +32,8 @@ data class SecurityNetModel(
 
     @SerializedName("price")
     val currentPrice: Double? = null
-):Parcelable{
-    companion object{
+) : Parcelable {
+    companion object {
         const val SECURITY_TYPE_STOCK = "stock"
         const val SECURITY_TYPE_BOND = "bond"
 

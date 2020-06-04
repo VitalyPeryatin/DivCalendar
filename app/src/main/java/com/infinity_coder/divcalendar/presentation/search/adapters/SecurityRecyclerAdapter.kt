@@ -11,7 +11,7 @@ import com.infinity_coder.divcalendar.presentation._common.extensions.inflate
 import com.infinity_coder.divcalendar.presentation._common.extensions.visibility
 import kotlinx.android.synthetic.main.item_security_search.*
 
-class SecurityRecyclerAdapter(private var clickListener: OnClickListener? = null) : BaseAdapter<SecurityNetModel>(){
+class SecurityRecyclerAdapter(private var clickListener: OnClickListener? = null) : BaseAdapter<SecurityNetModel>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SecurityViewHolder {
         val view = parent.inflate(R.layout.item_security_search)
@@ -22,7 +22,7 @@ class SecurityRecyclerAdapter(private var clickListener: OnClickListener? = null
         return viewHolder
     }
 
-    class SecurityViewHolder(override val containerView: View):BaseAdapter.BaseViewHolder<SecurityNetModel>(containerView){
+    class SecurityViewHolder(override val containerView: View) : BaseAdapter.BaseViewHolder<SecurityNetModel>(containerView) {
 
         @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
         override fun bind(security: SecurityNetModel, position: Int) {
