@@ -1,61 +1,43 @@
 package com.infinity_coder.divcalendar.presentation.search.adapters
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityTypeDelegate
 import com.infinity_coder.divcalendar.presentation._common.SimpleGlide
-import kotlinx.android.extensions.LayoutContainer
+import com.infinity_coder.divcalendar.presentation._common.base.BaseAdapter
+import com.infinity_coder.divcalendar.presentation._common.extensions.inflate
+import com.infinity_coder.divcalendar.presentation._common.extensions.visibility
 import kotlinx.android.synthetic.main.item_security_search.*
 
-class SecurityRecyclerAdapter(
-    private var clickListener: OnClickListener? = null
-) : RecyclerView.Adapter<SecurityRecyclerAdapter.SecurityViewHolder>() {
-
-    private var securities: List<SecurityNetModel> = emptyList()
+class SecurityRecyclerAdapter(private var clickListener: OnClickListener? = null) : BaseAdapter<SecurityNetModel>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SecurityViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_security_search, parent, false)
-        return SecurityViewHolder(
-            view,
-            clickListener
-        )
+        val view = parent.inflate(R.layout.item_security_search)
+        val viewHolder = SecurityViewHolder(view)
+        viewHolder.containerView.setOnClickListener {
+            clickListener?.onClick(items[viewHolder.adapterPosition])
+        }
+        return viewHolder
     }
 
-    override fun getItemCount(): Int = securities.size
+    class SecurityViewHolder(override val containerView: View):BaseAdapter.BaseViewHolder<SecurityNetModel>(containerView){
 
-    override fun onBindViewHolder(holder: SecurityViewHolder, position: Int) {
-        holder.bind(securities[position])
-    }
-
-    fun setSecurities(securities: List<SecurityNetModel>) {
-        this.securities = securities
-        notifyDataSetChanged()
-    }
-
-    class SecurityViewHolder(
-        override val containerView: View,
-        private var clickListener: OnClickListener?
-    ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
-        fun bind(security: SecurityNetModel) {
+        @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
+        override fun bind(security: SecurityNetModel, position: Int) {
             nameTextView.text = security.name
             sourceTextView.text = security.ticker
-            val securityColor = SecurityTypeDelegate.getColor(containerView.context, security.type)
-            securityTypeView.setBackgroundColor(securityColor)
             typeTextView.text = SecurityTypeDelegate.getTitle(containerView.context, security.type)
-            exchangeDashTextView.visibility = if (security.exchange.isEmpty()) View.INVISIBLE else View.VISIBLE
-            exchangeTextView.visibility = if (security.exchange.isEmpty()) View.INVISIBLE else View.VISIBLE
+            exchangeDashTextView.visibility(security.exchange.isNotEmpty(), View.INVISIBLE)
+            exchangeTextView.visibility(security.exchange.isNotEmpty(), View.INVISIBLE)
             exchangeTextView.text = security.exchange
             yearYieldTextView.text = containerView.context.getString(R.string.yield_in_year, security.yearYield)
-            SimpleGlide.loadImage(containerView, security.logo, logoImageView)
 
-            containerView.setOnClickListener {
-                clickListener?.onClick(security)
-            }
+            val securityColor = SecurityTypeDelegate.getColor(containerView.context, security.type)
+            securityTypeView.setBackgroundColor(securityColor)
+
+            SimpleGlide.loadImage(containerView, security.logo, logoImageView)
         }
     }
 

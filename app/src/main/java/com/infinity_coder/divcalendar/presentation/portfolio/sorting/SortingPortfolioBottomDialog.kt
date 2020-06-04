@@ -6,11 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.domain.models.SortType
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import kotlinx.android.synthetic.main.bottom_dialog_sorting_portfolio.*
@@ -49,7 +47,7 @@ class SortingPortfolioBottomDialog : BottomDialog() {
         super.onViewCreated(view, savedInstanceState)
 
         sortTypeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-            when(checkedId){
+            when (checkedId) {
                 R.id.nextPayoutDateRadioButton -> viewModel.setCurrentSortType(SortType.PAYMENT_DATE)
                 R.id.profitabilityRadioButton -> viewModel.setCurrentSortType(SortType.PROFITABILITY)
                 R.id.alphabeticallyRadioButton -> viewModel.setCurrentSortType(SortType.ALPHABETICALLY)

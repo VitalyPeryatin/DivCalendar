@@ -3,40 +3,41 @@ package com.infinity_coder.divcalendar.presentation._common.delegate
 import android.content.Context
 import androidx.core.content.ContextCompat
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_TYPE_BOND
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_TYPE_STOCK
+
 
 object SecurityTypeDelegate {
 
-    const val SECURITY_TYPE_STOCK = "stock"
-    const val SECURITY_TYPE_BOND = "bond"
+    val securityTypes = arrayOf(SECURITY_TYPE_STOCK, SECURITY_TYPE_BOND)
 
-    val securityTypes = arrayOf(
-        SECURITY_TYPE_STOCK,
-        SECURITY_TYPE_BOND
-    )
-
-    @Suppress("DEPRECATION")
-    fun getColor(context: Context, securityType: String): Int {
-        val colorId = when (securityType) {
-            SECURITY_TYPE_STOCK -> R.color.typeRusStockColor
-            SECURITY_TYPE_BOND -> R.color.typeRusBondColor
-            else -> R.color.typeRusStockColor
+    fun getColor(context: Context, type: String): Int {
+        val colorId = when (type) {
+            SECURITY_TYPE_STOCK -> R.color.typeStockColor
+            SECURITY_TYPE_BOND -> R.color.typeBondColor
+            else -> throw IllegalStateException("No color for such security type: $type")
         }
         return ContextCompat.getColor(context, colorId)
+    }
+
+    fun getTitle(context: Context, position:Int): String {
+        return getTitle(context, securityTypes[position])
     }
 
     fun getTitle(context: Context, type: String): String {
         return when (type) {
             SECURITY_TYPE_STOCK -> context.resources.getString(R.string.stocks)
             SECURITY_TYPE_BOND -> context.resources.getString(R.string.bonds)
-            else -> ""
+            else -> throw IllegalStateException("No title for such security type: $type")
         }
     }
 
-    fun getTitles(context: Context): List<String> =
-        securityTypes.map {
-            getTitle(
-                context,
-                it
-            )
+    fun getCellValueForExcel(context: Context, type: String): String{
+        return when (type) {
+            SECURITY_TYPE_STOCK -> context.resources.getString(R.string.cell_value_stock)
+            SECURITY_TYPE_BOND -> context.resources.getString(R.string.cell_value_bond)
+            else -> "-"
         }
+    }
+
 }

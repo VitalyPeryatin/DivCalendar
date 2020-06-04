@@ -2,16 +2,20 @@ package com.infinity_coder.divcalendar.presentation._common.delegate
 
 import android.content.Context
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_MARKET_FOREIGN
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_MARKET_RUSSIAN
 
 object SecurityMarketDelegate {
 
-    const val SECURITY_MARKET_RUSSIAN = "russian"
-    const val SECURITY_MARKET_FOREIGN = "foreign"
+    private val securityMarkets = arrayOf(SECURITY_MARKET_RUSSIAN, SECURITY_MARKET_FOREIGN)
 
-    private val securityMarkets = arrayOf(
-        SECURITY_MARKET_RUSSIAN,
-        SECURITY_MARKET_FOREIGN
-    )
+    fun getFirstMarket(): String {
+        return securityMarkets.first()
+    }
+
+    fun getTitles(context: Context): List<String>{
+        return securityMarkets.map { getTitle(context, it) }
+    }
 
     private fun getTitle(context: Context, market: String): String {
         return when (market) {
@@ -20,14 +24,6 @@ object SecurityMarketDelegate {
             else -> throw IllegalStateException("No title for such market: $market")
         }
     }
-
-    fun getTitles(context: Context): List<String> =
-        securityMarkets.map {
-            getTitle(
-                context,
-                it
-            )
-        }
 
     fun getMarketByTitle(context: Context, title: String): String {
         return when (title) {

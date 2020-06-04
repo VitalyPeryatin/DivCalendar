@@ -45,12 +45,13 @@ abstract class AbstractSubscriptionActivity : AppCompatActivity(), BillingProces
     // Billing callbacks
 
     override fun onBillingInitialized() {
+        activityScope
         activityScope.launch {
             var hasPremiumProducts = false
             withContext(Dispatchers.IO) {
                 hasPremiumProducts = subscriptionInteractor.hasPremiumProducts()
             }
-            if (hasPremiumProducts && !hasSubscription() && !isOpenedBuySubscribtionActivity) {
+            if (hasPremiumProducts && !hasSubscription() && !isOpenedBuySubscriptionActivity) {
                 val intent = BuySubscriptionActivity.getIntent(this@AbstractSubscriptionActivity)
                 startActivity(intent)
                 finish()
@@ -101,6 +102,6 @@ abstract class AbstractSubscriptionActivity : AppCompatActivity(), BillingProces
         private const val SUBSCRIPTION_ID = "standard_subscription"
         private const val LICENSE_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjqNWSexMmjxECoBCFKYAGTKAsesoYtvrxDk9uTDwg4A+sBA5YD7rvKBLEtQ2bfMLlKb0FQg6PZvmABtkb8oKAUEZCPVGuE6Ep4/pxWa/JO0Lz0mvZsLuh+8Obi8Bm1I3WG2kStaaeW+rYmA0r7m0vgd6XMa0Jl2ZImF+VFwcjHdL1wnik6WZNEMcme/Czvkxz06xADeapX7AocW7AMvgxFvbHdVqXTSoSzspfeNPB+/8745CN6B6HU4NlxCODjwkg3msYPROqNbO1rnoaWs4JBk+d6G67RYcsYxrJyZZYPNB6sKEZPjcokzwdDrcZ8fMsZF9j5jwpPdSR4epvwnWowIDAQAB"
 
-        var isOpenedBuySubscribtionActivity = false
+        var isOpenedBuySubscriptionActivity = false
     }
 }

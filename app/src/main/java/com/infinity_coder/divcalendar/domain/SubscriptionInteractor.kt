@@ -8,8 +8,7 @@ class SubscriptionInteractor {
     suspend fun hasPremiumProducts(): Boolean {
         val portfolioCount = portfolioInteractor.getPortfolioCount()
         val securityCount = securityInteractor.getSecurityCount()
-        return securityCount > MAX_SECURITY_COUNT_WITHOUT_SUBSCRIPTION ||
-                portfolioCount > MAX_PORTFOLIO_COUNT_WITHOUT_SUBSCRIPTION
+        return securityCount > MAX_SECURITY_COUNT_WITHOUT_SUBSCRIPTION || portfolioCount > MAX_PORTFOLIO_COUNT_WITHOUT_SUBSCRIPTION
     }
 
     suspend fun isSecurityCountLeastThanSubscriptionGrant(): Boolean {
