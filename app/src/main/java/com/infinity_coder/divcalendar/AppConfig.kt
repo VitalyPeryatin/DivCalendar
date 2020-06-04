@@ -8,12 +8,12 @@ import com.infinity_coder.divcalendar.presentation._common.extensions.getNotNull
 object AppConfig {
 
     private const val APP_CONFIG_PREF_NAME = "AppConfig"
-    private val appConfigPreferences = App.instance.getSharedPreferences(APP_CONFIG_PREF_NAME, Context.MODE_PRIVATE)
-
     private const val PREF_KEY_APP_CONFIG = "appConfig"
 
-    const val DEV = "DEV"
     const val PROD = "PROD"
+    const val DEV = "DEV"
+
+    private val appConfigPreferences = App.instance.getSharedPreferences(APP_CONFIG_PREF_NAME, Context.MODE_PRIVATE)
 
     var serverConfig: String
         set(value) {

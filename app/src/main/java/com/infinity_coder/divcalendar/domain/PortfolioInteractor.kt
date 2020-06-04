@@ -2,11 +2,7 @@ package com.infinity_coder.divcalendar.domain
 
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
-import com.infinity_coder.divcalendar.data.network.model.PaymentNetModel
-import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
 import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
-import com.infinity_coder.divcalendar.domain._common.convertStingToDate
-import com.infinity_coder.divcalendar.domain._common.isExpiredDate
 import com.infinity_coder.divcalendar.domain.models.SortType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
@@ -75,18 +71,7 @@ class PortfolioInteractor {
     private suspend fun sortSecuritiesInPortfolio(securities: List<SecurityDbModel>, sortType: SortType): List<SecurityDbModel> {
         return when (sortType) {
             SortType.PAYMENT_DATE -> {
-                val payments = PaymentRepository.getPaymentForCurrentYear()
-                    .sortedBy { convertStingToDate(it.date).time }
-                    .filterNot { isExpiredDate(it.date) }
-                    .distinctBy(PaymentNetModel.Response ::isin)
-
-                securities.sortedBy { security ->
-                    val payment = payments.find { it.isin == security.isin }
-                    if (payment == null)
-                        Int.MAX_VALUE
-                    else
-                        payments.indexOf(payment)
-                }
+                securities
             }
             SortType.PROFITABILITY -> {
                 securities.sortedByDescending(SecurityDbModel::yearYield)
