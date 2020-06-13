@@ -37,6 +37,11 @@ class SecurityRecyclerAdapter(private var clickListener: OnClickListener? = null
             val securityColor = SecurityTypeDelegate.getColor(containerView.context, security.type)
             securityTypeView.setBackgroundColor(securityColor)
 
+            yearYieldTextView.text = when (security.yearYield) {
+                0f -> containerView.context.getString(R.string.security_without_payout)
+                else -> containerView.context.getString(R.string.yield_in_year, security.yearYield)
+            }
+
             SimpleGlide.loadImage(containerView, security.logo, logoImageView)
         }
     }
