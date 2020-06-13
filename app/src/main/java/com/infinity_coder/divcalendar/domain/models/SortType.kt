@@ -18,6 +18,5 @@ enum class SortType {
                 else -> throw IllegalStateException("No type sort for such name: $name")
             }
         }
-
     }
 }

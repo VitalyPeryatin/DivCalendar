@@ -1,8 +1,6 @@
 package com.infinity_coder.divcalendar.presentation._common.text_watchers
 
 import android.annotation.SuppressLint
-import android.text.Editable
-import android.text.TextWatcher
 import android.widget.EditText
 import java.text.DecimalFormat
 
