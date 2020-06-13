@@ -2,19 +2,18 @@ package com.infinity_coder.divcalendar.presentation._common.delegate
 
 import android.content.Context
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_MARKETS
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_MARKET_FOREIGN
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_MARKET_RUSSIAN
 
 object SecurityMarketDelegate {
 
-    private val securityMarkets = arrayOf(SECURITY_MARKET_RUSSIAN, SECURITY_MARKET_FOREIGN)
-
     fun getFirstMarket(): String {
-        return securityMarkets.first()
+        return SECURITY_MARKETS.first()
     }
 
     fun getTitles(context: Context): List<String> {
-        return securityMarkets.map { getTitle(context, it) }
+        return SECURITY_MARKETS.map { getTitle(context, it) }
     }
 
     private fun getTitle(context: Context, market: String): String {
@@ -34,6 +33,6 @@ object SecurityMarketDelegate {
     }
 
     fun getMarketIndex(market: String): Int {
-        return securityMarkets.indexOf(market)
+        return SECURITY_MARKETS.indexOf(market)
     }
 }

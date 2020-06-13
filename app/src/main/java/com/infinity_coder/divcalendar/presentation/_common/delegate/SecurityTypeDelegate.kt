@@ -3,12 +3,11 @@ package com.infinity_coder.divcalendar.presentation._common.delegate
 import android.content.Context
 import androidx.core.content.ContextCompat
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_TYPES
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_TYPE_BOND
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_TYPE_STOCK
 
 object SecurityTypeDelegate {
-
-    val securityTypes = arrayOf(SECURITY_TYPE_STOCK, SECURITY_TYPE_BOND)
 
     fun getColor(context: Context, type: String): Int {
         val colorId = when (type) {
@@ -20,7 +19,7 @@ object SecurityTypeDelegate {
     }
 
     fun getTitle(context: Context, position: Int): String {
-        return getTitle(context, securityTypes[position])
+        return getTitle(context, SECURITY_TYPES[position])
     }
 
     fun getTitle(context: Context, type: String): String {

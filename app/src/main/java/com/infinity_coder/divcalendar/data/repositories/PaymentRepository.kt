@@ -27,13 +27,6 @@ object PaymentRepository {
 
     val lastSecuritiesReceived = mutableMapOf<String, List<SecurityDbModel>>()
 
-    suspend fun getPaymentForCurrentYear(): List<PaymentNetModel.Response> {
-        val currentPortfolioId = PortfolioRepository.getCurrentPortfolioId()
-        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-        val securities = securityDao.getSecurityPackagesForPortfolio(currentPortfolioId)
-        return getPaymentsFromNetwork(securities, "$currentYear-01-01", "$currentYear-12-31")
-    }
-
     suspend fun getPayments(startDate: String, endDate: String): Flow<List<PaymentDbModel>> = flow {
         val currentPortfolioId = PortfolioRepository.getCurrentPortfolioId()
 

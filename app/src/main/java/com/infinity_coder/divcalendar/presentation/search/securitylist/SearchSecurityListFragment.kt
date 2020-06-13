@@ -50,7 +50,7 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
 
     override fun onResume() {
         super.onResume()
-        executeIfResumed { viewModel.search(parentViewModel.getCurrentQuery(), parentViewModel.getCurrentMarket()) }
+        viewModel.search(parentViewModel.getCurrentQuery(), parentViewModel.getCurrentMarket())
     }
 
     private fun updateQuery(query: String) {

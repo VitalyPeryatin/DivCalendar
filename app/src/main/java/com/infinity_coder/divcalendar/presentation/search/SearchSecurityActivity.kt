@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityMarketDelegate
 import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityTypeDelegate
@@ -33,7 +34,7 @@ class SearchSecurityActivity : AbstractSubscriptionActivity() {
     }
 
     private fun initUI() {
-        viewPager.adapter = SearchSecurityPagerAdapter(SecurityTypeDelegate.securityTypes, this)
+        viewPager.adapter = SearchSecurityPagerAdapter(SecurityNetModel.SECURITY_TYPES, this)
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = SecurityTypeDelegate.getTitle(this, position)

@@ -23,8 +23,8 @@ fun ViewGroup.inflate(layoutId: Int, attachToRoot: Boolean = false): View {
     return LayoutInflater.from(context).inflate(layoutId, this, attachToRoot)
 }
 
-fun View.visibility(show: Boolean, type: Int = View.GONE) {
-    visibility = if (show) View.VISIBLE else type
+fun View.visibility(isShown: Boolean, type: Int = View.GONE) {
+    visibility = if (isShown) View.VISIBLE else type
 }
 
 @SuppressLint("InflateParams")

@@ -18,7 +18,7 @@ fun Fragment.executeIfSubscribed(func: () -> Unit) {
 
 fun Fragment.executeIfResumed(func: () -> Unit) {
     if (isResumed) {
-        func()
+        func.invoke()
     }
 }
 
