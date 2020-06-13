@@ -57,6 +57,7 @@
     <string name="small_count_portfolio">Это единственный портфель. Вы не можете его удалить.</string>
     <string name="total_portfolio_cost">Итого: %s</string>
     <string name="refresh_content">Идет обновление данных…</string>
+    <string name="security_without_payout">Нет выплат</string>
     
     <!--help-->
     <string name="telegram_question">Задать вопрос в Telegram чате</string>
