@@ -50,7 +50,12 @@ class SecurityRecyclerAdapter(
             exchangeDashTextView.visibility = if (security.exchange.isEmpty()) View.INVISIBLE else View.VISIBLE
             exchangeTextView.visibility = if (security.exchange.isEmpty()) View.INVISIBLE else View.VISIBLE
             exchangeTextView.text = security.exchange
-            yearYieldTextView.text = containerView.context.getString(R.string.yield_in_year, security.yearYield)
+
+            yearYieldTextView.text = when (security.yearYield) {
+                0f -> containerView.context.getString(R.string.security_without_payout)
+                else -> containerView.context.getString(R.string.yield_in_year, security.yearYield)
+            }
+
             SimpleGlide.loadImage(containerView, security.logo, logoImageView)
 
             containerView.setOnClickListener {

@@ -58,7 +58,11 @@ class SecurityRecyclerAdapter(
                 securityPackage.totalPrice,
                 securityPackage.currency
             )
-            yearYieldTextView.text = resources.getString(R.string.yield_in_year, securityPackage.yearYield)
+
+            yearYieldTextView.text = when (securityPackage.yearYield) {
+                0f -> resources.getString(R.string.security_without_payout)
+                else -> resources.getString(R.string.yield_in_year, securityPackage.yearYield)
+            }
 
             if (securityPackage.logo.isNotEmpty()) {
                 SimpleGlide.loadImage(logoImageView, securityPackage.logo, logoImageView)
