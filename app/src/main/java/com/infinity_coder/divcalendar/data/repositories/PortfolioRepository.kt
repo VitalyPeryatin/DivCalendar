@@ -80,14 +80,7 @@ object PortfolioRepository {
     }
 
     fun getCurrentSortType(): SortType {
-        return when (portfolioPreferences.getNotNullString(PREF_CURRENT_TYPE_SORT, SortType.PAYMENT_DATE.name)) {
-            SortType.PAYMENT_DATE.name -> SortType.PAYMENT_DATE
-
-            SortType.PROFITABILITY.name -> SortType.PROFITABILITY
-
-            SortType.ALPHABETICALLY.name -> SortType.ALPHABETICALLY
-
-            else -> SortType.PAYMENT_DATE
-        }
+        val name = portfolioPreferences.getNotNullString(PREF_CURRENT_TYPE_SORT, SortType.PAYMENT_DATE.name)
+        return SortType.getSortTypeByName(name)
     }
 }

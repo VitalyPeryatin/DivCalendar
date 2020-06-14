@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import com.infinity_coder.divcalendar.R
 import kotlinx.android.synthetic.main.toast_successful.view.*
@@ -16,6 +17,14 @@ fun View.shake(x: Float) {
         repeatCount = 5
         duration = 100
     }.start()
+}
+
+fun ViewGroup.inflate(layoutId: Int, attachToRoot: Boolean = false): View {
+    return LayoutInflater.from(context).inflate(layoutId, this, attachToRoot)
+}
+
+fun View.visibility(isShown: Boolean, type: Int = View.GONE) {
+    visibility = if (isShown) View.VISIBLE else type
 }
 
 @SuppressLint("InflateParams")

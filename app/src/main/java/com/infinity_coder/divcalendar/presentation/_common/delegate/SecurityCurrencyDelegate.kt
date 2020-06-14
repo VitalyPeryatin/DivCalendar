@@ -11,6 +11,7 @@ object SecurityCurrencyDelegate {
 
     private val formatterWithPoints: DecimalFormat = DecimalFormatStorage.formatterWithPoints
     private val formatterWithoutPoints: DecimalFormat = DecimalFormatStorage.formatterWithoutPoints
+
     private val settingsRepository = SettingsRepository
 
     fun getValueWithCurrency(context: Context, value: Double, currency: String): String {

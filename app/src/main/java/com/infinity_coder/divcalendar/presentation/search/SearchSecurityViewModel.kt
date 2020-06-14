@@ -22,7 +22,7 @@ class SearchSecurityViewModel : ViewModel() {
     @OptIn(FlowPreview::class)
     private val queryFlow = queryChannel.asFlow().debounce(QUERY_DELAY)
 
-    private val _marketLiveData = MutableLiveData(SecurityMarketDelegate.SECURITY_MARKET_RUSSIAN)
+    private val _marketLiveData = MutableLiveData(SecurityMarketDelegate.getFirstMarket())
     val marketLiveData: LiveData<String>
         get() = _marketLiveData
 
@@ -36,8 +36,12 @@ class SearchSecurityViewModel : ViewModel() {
         }
     }
 
-    fun getCurrentMarketIndex(): Int {
-        return SecurityMarketDelegate.getMarketIndex(_marketLiveData.value!!)
+    fun getCurrentQuery(): String {
+        return _queryLiveData.value ?: ""
+    }
+
+    fun getCurrentMarket(): String {
+        return _marketLiveData.value ?: ""
     }
 
     fun setMarket(market: String) {

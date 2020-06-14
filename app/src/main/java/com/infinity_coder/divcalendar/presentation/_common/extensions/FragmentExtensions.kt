@@ -16,6 +16,12 @@ fun Fragment.executeIfSubscribed(func: () -> Unit) {
     }
 }
 
+fun Fragment.executeIfResumed(func: () -> Unit) {
+    if (isResumed) {
+        func.invoke()
+    }
+}
+
 fun FragmentManager.hideAllFragments(transaction: FragmentTransaction) {
     fragments.forEach {
         transaction.hide(it)
