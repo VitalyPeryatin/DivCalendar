@@ -1,7 +1,9 @@
 package com.infinity_coder.divcalendar.domain
 
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
+import com.infinity_coder.divcalendar.domain.models.SortType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -53,15 +55,42 @@ class PortfolioInteractor {
     }
 
     fun getCurrentPortfolioFlow(): Flow<PortfolioDbModel> {
+        return PortfolioRepository.getPortfolioWithSecurities(getCurrentPortfolioName()).filterNotNull()
+    }
+
+    fun getCurrentSortedPortfolioFlow(): Flow<PortfolioDbModel> {
         return PortfolioRepository.getPortfolioWithSecurities(getCurrentPortfolioName())
             .filterNotNull()
             .map {
-                it.securities = it.securities.sortedBy { security -> security.name }
+                val sortType = PortfolioRepository.getCurrentSortType()
+                it.securities = sortSecuritiesInPortfolio(it.securities, sortType)
                 it
             }
     }
 
+    private suspend fun sortSecuritiesInPortfolio(securities: List<SecurityDbModel>, sortType: SortType): List<SecurityDbModel> {
+        return when (sortType) {
+            SortType.PAYMENT_DATE -> {
+                securities
+            }
+            SortType.PROFITABILITY -> {
+                securities.sortedByDescending(SecurityDbModel::yearYield)
+            }
+            SortType.ALPHABETICALLY -> {
+                securities.sortedBy(SecurityDbModel::name)
+            }
+        }
+    }
+
     suspend fun isCurrentPortfolioEmpty(): Boolean {
         return getCurrentPortfolioFlow().first().securities.isEmpty()
+    }
+
+    fun setCurrentSortType(sortType: SortType) {
+        PortfolioRepository.setCurrentSortType(sortType)
+    }
+
+    fun getCurrentSortType(): SortType {
+        return PortfolioRepository.getCurrentSortType()
     }
 }

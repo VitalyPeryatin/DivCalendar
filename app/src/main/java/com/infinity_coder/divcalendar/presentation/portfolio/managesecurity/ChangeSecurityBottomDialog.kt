@@ -24,7 +24,7 @@ class ChangeSecurityBottomDialog : BottomDialog() {
 
     private var clickListener: OnClickListener? = null
 
-    val viewModel: ChangeSecurityViewModel by lazy {
+    private val viewModel: ChangeSecurityViewModel by lazy {
         ViewModelProvider(this).get(ChangeSecurityViewModel::class.java)
     }
 

@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
+import com.infinity_coder.divcalendar.domain.models.SortType
 import com.infinity_coder.divcalendar.presentation.App
+import com.infinity_coder.divcalendar.presentation._common.extensions.getNotNullString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -18,6 +20,7 @@ object PortfolioRepository {
 
     private const val PORTFOLIO_PREF_NAME = "Portfolio"
     private const val PREF_CURRENT_PORTFOLIO = "current_portfolio"
+    private const val PREF_CURRENT_TYPE_SORT = "current_type_sort"
     private val portfolioPreferences = App.instance.getSharedPreferences(PORTFOLIO_PREF_NAME, Context.MODE_PRIVATE)
 
     suspend fun addPortfolio(portfolioName: String) {
@@ -68,5 +71,16 @@ object PortfolioRepository {
 
     suspend fun getPortfolioCount(): Int {
         return portfolioDao.getPortfolioCount()
+    }
+
+    fun setCurrentSortType(sortType: SortType) {
+        portfolioPreferences.edit {
+            putString(PREF_CURRENT_TYPE_SORT, sortType.name)
+        }
+    }
+
+    fun getCurrentSortType(): SortType {
+        val name = portfolioPreferences.getNotNullString(PREF_CURRENT_TYPE_SORT, SortType.PAYMENT_DATE.name)
+        return SortType.getSortTypeByName(name)
     }
 }

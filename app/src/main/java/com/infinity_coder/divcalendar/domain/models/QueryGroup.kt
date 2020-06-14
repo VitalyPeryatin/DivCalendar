@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation.search.model
+package com.infinity_coder.divcalendar.domain.models
 
 data class QueryGroup(
     val query: String,

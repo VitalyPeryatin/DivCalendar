@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_buy_subscription.*
 class BuySubscriptionActivity : AbstractSubscriptionActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        isOpenedBuySubscribtionActivity = true
+        isOpenedBuySubscriptionActivity = true
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_buy_subscription)
@@ -36,7 +36,7 @@ class BuySubscriptionActivity : AbstractSubscriptionActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        isOpenedBuySubscribtionActivity = false
+        isOpenedBuySubscriptionActivity = false
     }
 
     override fun onBackPressed() {

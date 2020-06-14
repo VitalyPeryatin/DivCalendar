@@ -1,20 +1,15 @@
 package com.infinity_coder.divcalendar.presentation._common.text_watchers
 
-import android.text.Editable
-import android.text.TextWatcher
 import android.widget.EditText
 import java.text.DecimalFormat
 
 open class DecimalCountTextWatcher(
     private val editText: EditText,
     private val decimalFormat: DecimalFormat
-) : TextWatcher {
+) : OpenTextWatcher() {
 
     private var enteredNumericBeforeChange: String = ""
     private var selectionStartBeforeUserChange: Int = 0
-
-    override fun afterTextChanged(s: Editable?) {
-    }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
         enteredNumericBeforeChange = s.toString()

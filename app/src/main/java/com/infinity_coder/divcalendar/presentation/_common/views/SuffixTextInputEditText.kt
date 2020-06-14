@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation._common.text_watchers
+package com.infinity_coder.divcalendar.presentation._common.views
 
 import android.content.Context
 import android.graphics.Canvas

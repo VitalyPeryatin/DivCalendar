@@ -9,10 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
-import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
-import com.infinity_coder.divcalendar.presentation._common.extensions.executeIfSubscribed
-import com.infinity_coder.divcalendar.presentation._common.extensions.showSuccessfulToast
+import com.infinity_coder.divcalendar.presentation._common.extensions.executeIfResumed
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityViewModel
 import com.infinity_coder.divcalendar.presentation.search.adapters.SecurityRecyclerAdapter
@@ -23,31 +21,20 @@ import com.infinity_coder.divcalendar.presentation.search.securitylist.SearchSec
 import kotlinx.android.synthetic.main.fragment_portfolio.securitiesRecyclerView
 import kotlinx.android.synthetic.main.fragment_search_security_list.*
 
-class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_list),
-    AddSecurityBottomDialog.OnDialogClickListener {
-
-    private lateinit var parentViewModel: SearchSecurityViewModel
+class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_list) {
 
     val viewModel: SearchSecurityListViewModel by lazy {
         ViewModelProvider(this).get(SearchSecurityListViewModel::class.java)
     }
 
-    private lateinit var parentActivity: SearchSecurityActivity
-
-    private val securityClickListener = object : SecurityRecyclerAdapter.OnClickListener {
-        override fun onClick(security: SecurityNetModel) {
-            val addSecurityDialog = AddSecurityBottomDialog.newInstance(security)
-            addSecurityDialog.show(childFragmentManager, AddSecurityBottomDialog.TAG)
-        }
-    }
+    private lateinit var parentViewModel: SearchSecurityViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        parentActivity = context as SearchSecurityActivity
-        parentViewModel = parentActivity.viewModel
+        parentViewModel = (context as SearchSecurityActivity).viewModel
 
-        viewModel.securityType = arguments!!.getString(SECURITY_TYPE_ARGUMENT, "")
+        viewModel.securityType = requireArguments().getString(SECURITY_TYPE_ARGUMENT, "")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,60 +44,26 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
         parentViewModel.marketLiveData.observe(viewLifecycleOwner, Observer(this::updateMarket))
         viewModel.searchedSecurities.observe(viewLifecycleOwner, Observer(this::setSecurities))
         viewModel.state.observe(viewLifecycleOwner, Observer(this::setState))
-        viewModel.addSecurity.observe(viewLifecycleOwner, Observer(this::addSecurityPackage))
-        viewModel.addSecurityIfHasSubscription.observe(viewLifecycleOwner, Observer(this::addSecurityPackageIfHasSubscription))
+
         initUI()
     }
 
     override fun onResume() {
         super.onResume()
-        searchIfResumed(getCurrentQuery(), getCurrentMarket())
-    }
-
-    private fun initUI() {
-        securitiesRecyclerView.layoutManager = LinearLayoutManager(context)
-        securitiesRecyclerView.adapter = SecurityRecyclerAdapter(securityClickListener)
+        viewModel.search(parentViewModel.getCurrentQuery(), parentViewModel.getCurrentMarket())
     }
 
     private fun updateQuery(query: String) {
-        searchIfResumed(query, getCurrentMarket())
+        executeIfResumed { viewModel.search(query, parentViewModel.getCurrentMarket()) }
     }
 
     private fun updateMarket(market: String) {
-        searchIfResumed(getCurrentQuery(), market)
-    }
-
-    private fun searchIfResumed(query: String, market: String) {
-        if (isResumed) {
-            viewModel.search(query, market)
-        }
-    }
-
-    private fun getCurrentMarket(): String {
-        return parentViewModel.marketLiveData.value ?: ""
-    }
-
-    private fun getCurrentQuery(): String {
-        return parentViewModel.queryLiveData.value ?: ""
-    }
-
-    override fun onAddSecurityClick(securityPackage: SecurityDbModel) {
-        viewModel.requestOnAppendSecurityPackage(securityPackage)
-    }
-
-    private fun addSecurityPackage(securityPackage: SecurityDbModel) {
-        viewModel.appendSecurityPackage(securityPackage)
-        dismissAddSecurityDialog()
-        requireContext().showSuccessfulToast(layoutInflater, R.string.add_security_successful)
-    }
-
-    private fun addSecurityPackageIfHasSubscription(securityPackage: SecurityDbModel) {
-        executeIfSubscribed { addSecurityPackage(securityPackage) }
+        executeIfResumed { viewModel.search(parentViewModel.getCurrentQuery(), market) }
     }
 
     private fun setSecurities(securities: List<SecurityNetModel>) {
         val adapter = securitiesRecyclerView.adapter as? SecurityRecyclerAdapter
-        adapter?.setSecurities(securities)
+        adapter?.updateItems(securities)
     }
 
     private fun setState(state: Int) {
@@ -125,19 +78,24 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
         }
     }
 
-    private fun dismissAddSecurityDialog() {
-        val addSecurityDialog = childFragmentManager.findFragmentByTag(AddSecurityBottomDialog.TAG) as? AddSecurityBottomDialog
-        addSecurityDialog?.dismiss()
+    private fun initUI() {
+        val securityClickListener = object : SecurityRecyclerAdapter.OnClickListener {
+            override fun onClick(security: SecurityNetModel) {
+                val addSecurityDialog = AddSecurityBottomDialog.newInstance(security)
+                addSecurityDialog.show(childFragmentManager, AddSecurityBottomDialog.TAG)
+            }
+        }
+        securitiesRecyclerView.layoutManager = LinearLayoutManager(context)
+        securitiesRecyclerView.adapter = SecurityRecyclerAdapter(securityClickListener)
     }
 
     companion object {
-
         private const val SECURITY_TYPE_ARGUMENT = "securityType"
 
         fun newInstance(securityType: String): SearchSecurityListFragment {
-            val fragment = SearchSecurityListFragment()
-            fragment.arguments = bundleOf(SECURITY_TYPE_ARGUMENT to securityType)
-            return fragment
+            return SearchSecurityListFragment().apply {
+                arguments = bundleOf(SECURITY_TYPE_ARGUMENT to securityType)
+            }
         }
     }
 }

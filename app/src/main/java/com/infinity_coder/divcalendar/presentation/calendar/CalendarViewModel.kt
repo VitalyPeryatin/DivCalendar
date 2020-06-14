@@ -72,9 +72,8 @@ class CalendarViewModel : ViewModel() {
         }
 
         val currentYearValue = _currentYear.value!!
-        val includeTaxes = isIncludeTaxes.value ?: false
 
-        paymentInteractor.getPayments(currentYearValue, includeTaxes)
+        paymentInteractor.getPayments(currentYearValue)
             .onEach { cachedPayments = it }
             .map { paymentsMapper.mapToPresentationModel(context, cachedPayments) }
             .flowOn(Dispatchers.IO)

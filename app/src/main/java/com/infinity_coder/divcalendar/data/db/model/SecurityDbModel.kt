@@ -10,7 +10,8 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.CO
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.COLUMN_PORTFOLIO_ID
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.INDEX_PORTFOLIO_ID
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.TABLE_NAME
-import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityTypeDelegate
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_TYPE_STOCK
 
 @Entity(
     tableName = TABLE_NAME,
@@ -24,7 +25,6 @@ import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityType
     indices = [Index(value = [PaymentDbModel.COLUMN_PORTFOLIO_ID], name = INDEX_PORTFOLIO_ID)]
 )
 data class SecurityDbModel(
-
     @ColumnInfo(name = COLUMN_ISIN)
     val isin: String,
 
@@ -35,7 +35,7 @@ data class SecurityDbModel(
     val name: String,
 
     @ColumnInfo(name = COLUMN_TYPE)
-    var type: String = SecurityTypeDelegate.SECURITY_TYPE_STOCK,
+    var type: String = SECURITY_TYPE_STOCK,
 
     @ColumnInfo(name = COLUMN_LOGO)
     val logo: String = "",
@@ -78,5 +78,18 @@ data class SecurityDbModel(
         const val COLUMN_COLOR = "color"
 
         const val INDEX_PORTFOLIO_ID = "portfolio_id_index"
+
+        fun from(security: SecurityNetModel): SecurityDbModel {
+            return SecurityDbModel(
+                isin = security.isin,
+                ticker = security.ticker,
+                name = security.name,
+                logo = security.logo,
+                exchange = security.exchange,
+                yearYield = security.yearYield,
+                currency = security.currency,
+                type = security.type
+            )
+        }
     }
 }

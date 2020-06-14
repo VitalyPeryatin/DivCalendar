@@ -58,7 +58,11 @@
     <string name="total_portfolio_cost">Итого: %s</string>
     <string name="refresh_content">Идет обновление данных…</string>
     <string name="security_without_payout">Нет выплат</string>
-    
+    <string name="sort_portfolio">Сортировать</string>
+    <string name="sort_portfolio_by_payment_date">По дате выплат</string>
+    <string name="sort_portfolio_by_profitability">По доходности</string>
+    <string name="sort_portfolio_by_alphabetically">По алфавиту</string>
+
     <!--help-->
     <string name="telegram_question">Задать вопрос в Telegram чате</string>
     <string name="help_to_use">Как пользоваться DivCalendar?</string>

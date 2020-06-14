@@ -22,6 +22,7 @@ import com.infinity_coder.divcalendar.presentation._common.extensions.executeIfS
 import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
 import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.ChangePortfolioBottomDialog
 import com.infinity_coder.divcalendar.presentation.portfolio.managesecurity.ChangeSecurityBottomDialog
+import com.infinity_coder.divcalendar.presentation.portfolio.sorting.SortingPortfolioBottomDialog
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
 import kotlinx.android.synthetic.main.fragment_portfolio.*
 import kotlinx.android.synthetic.main.layout_stub_empty.view.*
@@ -29,6 +30,7 @@ import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     ChangeSecurityBottomDialog.OnClickListener,
     ChangePortfolioBottomDialog.OnChangePortfolioClickListener,
+    SortingPortfolioBottomDialog.SortingPortfolioCallback,
     UpdateCallback {
 
     val viewModel: PortfolioViewModel by lazy {
@@ -57,9 +59,10 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.changePortfolioItem -> {
-                executeIfSubscribed(this::openChangePortfolioDialog)
-            }
+            R.id.changePortfolioItem -> executeIfSubscribed(this::openChangePortfolioDialog)
+
+            R.id.sortPortfolioItem -> openSortingPortfolioDialog()
+
             else -> return super.onOptionsItemSelected(item)
         }
         return true
@@ -68,6 +71,11 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     private fun openChangePortfolioDialog() {
         val changePortfolioDialog = ChangePortfolioBottomDialog.newInstance()
         changePortfolioDialog.show(childFragmentManager, ChangePortfolioBottomDialog.TAG)
+    }
+
+    private fun openSortingPortfolioDialog() {
+        val sortingPortfolioDialog = SortingPortfolioBottomDialog.newInstance()
+        sortingPortfolioDialog.show(childFragmentManager, SortingPortfolioBottomDialog.TAG)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -152,18 +160,22 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     }
 
     private fun setState(state: Int) {
+        loadingLayout.visibility = View.GONE
         contentLayout.visibility = View.GONE
         emptyLayout.visibility = View.GONE
+        noNetworkLayout.visibility = View.GONE
 
         when (state) {
+            PortfolioViewModel.VIEW_STATE_PORTFOLIO_PROGRESS -> loadingLayout.visibility = View.VISIBLE
             PortfolioViewModel.VIEW_STATE_PORTFOLIO_CONTENT -> contentLayout.visibility = View.VISIBLE
             PortfolioViewModel.VIEW_STATE_PORTFOLIO_EMPTY -> emptyLayout.visibility = View.VISIBLE
+            PortfolioViewModel.VIEW_STATE_PORTFOLIO_NO_NETWORK -> noNetworkLayout.visibility = View.VISIBLE
         }
     }
 
     private fun setTotalPortfolioCost(totalPortfolioCost: Double) {
         val currentCurrency = viewModel.getDisplayCurrency()
-        val totalPortfolioCostWithCurrency = SecurityCurrencyDelegate.getValueWithCurrency(requireContext(), totalPortfolioCost, currentCurrency)
+        val totalPortfolioCostWithCurrency = SecurityCurrencyDelegate.getValueWithCurrencyConsiderCopecks(requireContext(), totalPortfolioCost, currentCurrency)
         totalPortfolioCostTextView.text = getString(R.string.total_portfolio_cost, totalPortfolioCostWithCurrency)
         totalPortfolioCostTextView.isSelected = true
     }
@@ -175,6 +187,10 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     }
 
     override fun onPortfolioChange() {
+        viewModel.loadSecurities()
+    }
+
+    override fun onUpdatePortfolio() {
         viewModel.loadSecurities()
     }
 }

@@ -26,6 +26,10 @@
         <item name="colorControlActivated">@color/colorAccent</item>
     </style>
 
+    <style name="RadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/colorActive</item>
+    </style>
+
     <style name="AppToolbar" parent="BaseToolbar">
         <item name="android:background">@color/background</item>
     </style>

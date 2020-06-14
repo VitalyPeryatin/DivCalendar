@@ -21,8 +21,8 @@
     <color name="placeholder">#D3FFFF</color>
     <color name="blackout">#0F000000</color>
 
-    <color name="typeRusStockColor">#1EC8DF</color>
-    <color name="typeRusBondColor">#1D7AD5</color>
+    <color name="typeStockColor">#1EC8DF</color>
+    <color name="typeBondColor">#1D7AD5</color>
 
     <color name="background">#ffffff</color>
 

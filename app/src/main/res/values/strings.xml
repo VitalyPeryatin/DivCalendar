@@ -68,6 +68,10 @@
     <string name="total_portfolio_cost">Total: %s</string>
     <string name="refresh_content">Data is being updated…</string>
     <string name="security_without_payout">No payout</string>
+    <string name="sort_portfolio">Sort</string>
+    <string name="sort_portfolio_by_payment_date">By payout date</string>
+    <string name="sort_portfolio_by_profitability">By profitability</string>
+    <string name="sort_portfolio_by_alphabetically">By alphabetically</string>
 
     <!--help-->
     <string name="telegram_question">Ask a question in Telegram chat</string>

@@ -39,7 +39,7 @@ class PaymentRecyclerDelegateAdapter(
             }
 
             paymentName.text = item.name
-            val count = DecimalFormatStorage.formatter.format(item.count)
+            val count = DecimalFormatStorage.formatterWithPoints.format(item.count)
             paymentCount.text = paymentCount.context.getString(R.string.count_securities, count)
 
             if (item.forecast) {

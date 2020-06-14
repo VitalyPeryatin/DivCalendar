@@ -23,7 +23,7 @@ object DecimalFormatStorage {
         DecimalFormat("#,###", formatSymbols)
     }
 
-    val formatter: DecimalFormat by lazy {
+    val formatterWithPoints: DecimalFormat by lazy {
         val formatSymbols = DecimalFormatSymbols(Locale.getDefault())
         formatSymbols.groupingSeparator = ' '
         DecimalFormat("#,###.${"#".repeat(ACCURACY)}", formatSymbols)

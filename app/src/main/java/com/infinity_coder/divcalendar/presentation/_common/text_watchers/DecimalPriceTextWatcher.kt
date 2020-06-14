@@ -1,8 +1,6 @@
 package com.infinity_coder.divcalendar.presentation._common.text_watchers
 
 import android.annotation.SuppressLint
-import android.text.Editable
-import android.text.TextWatcher
 import android.widget.EditText
 import java.text.DecimalFormat
 
@@ -11,15 +9,12 @@ open class DecimalPriceTextWatcher(
     private val decimalFormat: DecimalFormat,
     private val maxNumberInIntegerPart: Int = 12,
     private val maxNumberInFractionalPart: Int = 100
-) : TextWatcher {
+) : OpenTextWatcher() {
 
     private var enteredNumericBeforeChange: String = ""
     private var selectionStartBeforeUserChange: Int = 0
     private var isAddition = false
     protected var currentSeparator = LOCAL_SEPARATOR
-
-    override fun afterTextChanged(s: Editable?) {
-    }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
         isAddition = after == 1
