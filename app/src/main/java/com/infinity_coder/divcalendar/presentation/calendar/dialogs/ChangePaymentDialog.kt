@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.domain.models.EditPaymentParams
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation.calendar.CalendarFragment
 import com.infinity_coder.divcalendar.presentation.calendar.CalendarViewModel
-import com.infinity_coder.divcalendar.presentation.calendar.models.EditPaymentParams
 import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
 import kotlinx.android.synthetic.main.bottom_dialog_edit_payment.*
 

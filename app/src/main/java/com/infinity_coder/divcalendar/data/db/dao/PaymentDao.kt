@@ -10,12 +10,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class PaymentDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    abstract suspend fun insertPastPayments(payments: List<PaymentDbModel>)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insertFuturePayments(payments: List<PaymentDbModel>)
-
     @Transaction
     open suspend fun insert(payments: List<PaymentDbModel>) {
         val pastPayments = payments.filter { isExpiredDate(it.date) }
@@ -25,17 +19,14 @@ abstract class PaymentDao {
         insertFuturePayments(futurePayments)
     }
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    abstract suspend fun insertPastPayments(payments: List<PaymentDbModel>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun insertFuturePayments(payments: List<PaymentDbModel>)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun updatePayment(payment: PaymentDbModel)
-
-    @Query("SELECT * FROM ${PaymentDbModel.TABLE_NAME} WHERE ${PaymentDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId")
-    abstract fun getPaymentsFlow(portfolioId: Long): Flow<List<PaymentDbModel>>
-
-    @Query("SELECT * FROM ${PaymentDbModel.TABLE_NAME} WHERE ${PaymentDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId")
-    abstract suspend fun getPayments(portfolioId: Long): List<PaymentDbModel>
-
-    @Query("SELECT * FROM ${SecurityDbModel.TABLE_NAME} WHERE ${SecurityDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId AND ${SecurityDbModel.COLUMN_ISIN} = :isin")
-    abstract suspend fun getSecurity(portfolioId: Long, isin: String): SecurityDbModel?
 
     @Query("SELECT * FROM ${PaymentDbModel.TABLE_NAME} WHERE ${PaymentDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId AND ${PaymentDbModel.COLUMN_ISIN} = :isin AND ${PaymentDbModel.COLUMN_DATE} = :date")
     abstract suspend fun getPayment(portfolioId: Long, isin: String, date: String): PaymentDbModel
@@ -49,7 +40,8 @@ abstract class PaymentDao {
             dateTime.after(startDateTime) && dateTime.before(endDateTime)
         }.map {
             it.security = getSecurity(portfolioId, it.isin)
-            it.dividends = it.dividends * (it.count ?: it.security?.count ?: 0)
+            if(it.count == null) it.count = it.security?.count
+            it.dividends = it.dividends * (it.count ?: 0)
             it
         }
     }
@@ -58,8 +50,15 @@ abstract class PaymentDao {
     open suspend fun getAllPaymentsWithSecurity(portfolioId: Long): List<PaymentDbModel> {
         return getPayments(portfolioId).map {
             it.security = getSecurity(portfolioId, it.isin)
+            if(it.count == null) it.count = it.security?.count
             it.dividends = it.dividends * (it.count ?: it.security?.count ?: 0)
             it
         }
     }
+
+    @Query("SELECT * FROM ${SecurityDbModel.TABLE_NAME} WHERE ${SecurityDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId AND ${SecurityDbModel.COLUMN_ISIN} = :isin")
+    abstract suspend fun getSecurity(portfolioId: Long, isin: String): SecurityDbModel?
+
+    @Query("SELECT * FROM ${PaymentDbModel.TABLE_NAME} WHERE ${PaymentDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId")
+    abstract suspend fun getPayments(portfolioId: Long): List<PaymentDbModel>
 }

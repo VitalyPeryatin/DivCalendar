@@ -6,7 +6,7 @@ import com.infinity_coder.divcalendar.data.repositories.SettingsRepository
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain._common.convertStingToDate
 import com.infinity_coder.divcalendar.domain._common.getNowDate
-import com.infinity_coder.divcalendar.presentation.calendar.models.EditPaymentParams
+import com.infinity_coder.divcalendar.domain.models.EditPaymentParams
 import com.infinity_coder.divcalendar.presentation.calendar.models.MonthlyPayment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -18,8 +18,9 @@ class PaymentInteractor {
     private val dateFormat = DateFormatter.basicDateFormat
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun getPayments(year: String): Flow<List<MonthlyPayment>> {
-        return PaymentRepository.getPayments("$year-01-01", "$year-12-31")
+    suspend fun getPayments(): Flow<List<MonthlyPayment>> {
+        val selectedYear = PaymentRepository.getSelectedYear()
+        return PaymentRepository.getPayments(selectedYear)
             .map { calculateTaxesIfNeed(it) }
             .map { groupAndSortPayments(it) }
     }
@@ -35,10 +36,6 @@ class PaymentInteractor {
             .sortedWith(comparator)
     }
 
-    fun clearPaymentSession() {
-        PaymentRepository.lastSecuritiesReceived.clear()
-    }
-
     private fun calculateTaxesIfNeed(payments: List<PaymentDbModel>): List<PaymentDbModel> {
         val isIncludeTaxes = SettingsRepository.isIncludeTaxes()
         if (isIncludeTaxes) {
@@ -50,13 +47,8 @@ class PaymentInteractor {
     suspend fun updatePastPayment(editPaymentParams: EditPaymentParams) {
         val paymentDate = convertStingToDate(editPaymentParams.date)
         if (paymentDate.before(getNowDate())) {
-            val payment = getPayment(
-                editPaymentParams.portfolioId,
-                editPaymentParams.isin,
-                editPaymentParams.date
-            ).apply {
-                this.count = editPaymentParams.count
-            }
+            val payment = getPayment(editPaymentParams.portfolioId, editPaymentParams.isin, editPaymentParams.date)
+            payment.count = editPaymentParams.count
             PaymentRepository.updatePayment(payment)
         }
     }

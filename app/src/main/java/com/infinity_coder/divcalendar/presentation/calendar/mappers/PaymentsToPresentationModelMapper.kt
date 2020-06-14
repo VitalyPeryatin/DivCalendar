@@ -2,6 +2,7 @@ package com.infinity_coder.divcalendar.presentation.calendar.mappers
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel

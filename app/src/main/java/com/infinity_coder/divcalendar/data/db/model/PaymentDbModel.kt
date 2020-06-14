@@ -58,7 +58,7 @@ data class PaymentDbModel(
             dividends = networkPayments.dividends,
             date = networkPayments.date,
             forecast = networkPayments.forecast,
-            isin = networkPayments.isin,
+            isin = if(networkPayments.isin.isBlank()) networkPayments.name else networkPayments.isin,
             portfolioId = portfolioId
         )
 
