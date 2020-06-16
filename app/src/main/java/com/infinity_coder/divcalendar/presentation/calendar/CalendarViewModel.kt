@@ -10,16 +10,17 @@ import com.infinity_coder.divcalendar.domain.PaymentInteractor
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain.SettingsInteractor
+import com.infinity_coder.divcalendar.domain.models.EditPaymentParams
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
 import com.infinity_coder.divcalendar.presentation._common.logException
 import com.infinity_coder.divcalendar.presentation.calendar.mappers.PaymentsToPresentationModelMapper
-import com.infinity_coder.divcalendar.presentation.calendar.models.EditPaymentParams
 import com.infinity_coder.divcalendar.presentation.calendar.models.FooterPaymentPresentationModel
 import com.infinity_coder.divcalendar.presentation.calendar.models.MonthlyPayment
 import com.infinity_coder.divcalendar.presentation.export_sheet.PaymentsFileCreator
 import com.infinity_coder.divcalendar.presentation.export_sheet.excel.ExcelPaymentsFileCreator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -46,8 +47,6 @@ class CalendarViewModel : ViewModel() {
     val currentYear: LiveData<String>
         get() = _currentYear
 
-    val showShackbar = LiveEvent<Boolean>()
-
     private var cachedPayments: List<MonthlyPayment> = emptyList()
     private val paymentsMapper = PaymentsToPresentationModelMapper()
 
@@ -61,8 +60,10 @@ class CalendarViewModel : ViewModel() {
     val portfolioNameTitleEvent = LiveEvent<String>()
     val showLoadingDialogEvent = LiveEvent<Boolean>()
 
+    var paymentsJob: Job? = null
+
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun loadAllPayments(context: Context, isRefresh: Boolean = false) = viewModelScope.launch {
+    fun loadAllPayments(context: Context) = viewModelScope.launch {
 
         loadPortfolioName()
 
@@ -71,9 +72,8 @@ class CalendarViewModel : ViewModel() {
             return@launch
         }
 
-        val currentYearValue = _currentYear.value!!
-
-        paymentInteractor.getPayments(currentYearValue)
+        paymentsJob?.cancel()
+        paymentsJob = paymentInteractor.getPayments()
             .onEach { cachedPayments = it }
             .map { paymentsMapper.mapToPresentationModel(context, cachedPayments) }
             .flowOn(Dispatchers.IO)
@@ -86,21 +86,23 @@ class CalendarViewModel : ViewModel() {
                 if (it.isNotEmpty()) {
                     _state.value = VIEW_STATE_CALENDAR_CONTENT
                 }
-
-                if (isRefresh && showShackbar.value != null && !showShackbar.value!!)
-                    showShackbar.value = true
             }
             .onCompletion {
                 if (_payments.value!!.isEmpty()) {
                     _state.value = VIEW_STATE_CALENDAR_EMPTY
                 }
-
-                if (isRefresh) {
-                    showShackbar.value = false
-                }
             }
             .catch { handleError(it) }
             .launchIn(viewModelScope)
+    }
+
+    private fun handleError(error: Throwable) {
+        logException(this, error)
+        if (error is HttpException) {
+            _state.value = VIEW_STATE_CALENDAR_EMPTY_SECURITIES
+        } else {
+            _state.value = VIEW_STATE_CALENDAR_NO_NETWORK
+        }
     }
 
     private fun loadPortfolioName() {
@@ -158,15 +160,6 @@ class CalendarViewModel : ViewModel() {
 
         if (hasNewData) {
             loadAllPayments(context)
-        }
-    }
-
-    private fun handleError(error: Throwable) {
-        logException(this, error)
-        if (error is HttpException) {
-            _state.value = VIEW_STATE_CALENDAR_EMPTY_SECURITIES
-        } else {
-            _state.value = VIEW_STATE_CALENDAR_NO_NETWORK
         }
     }
 

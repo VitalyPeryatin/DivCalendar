@@ -160,16 +160,12 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     }
 
     private fun setState(state: Int) {
-        loadingLayout.visibility = View.GONE
         contentLayout.visibility = View.GONE
         emptyLayout.visibility = View.GONE
-        noNetworkLayout.visibility = View.GONE
 
         when (state) {
-            PortfolioViewModel.VIEW_STATE_PORTFOLIO_PROGRESS -> loadingLayout.visibility = View.VISIBLE
             PortfolioViewModel.VIEW_STATE_PORTFOLIO_CONTENT -> contentLayout.visibility = View.VISIBLE
             PortfolioViewModel.VIEW_STATE_PORTFOLIO_EMPTY -> emptyLayout.visibility = View.VISIBLE
-            PortfolioViewModel.VIEW_STATE_PORTFOLIO_NO_NETWORK -> noNetworkLayout.visibility = View.VISIBLE
         }
     }
 

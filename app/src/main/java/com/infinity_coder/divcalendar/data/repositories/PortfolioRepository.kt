@@ -69,6 +69,10 @@ object PortfolioRepository {
         emit(portfolioDao.getPortfolioWithSecurities(name))
     }
 
+    suspend fun getPortfolioWithSecuritiesNotFlow(name: String): PortfolioDbModel? {
+        return portfolioDao.getPortfolioWithSecurities(name)
+    }
+
     suspend fun getPortfolioCount(): Int {
         return portfolioDao.getPortfolioCount()
     }

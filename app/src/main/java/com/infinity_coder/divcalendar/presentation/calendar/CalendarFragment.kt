@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.delegateadapter.delegate.diff.DiffUtilCompositeAdapter
 import com.example.delegateadapter.delegate.diff.IComparableItem
-import com.google.android.material.snackbar.Snackbar
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.presentation.App
@@ -41,8 +40,6 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
     }
 
     private var items: Array<String> = arrayOf()
-
-    private var activeSnackbar: Snackbar? = null
 
     private val paymentClickListener = object : PaymentRecyclerDelegateAdapter.OnItemClickListener {
         override fun onItemClick(item: PaymentPresentationModel) {
@@ -67,7 +64,6 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         viewModel.isIncludeTaxes.observe(viewLifecycleOwner, Observer(this::setIsIncludedTexes))
         viewModel.sendFileEvent.observe(viewLifecycleOwner, Observer(this::sendFile))
         viewModel.portfolioNameTitleEvent.observe(viewLifecycleOwner, Observer(this::setPortfolioName))
-        viewModel.showShackbar.observe(viewLifecycleOwner, Observer { showSnackbar(it) })
         viewModel.showLoadingDialogEvent.observe(viewLifecycleOwner, Observer(this::setIsShowLoadingDialog))
     }
 
@@ -129,7 +125,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
     override fun onUpdate() {
         initCurrencyRadioButton()
-        viewModel.loadAllPayments(requireContext(), isRefresh = true)
+        viewModel.loadAllPayments(requireContext())
         calendarPaymentsRecyclerView.smoothScrollToPosition(0)
     }
 
@@ -268,16 +264,6 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
             CalendarViewModel.VIEW_STATE_CALENDAR_EMPTY_SECURITIES -> {
                 emptySecuritiesLayout.visibility = View.VISIBLE
             }
-        }
-    }
-
-    private fun showSnackbar(show: Boolean) {
-        if (show) {
-            activeSnackbar = Snackbar.make(calendarRoot, R.string.refresh_content, Snackbar.LENGTH_INDEFINITE)
-            activeSnackbar?.show()
-        } else {
-            activeSnackbar?.dismiss()
-            activeSnackbar = null
         }
     }
 

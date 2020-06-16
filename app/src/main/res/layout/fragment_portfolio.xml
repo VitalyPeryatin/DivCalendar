@@ -112,30 +112,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/portfolioToolbar"/>
 
-    <include
-        android:id="@+id/loadingLayout"
-        layout="@layout/layout_stub_loading"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        tools:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/portfolioToolbar"/>
-
-    <include
-        android:id="@+id/noNetworkLayout"
-        layout="@layout/layout_stub_no_network"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        tools:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/portfolioToolbar"/>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addSecurityButton"
         android:layout_width="wrap_content"

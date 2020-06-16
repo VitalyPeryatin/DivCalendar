@@ -8,7 +8,7 @@ abstract class SecurityDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract suspend fun insertSecurityPackage(securityPackage: SecurityDbModel)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Update
     abstract suspend fun updateSecurityPackage(securityPackage: SecurityDbModel)
 
     @Query("SELECT * FROM ${SecurityDbModel.TABLE_NAME} WHERE ${SecurityDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId AND ${SecurityDbModel.COLUMN_ISIN} = :isin")

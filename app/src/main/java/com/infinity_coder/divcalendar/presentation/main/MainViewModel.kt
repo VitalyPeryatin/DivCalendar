@@ -9,6 +9,5 @@ class MainViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        paymentInteractor.clearPaymentSession()
     }
 }
