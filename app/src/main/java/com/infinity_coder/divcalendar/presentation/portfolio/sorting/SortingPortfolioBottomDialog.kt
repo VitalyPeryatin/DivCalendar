@@ -1,12 +1,12 @@
 package com.infinity_coder.divcalendar.presentation.portfolio.sorting
 
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.domain.models.SortType
@@ -45,14 +45,7 @@ class SortingPortfolioBottomDialog : BottomDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        sortTypeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.nextPayoutDateRadioButton -> viewModel.setCurrentSortType(SortType.PAYMENT_DATE)
-                R.id.profitabilityRadioButton -> viewModel.setCurrentSortType(SortType.PROFITABILITY)
-                R.id.alphabeticallyRadioButton -> viewModel.setCurrentSortType(SortType.ALPHABETICALLY)
-            }
-        }
+        viewModel.changeSortType.observe(viewLifecycleOwner, Observer { changeSortType() })
 
         sortTypeRadioGroup.clearCheck()
         val radioButton = when (viewModel.getCurrentSortType()) {
@@ -61,13 +54,19 @@ class SortingPortfolioBottomDialog : BottomDialog() {
             SortType.ALPHABETICALLY -> alphabeticallyRadioButton
         }
         radioButton.isChecked = true
+
+        sortTypeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.nextPayoutDateRadioButton -> viewModel.setCurrentSortType(SortType.PAYMENT_DATE)
+                R.id.profitabilityRadioButton -> viewModel.setCurrentSortType(SortType.PROFITABILITY)
+                R.id.alphabeticallyRadioButton -> viewModel.setCurrentSortType(SortType.ALPHABETICALLY)
+            }
+        }
     }
 
-    override fun onCancel(dialog: DialogInterface) {
-        super.onCancel(dialog)
-        if (viewModel.isUpdatePortfolio()) {
-            callback?.onUpdatePortfolio()
-        }
+    private fun changeSortType() {
+        callback?.onUpdatePortfolio()
+        dismiss()
     }
 
     companion object {
