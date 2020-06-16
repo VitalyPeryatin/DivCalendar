@@ -7,6 +7,7 @@ import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.network.RetrofitService
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetModel
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
+import com.infinity_coder.divcalendar.domain._common.isExpiredDate
 import com.infinity_coder.divcalendar.presentation.App
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -27,35 +28,47 @@ object PaymentRepository {
     private val divCalendarApi
         get() = RetrofitService.divCalendarApi
 
-    suspend fun getPayments(selectedYear:String): Flow<List<PaymentDbModel>> = flow {
-        val currentPortfolioId = PortfolioRepository.getCurrentPortfolioId()
+    suspend fun getPaymentsThatHaveNotExpired(portfolioId: Long): List<PaymentDbModel> {
+        updatePaymentsInDatabase(portfolioId)
+        return paymentDao.getAllPaymentsWithSecurity(portfolioId).filterNot { isExpiredDate(it.date) }
+    }
+
+    suspend fun getPaymentsForSelectedYear(portfolioId: Long, selectedYear: String): Flow<List<PaymentDbModel>> = flow {
         val startDate = "$selectedYear-$FIRST_DAY_OF_YEAR"
         val endDate = "$selectedYear-$LAST_DAY_OF_YEAR"
 
-        val cachedPayments = paymentDao.getPaymentsWithSecurity(currentPortfolioId, startDate, endDate)
-        if(cachedPayments.isNotEmpty())
+        val cachedPayments = paymentDao.getPaymentsWithSecurity(portfolioId, startDate, endDate)
+        if (cachedPayments.isNotEmpty())
             emit(cachedPayments)
 
-        val updatedPayments = getPaymentsFromNetworkAndSaveToDb(currentPortfolioId, startDate, endDate)
-        emit(updatedPayments)
+        updatePaymentsInDatabase(portfolioId)
+        emit(paymentDao.getPaymentsWithSecurity(portfolioId, startDate, endDate))
     }
 
-    private suspend fun getPaymentsFromNetworkAndSaveToDb(currentPortfolioId: Long, startDate: String, endDate: String): List<PaymentDbModel> {
+    private suspend fun updatePaymentsInDatabase(currentPortfolioId: Long) {
+        val rightBorderLastYear = "${Calendar.getInstance().get(Calendar.YEAR)}-$FIRST_DAY_OF_YEAR"
+
+        val payments = getPaymentsFromNetwork(currentPortfolioId).map {
+            PaymentDbModel.from(currentPortfolioId, it)
+        }
+
+        paymentDao.deletePaymentsByDate(currentPortfolioId, rightBorderLastYear)
+        paymentDao.insert(payments)
+    }
+
+    private suspend fun getPaymentsFromNetwork(currentPortfolioId: Long): List<PaymentNetModel.Response> {
         val tickers = securityDao.getSecurityPackagesForPortfolio(currentPortfolioId).map { it.ticker }
 
-        val payments = getPaymentsFromNetwork(tickers)
-            .map { PaymentDbModel.from(currentPortfolioId, it) }
-
-        paymentDao.insert(payments)
-        return paymentDao.getPaymentsWithSecurity(currentPortfolioId, startDate, endDate)
-    }
-
-    private suspend fun getPaymentsFromNetwork(tickers: List<String>): List<PaymentNetModel.Response> {
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
         val startDate = "$currentYear-$FIRST_DAY_OF_YEAR"
         val endDate = "${currentYear + 1}-$LAST_DAY_OF_YEAR"
+
         val body = PaymentNetModel.Request(tickers, startDate, endDate)
         return divCalendarApi.fetchPayments(body)
+    }
+
+    suspend fun getCachedPaymentsThatHaveNotExpired(portfolioId: Long): List<PaymentDbModel> {
+        return paymentDao.getAllPaymentsWithSecurity(portfolioId).filterNot { isExpiredDate(it.date) }
     }
 
     suspend fun getAllCachedPayments(portfolioId: Long): List<PaymentDbModel> {

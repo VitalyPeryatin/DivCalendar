@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.presentation.calendar.models
+package com.infinity_coder.divcalendar.domain.models
 
 data class EditPaymentParams(
     val portfolioId: Long,

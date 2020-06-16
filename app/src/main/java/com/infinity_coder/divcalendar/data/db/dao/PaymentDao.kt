@@ -5,7 +5,7 @@ import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain._common.isExpiredDate
-import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 @Dao
 abstract class PaymentDao {
@@ -18,6 +18,21 @@ abstract class PaymentDao {
         insertPastPayments(pastPayments)
         insertFuturePayments(futurePayments)
     }
+
+    @Transaction
+    open suspend fun deletePaymentsByDate(portfolioId: Long, date: String) {
+        val endDateTime = DateFormatter.basicDateFormat.parse(date)
+
+        val pastPayments = getPayments(portfolioId).filter {
+            val dateTime = DateFormatter.basicDateFormat.parse(it.date)!!
+            dateTime.before(endDateTime)
+        }
+
+        deletePayments(pastPayments)
+    }
+
+    @Delete
+    abstract suspend fun deletePayments(payments: List<PaymentDbModel>)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract suspend fun insertPastPayments(payments: List<PaymentDbModel>)
@@ -35,24 +50,28 @@ abstract class PaymentDao {
     open suspend fun getPaymentsWithSecurity(portfolioId: Long, startDate: String, endDate: String): List<PaymentDbModel> {
         val startDateTime = DateFormatter.basicDateFormat.parse(startDate)!!
         val endDateTime = DateFormatter.basicDateFormat.parse(endDate)!!
-        return getPayments(portfolioId).filter {
+
+        val payments = getPayments(portfolioId).filter {
             val dateTime = DateFormatter.basicDateFormat.parse(it.date)!!
             dateTime.after(startDateTime) && dateTime.before(endDateTime)
-        }.map {
-            it.security = getSecurity(portfolioId, it.isin)
-            if(it.count == null) it.count = it.security?.count
-            it.dividends = it.dividends * (it.count ?: 0)
-            it
         }
+        preparedPayments(portfolioId, payments)
+        return payments
     }
 
     @Transaction
     open suspend fun getAllPaymentsWithSecurity(portfolioId: Long): List<PaymentDbModel> {
-        return getPayments(portfolioId).map {
+        val payments = getPayments(portfolioId)
+        preparedPayments(portfolioId, payments)
+        return payments
+    }
+
+    private suspend fun preparedPayments(portfolioId: Long, payments: List<PaymentDbModel>) {
+        payments.forEach {
             it.security = getSecurity(portfolioId, it.isin)
-            if(it.count == null) it.count = it.security?.count
-            it.dividends = it.dividends * (it.count ?: it.security?.count ?: 0)
-            it
+            if (it.count == null)
+                it.count = it.security?.count
+            it.dividends = it.dividends * (it.count ?: 0)
         }
     }
 

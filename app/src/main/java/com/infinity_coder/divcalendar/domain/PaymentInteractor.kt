@@ -2,6 +2,7 @@ package com.infinity_coder.divcalendar.domain
 
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
+import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
 import com.infinity_coder.divcalendar.data.repositories.SettingsRepository
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain._common.convertStingToDate
@@ -19,8 +20,9 @@ class PaymentInteractor {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getPayments(): Flow<List<MonthlyPayment>> {
+        val currentPortfolioId = PortfolioRepository.getCurrentPortfolioId()
         val selectedYear = PaymentRepository.getSelectedYear()
-        return PaymentRepository.getPayments(selectedYear)
+        return PaymentRepository.getPaymentsForSelectedYear(currentPortfolioId, selectedYear)
             .map { calculateTaxesIfNeed(it) }
             .map { groupAndSortPayments(it) }
     }

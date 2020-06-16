@@ -1,13 +1,13 @@
 package com.infinity_coder.divcalendar.domain
 
+import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
+import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
 import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
+import com.infinity_coder.divcalendar.domain._common.convertStingToDate
 import com.infinity_coder.divcalendar.domain.models.SortType
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 
 class PortfolioInteractor {
 
@@ -58,27 +58,46 @@ class PortfolioInteractor {
         return PortfolioRepository.getPortfolioWithSecurities(getCurrentPortfolioName()).filterNotNull()
     }
 
-    fun getCurrentSortedPortfolioFlow(): Flow<PortfolioDbModel> {
-        return PortfolioRepository.getPortfolioWithSecurities(getCurrentPortfolioName())
-            .filterNotNull()
-            .map {
-                val sortType = PortfolioRepository.getCurrentSortType()
-                it.securities = sortSecuritiesInPortfolio(it.securities, sortType)
-                it
-            }
-    }
+    fun getCurrentSortedPortfolioFlow(): Flow<PortfolioDbModel> = flow {
+        val portfolio = PortfolioRepository.getPortfolioWithSecuritiesNotFlow(getCurrentPortfolioName())
+            ?: return@flow
 
-    private suspend fun sortSecuritiesInPortfolio(securities: List<SecurityDbModel>, sortType: SortType): List<SecurityDbModel> {
-        return when (sortType) {
+        when (PortfolioRepository.getCurrentSortType()) {
             SortType.PAYMENT_DATE -> {
-                securities
+                val currentPortfolioId = PortfolioRepository.getCurrentPortfolioId()
+                val paymentsFromCached = PaymentRepository.getCachedPaymentsThatHaveNotExpired(currentPortfolioId)
+                if (paymentsFromCached.isEmpty()) {
+                    emit(portfolio)
+                } else {
+                    portfolio.securities = sortSecuritiesByFirstPaymentDate(portfolio.securities, paymentsFromCached)
+                    emit(portfolio)
+                    val payments = PaymentRepository.getPaymentsThatHaveNotExpired(currentPortfolioId)
+                    portfolio.securities = sortSecuritiesByFirstPaymentDate(portfolio.securities, payments)
+                    emit(portfolio)
+                }
             }
             SortType.PROFITABILITY -> {
-                securities.sortedByDescending(SecurityDbModel::yearYield)
+                portfolio.securities = portfolio.securities.sortedByDescending(SecurityDbModel::yearYield)
+                emit(portfolio)
             }
             SortType.ALPHABETICALLY -> {
-                securities.sortedBy(SecurityDbModel::name)
+                portfolio.securities = portfolio.securities.sortedBy(SecurityDbModel::name)
+                emit(portfolio)
             }
+        }
+    }
+
+    private fun sortSecuritiesByFirstPaymentDate(securities: List<SecurityDbModel>, payments: List<PaymentDbModel>): List<SecurityDbModel> {
+        val preparedPayments = payments
+            .sortedBy { convertStingToDate(it.date).time }
+            .distinctBy { it.isin }
+
+        return securities.sortedBy { security ->
+            val paymentForSpecificSecurity = preparedPayments.find { it.isin == security.isin }
+            if (paymentForSpecificSecurity == null)
+                Int.MAX_VALUE
+            else
+                preparedPayments.indexOf(paymentForSpecificSecurity)
         }
     }
 
