@@ -8,6 +8,7 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.domain.SecurityInteractor
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 
 class ChangeSecurityViewModel : ViewModel() {
 
@@ -22,14 +23,14 @@ class ChangeSecurityViewModel : ViewModel() {
 
     private lateinit var securityIsin: String
 
-    private var cost: Double = 0.0
-    private var count: Int = 0
+    private var cost: BigDecimal = BigDecimal(0.0)
+    private var count: BigDecimal = BigDecimal.ZERO
 
-    fun setPackageCost(price: Double) {
+    fun setPackageCost(price: BigDecimal) {
         this.cost = price
     }
 
-    fun setPackageCount(count: Int) {
+    fun setPackageCount(count: BigDecimal) {
         this.count = count
     }
 
@@ -37,7 +38,7 @@ class ChangeSecurityViewModel : ViewModel() {
         this.securityIsin = isin
     }
 
-    private suspend fun getSecurity(count: Int, price: Double): SecurityDbModel? {
+    private suspend fun getSecurity(count: BigDecimal, price: BigDecimal): SecurityDbModel? {
         return securityInteractor.getSecurityByIsin(securityIsin)?.apply {
             this.count = count
             this.totalPrice = price
@@ -45,11 +46,11 @@ class ChangeSecurityViewModel : ViewModel() {
     }
 
     fun changePackage() = viewModelScope.launch {
-        when {
-            cost <= 0 -> {
+            when {
+            cost <= BigDecimal(0) -> {
                 shakePriceEditText.postValue(null)
             }
-            count <= 0 -> {
+            count <= BigDecimal.ZERO -> {
                 shakeCountEditText.postValue(null)
             }
             else -> {
@@ -62,7 +63,7 @@ class ChangeSecurityViewModel : ViewModel() {
     }
 
     fun removePackage() = viewModelScope.launch {
-        val security = getSecurity(0, 0.0)
+        val security = getSecurity(BigDecimal.ZERO, BigDecimal(0.0))
         if (security != null) {
             _changeSecurity.value = security
         }

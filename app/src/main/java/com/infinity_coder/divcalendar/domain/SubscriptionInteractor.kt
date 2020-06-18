@@ -1,5 +1,7 @@
 package com.infinity_coder.divcalendar.domain
 
+import java.math.BigDecimal
+
 class SubscriptionInteractor {
 
     private val securityInteractor = SecurityInteractor()
@@ -16,7 +18,7 @@ class SubscriptionInteractor {
     }
 
     companion object {
-        private const val MAX_SECURITY_COUNT_WITHOUT_SUBSCRIPTION = 5
+        private val MAX_SECURITY_COUNT_WITHOUT_SUBSCRIPTION = BigDecimal(5)
         private const val MAX_PORTFOLIO_COUNT_WITHOUT_SUBSCRIPTION = 1
     }
 }

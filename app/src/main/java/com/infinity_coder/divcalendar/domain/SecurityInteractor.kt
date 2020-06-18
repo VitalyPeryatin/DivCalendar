@@ -2,6 +2,7 @@ package com.infinity_coder.divcalendar.domain
 
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.repositories.SecurityRepository
+import java.math.BigDecimal
 
 class SecurityInteractor {
 
@@ -9,7 +10,7 @@ class SecurityInteractor {
 
     suspend fun changeSecurityPackage(securityPackage: SecurityDbModel) {
         securityPackage.portfolioId = portfolioInteractor.getCurrentPortfolioId()
-        if (securityPackage.count <= 0) {
+        if (securityPackage.count <= BigDecimal.ZERO) {
             SecurityRepository.deleteSecurityPackage(securityPackage)
         } else {
             SecurityRepository.updateSecurityPackage(securityPackage)
@@ -28,7 +29,7 @@ class SecurityInteractor {
         }
     }
 
-    suspend fun getSecurityCount(): Int {
+    suspend fun getSecurityCount(): BigDecimal {
         val portfolioId = portfolioInteractor.getCurrentPortfolioId()
         return SecurityRepository.getSecurityCount(portfolioId)
     }

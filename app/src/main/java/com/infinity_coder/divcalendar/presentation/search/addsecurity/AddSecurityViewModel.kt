@@ -12,11 +12,12 @@ import com.infinity_coder.divcalendar.presentation._common.LiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.math.BigDecimal
 
 class AddSecurityViewModel : ViewModel() {
 
-    private val _securityTotalPriceMutableLiveData = MutableLiveData(0.0)
-    val securityTotalPriceLiveDate: LiveData<Double>
+    private val _securityTotalPriceMutableLiveData = MutableLiveData(BigDecimal.ZERO)
+    val securityTotalPriceLiveDate: LiveData<BigDecimal>
         get() = _securityTotalPriceMutableLiveData
 
     val addSecurityIfHasSubscription = LiveEvent<SecurityDbModel>()
@@ -27,17 +28,17 @@ class AddSecurityViewModel : ViewModel() {
     private val securityInteractor = SecurityInteractor()
     private val subscriptionInteractor = SubscriptionInteractor()
 
-    private var price: Double = 0.0
-    private var count: Int = 0
+    private var price = BigDecimal.ZERO
+    private var count: BigDecimal = BigDecimal.ZERO
 
-    fun setSecurityPrice(price: Double) {
+    fun setSecurityPrice(price: BigDecimal) {
         this.price = price
-        _securityTotalPriceMutableLiveData.value = price * count
+        _securityTotalPriceMutableLiveData.value = price.multiply(count)
     }
 
-    fun setSecurityCount(count: Int) {
+    fun setSecurityCount(count: BigDecimal) {
         this.count = count
-        _securityTotalPriceMutableLiveData.value = price * count
+        _securityTotalPriceMutableLiveData.value = price.multiply(count)
     }
 
     fun appendSecurityPackage(securityPackage: SecurityDbModel) = viewModelScope.launch {
@@ -47,9 +48,9 @@ class AddSecurityViewModel : ViewModel() {
 
     fun addSecurityPackage(securityNetModel: SecurityNetModel) = viewModelScope.launch {
         when {
-            price <= 0 -> shakePriceEditText.value = null
+            price <= BigDecimal.ZERO -> shakePriceEditText.value = null
 
-            count <= 0 -> shakeCountEditText.value = null
+            count <= BigDecimal.ZERO -> shakeCountEditText.value = null
 
             else -> {
                 val security = buildSecurity(securityNetModel)

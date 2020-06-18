@@ -5,7 +5,7 @@ import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain._common.isExpiredDate
-import java.util.*
+import java.math.BigDecimal
 
 @Dao
 abstract class PaymentDao {
@@ -69,9 +69,9 @@ abstract class PaymentDao {
     private suspend fun preparedPayments(portfolioId: Long, payments: List<PaymentDbModel>) {
         payments.forEach {
             it.security = getSecurity(portfolioId, it.isin)
-            if (it.count == null)
-                it.count = it.security?.count
-            it.dividends = it.dividends * (it.count ?: 0)
+            if (it.count == BigDecimal.ZERO)
+                it.count = it.security?.count!!
+            it.dividends = it.dividends.multiply(it.count)
         }
     }
 

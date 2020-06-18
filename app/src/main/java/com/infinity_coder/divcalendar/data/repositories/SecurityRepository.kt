@@ -6,6 +6,7 @@ import androidx.palette.graphics.Palette
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import java.io.InputStream
+import java.math.BigDecimal
 import java.net.URL
 import kotlin.random.Random
 
@@ -32,7 +33,7 @@ object SecurityRepository {
         return securityDao.getSecurity(portfolioId, isin)
     }
 
-    suspend fun getSecurityCount(portfolioId: Long): Int {
+    suspend fun getSecurityCount(portfolioId: Long): BigDecimal {
         return securityDao.getSecurityCountForPortfolio(portfolioId)
     }
 

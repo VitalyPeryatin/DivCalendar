@@ -12,6 +12,7 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.IN
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.TABLE_NAME
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_TYPE_STOCK
+import java.math.BigDecimal
 
 @Entity(
     tableName = TABLE_NAME,
@@ -50,10 +51,10 @@ data class SecurityDbModel(
     var currency: String = "",
 
     @ColumnInfo(name = COLUMN_COUNT)
-    var count: Int = 0,
+    var count: BigDecimal = BigDecimal.ZERO,
 
     @ColumnInfo(name = COLUMN_TOTAL_PRICE)
-    var totalPrice: Double = 0.0,
+    var totalPrice: BigDecimal = BigDecimal.ZERO,
 
     @ColumnInfo(name = COLUMN_PORTFOLIO_ID)
     var portfolioId: Long = 0,
