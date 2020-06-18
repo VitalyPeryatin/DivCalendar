@@ -42,13 +42,14 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
         setHasOptionsMenu(true)
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         viewModel.loadSecurities()
     }
 
     override fun onUpdate() {
         initCurrencyRadioGroup()
+        viewModel.loadSecurities()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -83,16 +84,38 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
         viewModel.portfolio.observe(viewLifecycleOwner, Observer(this::setPortfolio))
         viewModel.state.observe(viewLifecycleOwner, Observer(this::setState))
         viewModel.totalPortfolioCost.observe(viewLifecycleOwner, Observer(this::setTotalPortfolioCost))
+
         initUI()
+    }
+
+    private fun setPortfolio(portfolio: PortfolioDbModel) {
+        portfolioToolbar.subtitle = portfolio.name
+        val adapter = securitiesRecyclerView.adapter as? SecurityRecyclerAdapter
+        adapter?.updateItems(portfolio.securities)
+    }
+
+    private fun setState(state: Int) {
+        contentLayout.visibility = View.GONE
+        emptyLayout.visibility = View.GONE
+
+        when (state) {
+            PortfolioViewModel.VIEW_STATE_PORTFOLIO_CONTENT -> contentLayout.visibility = View.VISIBLE
+            PortfolioViewModel.VIEW_STATE_PORTFOLIO_EMPTY -> emptyLayout.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setTotalPortfolioCost(totalPortfolioCost: Double) {
+        val currentCurrency = viewModel.getDisplayCurrency()
+        val totalPortfolioCostWithCurrency = SecurityCurrencyDelegate.getValueWithCurrencyConsiderCopecks(requireContext(), totalPortfolioCost, currentCurrency)
+        totalPortfolioCostTextView.text = getString(R.string.total_portfolio_cost, totalPortfolioCostWithCurrency)
+        totalPortfolioCostTextView.isSelected = true
     }
 
     private fun initUI() {
         portfolioToolbar.title = getString(R.string.portfolio)
-        val parentActivity = (activity as AppCompatActivity)
-        parentActivity.setActionBar(portfolioToolbar)
+        (activity as AppCompatActivity).setActionBar(portfolioToolbar)
 
         initCurrencyRadioGroup()
-
         rubRadioButton.setOnCheckedChangeListener(this::checkCurrency)
         usdRadioButton.setOnCheckedChangeListener(this::checkCurrency)
 
@@ -128,51 +151,22 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
 
     private fun getOnItemClickListener() = object : SecurityRecyclerAdapter.OnItemClickListener {
         override fun onItemClick(securityPackage: SecurityDbModel) {
-            openChangePackageDialog(securityPackage)
+            val changePackageDialog = ChangeSecurityBottomDialog.newInstance(securityPackage)
+            changePackageDialog.show(childFragmentManager, ChangeSecurityBottomDialog.TAG)
         }
     }
 
-    private fun getScrollListener(): RecyclerView.OnScrollListener {
-        return object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy < 0 && !addSecurityButton.isShown) {
-                    addSecurityButton.show()
-                } else if (dy > 0 && addSecurityButton.isShown) {
-                    addSecurityButton.hide()
-                }
-            }
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+    private fun getScrollListener() = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            if (dy < 0 && !addSecurityButton.isShown) {
+                addSecurityButton.show()
+            } else if (dy > 0 && addSecurityButton.isShown) {
+                addSecurityButton.hide()
             }
         }
-    }
 
-    private fun openChangePackageDialog(securityPackage: SecurityDbModel) {
-        val changePackageDialog = ChangeSecurityBottomDialog.newInstance(securityPackage)
-        changePackageDialog.show(childFragmentManager, ChangeSecurityBottomDialog.TAG)
-    }
-
-    private fun setPortfolio(portfolio: PortfolioDbModel) {
-        portfolioToolbar.subtitle = portfolio.name
-        val adapter = securitiesRecyclerView.adapter as? SecurityRecyclerAdapter
-        adapter?.setSecurities(portfolio.securities)
-    }
-
-    private fun setState(state: Int) {
-        contentLayout.visibility = View.GONE
-        emptyLayout.visibility = View.GONE
-
-        when (state) {
-            PortfolioViewModel.VIEW_STATE_PORTFOLIO_CONTENT -> contentLayout.visibility = View.VISIBLE
-            PortfolioViewModel.VIEW_STATE_PORTFOLIO_EMPTY -> emptyLayout.visibility = View.VISIBLE
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
         }
-    }
-
-    private fun setTotalPortfolioCost(totalPortfolioCost: Double) {
-        val currentCurrency = viewModel.getDisplayCurrency()
-        val totalPortfolioCostWithCurrency = SecurityCurrencyDelegate.getValueWithCurrencyConsiderCopecks(requireContext(), totalPortfolioCost, currentCurrency)
-        totalPortfolioCostTextView.text = getString(R.string.total_portfolio_cost, totalPortfolioCostWithCurrency)
-        totalPortfolioCostTextView.isSelected = true
     }
 
     override fun onChangeSecurityPackage() {
@@ -183,7 +177,7 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
         viewModel.loadSecurities()
     }
 
-    override fun onUpdatePortfolio() {
+    override fun onChangeSortType() {
         viewModel.loadSecurities()
     }
 }

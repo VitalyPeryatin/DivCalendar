@@ -17,19 +17,18 @@ import kotlinx.coroutines.launch
 
 class PortfolioViewModel : ViewModel() {
 
-    private val _state = MutableLiveData<Int>()
-    val state: LiveData<Int>
-        get() = _state
-
     private val _portfolio = MutableLiveData<PortfolioDbModel>()
     val portfolio: LiveData<PortfolioDbModel>
         get() = _portfolio
+
+    private val _state = MutableLiveData<Int>()
+    val state: LiveData<Int>
+        get() = _state
 
     private val _totalPortfolioCost = MutableLiveData<Double>()
     val totalPortfolioCost: LiveData<Double>
         get() = _totalPortfolioCost
 
-    private val securityInteractor = SecurityInteractor()
     private val portfolioInteractor = PortfolioInteractor()
     private val rateInteractor = RateInteractor()
 
@@ -55,8 +54,7 @@ class PortfolioViewModel : ViewModel() {
 
     fun setDisplayCurrency(currency: String) = viewModelScope.launch {
         rateInteractor.saveDisplayCurrency(currency)
-        if (_portfolio.value != null)
-            calculateTotalPortfolioCost(_portfolio.value!!)
+        calculateTotalPortfolioCost(_portfolio.value!!)
     }
 
     private suspend fun calculateTotalPortfolioCost(portfolio: PortfolioDbModel) {
