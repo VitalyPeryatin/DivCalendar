@@ -65,7 +65,7 @@ data class SecurityDbModel(
     var color: Int = Color.RED,
 
     @ColumnInfo(name = COLUMN_MARKET)
-    var market: String = "russian"
+    var market: String = "foreign"
 ) : Parcelable {
     companion object {
         const val TABLE_NAME = "Security"

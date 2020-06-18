@@ -29,7 +29,8 @@ class DefaultPortfolioInteractor {
             yearYield = 13.26f,
             currency = "RUB",
             type = "stock",
-            color = -2090944
+            color = -2090944,
+            market = "russian"
         )
 
         private val MTS_SECURITY_DB_MODEL = SecurityDbModel(
@@ -43,7 +44,8 @@ class DefaultPortfolioInteractor {
             yearYield = 8.72f,
             currency = "RUB",
             type = "stock",
-            color = -2097136
+            color = -2097136,
+            market = "russian"
         )
 
         private val NLMK_SECURITY_DB_MODEL = SecurityDbModel(
@@ -57,7 +59,8 @@ class DefaultPortfolioInteractor {
             yearYield = 10.32f,
             currency = "RUB",
             type = "stock",
-            color = -16232288
+            color = -16232288,
+            market = "russian"
         )
     }
 }

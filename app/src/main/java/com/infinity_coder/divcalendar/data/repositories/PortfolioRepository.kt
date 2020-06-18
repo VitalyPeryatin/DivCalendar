@@ -5,6 +5,7 @@ import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.domain.models.SortType
 import com.infinity_coder.divcalendar.presentation.App
 import com.infinity_coder.divcalendar.presentation._common.extensions.getNotNullString
@@ -76,14 +77,25 @@ object PortfolioRepository {
         val currentPortfolioId = getCurrentPortfolioId()
 
         securityDao.getSecurityPackagesForPortfolio(currentPortfolioId).forEach {
-            val securityNetModel = SearchRepository.search(it.ticker, it.type, it.market, 1).first()
-
-            SecurityDbModel.update(it, securityNetModel)
-            withContext(Dispatchers.IO) {
-                it.color = SecurityRepository.getColorForSecurityLogo(it.logo)
+            val securityNetModel = when {
+                it.market.isNotEmpty() -> {
+                    SearchRepository.search(it.ticker, it.type, it.market, 1).firstOrNull()
+                }
+                it.exchange == SecurityNetModel.SECURITY_EXCHANGE -> {
+                    SearchRepository.search(it.ticker, it.type, SecurityNetModel.SECURITY_MARKET_RUSSIAN, 1).firstOrNull()
+                }
+                else -> {
+                    SearchRepository.search(it.ticker, it.type, SecurityNetModel.SECURITY_MARKET_FOREIGN, 1).firstOrNull()
+                }
             }
 
-            SecurityRepository.updateSecurityPackage(it)
+            if (securityNetModel != null) {
+                SecurityDbModel.update(it, securityNetModel)
+                withContext(Dispatchers.IO) {
+                    it.color = SecurityRepository.getColorForSecurityLogo(it.logo)
+                }
+                SecurityRepository.updateSecurityPackage(it)
+            }
         }
 
         PaymentRepository.updatePaymentsInDatabase(currentPortfolioId)
