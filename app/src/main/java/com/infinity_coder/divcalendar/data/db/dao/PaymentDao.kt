@@ -6,6 +6,8 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain._common.isExpiredDate
 import java.math.BigDecimal
+import java.math.MathContext
+import java.math.RoundingMode
 
 @Dao
 abstract class PaymentDao {
@@ -71,7 +73,7 @@ abstract class PaymentDao {
             it.security = getSecurity(portfolioId, it.isin)
             if (it.count == BigDecimal.ZERO)
                 it.count = it.security?.count!!
-            it.dividends = it.dividends.multiply(it.count)
+            it.dividends = it.dividends.multiply(it.count, MathContext(2, RoundingMode.HALF_EVEN))
         }
     }
 

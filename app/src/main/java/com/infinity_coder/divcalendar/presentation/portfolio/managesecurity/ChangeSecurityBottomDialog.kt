@@ -31,8 +31,8 @@ class ChangeSecurityBottomDialog : BottomDialog() {
 
     private lateinit var securityName: String
     private lateinit var securityCurrency: String
-    private var securityCount: Int = 0
-    private var securityTotalPrice: Double = 0.0
+    private var securityCount: BigDecimal = BigDecimal.ZERO
+    private var securityTotalPrice: BigDecimal = BigDecimal.ZERO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +41,8 @@ class ChangeSecurityBottomDialog : BottomDialog() {
 
         securityName = requireArguments().getString(ARGUMENT_NAME, "")
         securityCurrency = requireArguments().getString(ARGUMENT_CURRENCY, "")
-        securityCount = requireArguments().getInt(ARGUMENT_COUNT, 0)
-        securityTotalPrice = requireArguments().getDouble(ARGUMENT_TOTAL_PRICE, 0.0)
+        securityCount = BigDecimal(requireArguments().getString(ARGUMENT_COUNT, "0"))
+        securityTotalPrice = BigDecimal(requireArguments().getString(ARGUMENT_TOTAL_PRICE, "0.0"))
         val isin = requireArguments().getString(ARGUMENT_ISIN, "")
 
         viewModel.setSecurityIsin(isin)
@@ -95,7 +95,7 @@ class ChangeSecurityBottomDialog : BottomDialog() {
             }
         }
 
-        val priceString = if (abs(securityTotalPrice % 1 - 0.0) < DecimalFormatStorage.EPS_ACCURACY) {
+        val priceString = if ((securityTotalPrice.abs().rem(BigDecimal.ONE).minus(BigDecimal.ZERO)).toDouble() < DecimalFormatStorage.EPS_ACCURACY) {
             securityTotalPrice.toInt().toString()
         } else {
             securityTotalPrice.toString()
@@ -154,8 +154,8 @@ class ChangeSecurityBottomDialog : BottomDialog() {
                 ARGUMENT_ISIN to security.isin,
                 ARGUMENT_NAME to security.name,
                 ARGUMENT_CURRENCY to security.currency,
-                ARGUMENT_TOTAL_PRICE to security.totalPrice,
-                ARGUMENT_COUNT to security.count
+                ARGUMENT_TOTAL_PRICE to security.totalPrice.toString(),
+                ARGUMENT_COUNT to security.count.toString()
             )
             return dialog
         }
