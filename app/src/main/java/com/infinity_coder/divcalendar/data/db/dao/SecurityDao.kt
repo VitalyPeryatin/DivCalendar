@@ -2,9 +2,11 @@ package com.infinity_coder.divcalendar.data.db.dao
 
 import androidx.room.*
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
+import javax.inject.Inject
 
 @Dao
 abstract class SecurityDao {
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract suspend fun insertSecurityPackage(securityPackage: SecurityDbModel)
 

@@ -28,11 +28,6 @@ object PaymentRepository {
     private val divCalendarApi
         get() = RetrofitService.divCalendarApi
 
-    suspend fun getPaymentsThatHaveNotExpired(portfolioId: Long): List<PaymentDbModel> {
-        updatePaymentsInDatabase(portfolioId)
-        return paymentDao.getAllPaymentsWithSecurity(portfolioId).filterNot { isExpiredDate(it.date) }
-    }
-
     suspend fun getPaymentsForSelectedYear(portfolioId: Long, selectedYear: String): Flow<List<PaymentDbModel>> = flow {
         val startDate = "$selectedYear-$FIRST_DAY_OF_YEAR"
         val endDate = "$selectedYear-$LAST_DAY_OF_YEAR"
@@ -45,7 +40,7 @@ object PaymentRepository {
         emit(paymentDao.getPaymentsWithSecurity(portfolioId, startDate, endDate))
     }
 
-    private suspend fun updatePaymentsInDatabase(currentPortfolioId: Long) {
+    suspend fun updatePaymentsInDatabase(currentPortfolioId: Long) {
         val rightBorderLastYear = "${Calendar.getInstance().get(Calendar.YEAR)}-$FIRST_DAY_OF_YEAR"
 
         val payments = getPaymentsFromNetwork(currentPortfolioId).map {

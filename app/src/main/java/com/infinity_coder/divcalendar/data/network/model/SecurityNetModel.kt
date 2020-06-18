@@ -2,6 +2,7 @@ package com.infinity_coder.divcalendar.data.network.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -31,8 +32,11 @@ data class SecurityNetModel(
     val currency: String = "",
 
     @SerializedName("price")
-    val currentPrice: Double? = null
+    val currentPrice: Double? = null,
+
+    var market: String = SECURITY_MARKET_RUSSIAN
 ) : Parcelable {
+
     companion object {
         const val SECURITY_TYPE_STOCK = "stock"
         const val SECURITY_TYPE_BOND = "bond"

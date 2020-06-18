@@ -2,6 +2,7 @@ package com.infinity_coder.divcalendar.data.repositories
 
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.util.Log
 import androidx.palette.graphics.Palette
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
@@ -42,6 +43,7 @@ object SecurityRepository {
             val image = BitmapFactory.decodeStream(inputStream)
             Palette.from(image).generate().getDominantColor(0)
         } catch (e: Exception) {
+            Log.d("SecurityNewLog","${e}")
             generateColor()
         }
     }

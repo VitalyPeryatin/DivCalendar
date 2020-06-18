@@ -5,11 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
-import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
-import com.infinity_coder.divcalendar.domain.SecurityInteractor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -32,9 +31,12 @@ class PortfolioViewModel : ViewModel() {
     private val portfolioInteractor = PortfolioInteractor()
     private val rateInteractor = RateInteractor()
 
+    private var portfolioJob: Job? = null
+
     @OptIn(ExperimentalCoroutinesApi::class)
     fun loadSecurities() = viewModelScope.launch {
-        portfolioInteractor.getCurrentSortedPortfolioFlow()
+        portfolioJob?.cancel()
+        portfolioJob = portfolioInteractor.getCurrentSortedPortfolioFlow()
             .onEach {
                 _portfolio.value = it
                 calculateTotalPortfolioCost(it)
