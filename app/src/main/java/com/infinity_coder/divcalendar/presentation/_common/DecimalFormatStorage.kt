@@ -9,7 +9,6 @@ import java.util.*
 object DecimalFormatStorage {
 
     private const val ACCURACY = 2
-    const val EPS_ACCURACY = 0.0000001
 
     val countEditTextDecimalFormat by lazy {
         val formatSymbols = DecimalFormatSymbols(Locale.getDefault())

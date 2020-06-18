@@ -1,6 +1,7 @@
 package com.infinity_coder.divcalendar.data.db.model
 
 import android.graphics.Color
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -12,6 +13,7 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.IN
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.TABLE_NAME
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_TYPE_STOCK
+import kotlinx.android.parcel.Parcelize
 
 @Entity(
     tableName = TABLE_NAME,
@@ -24,6 +26,7 @@ import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Compan
     )],
     indices = [Index(value = [PaymentDbModel.COLUMN_PORTFOLIO_ID], name = INDEX_PORTFOLIO_ID)]
 )
+@Parcelize
 data class SecurityDbModel(
     @ColumnInfo(name = COLUMN_ISIN)
     val isin: String,
@@ -60,7 +63,7 @@ data class SecurityDbModel(
 
     @ColumnInfo(name = COLUMN_COLOR)
     var color: Int = Color.RED
-) {
+):Parcelable {
     companion object {
         const val TABLE_NAME = "Security"
 

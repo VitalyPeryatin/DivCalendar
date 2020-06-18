@@ -49,11 +49,6 @@ class PortfolioViewModel : ViewModel() {
             .launchIn(viewModelScope)
     }
 
-    fun changeSecurityPackage(securityPackage: SecurityDbModel) = viewModelScope.launch {
-        securityInteractor.changeSecurityPackage(securityPackage)
-        loadSecurities()
-    }
-
     fun getDisplayCurrency(): String {
         return rateInteractor.getDisplayCurrency()
     }

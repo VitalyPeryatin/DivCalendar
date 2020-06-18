@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_portfolio.*
 import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 
 class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
-    ChangeSecurityBottomDialog.OnClickListener,
+    ChangeSecurityBottomDialog.ChangeSecurityCallback,
     ChangePortfolioBottomDialog.OnChangePortfolioClickListener,
     SortingPortfolioBottomDialog.SortingPortfolioCallback,
     UpdateCallback {
@@ -44,7 +44,6 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
 
     override fun onResume() {
         super.onResume()
-
         viewModel.loadSecurities()
     }
 
@@ -176,10 +175,8 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
         totalPortfolioCostTextView.isSelected = true
     }
 
-    override fun onChangePackageClick(securityPackage: SecurityDbModel) {
-        val changePackageDialog = childFragmentManager.findFragmentByTag(ChangeSecurityBottomDialog.TAG) as ChangeSecurityBottomDialog
-        viewModel.changeSecurityPackage(securityPackage)
-        changePackageDialog.dismiss()
+    override fun onChangeSecurityPackage() {
+        viewModel.loadSecurities()
     }
 
     override fun onPortfolioChange() {

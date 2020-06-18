@@ -16,6 +16,10 @@ class SecurityInteractor {
         }
     }
 
+    suspend fun deleteSecurityPackage(securityPackage: SecurityDbModel){
+        SecurityRepository.deleteSecurityPackage(securityPackage)
+    }
+
     suspend fun appendSecurityPackage(newSecurityPackage: SecurityDbModel) {
         val security = getSecurityByIsin(newSecurityPackage.isin)
         if (security == null) {
@@ -37,7 +41,7 @@ class SecurityInteractor {
         return SecurityRepository.getColorForSecurityLogo(logo)
     }
 
-    suspend fun getSecurityByIsin(isin: String): SecurityDbModel? {
+    private suspend fun getSecurityByIsin(isin: String): SecurityDbModel? {
         val portfolioId = portfolioInteractor.getCurrentPortfolioId()
         return SecurityRepository.getSecurity(portfolioId, isin)
     }
