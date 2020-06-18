@@ -66,7 +66,7 @@ data class SecurityDbModel(
 
     @ColumnInfo(name = COLUMN_MARKET)
     var market: String = "russian"
-):Parcelable {
+) : Parcelable {
     companion object {
         const val TABLE_NAME = "Security"
 
@@ -100,7 +100,7 @@ data class SecurityDbModel(
             )
         }
 
-        fun update(securityDbModel: SecurityDbModel, securityNetModel: SecurityNetModel){
+        fun update(securityDbModel: SecurityDbModel, securityNetModel: SecurityNetModel) {
             securityDbModel.run {
                 isin = securityNetModel.isin
                 ticker = securityNetModel.ticker

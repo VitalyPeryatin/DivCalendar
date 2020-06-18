@@ -28,7 +28,7 @@ object SearchRepository {
         type: String,
         market: String,
         limit: Int
-    ):List<SecurityNetModel>{
+    ): List<SecurityNetModel> {
         val securities = divCalendarApi.searchSecurities(query, type, market, limit)
         securities.forEach { it.market = market }
         return securities

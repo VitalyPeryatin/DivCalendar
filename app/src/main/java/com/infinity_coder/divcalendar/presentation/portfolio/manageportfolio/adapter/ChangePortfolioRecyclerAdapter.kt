@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.item_portfolio.*
 
 class ChangePortfolioRecyclerAdapter(
     var onItemClickListener: OnItemClickListener? = null
-) : BaseAdapter<PortfolioDbModel>(){
+) : BaseAdapter<PortfolioDbModel>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChangePortfolioViewHolder {
         val view = parent.inflate(R.layout.item_portfolio)
@@ -32,7 +32,6 @@ class ChangePortfolioRecyclerAdapter(
         override fun bind(model: PortfolioDbModel, position: Int) {
             nameTextView.text = model.name
         }
-
     }
 
     interface OnItemClickListener {

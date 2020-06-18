@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.item_security_portfolio.*
 
 class SecurityRecyclerAdapter(
     private val onClickListener: OnItemClickListener? = null
-) : BaseAdapter<SecurityDbModel>(){
+) : BaseAdapter<SecurityDbModel>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SecurityViewHolder {
         val view = parent.inflate(R.layout.item_security_portfolio)

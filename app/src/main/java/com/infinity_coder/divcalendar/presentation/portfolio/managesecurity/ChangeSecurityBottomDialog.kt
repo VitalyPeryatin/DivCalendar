@@ -60,7 +60,7 @@ class ChangeSecurityBottomDialog : BottomDialog() {
         initUI()
     }
 
-    private fun onChangePortfolio(){
+    private fun onChangePortfolio() {
         dismiss()
         changeSecurityCallback?.onChangeSecurityPackage()
     }
@@ -81,7 +81,7 @@ class ChangeSecurityBottomDialog : BottomDialog() {
         }
     }
 
-    private fun initPriceEditText(){
+    private fun initPriceEditText() {
         priceEditText.suffix = " ${SecurityCurrencyDelegate.getCurrencyBadge(requireContext(), securityPackage.currency)}"
 
         priceEditText.addTextChangedListener(object : DecimalPriceTextWatcher(priceEditText, DecimalFormatStorage.priceEditTextDecimalFormat) {
@@ -106,7 +106,7 @@ class ChangeSecurityBottomDialog : BottomDialog() {
         priceEditText.setText(priceString)
     }
 
-    private fun initCountEditText(){
+    private fun initCountEditText() {
         countEditText.addTextChangedListener(object : DecimalCountTextWatcher(countEditText, DecimalFormatStorage.countEditTextDecimalFormat) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 super.onTextChanged(s, start, before, count)

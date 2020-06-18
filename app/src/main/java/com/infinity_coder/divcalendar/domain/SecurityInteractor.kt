@@ -16,7 +16,7 @@ class SecurityInteractor {
         }
     }
 
-    suspend fun deleteSecurityPackage(securityPackage: SecurityDbModel){
+    suspend fun deleteSecurityPackage(securityPackage: SecurityDbModel) {
         SecurityRepository.deleteSecurityPackage(securityPackage)
     }
 

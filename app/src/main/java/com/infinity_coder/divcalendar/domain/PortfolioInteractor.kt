@@ -58,7 +58,7 @@ class PortfolioInteractor {
         return PortfolioRepository.getPortfolioWithSecuritiesFlow(getCurrentPortfolioName()).filterNotNull()
     }
 
-    fun getCurrentSortedPortfolioFlow(): Flow<PortfolioDbModel>{
+    fun getCurrentSortedPortfolioFlow(): Flow<PortfolioDbModel> {
         return PortfolioRepository.getPortfolioWithSecuritiesFlow(getCurrentPortfolioName())
             .filterNotNull()
             .map {
