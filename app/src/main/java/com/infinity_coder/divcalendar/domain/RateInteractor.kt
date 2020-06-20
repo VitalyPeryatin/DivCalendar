@@ -3,7 +3,6 @@ package com.infinity_coder.divcalendar.domain
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import java.math.BigDecimal
 import java.math.MathContext
-import java.math.RoundingMode
 
 class RateInteractor {
     private fun getUsdToRubRate(): BigDecimal {

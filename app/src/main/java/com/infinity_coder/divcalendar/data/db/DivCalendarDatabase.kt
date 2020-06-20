@@ -3,8 +3,6 @@ package com.infinity_coder.divcalendar.data.db
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
-import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.presentation.App
 
 object DivCalendarDatabase {
