@@ -15,7 +15,6 @@ import com.infinity_coder.divcalendar.presentation.calendar.models.*
 import kotlinx.coroutines.flow.first
 import java.math.BigDecimal
 import java.math.MathContext
-import java.math.RoundingMode
 
 class PaymentsToPresentationModelMapper {
 
@@ -88,10 +87,7 @@ class PaymentsToPresentationModelMapper {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val annualIncome = sumMonthPayments(monthlyPayments)
         val annualYield = annualIncome.apply {
-            divide(
-                getCosts(),
-                MathContext(2, RoundingMode.HALF_EVEN)
-            )
+            divide(getCosts(), MathContext.DECIMAL128)
             multiply(BigDecimal(100))
         }
         val annualIncomeStr = SecurityCurrencyDelegate.getValueWithCurrencyConsiderCopecks(context, annualIncome, currentCurrency)

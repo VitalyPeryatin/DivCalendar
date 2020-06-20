@@ -25,10 +25,10 @@ class RateInteractor {
     fun convertCurrencies(value: BigDecimal, from: String, to: String): BigDecimal {
         return when {
             from == RateRepository.USD_RATE && to == RateRepository.RUB_RATE -> {
-                value.divide(getUsdToRubRate(), MathContext(3, RoundingMode.HALF_EVEN))
+                value.divide(getUsdToRubRate(), MathContext.DECIMAL128)
             }
             from == RateRepository.RUB_RATE && to == RateRepository.USD_RATE -> {
-                value.divide(getRubToUsdRate(), MathContext(3, RoundingMode.HALF_EVEN))
+                value.divide(getRubToUsdRate(), MathContext.DECIMAL128)
             }
             else -> value
         }

@@ -13,6 +13,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.math.BigDecimal
+import java.math.MathContext
 import java.util.*
 
 class PaymentInteractor {
@@ -42,7 +43,7 @@ class PaymentInteractor {
     private fun calculateTaxesIfNeed(payments: List<PaymentDbModel>): List<PaymentDbModel> {
         val isIncludeTaxes = SettingsRepository.isIncludeTaxes()
         if (isIncludeTaxes) {
-            payments.forEach { it.dividends.multiply(TAX_FACTOR) }
+            payments.forEach { it.dividends.multiply(TAX_FACTOR, MathContext.DECIMAL128) }
         }
         return payments
     }

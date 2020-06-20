@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
+import java.math.MathContext
 
 class AddSecurityViewModel : ViewModel() {
 
@@ -33,12 +34,12 @@ class AddSecurityViewModel : ViewModel() {
 
     fun setSecurityPrice(price: BigDecimal) {
         this.price = price
-        _securityTotalPriceMutableLiveData.value = price.multiply(count)
+        _securityTotalPriceMutableLiveData.value = price.multiply(count, MathContext.DECIMAL128)
     }
 
     fun setSecurityCount(count: BigDecimal) {
         this.count = count
-        _securityTotalPriceMutableLiveData.value = price.multiply(count)
+        _securityTotalPriceMutableLiveData.value = price.multiply(count, MathContext.DECIMAL128)
     }
 
     fun appendSecurityPackage(securityPackage: SecurityDbModel) = viewModelScope.launch {
@@ -65,7 +66,7 @@ class AddSecurityViewModel : ViewModel() {
     private fun buildSecurity(securityNetModel: SecurityNetModel): SecurityDbModel {
         return SecurityDbModel.from(securityNetModel).let {
             it.count = count
-            it.totalPrice = price * count
+            it.totalPrice = price.multiply(count, MathContext.DECIMAL128)
             it
         }
     }
