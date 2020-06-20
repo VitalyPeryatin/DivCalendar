@@ -73,7 +73,7 @@ abstract class PaymentDao {
             it.security = getSecurity(portfolioId, it.isin)
             if (it.count == BigDecimal.ZERO)
                 it.count = it.security?.count!!
-            it.dividends = it.dividends.multiply(it.count, MathContext(2, RoundingMode.HALF_EVEN))
+            it.dividends = it.dividends.multiply(it.count, MathContext(3,RoundingMode.HALF_EVEN))
         }
     }
 
