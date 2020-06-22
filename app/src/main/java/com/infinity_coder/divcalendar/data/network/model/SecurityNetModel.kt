@@ -43,7 +43,7 @@ data class SecurityNetModel(
         const val SECURITY_MARKET_RUSSIAN = "russian"
         const val SECURITY_MARKET_FOREIGN = "foreign"
 
-        const val SECURITY_EXCHANGE = "MOEX"
+        const val SECURITY_EXCHANGE_MOEX = "MOEX"
 
         val SECURITY_MARKETS = arrayOf(SECURITY_MARKET_RUSSIAN, SECURITY_MARKET_FOREIGN)
         val SECURITY_TYPES = arrayOf(SECURITY_TYPE_STOCK, SECURITY_TYPE_BOND)

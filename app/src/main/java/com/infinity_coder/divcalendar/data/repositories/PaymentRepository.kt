@@ -3,12 +3,13 @@ package com.infinity_coder.divcalendar.data.repositories
 import android.content.Context
 import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
+import com.infinity_coder.divcalendar.data.db.dao.PaymentDao
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.network.RetrofitService
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetModel
-import com.infinity_coder.divcalendar.domain._common.DateFormatter
-import com.infinity_coder.divcalendar.domain._common.isExpiredDate
+import com.infinity_coder.divcalendar.domain._common.*
 import com.infinity_coder.divcalendar.presentation.App
+import com.infinity_coder.divcalendar.presentation._common.extensions.getNotNullString
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.util.*
@@ -20,6 +21,7 @@ object PaymentRepository {
 
     private const val PAYMENTS_PREF_NAME = "Payments"
     private const val PREF_SELECTED_YEAR = "selected_year"
+    private const val PREF_DATE_LAST_UPDATE = "date_last_update"
     private val paymentsPreferences = App.instance.getSharedPreferences(PAYMENTS_PREF_NAME, Context.MODE_PRIVATE)
 
     private val securityDao = DivCalendarDatabase.roomDatabase.securityDao
@@ -42,13 +44,19 @@ object PaymentRepository {
 
     suspend fun updatePaymentsInDatabase(currentPortfolioId: Long) {
         val rightBorderLastYear = "${Calendar.getInstance().get(Calendar.YEAR)}-$FIRST_DAY_OF_YEAR"
+        val dateLastUpdate = paymentsPreferences.getNotNullString(PREF_DATE_LAST_UPDATE, getNowStringDate())
 
         val payments = getPaymentsFromNetwork(currentPortfolioId).map {
             PaymentDbModel.from(currentPortfolioId, it)
         }
 
-        paymentDao.deletePaymentsByDate(currentPortfolioId, rightBorderLastYear)
+        paymentDao.deletePayments(currentPortfolioId, rightBorderLastYear, PaymentDao.DeleteType.BEFORE)
+        paymentDao.deletePayments(currentPortfolioId, dateLastUpdate, PaymentDao.DeleteType.AFTER)
         paymentDao.insert(payments)
+
+        paymentsPreferences.edit {
+            putString(PREF_DATE_LAST_UPDATE, getNowStringDate())
+        }
     }
 
     private suspend fun getPaymentsFromNetwork(currentPortfolioId: Long): List<PaymentNetModel.Response> {

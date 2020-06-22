@@ -77,17 +77,13 @@ object PortfolioRepository {
         val currentPortfolioId = getCurrentPortfolioId()
 
         securityDao.getSecurityPackagesForPortfolio(currentPortfolioId).forEach {
-            val securityNetModel = when {
-                it.market.isNotEmpty() -> {
-                    SearchRepository.search(it.ticker, it.type, it.market, 1).firstOrNull()
-                }
-                it.exchange == SecurityNetModel.SECURITY_EXCHANGE -> {
-                    SearchRepository.search(it.ticker, it.type, SecurityNetModel.SECURITY_MARKET_RUSSIAN, 1).firstOrNull()
-                }
-                else -> {
-                    SearchRepository.search(it.ticker, it.type, SecurityNetModel.SECURITY_MARKET_FOREIGN, 1).firstOrNull()
-                }
+
+            val market = when {
+                it.market.isNotEmpty() -> it.market
+                it.exchange == SecurityNetModel.SECURITY_EXCHANGE_MOEX -> SecurityNetModel.SECURITY_MARKET_RUSSIAN
+                else -> SecurityNetModel.SECURITY_MARKET_FOREIGN
             }
+            val securityNetModel = SearchRepository.search(it.ticker, it.type, market, 1).firstOrNull()
 
             if (securityNetModel != null) {
                 SecurityDbModel.update(it, securityNetModel)

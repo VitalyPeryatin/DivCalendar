@@ -5,7 +5,6 @@ import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain._common.isExpiredDate
-import java.util.*
 
 @Dao
 abstract class PaymentDao {
@@ -20,15 +19,18 @@ abstract class PaymentDao {
     }
 
     @Transaction
-    open suspend fun deletePaymentsByDate(portfolioId: Long, date: String) {
+    open suspend fun deletePayments(portfolioId: Long, date: String, deleteType: DeleteType = DeleteType.BEFORE) {
         val endDateTime = DateFormatter.basicDateFormat.parse(date)
 
-        val pastPayments = getPayments(portfolioId).filter {
+        val payments = getPayments(portfolioId).filter {
             val dateTime = DateFormatter.basicDateFormat.parse(it.date)!!
-            dateTime.before(endDateTime)
+            when (deleteType) {
+                DeleteType.BEFORE -> dateTime.before(endDateTime)
+                DeleteType.AFTER -> dateTime.after(endDateTime)
+            }
         }
 
-        deletePayments(pastPayments)
+        deletePayments(payments)
     }
 
     @Delete
@@ -80,4 +82,8 @@ abstract class PaymentDao {
 
     @Query("SELECT * FROM ${PaymentDbModel.TABLE_NAME} WHERE ${PaymentDbModel.COLUMN_PORTFOLIO_ID} = :portfolioId")
     abstract suspend fun getPayments(portfolioId: Long): List<PaymentDbModel>
+
+    enum class DeleteType {
+        BEFORE, AFTER
+    }
 }
