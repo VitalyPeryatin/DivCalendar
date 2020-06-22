@@ -20,10 +20,10 @@ abstract class PaymentDao {
 
     @Transaction
     open suspend fun deletePayments(portfolioId: Long, date: String, deleteType: DeleteType = DeleteType.BEFORE) {
-        val endDateTime = DateFormatter.basicDateFormat.parse(date)
+        val endDateTime = DateFormatter.parseDate(date)
 
         val payments = getPayments(portfolioId).filter {
-            val dateTime = DateFormatter.basicDateFormat.parse(it.date)!!
+            val dateTime = DateFormatter.parseDate(it.date)
             when (deleteType) {
                 DeleteType.BEFORE -> dateTime.before(endDateTime)
                 DeleteType.AFTER -> dateTime.after(endDateTime)
@@ -50,11 +50,11 @@ abstract class PaymentDao {
 
     @Transaction
     open suspend fun getPaymentsWithSecurity(portfolioId: Long, startDate: String, endDate: String): List<PaymentDbModel> {
-        val startDateTime = DateFormatter.basicDateFormat.parse(startDate)!!
-        val endDateTime = DateFormatter.basicDateFormat.parse(endDate)!!
+        val startDateTime = DateFormatter.parseDate(startDate)
+        val endDateTime = DateFormatter.parseDate(endDate)
 
         val payments = getPayments(portfolioId).filter {
-            val dateTime = DateFormatter.basicDateFormat.parse(it.date)!!
+            val dateTime = DateFormatter.parseDate(it.date)
             dateTime.after(startDateTime) && dateTime.before(endDateTime)
         }
         preparedPayments(portfolioId, payments)
