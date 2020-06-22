@@ -12,7 +12,7 @@ import com.infinity_coder.divcalendar.data.network.model.PaymentNetModel
 
 @Entity(
     tableName = TABLE_NAME,
-    primaryKeys = [COLUMN_DATE, COLUMN_ISIN, COLUMN_PORTFOLIO_ID],
+    primaryKeys = [COLUMN_DATE, COLUMN_ISIN, COLUMN_PORTFOLIO_ID, COLUMN_EXCHANGE],
     foreignKeys = [ForeignKey(
         entity = SecurityDbModel::class,
         parentColumns = arrayOf(SecurityDbModel.COLUMN_ISIN, SecurityDbModel.COLUMN_PORTFOLIO_ID, SecurityDbModel.COLUMN_EXCHANGE),
