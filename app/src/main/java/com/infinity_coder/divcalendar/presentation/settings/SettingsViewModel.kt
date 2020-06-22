@@ -19,6 +19,10 @@ class SettingsViewModel : ViewModel() {
     val hideCopecks: LiveData<Boolean>
         get() = _hideCopecks
 
+    private val _isScrollingCalendarForCurrentMonth = MutableLiveData(settingsInteractor.isScrollingCalendarForCurrentMonth())
+    val isScrollingCalendarForCurrentMonth: LiveData<Boolean>
+        get() = _isScrollingCalendarForCurrentMonth
+
     fun saveIsAccountTaxes(isAccountTaxes: Boolean) {
         _isAccountTaxes.value = isAccountTaxes
         settingsInteractor.saveIsAccountTaxes(isAccountTaxes)
@@ -27,6 +31,11 @@ class SettingsViewModel : ViewModel() {
     fun saveIsHideCopecks(isHideCopecks: Boolean) {
         _hideCopecks.value = isHideCopecks
         settingsInteractor.saveIsHideCopecks(isHideCopecks)
+    }
+
+    fun saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth: Boolean){
+        _isScrollingCalendarForCurrentMonth.value = isScrollingCalendarForCurrentMonth
+        settingsInteractor.saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth)
     }
 
     fun reportError(message: String) {

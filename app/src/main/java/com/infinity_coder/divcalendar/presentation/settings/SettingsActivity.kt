@@ -32,6 +32,7 @@ class SettingsActivity : AbstractSubscriptionActivity() {
 
         viewModel.hideCopecks.observe(this, Observer(this::updateHideCopecks))
         viewModel.isAccountTaxes.observe(this, Observer(this::updateIsAccountTaxes))
+        viewModel.isScrollingCalendarForCurrentMonth.observe(this, Observer(this::updateIsScrollingCalendarForCurrentMonth))
     }
 
     private fun initUI() {
@@ -39,7 +40,7 @@ class SettingsActivity : AbstractSubscriptionActivity() {
         settingsToolbar.title = resources.getString(R.string.settings)
         settingsToolbar.setOnClickListener { onToolbarClick() }
 
-        taxesItem.itemTextView.text = resources.getString(R.string.account_for_taxes)
+        taxesItem.itemTextView.text = getString(R.string.account_for_taxes)
         taxesItem.settingsSwitch.text = viewModel.taxesValue
         taxesItem.settingsSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.saveIsAccountTaxes(isChecked)
@@ -48,12 +49,20 @@ class SettingsActivity : AbstractSubscriptionActivity() {
             taxesItem.settingsSwitch.isChecked = !taxesItem.settingsSwitch.isChecked
         }
 
-        hideCopecksItem.itemTextView.text = resources.getString(R.string.hide_copecks)
+        hideCopecksItem.itemTextView.text = getString(R.string.hide_copecks)
         hideCopecksItem.settingsSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.saveIsHideCopecks(isChecked)
         }
         hideCopecksItem.setOnClickListener {
             hideCopecksItem.settingsSwitch.isChecked = !hideCopecksItem.settingsSwitch.isChecked
+        }
+
+        scrollingCalendarForCurrentMonthItem.itemTextView.text = getString(R.string.scrolling_calendar_for_current_year)
+        scrollingCalendarForCurrentMonthItem.settingsSwitch.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.saveIsScrollingCalendarForCurrentMonth(isChecked)
+        }
+        scrollingCalendarForCurrentMonthItem.setOnClickListener {
+            scrollingCalendarForCurrentMonthItem.settingsSwitch.isChecked = !scrollingCalendarForCurrentMonthItem.settingsSwitch.isChecked
         }
 
         feedbackItem.itemTextView.text = resources.getString(R.string.feedback)
@@ -95,6 +104,10 @@ class SettingsActivity : AbstractSubscriptionActivity() {
 
     private fun updateHideCopecks(hideCopecks: Boolean) {
         hideCopecksItem.settingsSwitch.isChecked = hideCopecks
+    }
+
+    private fun updateIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth: Boolean){
+        scrollingCalendarForCurrentMonthItem.settingsSwitch.isChecked = isScrollingCalendarForCurrentMonth
     }
 
     private fun onToolbarClick() {
