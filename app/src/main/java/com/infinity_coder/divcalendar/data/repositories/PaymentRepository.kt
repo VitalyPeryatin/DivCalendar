@@ -45,8 +45,11 @@ object PaymentRepository {
     suspend fun updatePaymentsInDatabase(currentPortfolioId: Long) {
         val dateLastUpdate = paymentsPreferences.getNotNullString(PREF_DATE_LAST_UPDATE, getNowStringDate())
 
-        val payments = getPaymentsFromNetwork(currentPortfolioId).map {
-            PaymentDbModel.from(currentPortfolioId, it)
+        val securities = securityDao.getSecurityPackagesForPortfolio(currentPortfolioId)
+        val tickers = securities.map { it.ticker }
+        val payments = getPaymentsFromNetwork(tickers).map {
+            val exchange = securities.find { security -> security.isin == it.isin }?.exchange ?: ""
+            PaymentDbModel.from(currentPortfolioId, exchange, it)
         }
 
         paymentDao.deletePayments(currentPortfolioId, dateLastUpdate, PaymentDao.DeleteType.AFTER)
@@ -57,9 +60,7 @@ object PaymentRepository {
         }
     }
 
-    private suspend fun getPaymentsFromNetwork(currentPortfolioId: Long): List<PaymentNetModel.Response> {
-        val tickers = securityDao.getSecurityPackagesForPortfolio(currentPortfolioId).map { it.ticker }
-
+    private suspend fun getPaymentsFromNetwork(tickers: List<String>): List<PaymentNetModel.Response> {
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
         val startDate = "$currentYear-$FIRST_DAY_OF_YEAR"
         val endDate = "${currentYear + 1}-$LAST_DAY_OF_YEAR"

@@ -7,6 +7,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.Index
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.COLUMN_EXCHANGE
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.COLUMN_ISIN
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.COLUMN_PORTFOLIO_ID
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.INDEX_PORTFOLIO_ID
@@ -17,7 +18,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Entity(
     tableName = TABLE_NAME,
-    primaryKeys = [COLUMN_ISIN, COLUMN_PORTFOLIO_ID],
+    primaryKeys = [COLUMN_ISIN, COLUMN_PORTFOLIO_ID, COLUMN_EXCHANGE],
     foreignKeys = [ForeignKey(
         entity = PortfolioDbModel::class,
         parentColumns = arrayOf(PortfolioDbModel.COLUMN_ID),
@@ -47,7 +48,7 @@ data class SecurityDbModel(
     var yearYield: Float = 0f,
 
     @ColumnInfo(name = COLUMN_EXCHANGE)
-    var exchange: String? = null,
+    var exchange: String = "",
 
     @ColumnInfo(name = COLUMN_CURRENCY)
     var currency: String = "",
