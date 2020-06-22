@@ -19,7 +19,7 @@ import com.infinity_coder.divcalendar.data.network.model.PaymentNetModel
         childColumns = arrayOf(COLUMN_ISIN, COLUMN_PORTFOLIO_ID, COLUMN_EXCHANGE),
         onDelete = CASCADE
     )],
-    indices = [Index(value = [COLUMN_ISIN, COLUMN_PORTFOLIO_ID], name = INDEX_SECURITY)]
+    indices = [Index(value = [COLUMN_ISIN, COLUMN_PORTFOLIO_ID, COLUMN_EXCHANGE], name = INDEX_SECURITY)]
 )
 data class PaymentDbModel(
     @ColumnInfo(name = COLUMN_DIVIDENDS)
@@ -59,16 +59,13 @@ data class PaymentDbModel(
 
         const val INDEX_SECURITY = "security_index"
 
-        fun from(portfolioId: Long, networkPayments: PaymentNetModel.Response) = PaymentDbModel(
+        fun from(portfolioId: Long, exchange: String, networkPayments: PaymentNetModel.Response) = PaymentDbModel(
             dividends = networkPayments.dividends,
             date = networkPayments.date,
             forecast = networkPayments.forecast,
             isin = if (networkPayments.isin.isBlank()) networkPayments.name else networkPayments.isin,
-            portfolioId = portfolioId
+            portfolioId = portfolioId,
+            exchange = exchange
         )
-
-        fun from(portfolioId: Long, networkPayments: List<PaymentNetModel.Response>): List<PaymentDbModel> {
-            return networkPayments.map { from(portfolioId, it) }
-        }
     }
 }

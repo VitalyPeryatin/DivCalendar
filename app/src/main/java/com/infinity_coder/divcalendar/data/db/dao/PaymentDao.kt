@@ -71,7 +71,6 @@ abstract class PaymentDao {
     private suspend fun preparedPayments(portfolioId: Long, payments: List<PaymentDbModel>) {
         payments.forEach {
             it.security = getSecurity(portfolioId, it.isin)
-            it.exchange = it.security?.exchange ?: ""
             if (it.count == null)
                 it.count = it.security?.count
             it.dividends = it.dividends * (it.count ?: 0)
