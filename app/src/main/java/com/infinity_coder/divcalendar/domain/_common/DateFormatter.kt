@@ -21,6 +21,10 @@ object DateFormatter {
         return "$day $month $year"
     }
 
+    fun parseDate(date: String): Date {
+        return basicDateFormat.parse(date)!!
+    }
+
     fun getCurrentYear(): String {
         return Calendar.getInstance().get(Calendar.YEAR).toString()
     }

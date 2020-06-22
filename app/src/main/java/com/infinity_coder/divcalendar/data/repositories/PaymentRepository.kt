@@ -43,7 +43,6 @@ object PaymentRepository {
     }
 
     suspend fun updatePaymentsInDatabase(currentPortfolioId: Long) {
-        val rightBorderLastYear = "${Calendar.getInstance().get(Calendar.YEAR)}-$FIRST_DAY_OF_YEAR"
         val dateLastUpdate = paymentsPreferences.getNotNullString(PREF_DATE_LAST_UPDATE, getNowStringDate())
 
         val securities = securityDao.getSecurityPackagesForPortfolio(currentPortfolioId)
@@ -53,7 +52,6 @@ object PaymentRepository {
             PaymentDbModel.from(currentPortfolioId, exchange, it)
         }
 
-        paymentDao.deletePayments(currentPortfolioId, rightBorderLastYear, PaymentDao.DeleteType.BEFORE)
         paymentDao.deletePayments(currentPortfolioId, dateLastUpdate, PaymentDao.DeleteType.AFTER)
         paymentDao.insert(payments)
 
