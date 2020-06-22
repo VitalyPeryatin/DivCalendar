@@ -12,7 +12,7 @@ object DivCalendarDatabase {
 
     val roomDatabase: AppDatabase by lazy {
         Room.databaseBuilder(App.instance.applicationContext, AppDatabase::class.java, "div-calendar-database")
-            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
             .build()
     }
 
@@ -23,9 +23,13 @@ object DivCalendarDatabase {
     }
 
     private val MIGRATION_2_3 = object : Migration(2, 3) {
-
         override fun migrate(database: SupportSQLiteDatabase) {
             database.execSQL("ALTER TABLE ${SecurityDbModel.TABLE_NAME} ADD COLUMN ${SecurityDbModel.COLUMN_MARKET} TEXT NOT NULL DEFAULT ''")
+        }
+    }
+
+    private val MIGRATION_3_4 = object : Migration(3, 4) {
+        override fun migrate(database: SupportSQLiteDatabase) {
             database.migrateSecurityTable()
             database.migratePaymentTable()
         }
