@@ -30,7 +30,7 @@ object DivCalendarDatabase {
             database.migratePaymentTable()
         }
 
-        private fun SupportSQLiteDatabase.migrateSecurityTable(){
+        private fun SupportSQLiteDatabase.migrateSecurityTable() {
             execSQL("CREATE TABLE ${SecurityDbModel.TABLE_NAME}_copy (" +
                     "${SecurityDbModel.COLUMN_ISIN} TEXT NOT NULL, " +
                     "${SecurityDbModel.COLUMN_TICKER} TEXT NOT NULL, " +
@@ -82,14 +82,14 @@ object DivCalendarDatabase {
             execSQL("CREATE INDEX IF NOT EXISTS ${SecurityDbModel.INDEX_PORTFOLIO_ID} ON ${SecurityDbModel.TABLE_NAME} (${PaymentDbModel.COLUMN_PORTFOLIO_ID})")
         }
 
-        private fun SupportSQLiteDatabase.migratePaymentTable(){
+        private fun SupportSQLiteDatabase.migratePaymentTable() {
             execSQL("CREATE TABLE ${PaymentDbModel.TABLE_NAME}_copy (" +
                     "${PaymentDbModel.COLUMN_DIVIDENDS} REAL NOT NULL, " +
                     "${PaymentDbModel.COLUMN_DATE} TEXT NOT NULL, " +
                     "${PaymentDbModel.COLUMN_FORECAST} INTEGER NOT NULL, " +
                     "${PaymentDbModel.COLUMN_ISIN} TEXT NOT NULL, " +
                     "${PaymentDbModel.COLUMN_PORTFOLIO_ID} INTEGER NOT NULL, " +
-                    "${PaymentDbModel.COLUMN_EXCHANGE} TEXT NOT NULL, " +
+                    "${PaymentDbModel.COLUMN_EXCHANGE} TEXT NOT NULL DEFAULT '', " +
                     "${PaymentDbModel.COLUMN_COUNT} INTEGER, " +
                     "PRIMARY KEY (${PaymentDbModel.COLUMN_DATE}, ${PaymentDbModel.COLUMN_ISIN}, ${PaymentDbModel.COLUMN_PORTFOLIO_ID}, ${PaymentDbModel.COLUMN_EXCHANGE}), " +
                     "FOREIGN KEY (${PaymentDbModel.COLUMN_ISIN}, ${PaymentDbModel.COLUMN_PORTFOLIO_ID}, ${PaymentDbModel.COLUMN_EXCHANGE}) " +

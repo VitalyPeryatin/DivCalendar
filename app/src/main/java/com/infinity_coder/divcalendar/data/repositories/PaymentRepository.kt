@@ -62,7 +62,7 @@ object PaymentRepository {
         }
     }
 
-    private suspend fun getPaymentsFromNetwork(tickers:List<String>): List<PaymentNetModel.Response> {
+    private suspend fun getPaymentsFromNetwork(tickers: List<String>): List<PaymentNetModel.Response> {
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
         val startDate = "$currentYear-$FIRST_DAY_OF_YEAR"
         val endDate = "${currentYear + 1}-$LAST_DAY_OF_YEAR"

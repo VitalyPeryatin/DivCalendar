@@ -37,7 +37,7 @@ data class PaymentDbModel(
     @ColumnInfo(name = COLUMN_PORTFOLIO_ID)
     val portfolioId: Long,
 
-    @ColumnInfo(name = COLUMN_EXCHANGE)
+    @ColumnInfo(name = COLUMN_EXCHANGE, defaultValue = "")
     var exchange: String = "",
 
     @ColumnInfo(name = COLUMN_COUNT)
