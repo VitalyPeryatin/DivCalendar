@@ -51,11 +51,7 @@ class ChangePortfolioBottomDialog : BottomDialog(),
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.bottom_dialog_change_portfolio, container, false)
     }
 
@@ -85,7 +81,7 @@ class ChangePortfolioBottomDialog : BottomDialog(),
     }
 
     private fun setPortfolios(portfolios: List<PortfolioDbModel>) {
-        portfoliosAdapter.setPortfolios(portfolios)
+        portfoliosAdapter.updateItems(portfolios)
         portfoliosRecyclerView.scrollToPosition(portfoliosAdapter.itemCount - 1)
     }
 

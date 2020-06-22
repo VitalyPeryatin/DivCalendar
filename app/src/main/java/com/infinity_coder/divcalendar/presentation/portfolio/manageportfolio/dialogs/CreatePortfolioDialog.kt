@@ -21,21 +21,6 @@ class CreatePortfolioDialog : DialogFragment() {
         parentFragment.viewModel
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_create_portfolio, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        createPortfolioButton.setOnClickListener {
-            addPortfolio()
-        }
-
-        parentViewModel.errorMessageEvent.observe(viewLifecycleOwner, Observer(this::showError))
-        parentViewModel.createPortfolioEvent.observe(viewLifecycleOwner, Observer { dismiss() })
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -44,6 +29,21 @@ class CreatePortfolioDialog : DialogFragment() {
             clickListener = parentFragment
         } else if (context is OnCreatePortfolioClickListener) {
             clickListener = context
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.dialog_create_portfolio, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        parentViewModel.errorMessageEvent.observe(viewLifecycleOwner, Observer(this::showError))
+        parentViewModel.createPortfolioEvent.observe(viewLifecycleOwner, Observer { dismiss() })
+
+        createPortfolioButton.setOnClickListener {
+            addPortfolio()
         }
     }
 

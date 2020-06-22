@@ -12,12 +12,25 @@ object SearchRepository {
         get() = RetrofitService.divCalendarApi
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun search(
+    suspend fun searchFlow(
         query: String,
         type: String,
         market: String,
         limit: Int
     ): Flow<List<SecurityNetModel>> = flow {
-        emit(divCalendarApi.searchSecurities(query, type, market, limit))
+        val securities = divCalendarApi.searchSecurities(query, type, market, limit)
+        securities.forEach { it.market = market }
+        emit(securities)
+    }
+
+    suspend fun search(
+        query: String,
+        type: String,
+        market: String,
+        limit: Int
+    ): List<SecurityNetModel> {
+        val securities = divCalendarApi.searchSecurities(query, type, market, limit)
+        securities.forEach { it.market = market }
+        return securities
     }
 }

@@ -60,7 +60,7 @@ class CalendarViewModel : ViewModel() {
     val portfolioNameTitleEvent = LiveEvent<String>()
     val showLoadingDialogEvent = LiveEvent<Boolean>()
 
-    var paymentsJob: Job? = null
+    private var paymentsJob: Job? = null
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun loadAllPayments(context: Context) = viewModelScope.launch {

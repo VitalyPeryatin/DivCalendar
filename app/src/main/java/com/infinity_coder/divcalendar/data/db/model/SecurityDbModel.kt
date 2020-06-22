@@ -1,6 +1,7 @@
 package com.infinity_coder.divcalendar.data.db.model
 
 import android.graphics.Color
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -12,6 +13,7 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.IN
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel.Companion.TABLE_NAME
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Companion.SECURITY_TYPE_STOCK
+import kotlinx.android.parcel.Parcelize
 
 @Entity(
     tableName = TABLE_NAME,
@@ -24,21 +26,22 @@ import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel.Compan
     )],
     indices = [Index(value = [PaymentDbModel.COLUMN_PORTFOLIO_ID], name = INDEX_PORTFOLIO_ID)]
 )
+@Parcelize
 data class SecurityDbModel(
     @ColumnInfo(name = COLUMN_ISIN)
-    val isin: String,
+    var isin: String,
 
     @ColumnInfo(name = COLUMN_TICKER)
-    val ticker: String,
+    var ticker: String,
 
     @ColumnInfo(name = COLUMN_NAME)
-    val name: String,
+    var name: String,
 
     @ColumnInfo(name = COLUMN_TYPE)
     var type: String = SECURITY_TYPE_STOCK,
 
     @ColumnInfo(name = COLUMN_LOGO)
-    val logo: String = "",
+    var logo: String = "",
 
     @ColumnInfo(name = COLUMN_YEAR_YIELD)
     var yearYield: Float = 0f,
@@ -59,8 +62,11 @@ data class SecurityDbModel(
     var portfolioId: Long = 0,
 
     @ColumnInfo(name = COLUMN_COLOR)
-    var color: Int = Color.RED
-) {
+    var color: Int = Color.RED,
+
+    @ColumnInfo(name = COLUMN_MARKET)
+    var market: String = "foreign"
+) : Parcelable {
     companion object {
         const val TABLE_NAME = "Security"
 
@@ -76,6 +82,7 @@ data class SecurityDbModel(
         const val COLUMN_CURRENCY = "currency"
         const val COLUMN_EXCHANGE = "exchange"
         const val COLUMN_COLOR = "color"
+        const val COLUMN_MARKET = "market"
 
         const val INDEX_PORTFOLIO_ID = "portfolio_id_index"
 
@@ -88,8 +95,23 @@ data class SecurityDbModel(
                 exchange = security.exchange,
                 yearYield = security.yearYield,
                 currency = security.currency,
-                type = security.type
+                type = security.type,
+                market = security.market
             )
+        }
+
+        fun update(securityDbModel: SecurityDbModel, securityNetModel: SecurityNetModel) {
+            securityDbModel.run {
+                isin = securityNetModel.isin
+                ticker = securityNetModel.ticker
+                name = securityNetModel.name
+                type = securityNetModel.type
+                logo = securityNetModel.logo
+                yearYield = securityNetModel.yearYield
+                exchange = securityNetModel.exchange
+                currency = securityNetModel.currency
+                market = securityNetModel.market
+            }
         }
     }
 }

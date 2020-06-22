@@ -1,7 +1,5 @@
 package com.infinity_coder.divcalendar.presentation.portfolio.managesecurity
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
@@ -11,16 +9,11 @@ import kotlinx.coroutines.launch
 
 class ChangeSecurityViewModel : ViewModel() {
 
-    private val _changeSecurity = MutableLiveData<SecurityDbModel>()
-    val changeSecurity: LiveData<SecurityDbModel>
-        get() = _changeSecurity
-
+    val securityPackageChanged = LiveEvent<Void?>()
     val shakePriceEditText = LiveEvent<Void?>()
     val shakeCountEditText = LiveEvent<Void?>()
 
     private val securityInteractor = SecurityInteractor()
-
-    private lateinit var securityIsin: String
 
     private var cost: Double = 0.0
     private var count: Int = 0
@@ -33,38 +26,25 @@ class ChangeSecurityViewModel : ViewModel() {
         this.count = count
     }
 
-    fun setSecurityIsin(isin: String) {
-        this.securityIsin = isin
-    }
-
-    private suspend fun getSecurity(count: Int, price: Double): SecurityDbModel? {
-        return securityInteractor.getSecurityByIsin(securityIsin)?.apply {
-            this.count = count
-            this.totalPrice = price
-        }
-    }
-
-    fun changePackage() = viewModelScope.launch {
+    fun changePackage(securityPackage: SecurityDbModel) = viewModelScope.launch {
         when {
             cost <= 0 -> {
-                shakePriceEditText.postValue(null)
+                shakePriceEditText.value = null
             }
             count <= 0 -> {
-                shakeCountEditText.postValue(null)
+                shakeCountEditText.value = null
             }
             else -> {
-                val security = getSecurity(count, cost)
-                if (security != null) {
-                    _changeSecurity.value = security
-                }
+                securityPackage.count = count
+                securityPackage.totalPrice = cost
+                securityInteractor.changeSecurityPackage(securityPackage)
+                securityPackageChanged.value = null
             }
         }
     }
 
-    fun removePackage() = viewModelScope.launch {
-        val security = getSecurity(0, 0.0)
-        if (security != null) {
-            _changeSecurity.value = security
-        }
+    fun removePackage(securityPackage: SecurityDbModel) = viewModelScope.launch {
+        securityInteractor.deleteSecurityPackage(securityPackage)
+        securityPackageChanged.value = null
     }
 }

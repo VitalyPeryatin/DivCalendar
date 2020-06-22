@@ -4,24 +4,26 @@ import android.content.Context
 import androidx.core.content.edit
 import com.infinity_coder.divcalendar.data.db.DivCalendarDatabase
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
+import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
+import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.domain.models.SortType
 import com.infinity_coder.divcalendar.presentation.App
 import com.infinity_coder.divcalendar.presentation._common.extensions.getNotNullString
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalCoroutinesApi::class)
 object PortfolioRepository {
-
-    private val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
 
     private const val PORTFOLIO_PREF_NAME = "Portfolio"
     private const val PREF_CURRENT_PORTFOLIO = "current_portfolio"
     private const val PREF_CURRENT_TYPE_SORT = "current_type_sort"
     private val portfolioPreferences = App.instance.getSharedPreferences(PORTFOLIO_PREF_NAME, Context.MODE_PRIVATE)
+
+    private val portfolioDao = DivCalendarDatabase.roomDatabase.portfolioDao
+    private val securityDao = DivCalendarDatabase.roomDatabase.securityDao
 
     suspend fun addPortfolio(portfolioName: String) {
         val portfolio = PortfolioDbModel(portfolioName)
@@ -65,12 +67,34 @@ object PortfolioRepository {
         portfolioDao.renamePortfolio(oldName, newName)
     }
 
-    fun getPortfolioWithSecurities(name: String): Flow<PortfolioDbModel?> = flow {
+    fun getPortfolioWithSecuritiesFlow(name: String): Flow<PortfolioDbModel?> = flow {
+        emit(portfolioDao.getPortfolioWithSecurities(name))
+        updateInformationAboutAllSecurityPackages()
         emit(portfolioDao.getPortfolioWithSecurities(name))
     }
 
-    suspend fun getPortfolioWithSecuritiesNotFlow(name: String): PortfolioDbModel? {
-        return portfolioDao.getPortfolioWithSecurities(name)
+    private suspend fun updateInformationAboutAllSecurityPackages() {
+        val currentPortfolioId = getCurrentPortfolioId()
+
+        securityDao.getSecurityPackagesForPortfolio(currentPortfolioId).forEach {
+
+            val market = when {
+                it.market.isNotEmpty() -> it.market
+                it.exchange == SecurityNetModel.SECURITY_EXCHANGE_MOEX -> SecurityNetModel.SECURITY_MARKET_RUSSIAN
+                else -> SecurityNetModel.SECURITY_MARKET_FOREIGN
+            }
+            val securityNetModel = SearchRepository.search(it.ticker, it.type, market, 1).firstOrNull()
+
+            if (securityNetModel != null) {
+                SecurityDbModel.update(it, securityNetModel)
+                withContext(Dispatchers.IO) {
+                    it.color = SecurityRepository.getColorForSecurityLogo(it.logo)
+                }
+                SecurityRepository.updateSecurityPackage(it)
+            }
+        }
+
+        PaymentRepository.updatePaymentsInDatabase(currentPortfolioId)
     }
 
     suspend fun getPortfolioCount(): Int {

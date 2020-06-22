@@ -12,7 +12,6 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.domain.models.SortType
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import kotlinx.android.synthetic.main.bottom_dialog_sorting_portfolio.*
-import kotlinx.android.synthetic.main.fragment_portfolio.*
 
 class SortingPortfolioBottomDialog : BottomDialog() {
 
@@ -45,6 +44,7 @@ class SortingPortfolioBottomDialog : BottomDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.changeSortType.observe(viewLifecycleOwner, Observer { changeSortType() })
 
         sortTypeRadioGroup.clearCheck()
@@ -65,7 +65,7 @@ class SortingPortfolioBottomDialog : BottomDialog() {
     }
 
     private fun changeSortType() {
-        callback?.onUpdatePortfolio()
+        callback?.onChangeSortType()
         dismiss()
     }
 
@@ -79,6 +79,6 @@ class SortingPortfolioBottomDialog : BottomDialog() {
     }
 
     interface SortingPortfolioCallback {
-        fun onUpdatePortfolio()
+        fun onChangeSortType()
     }
 }

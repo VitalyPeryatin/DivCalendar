@@ -18,40 +18,26 @@ import com.infinity_coder.divcalendar.presentation._common.extensions.shake
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalCountTextWatcher
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalPriceTextWatcher
 import kotlinx.android.synthetic.main.bottom_dialog_remove_security.*
-import kotlin.math.abs
 
 class ChangeSecurityBottomDialog : BottomDialog() {
 
-    private var clickListener: OnClickListener? = null
+    private lateinit var securityPackage: SecurityDbModel
+
+    private var changeSecurityCallback: ChangeSecurityCallback? = null
 
     private val viewModel: ChangeSecurityViewModel by lazy {
         ViewModelProvider(this).get(ChangeSecurityViewModel::class.java)
     }
-
-    private lateinit var securityName: String
-    private lateinit var securityCurrency: String
-    private var securityCount: Int = 0
-    private var securityTotalPrice: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
 
-        securityName = requireArguments().getString(ARGUMENT_NAME, "")
-        securityCurrency = requireArguments().getString(ARGUMENT_CURRENCY, "")
-        securityCount = requireArguments().getInt(ARGUMENT_COUNT, 0)
-        securityTotalPrice = requireArguments().getDouble(ARGUMENT_TOTAL_PRICE, 0.0)
-        val isin = requireArguments().getString(ARGUMENT_ISIN, "")
-
-        viewModel.setSecurityIsin(isin)
+        securityPackage = requireArguments().getParcelable(ARGUMENT_SECURITY_DB_MODEL)!!
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.bottom_dialog_remove_security, container, false)
     }
 
@@ -59,24 +45,45 @@ class ChangeSecurityBottomDialog : BottomDialog() {
         super.onAttach(context)
 
         val parentFragment = parentFragment
-        if (parentFragment is OnClickListener) {
-            clickListener = parentFragment
+        if (parentFragment is ChangeSecurityCallback) {
+            changeSecurityCallback = parentFragment
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.changeSecurity.observe(viewLifecycleOwner, Observer(this::changePackage))
-        viewModel.shakePriceEditText.observe(viewLifecycleOwner, Observer { shakePriceEditText() })
-        viewModel.shakeCountEditText.observe(viewLifecycleOwner, Observer { shakeCountEditText() })
+        viewModel.securityPackageChanged.observe(viewLifecycleOwner, Observer { onChangePortfolio() })
+        viewModel.shakePriceEditText.observe(viewLifecycleOwner, Observer { priceEditText.shake(SHAKE_AMPLITUDE) })
+        viewModel.shakeCountEditText.observe(viewLifecycleOwner, Observer { countEditText.shake(SHAKE_AMPLITUDE) })
+
         initUI()
     }
 
-    private fun initUI() {
-        nameTextView.text = securityName
+    private fun onChangePortfolio() {
+        dismiss()
+        changeSecurityCallback?.onChangeSecurityPackage()
+    }
 
-        priceEditText.suffix = " ${SecurityCurrencyDelegate.getCurrencyBadge(requireContext(),securityCurrency)}"
+    private fun initUI() {
+        nameTextView.text = securityPackage.name
+
+        initPriceEditText()
+
+        initCountEditText()
+
+        changePackageButton.setOnClickListener {
+            viewModel.changePackage(securityPackage)
+        }
+
+        deletePackageButton.setOnClickListener {
+            viewModel.removePackage(securityPackage)
+        }
+    }
+
+    private fun initPriceEditText() {
+        priceEditText.suffix = " ${SecurityCurrencyDelegate.getCurrencyBadge(requireContext(), securityPackage.currency)}"
+
         priceEditText.addTextChangedListener(object : DecimalPriceTextWatcher(priceEditText, DecimalFormatStorage.priceEditTextDecimalFormat) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 super.onTextChanged(s, start, before, count)
@@ -88,19 +95,18 @@ class ChangeSecurityBottomDialog : BottomDialog() {
                 viewModel.setPackageCost(price)
             }
         })
+
         priceEditText.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus && priceEditText.text.toString().isEmpty()) {
                 priceEditText.setText("0")
             }
         }
 
-        val priceString = if (abs(securityTotalPrice % 1 - 0.0) < DecimalFormatStorage.EPS_ACCURACY) {
-            securityTotalPrice.toInt().toString()
-        } else {
-            securityTotalPrice.toString()
-        }
+        val priceString = DecimalFormatStorage.formatterWithPoints.format(securityPackage.totalPrice)
         priceEditText.setText(priceString)
+    }
 
+    private fun initCountEditText() {
         countEditText.addTextChangedListener(object : DecimalCountTextWatcher(countEditText, DecimalFormatStorage.countEditTextDecimalFormat) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 super.onTextChanged(s, start, before, count)
@@ -112,55 +118,24 @@ class ChangeSecurityBottomDialog : BottomDialog() {
             }
         })
 
-        countEditText.setText(securityCount.toString())
-
-        changePackageButton.setOnClickListener {
-            viewModel.changePackage()
-        }
-
-        deletePackageButton.setOnClickListener {
-            viewModel.removePackage()
-        }
-    }
-
-    private fun changePackage(securityPackage: SecurityDbModel) {
-        clickListener?.onChangePackageClick(securityPackage)
-    }
-
-    private fun shakePriceEditText() {
-        priceEditText.shake(SHAKE_AMPLITUDE)
-    }
-
-    private fun shakeCountEditText() {
-        countEditText.shake(SHAKE_AMPLITUDE)
+        countEditText.setText(securityPackage.count.toString())
     }
 
     companion object {
-
-        private const val ARGUMENT_ISIN = "isin"
-        private const val ARGUMENT_NAME = "name"
-        private const val ARGUMENT_CURRENCY = "currency"
-        private const val ARGUMENT_TOTAL_PRICE = "total_price"
-        private const val ARGUMENT_COUNT = "count"
+        const val TAG = "ChangeSecurityBottomDialog"
 
         private const val SHAKE_AMPLITUDE = 8f
 
-        const val TAG = "ChangeSecurityBottomDialog"
+        private const val ARGUMENT_SECURITY_DB_MODEL = "security_db_model"
 
-        fun newInstance(security: SecurityDbModel): ChangeSecurityBottomDialog {
-            val dialog = ChangeSecurityBottomDialog()
-            dialog.arguments = bundleOf(
-                ARGUMENT_ISIN to security.isin,
-                ARGUMENT_NAME to security.name,
-                ARGUMENT_CURRENCY to security.currency,
-                ARGUMENT_TOTAL_PRICE to security.totalPrice,
-                ARGUMENT_COUNT to security.count
-            )
-            return dialog
+        fun newInstance(securityPackage: SecurityDbModel): ChangeSecurityBottomDialog {
+            return ChangeSecurityBottomDialog().apply {
+                arguments = bundleOf(ARGUMENT_SECURITY_DB_MODEL to securityPackage)
+            }
         }
     }
 
-    interface OnClickListener {
-        fun onChangePackageClick(securityPackage: SecurityDbModel)
+    interface ChangeSecurityCallback {
+        fun onChangeSecurityPackage()
     }
 }
