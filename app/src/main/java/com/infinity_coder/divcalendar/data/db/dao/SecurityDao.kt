@@ -5,6 +5,7 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 
 @Dao
 abstract class SecurityDao {
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract suspend fun insertSecurityPackage(securityPackage: SecurityDbModel)
 

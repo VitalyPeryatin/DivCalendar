@@ -11,7 +11,7 @@ class SearchInteractor {
 
     suspend fun search(queryGroup: QueryGroup, limit: Int = DEFAULT_LIMIT): Flow<List<SecurityNetModel>> {
         return if (queryGroup.query.length >= MIN_QUERY_LENGTH) {
-            SearchRepository.search(queryGroup.query, queryGroup.securityType, queryGroup.market, limit).map { mapSecurities(it) }
+            SearchRepository.searchFlow(queryGroup.query, queryGroup.securityType, queryGroup.market, limit).map { mapSecurities(it) }
         } else {
             flowOf(emptyList())
         }

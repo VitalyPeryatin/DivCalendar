@@ -16,6 +16,17 @@ class DeletePortfolioDialog : DialogFragment() {
 
     private var clickListener: DeletePortfolioClickListener? = null
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        val parentFragment = parentFragment
+        if (parentFragment is DeletePortfolioClickListener) {
+            clickListener = parentFragment
+        } else if (context is DeletePortfolioClickListener) {
+            clickListener = context
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_delete_porfolio, container, false)
     }
@@ -40,27 +51,16 @@ class DeletePortfolioDialog : DialogFragment() {
         messageTextView.text = resources.getString(R.string.sure_remove_portfolio, portfolioName)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        val parentFragment = parentFragment
-        if (parentFragment is DeletePortfolioClickListener) {
-            clickListener = parentFragment
-        } else if (context is DeletePortfolioClickListener) {
-            clickListener = context
-        }
-    }
-
     companion object {
-
-        private const val ARGUMENT_PORTFOLIO_NAME = "portfolio_name"
 
         const val TAG = "DeletePortfolioDialog"
 
+        private const val ARGUMENT_PORTFOLIO_NAME = "portfolio_name"
+
         fun newInstance(name: String): DeletePortfolioDialog {
-            val dialog = DeletePortfolioDialog()
-            dialog.arguments = bundleOf(ARGUMENT_PORTFOLIO_NAME to name)
-            return dialog
+            return DeletePortfolioDialog().apply {
+                arguments = bundleOf(ARGUMENT_PORTFOLIO_NAME to name)
+            }
         }
     }
 

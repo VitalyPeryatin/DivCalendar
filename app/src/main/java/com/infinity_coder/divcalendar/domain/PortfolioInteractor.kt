@@ -55,36 +55,30 @@ class PortfolioInteractor {
     }
 
     fun getCurrentPortfolioFlow(): Flow<PortfolioDbModel> {
-        return PortfolioRepository.getPortfolioWithSecurities(getCurrentPortfolioName()).filterNotNull()
+        return PortfolioRepository.getPortfolioWithSecuritiesFlow(getCurrentPortfolioName()).filterNotNull()
     }
 
-    fun getCurrentSortedPortfolioFlow(): Flow<PortfolioDbModel> = flow {
-        val portfolio = PortfolioRepository.getPortfolioWithSecuritiesNotFlow(getCurrentPortfolioName())
-            ?: return@flow
-
-        when (PortfolioRepository.getCurrentSortType()) {
-            SortType.PAYMENT_DATE -> {
-                val currentPortfolioId = PortfolioRepository.getCurrentPortfolioId()
-                val paymentsFromCached = PaymentRepository.getCachedPaymentsThatHaveNotExpired(currentPortfolioId)
-                if (paymentsFromCached.isEmpty()) {
-                    emit(portfolio)
-                } else {
-                    portfolio.securities = sortSecuritiesByFirstPaymentDate(portfolio.securities, paymentsFromCached)
-                    emit(portfolio)
-                    val payments = PaymentRepository.getPaymentsThatHaveNotExpired(currentPortfolioId)
-                    portfolio.securities = sortSecuritiesByFirstPaymentDate(portfolio.securities, payments)
-                    emit(portfolio)
+    fun getCurrentSortedPortfolioFlow(): Flow<PortfolioDbModel> {
+        return PortfolioRepository.getPortfolioWithSecuritiesFlow(getCurrentPortfolioName())
+            .filterNotNull()
+            .map {
+                when (PortfolioRepository.getCurrentSortType()) {
+                    SortType.PAYMENT_DATE -> {
+                        val currentPortfolioId = PortfolioRepository.getCurrentPortfolioId()
+                        val paymentsFromCached = PaymentRepository.getCachedPaymentsThatHaveNotExpired(currentPortfolioId)
+                        if (paymentsFromCached.isNotEmpty()) {
+                            it.securities = sortSecuritiesByFirstPaymentDate(it.securities, paymentsFromCached)
+                        }
+                    }
+                    SortType.PROFITABILITY -> {
+                        it.securities = it.securities.sortedByDescending(SecurityDbModel::yearYield)
+                    }
+                    SortType.ALPHABETICALLY -> {
+                        it.securities = it.securities.sortedBy(SecurityDbModel::name)
+                    }
                 }
+                it
             }
-            SortType.PROFITABILITY -> {
-                portfolio.securities = portfolio.securities.sortedByDescending(SecurityDbModel::yearYield)
-                emit(portfolio)
-            }
-            SortType.ALPHABETICALLY -> {
-                portfolio.securities = portfolio.securities.sortedBy(SecurityDbModel::name)
-                emit(portfolio)
-            }
-        }
     }
 
     private fun sortSecuritiesByFirstPaymentDate(securities: List<SecurityDbModel>, payments: List<PaymentDbModel>): List<SecurityDbModel> {
