@@ -22,6 +22,9 @@ object DivCalendarDatabase {
 
     private val MIGRATION_2_3 = object : Migration(2, 3) {
         override fun migrate(database: SupportSQLiteDatabase) {
+
+            database.execSQL("CREATE TABLE ${SecurityDbModel.TABLE_NAME} ")
+
             database.execSQL("ALTER TABLE ${SecurityDbModel.TABLE_NAME} ADD COLUMN ${SecurityDbModel.COLUMN_MARKET} TEXT NOT NULL DEFAULT ''")
         }
     }

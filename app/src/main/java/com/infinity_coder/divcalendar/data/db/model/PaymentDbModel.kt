@@ -3,6 +3,7 @@ package com.infinity_coder.divcalendar.data.db.model
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.COLUMN_DATE
+import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.COLUMN_EXCHANGE
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.COLUMN_ISIN
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.COLUMN_PORTFOLIO_ID
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.INDEX_SECURITY
@@ -14,8 +15,8 @@ import com.infinity_coder.divcalendar.data.network.model.PaymentNetModel
     primaryKeys = [COLUMN_DATE, COLUMN_ISIN, COLUMN_PORTFOLIO_ID],
     foreignKeys = [ForeignKey(
         entity = SecurityDbModel::class,
-        parentColumns = arrayOf(SecurityDbModel.COLUMN_ISIN, SecurityDbModel.COLUMN_PORTFOLIO_ID),
-        childColumns = arrayOf(COLUMN_ISIN, COLUMN_PORTFOLIO_ID),
+        parentColumns = arrayOf(SecurityDbModel.COLUMN_ISIN, SecurityDbModel.COLUMN_PORTFOLIO_ID, SecurityDbModel.COLUMN_EXCHANGE),
+        childColumns = arrayOf(COLUMN_ISIN, COLUMN_PORTFOLIO_ID, COLUMN_EXCHANGE),
         onDelete = CASCADE
     )],
     indices = [Index(value = [COLUMN_ISIN, COLUMN_PORTFOLIO_ID], name = INDEX_SECURITY)]
@@ -36,6 +37,9 @@ data class PaymentDbModel(
     @ColumnInfo(name = COLUMN_PORTFOLIO_ID)
     val portfolioId: Long,
 
+    @ColumnInfo(name = COLUMN_EXCHANGE)
+    var exchange: String = "",
+
     @ColumnInfo(name = COLUMN_COUNT)
     var count: Int? = null
 ) {
@@ -51,6 +55,7 @@ data class PaymentDbModel(
         const val COLUMN_ISIN = "isin"
         const val COLUMN_PORTFOLIO_ID = "portfolio_id"
         const val COLUMN_COUNT = "count"
+        const val COLUMN_EXCHANGE = "exchange"
 
         const val INDEX_SECURITY = "security_index"
 
