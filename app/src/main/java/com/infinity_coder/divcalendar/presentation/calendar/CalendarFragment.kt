@@ -2,7 +2,6 @@ package com.infinity_coder.divcalendar.presentation.calendar
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -88,7 +87,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         return true
     }
 
-    private fun scrollingCalendar(position:Int){
+    private fun scrollingCalendar(position: Int) {
         calendarPaymentsRecyclerView.smoothScrollToPosition(position)
     }
 

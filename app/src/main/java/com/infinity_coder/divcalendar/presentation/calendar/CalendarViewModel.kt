@@ -79,14 +79,13 @@ class CalendarViewModel : ViewModel() {
             .onStart {
                 if (_state.value != VIEW_STATE_CALENDAR_CONTENT) {
                     _state.value = VIEW_STATE_CALENDAR_LOADING
-                }else{
+                } else {
                     scrollingCalendarEvent.value = getFooterPositionByCurrentMonth()
                 }
-
             }
             .onEach {
                 _payments.value = it
-                if(_state.value == VIEW_STATE_CALENDAR_LOADING){
+                if (_state.value == VIEW_STATE_CALENDAR_LOADING) {
                     scrollingCalendarEvent.value = getFooterPositionByCurrentMonth()
                 }
                 if (it.isNotEmpty()) {
@@ -117,10 +116,10 @@ class CalendarViewModel : ViewModel() {
     }
 
     private fun getFooterPositionByCurrentMonth(): Int {
-        return if(settingsInteractor.isScrollingCalendarForCurrentMonth()){
+        return if (settingsInteractor.isScrollingCalendarForCurrentMonth()) {
             val monthNumber = Calendar.getInstance().get(Calendar.MONTH)
             getFooterPositionByMonthNumber(monthNumber)
-        }else{
+        } else {
             0
         }
     }
@@ -129,7 +128,7 @@ class CalendarViewModel : ViewModel() {
         val position = _payments.value!!.indexOfFirst {
             it is FooterPaymentPresentationModel && it.id == monthNumber
         }
-        return if(position == -1) 0 else position
+        return if (position == -1) 0 else position
     }
 
     fun exportData(context: Context) = viewModelScope.launch(Dispatchers.IO) {

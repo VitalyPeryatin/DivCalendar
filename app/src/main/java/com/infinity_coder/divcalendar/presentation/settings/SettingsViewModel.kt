@@ -33,7 +33,7 @@ class SettingsViewModel : ViewModel() {
         settingsInteractor.saveIsHideCopecks(isHideCopecks)
     }
 
-    fun saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth: Boolean){
+    fun saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth: Boolean) {
         _isScrollingCalendarForCurrentMonth.value = isScrollingCalendarForCurrentMonth
         settingsInteractor.saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth)
     }

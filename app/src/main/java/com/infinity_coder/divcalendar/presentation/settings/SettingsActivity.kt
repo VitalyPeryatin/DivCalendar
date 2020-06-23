@@ -106,7 +106,7 @@ class SettingsActivity : AbstractSubscriptionActivity() {
         hideCopecksItem.settingsSwitch.isChecked = hideCopecks
     }
 
-    private fun updateIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth: Boolean){
+    private fun updateIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth: Boolean) {
         scrollingCalendarForCurrentMonthItem.settingsSwitch.isChecked = isScrollingCalendarForCurrentMonth
     }
 

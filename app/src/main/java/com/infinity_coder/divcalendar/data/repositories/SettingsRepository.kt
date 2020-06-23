@@ -57,13 +57,13 @@ object SettingsRepository {
         return optionsPreferences.getBoolean(PREF_HIDE_COPECKS, false)
     }
 
-    fun saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth: Boolean){
-        optionsPreferences.edit{
+    fun saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth: Boolean) {
+        optionsPreferences.edit {
             putBoolean(PREF_SCROLLING_CALENDAR_FOR_CURRENT_MONTH, isScrollingCalendarForCurrentMonth)
         }
     }
 
-    fun isScrollingCalendarForCurrentMonth(): Boolean{
+    fun isScrollingCalendarForCurrentMonth(): Boolean {
         return optionsPreferences.getBoolean(PREF_SCROLLING_CALENDAR_FOR_CURRENT_MONTH, false)
     }
 

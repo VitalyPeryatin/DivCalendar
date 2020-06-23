@@ -19,11 +19,11 @@ class SettingsInteractor {
         return SettingsRepository.isHideCopecks()
     }
 
-    fun saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth: Boolean){
+    fun saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth: Boolean) {
         SettingsRepository.saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth)
     }
 
-    fun isScrollingCalendarForCurrentMonth(): Boolean{
+    fun isScrollingCalendarForCurrentMonth(): Boolean {
         return SettingsRepository.isScrollingCalendarForCurrentMonth()
     }
 
