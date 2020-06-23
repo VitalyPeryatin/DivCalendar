@@ -2,6 +2,7 @@ package com.infinity_coder.divcalendar.presentation.calendar
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -60,6 +61,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
         viewModel.state.observe(viewLifecycleOwner, Observer(this::updateState))
         viewModel.payments.observe(viewLifecycleOwner, Observer(this::updatePayments))
+        viewModel.scrollingCalendarEvent.observe(viewLifecycleOwner, Observer(this::scrollingCalendar))
         viewModel.currentYear.observe(viewLifecycleOwner, Observer(this::updateCurrentYear))
         viewModel.isIncludeTaxes.observe(viewLifecycleOwner, Observer(this::setIsIncludedTexes))
         viewModel.sendFileEvent.observe(viewLifecycleOwner, Observer(this::sendFile))
@@ -69,7 +71,6 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
     override fun onStart() {
         super.onStart()
-
         viewModel.updateData(requireContext())
     }
 
@@ -85,6 +86,10 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
             }
         }
         return true
+    }
+
+    private fun scrollingCalendar(position:Int){
+        calendarPaymentsRecyclerView.smoothScrollToPosition(position)
     }
 
     private fun sendFile(file: File?) {
@@ -126,7 +131,6 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
     override fun onUpdate() {
         initCurrencyRadioButton()
         viewModel.loadAllPayments(requireContext())
-        calendarPaymentsRecyclerView.smoothScrollToPosition(0)
     }
 
     private fun initUI() {
@@ -193,9 +197,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         val adapter = ChartPaymentRecyclerDelegateAdapter()
         adapter.onItemClickListener = object : ChartPaymentRecyclerDelegateAdapter.ChartItemClickListener {
             override fun onClick(numberMonth: Int) {
-                calendarPaymentsRecyclerView.smoothScrollToPosition(
-                    viewModel.getFooterPositionByMonthNumber(numberMonth)
-                )
+                val position = viewModel.getFooterPositionByMonthNumber(numberMonth)
+                calendarPaymentsRecyclerView.smoothScrollToPosition(position)
             }
         }
         return adapter
