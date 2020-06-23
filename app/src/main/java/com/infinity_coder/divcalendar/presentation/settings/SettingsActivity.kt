@@ -11,9 +11,11 @@ import com.infinity_coder.divcalendar.BuildConfig
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.SwitchServerVersionDelegate
 import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
+import com.infinity_coder.divcalendar.presentation._common.delegate.AppThemeDelegate
 import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
 import com.infinity_coder.divcalendar.presentation.billing.dialogs.BuySubscriptionDialog
 import com.infinity_coder.divcalendar.presentation.billing.dialogs.SubscriptionPurchasedDialog
+import com.infinity_coder.divcalendar.presentation.settings.dialogs.ChangeThemeBottomDialog
 import com.infinity_coder.divcalendar.presentation.settings.dialogs.ReportErrorBottomDialog
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.item_settings_switch.view.*
@@ -25,6 +27,7 @@ class SettingsActivity : AbstractSubscriptionActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppThemeDelegate.setAppTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
@@ -65,9 +68,19 @@ class SettingsActivity : AbstractSubscriptionActivity() {
             scrollingCalendarForCurrentMonthItem.settingsSwitch.isChecked = !scrollingCalendarForCurrentMonthItem.settingsSwitch.isChecked
         }
 
-        feedbackItem.itemTextView.text = resources.getString(R.string.feedback)
-        feedbackItem.setOnClickListener { openSendReportDialog() }
-        subscribeItem.itemTextView.text = resources.getString(R.string.purchase_subscription)
+        darkThemeItem.itemTextView.text = getString(R.string.dark_theme)
+        darkThemeItem.setOnClickListener {
+            val dialog = ChangeThemeBottomDialog.newInstance()
+            dialog.show(supportFragmentManager, ChangeThemeBottomDialog.TAG)
+        }
+
+        feedbackItem.itemTextView.text = getString(R.string.feedback)
+        feedbackItem.setOnClickListener {
+            val dialog = ReportErrorBottomDialog.newInstance()
+            dialog.show(supportFragmentManager, ReportErrorBottomDialog.TAG)
+        }
+
+        subscribeItem.itemTextView.text = getString(R.string.purchase_subscription)
         subscribeItem.setOnClickListener {
             if (!hasSubscription()) {
                 val dialog = BuySubscriptionDialog.newInstance()
@@ -78,17 +91,8 @@ class SettingsActivity : AbstractSubscriptionActivity() {
             }
         }
 
-        tryShowCurrentVersion()
-    }
-
-    private fun openSendReportDialog() {
-        val dialog = ReportErrorBottomDialog.newInstance()
-        dialog.show(supportFragmentManager, ReportErrorBottomDialog.TAG)
-    }
-
-    private fun tryShowCurrentVersion() {
         versionTextView.visibility = View.VISIBLE
-        versionTextView.text = resources.getString(R.string.version_name, BuildConfig.VERSION_NAME)
+        versionTextView.text = getString(R.string.version_name, BuildConfig.VERSION_NAME)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

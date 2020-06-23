@@ -81,6 +81,11 @@
     <string name="account_for_taxes">Учитывать налоги</string>
     <string name="hide_copecks">Скрыть копейки</string>
     <string name="scrolling_calendar_for_current_year">Пролистывать календарь на текущий месяц</string>
+    <string name="dark_theme">Темная тема</string>
+    <string name="dark_theme_on">Включена</string>
+    <string name="dark_theme_off">Выключена</string>
+    <string name="dark_theme_automatically">Автоматически</string>
+    <string name="dark_theme_automatically_description">Тема меняется автоматически в зависимости от настроек телефона</string>
     <string name="feedback">Обратная связь</string>
     <string name="email_developers">Написать разработчикам</string>
     <string name="telegram_chat">Telegram-чат</string>
@@ -91,6 +96,8 @@
     <string name="send">Отправить</string>
     <string name="send_successful">Сообщение успешно отправлено разработчикам</string>
     <string name="symbol_count">Количество символов: %1$d</string>
+
+    <!--change theme-->
 
     <!-- export file -->
     <string name="title_sheet_portfolio">Портфель</string>

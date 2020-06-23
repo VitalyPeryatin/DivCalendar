@@ -18,6 +18,14 @@ class ReportErrorBottomDialog : BottomDialog() {
 
     private lateinit var parentViewModel: SettingsViewModel
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        if (context is SettingsActivity) {
+            parentViewModel = context.viewModel
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,14 +54,6 @@ class ReportErrorBottomDialog : BottomDialog() {
         if (reportMessage.isNotEmpty()) {
             parentViewModel.reportError(reportMessage)
             requireContext().showSuccessfulToast(layoutInflater, R.string.send_successful)
-        }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        if (context is SettingsActivity) {
-            parentViewModel = context.viewModel
         }
     }
 

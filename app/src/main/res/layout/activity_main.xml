@@ -22,4 +22,5 @@
         app:itemTextColor="@color/bottom_nav_color"
         android:background="@color/colorBottomNavigation"
         app:menu="@menu/bottom_navigation"/>
+
 </LinearLayout>

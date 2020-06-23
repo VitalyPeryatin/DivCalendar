@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/background">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/settingsToolbar"
@@ -42,6 +43,12 @@
                 <include
                     android:id="@+id/scrollingCalendarForCurrentMonthItem"
                     layout="@layout/item_settings_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/darkThemeItem"
+                    layout="@layout/item_settings_normal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

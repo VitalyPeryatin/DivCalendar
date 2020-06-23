@@ -8,6 +8,7 @@ import com.infinity_coder.divcalendar.domain.DefaultPortfolioInteractor
 import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain._common.Actualizer
 import com.infinity_coder.divcalendar.presentation._common.clearLogFile
+import com.infinity_coder.divcalendar.presentation._common.delegate.AppThemeDelegate
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

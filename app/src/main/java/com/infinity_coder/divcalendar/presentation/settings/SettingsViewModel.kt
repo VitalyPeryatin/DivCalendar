@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.infinity_coder.divcalendar.domain.SettingsInteractor
+import com.infinity_coder.divcalendar.presentation._common.LiveEvent
 
 class SettingsViewModel : ViewModel() {
 
@@ -23,6 +24,8 @@ class SettingsViewModel : ViewModel() {
     val isScrollingCalendarForCurrentMonth: LiveData<Boolean>
         get() = _isScrollingCalendarForCurrentMonth
 
+    val changeThemeTypeEvent = LiveEvent<Void?>()
+
     fun saveIsAccountTaxes(isAccountTaxes: Boolean) {
         _isAccountTaxes.value = isAccountTaxes
         settingsInteractor.saveIsAccountTaxes(isAccountTaxes)
@@ -36,6 +39,15 @@ class SettingsViewModel : ViewModel() {
     fun saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth: Boolean) {
         _isScrollingCalendarForCurrentMonth.value = isScrollingCalendarForCurrentMonth
         settingsInteractor.saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth)
+    }
+
+    fun saveCurrentThemeType(type: Int){
+        settingsInteractor.saveThemeType(type)
+        changeThemeTypeEvent.value = null
+    }
+
+    fun getCurrentThemeType():Int{
+        return settingsInteractor.getThemeType()
     }
 
     fun reportError(message: String) {

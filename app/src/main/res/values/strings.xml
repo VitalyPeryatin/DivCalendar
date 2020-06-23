@@ -91,6 +91,11 @@
     <string name="account_for_taxes">Account for taxes</string>
     <string name="hide_copecks">Hide copecks</string>
     <string name="scrolling_calendar_for_current_year">Scroll the calendar for the current month</string>
+    <string name="dark_theme">Dark theme</string>
+    <string name="dark_theme_on">On</string>
+    <string name="dark_theme_off">Off</string>
+    <string name="dark_theme_automatically">Automatically</string>
+    <string name="dark_theme_automatically_description">The theme changes automatically depending on your phone settings</string>
     <string name="feedback">Feedback</string>
     <string name="email_developers">Email developers</string>
     <string name="telegram_chat">Telegram chat</string>

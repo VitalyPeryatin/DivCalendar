@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
+import com.infinity_coder.divcalendar.presentation._common.delegate.AppThemeDelegate
 import com.infinity_coder.divcalendar.presentation._common.extensions.hideAllFragments
 import com.infinity_coder.divcalendar.presentation.calendar.CalendarFragment
 import com.infinity_coder.divcalendar.presentation.help.HelpFragment
@@ -25,8 +26,10 @@ class MainActivity : AbstractSubscriptionActivity() {
     private val menuIdToFragment = mutableMapOf<Int, Fragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppThemeDelegate.setAppTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         if (savedInstanceState == null) {
             switchFragment(getFragment(R.id.portfolioItem))

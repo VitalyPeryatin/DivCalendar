@@ -7,12 +7,14 @@ import android.view.WindowManager
 import com.anjlab.android.iab.v3.TransactionDetails
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
+import com.infinity_coder.divcalendar.presentation._common.delegate.AppThemeDelegate
 import com.infinity_coder.divcalendar.presentation.main.MainActivity
 import kotlinx.android.synthetic.main.activity_buy_subscription.*
 
 class BuySubscriptionActivity : AbstractSubscriptionActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppThemeDelegate.setAppTheme(this)
         isOpenedBuySubscriptionActivity = true
 
         super.onCreate(savedInstanceState)

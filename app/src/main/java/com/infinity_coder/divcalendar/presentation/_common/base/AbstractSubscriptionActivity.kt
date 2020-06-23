@@ -9,6 +9,7 @@ import com.anjlab.android.iab.v3.TransactionDetails
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.SubscriptionRepository
 import com.infinity_coder.divcalendar.domain.SubscriptionInteractor
+import com.infinity_coder.divcalendar.presentation._common.delegate.AppThemeDelegate
 import com.infinity_coder.divcalendar.presentation._common.logException
 import com.infinity_coder.divcalendar.presentation.billing.BuySubscriptionActivity
 import com.infinity_coder.divcalendar.presentation.billing.PremiumSubscriptionObservable
@@ -25,7 +26,6 @@ abstract class AbstractSubscriptionActivity : AppCompatActivity(), BillingProces
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         billingProcessor = BillingProcessor(this, LICENSE_KEY, this)
         billingProcessor?.initialize()
     }

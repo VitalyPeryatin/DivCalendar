@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
+import com.infinity_coder.divcalendar.presentation._common.delegate.AppThemeDelegate
 import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityMarketDelegate
 import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityTypeDelegate
 import com.infinity_coder.divcalendar.presentation._common.extensions.visibility
@@ -25,6 +26,7 @@ class SearchSecurityActivity : AbstractSubscriptionActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppThemeDelegate.setAppTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_securities)
 
