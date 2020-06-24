@@ -3,6 +3,7 @@ package com.infinity_coder.divcalendar.data.db.model
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.COLUMN_DATE
+import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.COLUMN_EXCHANGE
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.COLUMN_ISIN
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.COLUMN_PORTFOLIO_ID
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.INDEX_SECURITY
@@ -11,14 +12,14 @@ import com.infinity_coder.divcalendar.data.network.model.PaymentNetModel
 
 @Entity(
     tableName = TABLE_NAME,
-    primaryKeys = [COLUMN_DATE, COLUMN_ISIN, COLUMN_PORTFOLIO_ID],
+    primaryKeys = [COLUMN_DATE, COLUMN_ISIN, COLUMN_PORTFOLIO_ID, COLUMN_EXCHANGE],
     foreignKeys = [ForeignKey(
         entity = SecurityDbModel::class,
-        parentColumns = arrayOf(SecurityDbModel.COLUMN_ISIN, SecurityDbModel.COLUMN_PORTFOLIO_ID),
-        childColumns = arrayOf(COLUMN_ISIN, COLUMN_PORTFOLIO_ID),
+        parentColumns = arrayOf(SecurityDbModel.COLUMN_ISIN, SecurityDbModel.COLUMN_PORTFOLIO_ID, SecurityDbModel.COLUMN_EXCHANGE),
+        childColumns = arrayOf(COLUMN_ISIN, COLUMN_PORTFOLIO_ID, COLUMN_EXCHANGE),
         onDelete = CASCADE
     )],
-    indices = [Index(value = [COLUMN_ISIN, COLUMN_PORTFOLIO_ID], name = INDEX_SECURITY)]
+    indices = [Index(value = [COLUMN_ISIN, COLUMN_PORTFOLIO_ID, COLUMN_EXCHANGE], name = INDEX_SECURITY)]
 )
 data class PaymentDbModel(
     @ColumnInfo(name = COLUMN_DIVIDENDS)
@@ -36,6 +37,9 @@ data class PaymentDbModel(
     @ColumnInfo(name = COLUMN_PORTFOLIO_ID)
     val portfolioId: Long,
 
+    @ColumnInfo(name = COLUMN_EXCHANGE, defaultValue = "")
+    var exchange: String = "",
+
     @ColumnInfo(name = COLUMN_COUNT)
     var count: Int? = null
 ) {
@@ -51,19 +55,17 @@ data class PaymentDbModel(
         const val COLUMN_ISIN = "isin"
         const val COLUMN_PORTFOLIO_ID = "portfolio_id"
         const val COLUMN_COUNT = "count"
+        const val COLUMN_EXCHANGE = "exchange"
 
         const val INDEX_SECURITY = "security_index"
 
-        fun from(portfolioId: Long, networkPayments: PaymentNetModel.Response) = PaymentDbModel(
+        fun from(portfolioId: Long, exchange: String, networkPayments: PaymentNetModel.Response) = PaymentDbModel(
             dividends = networkPayments.dividends,
             date = networkPayments.date,
             forecast = networkPayments.forecast,
             isin = if (networkPayments.isin.isBlank()) networkPayments.name else networkPayments.isin,
-            portfolioId = portfolioId
+            portfolioId = portfolioId,
+            exchange = exchange
         )
-
-        fun from(portfolioId: Long, networkPayments: List<PaymentNetModel.Response>): List<PaymentDbModel> {
-            return networkPayments.map { from(portfolioId, it) }
-        }
     }
 }
