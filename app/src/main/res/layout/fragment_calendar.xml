@@ -36,7 +36,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
                     android:dropDownWidth="wrap_content"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
 
                 <RadioGroup
                     android:id="@+id/currencyRadioGroup"

@@ -3,126 +3,59 @@ package com.infinity_coder.divcalendar.presentation.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.util.Log
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.FragmentTransaction
+import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
-import com.infinity_coder.divcalendar.presentation._common.delegate.AppThemeDelegate
-import com.infinity_coder.divcalendar.presentation._common.extensions.hideAllFragments
-import com.infinity_coder.divcalendar.presentation.calendar.CalendarFragment
-import com.infinity_coder.divcalendar.presentation.help.HelpFragment
-import com.infinity_coder.divcalendar.presentation.portfolio.PortfolioFragment
-import com.infinity_coder.divcalendar.presentation.settings.SettingsActivity
-import kotlinx.android.synthetic.main.activity_main.*
-import java.lang.IllegalStateException
+import com.infinity_coder.divcalendar.presentation.tabs.TabsContainerFragment
 
 class MainActivity : AbstractSubscriptionActivity() {
 
-    lateinit var viewModel: MainViewModel
-
-    private val menuIdToFragment = mutableMapOf<Int, Fragment>()
+    private val backStackFragments = mutableListOf<Fragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AppThemeDelegate.setAppTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        if (savedInstanceState == null) {
-            switchFragment(getFragment(R.id.portfolioItem))
+        if(savedInstanceState == null) {
+            startFragment(TabsContainerFragment.newInstance())
+        }else{
+            supportFragmentManager.fragments.forEach {
+                if(it !is SupportRequestManagerFragment)
+                    backStackFragments.add(it)
+            }
+        }
+    }
+
+    fun startFragment(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        if (backStackFragments.isNotEmpty()) {
+            transaction.hide(backStackFragments.last())
+        }
+        transaction.add(R.id.fragmentContainerView, fragment)
+        backStackFragments.add(fragment)
+        transaction.commit()
+    }
+
+    override fun onBackPressed() {
+        if (backStackFragments.size > 1) {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.remove(backStackFragments.last())
+            backStackFragments.remove(backStackFragments.last())
+            transaction.show(backStackFragments.last())
+            transaction.commit()
+            updateCurrentFragment()
         } else {
-            restoreFragments()
-        }
-
-        initUI()
-    }
-
-    private fun initUI() {
-        bottomNavigationView.setOnNavigationItemSelectedListener {
-
-            if (bottomNavigationView.selectedItemId == it.itemId) {
-                return@setOnNavigationItemSelectedListener false
-            }
-
-            val fragment = getFragment(it.itemId)
-            switchFragment(fragment)
-
-            return@setOnNavigationItemSelectedListener true
+            super.onBackPressed()
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.settings, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.settingsItem -> {
-                openSettingsActivity()
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
-        return true
-    }
-
-    private fun openSettingsActivity() {
-        val intent = SettingsActivity.getIntent(this)
-        startActivity(intent)
-    }
-
-    private fun getFragment(menuId: Int): Fragment {
-        if (menuIdToFragment.containsKey(menuId))
-            return menuIdToFragment.getValue(menuId)
-
-        menuIdToFragment[menuId] = when (menuId) {
-            R.id.portfolioItem -> PortfolioFragment()
-
-            R.id.calendarItem -> CalendarFragment()
-
-            R.id.helpItem -> HelpFragment()
-
-            else -> throw IllegalStateException("this menu does not exist")
-        }
-
-        return menuIdToFragment.getValue(menuId)
-    }
-
-    private fun switchFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().apply {
-            supportFragmentManager.hideAllFragments(this)
-            if (supportFragmentManager.fragments.contains(fragment)) {
-                show(fragment)
-                updateFragment(fragment)
-            } else {
-                add(R.id.fragmentContainerView, fragment)
-            }
-        }.commit()
-    }
-
-    private fun updateFragment(fragment: Fragment) {
-        if (fragment is UpdateCallback) {
-            fragment.onUpdate()
-        }
-    }
-
-    private fun restoreFragments() {
-        supportFragmentManager.fragments.forEach {
-            val menuId = when (it) {
-                is PortfolioFragment -> R.id.portfolioItem
-
-                is CalendarFragment -> R.id.calendarItem
-
-                is HelpFragment -> R.id.helpItem
-
-                else -> null
-            }
-
-            if (menuId != null)
-                menuIdToFragment[menuId] = it
+    private fun updateCurrentFragment() {
+        if (backStackFragments.isNotEmpty()) {
+            (backStackFragments.last() as UpdateCallback).onUpdate()
         }
     }
 

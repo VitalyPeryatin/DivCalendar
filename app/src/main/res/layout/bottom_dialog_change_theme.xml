@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/rectangleImageView"
+        android:layout_width="32dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_rectangle_for_sorting"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/dark_theme"
+        android:textColor="?attr/textColorPrimary"
+        android:textSize="@dimen/font_few_big"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rectangleImageView" />
+
+    <RadioGroup
+        android:id="@+id/themeTypeRadioGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/titleTextView"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView">
+
+        <RadioButton
+            android:id="@+id/darkThemeOffRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:paddingStart="18dp"
+            android:paddingEnd="0dp"
+            android:text="@string/dark_theme_off"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_normal"
+            android:theme="@style/RadioButton" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/separator" />
+
+        <RadioButton
+            android:id="@+id/darkThemeOnRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:fontFamily="@font/roboto"
+            android:paddingStart="18dp"
+            android:paddingEnd="0dp"
+            android:text="@string/dark_theme_on"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_normal"
+            android:theme="@style/RadioButton" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/separator" />
+
+        <RadioButton
+            android:id="@+id/darkThemeAutomaticallyRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:fontFamily="@font/roboto"
+            android:paddingStart="18dp"
+            android:paddingEnd="0dp"
+            android:text="@string/dark_theme_automatically"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_normal"
+            android:theme="@style/RadioButton" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/roboto"
+            android:textColor="@color/colorSecondary"
+            android:textSize="@dimen/font_small"
+            android:text="@string/dark_theme_automatically_description"/>
+    </RadioGroup>
+</androidx.constraintlayout.widget.ConstraintLayout>
