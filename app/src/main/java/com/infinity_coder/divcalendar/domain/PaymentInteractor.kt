@@ -8,7 +8,7 @@ import com.infinity_coder.divcalendar.domain._common.DateFormatter
 import com.infinity_coder.divcalendar.domain._common.convertStingToDate
 import com.infinity_coder.divcalendar.domain._common.getNowDate
 import com.infinity_coder.divcalendar.domain.models.EditPaymentParams
-import com.infinity_coder.divcalendar.presentation.tabs.calendar.models.MonthlyPayment
+import com.infinity_coder.divcalendar.presentation.calendar.models.MonthlyPayment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

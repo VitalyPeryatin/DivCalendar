@@ -1,7 +1,6 @@
 package com.infinity_coder.divcalendar.presentation.tabs
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -9,16 +8,14 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.room.Update
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
 import com.infinity_coder.divcalendar.presentation._common.extensions.hideAllFragments
 import com.infinity_coder.divcalendar.presentation.main.MainActivity
-import com.infinity_coder.divcalendar.presentation.tabs.calendar.CalendarFragment
-import com.infinity_coder.divcalendar.presentation.tabs.help.HelpFragment
-import com.infinity_coder.divcalendar.presentation.tabs.portfolio.PortfolioFragment
+import com.infinity_coder.divcalendar.presentation.calendar.CalendarFragment
+import com.infinity_coder.divcalendar.presentation.help.HelpFragment
+import com.infinity_coder.divcalendar.presentation.portfolio.PortfolioFragment
 import com.infinity_coder.divcalendar.presentation.settings.SettingsFragment
-import com.infinity_coder.divcalendar.presentation.settings.SettingsViewModel
 import kotlinx.android.synthetic.main.fragment_tabs_container.*
 import java.lang.IllegalStateException
 
@@ -29,27 +26,6 @@ class TabsContainerFragment: Fragment(R.layout.fragment_tabs_container) {
     }
 
     private val menuIdToFragment = mutableMapOf<Int, Fragment>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.settings, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.settingsItem -> {
-                val fragment = SettingsFragment.newInstance()
-                (requireActivity() as MainActivity).startFragment(fragment)
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
-        return true
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

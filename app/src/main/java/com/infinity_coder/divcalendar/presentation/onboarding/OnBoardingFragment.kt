@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.delegate.TelegramChannelDelegate
+import com.infinity_coder.divcalendar.presentation.onboarding.adapters.OnboardingPageAdapter
+import com.infinity_coder.divcalendar.presentation.onboarding.models.OnboardingPageModel
 import kotlinx.android.synthetic.main.fragment_onboarding.*
 
 class OnBoardingFragment: Fragment(R.layout.fragment_onboarding) {
@@ -40,12 +42,13 @@ class OnBoardingFragment: Fragment(R.layout.fragment_onboarding) {
     }
 
     private fun initViewPager() {
-        val adapter = OnboardingPageAdapter(object : OnboardingPageAdapter.OnboardingPageCallback {
-            override fun onClickTelegramChannelLink() {
-                val intent = TelegramChannelDelegate.getOpenTelegramChannelIntent(requireContext())
-                startActivity(intent)
-            }
-        })
+        val adapter = OnboardingPageAdapter(
+            object : OnboardingPageAdapter.OnboardingPageCallback {
+                override fun onClickTelegramChannelLink() {
+                    val intent = TelegramChannelDelegate.getOpenTelegramChannelIntent(requireContext())
+                    startActivity(intent)
+                }
+            })
         adapter.update(pages)
         onboardingViewPager.adapter = adapter
         onboardingViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -64,9 +67,21 @@ class OnBoardingFragment: Fragment(R.layout.fragment_onboarding) {
     companion object {
 
         private val pages = listOf(
-            OnboardingPageModel(R.drawable.onboarding_portfolio_image, R.string.onboarding_portfolio_title, R.string.onboarding_portfolio_message),
-            OnboardingPageModel(R.drawable.onboarding_calendar_image, R.string.onboarding_calendar_title, R.string.onboarding_calendar_message),
-            OnboardingPageModel(R.drawable.onboarding_help_image, R.string.onboarding_help_title, R.string.onboarding_help_message)
+            OnboardingPageModel(
+                R.drawable.onboarding_portfolio_image,
+                R.string.onboarding_portfolio_title,
+                R.string.onboarding_portfolio_message
+            ),
+            OnboardingPageModel(
+                R.drawable.onboarding_calendar_image,
+                R.string.onboarding_calendar_title,
+                R.string.onboarding_calendar_message
+            ),
+            OnboardingPageModel(
+                R.drawable.onboarding_help_image,
+                R.string.onboarding_help_title,
+                R.string.onboarding_help_message
+            )
         )
 
         fun newInstance(): OnBoardingFragment{
