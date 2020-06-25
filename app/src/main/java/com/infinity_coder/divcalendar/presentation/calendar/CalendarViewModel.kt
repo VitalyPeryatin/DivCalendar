@@ -46,16 +46,12 @@ class CalendarViewModel : ViewModel() {
     val currentYear: LiveData<String>
         get() = _currentYear
 
-    private val _isIncludeTaxes = MutableLiveData<Boolean?>(null)
-    val isIncludeTaxes: LiveData<Boolean?>
-        get() = _isIncludeTaxes
-
     val sendFileEvent = LiveEvent<File?>()
     val scrollingCalendarEvent = LiveEvent<Int>()
     val portfolioNameTitleEvent = LiveEvent<String>()
+    val isIncludeTaxesEvent = LiveEvent<Boolean>()
     val showLoadingDialogEvent = LiveEvent<Boolean>()
 
-    private var _isHideCopecks = settingsInteractor.isHideCopecks()
     private val paymentsMapper = PaymentsToPresentationModelMapper()
     private var paymentsFileCreator: PaymentsFileCreator? = null
     private var cachedPayments: List<MonthlyPayment> = emptyList()
@@ -68,7 +64,8 @@ class CalendarViewModel : ViewModel() {
     @OptIn(ExperimentalCoroutinesApi::class)
     fun loadAllPayments() = viewModelScope.launch {
 
-        loadPortfolioName()
+        portfolioNameTitleEvent.value = portfolioInteractor.getCurrentPortfolioName()
+        isIncludeTaxesEvent.value = settingsInteractor.isIncludeTaxes()
 
         if (portfolioInteractor.isCurrentPortfolioEmpty()) {
             _state.value = VIEW_STATE_CALENDAR_EMPTY
@@ -114,11 +111,6 @@ class CalendarViewModel : ViewModel() {
         }
     }
 
-    private fun loadPortfolioName() {
-        val portfolioName = portfolioInteractor.getCurrentPortfolioName()
-        portfolioNameTitleEvent.value = portfolioName
-    }
-
     private fun getFooterPositionByCurrentMonth(): Int {
         return if (settingsInteractor.isScrollingCalendarForCurrentMonth()) {
             val monthNumber = Calendar.getInstance().get(Calendar.MONTH)
@@ -149,7 +141,7 @@ class CalendarViewModel : ViewModel() {
         _payments.postValue(payments)
     }
 
-    fun selectYear(context: Context, selectedYear: String) {
+    fun selectYear(selectedYear: String) {
         if (_currentYear.value == null || selectedYear != _currentYear.value) {
             paymentInteractor.setSelectedYear(selectedYear)
             _currentYear.value = selectedYear
@@ -161,29 +153,11 @@ class CalendarViewModel : ViewModel() {
         return rateInteractor.getDisplayCurrency()
     }
 
-    fun updatePastPayment(context: Context, editPaymentParams: EditPaymentParams) = viewModelScope.launch {
+    fun updatePastPayment(editPaymentParams: EditPaymentParams) = viewModelScope.launch {
         paymentInteractor.updatePastPayment(editPaymentParams)
         loadAllPayments()
     }
-
-    fun updateData(context: Context) {
-        val newIsIncludedTaxes = settingsInteractor.isIncludeTaxes()
-
-        val newIsHideCopecks = settingsInteractor.isHideCopecks()
-
-        val hasNewData = (newIsIncludedTaxes != isIncludeTaxes.value || newIsHideCopecks != _isHideCopecks)
-
-        _isIncludeTaxes.value = newIsIncludedTaxes
-
-        _isHideCopecks = newIsHideCopecks
-
-        if (hasNewData) {
-            loadAllPayments()
-        }else{
-            loadPortfolioName()
-        }
-    }
-
+    
     companion object {
         const val VIEW_STATE_CALENDAR_LOADING = 1
         const val VIEW_STATE_CALENDAR_CONTENT = 2

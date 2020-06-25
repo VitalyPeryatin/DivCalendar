@@ -48,7 +48,7 @@ class ChangePaymentDialog : BottomDialog() {
             if(countEditText.text.toString().isNotEmpty()) {
                 val count = countEditText.text.toString().toInt()
                 val editPaymentParams = EditPaymentParams(portfolioId, securityIsin, paymentDate, count)
-                parentViewModel.updatePastPayment(requireContext(), editPaymentParams)
+                parentViewModel.updatePastPayment(editPaymentParams)
                 dismiss()
             }
         }
