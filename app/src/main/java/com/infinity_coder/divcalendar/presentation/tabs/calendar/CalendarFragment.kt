@@ -2,7 +2,6 @@ package com.infinity_coder.divcalendar.presentation.tabs.calendar
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -51,8 +50,21 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.calendar, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.uploadItem -> {
+                viewModel.exportData(requireContext())
+            }
+        }
+        return true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,23 +81,9 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         viewModel.showLoadingDialogEvent.observe(viewLifecycleOwner, Observer(this::setIsShowLoadingDialog))
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.updateData(requireContext())
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.calendar, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.uploadItem -> {
-                viewModel.exportData(requireContext())
-            }
-        }
-        return true
+    override fun onUpdate() {
+        initCurrencyRadioButton()
+        viewModel.loadAllPayments()
     }
 
     private fun scrollingCalendar(position: Int) {
@@ -126,11 +124,6 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
     private fun hideLoadingDialog() {
         val dialog = childFragmentManager.findFragmentByTag(LoadingDialog.TAG) as? LoadingDialog
         dialog?.dismiss()
-    }
-
-    override fun onUpdate() {
-        initCurrencyRadioButton()
-        viewModel.loadAllPayments(requireContext())
     }
 
     private fun initUI() {
@@ -188,8 +181,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         if (!isChecked) return
 
         when (radioButton) {
-            rubRadioButton -> viewModel.setDisplayCurrency(requireContext(), RateRepository.RUB_RATE)
-            usdRadioButton -> viewModel.setDisplayCurrency(requireContext(), RateRepository.USD_RATE)
+            rubRadioButton -> viewModel.setDisplayCurrency(RateRepository.RUB_RATE)
+            usdRadioButton -> viewModel.setDisplayCurrency(RateRepository.USD_RATE)
         }
     }
 

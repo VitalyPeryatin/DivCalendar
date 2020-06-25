@@ -1,6 +1,7 @@
 package com.infinity_coder.divcalendar.presentation.tabs.portfolio
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -43,11 +44,6 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
         setHasOptionsMenu(true)
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.loadSecurities()
-    }
-
     override fun onUpdate() {
         initCurrencyRadioGroup()
         viewModel.loadSecurities()
@@ -63,8 +59,6 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
             R.id.changePortfolioItem -> executeIfSubscribed(this::openChangePortfolioDialog)
 
             R.id.sortPortfolioItem -> openSortingPortfolioDialog()
-
-            else -> return super.onOptionsItemSelected(item)
         }
         return true
     }

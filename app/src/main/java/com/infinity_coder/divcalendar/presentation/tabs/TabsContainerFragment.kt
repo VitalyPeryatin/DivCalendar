@@ -1,11 +1,14 @@
 package com.infinity_coder.divcalendar.presentation.tabs
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.room.Update
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
@@ -15,10 +18,15 @@ import com.infinity_coder.divcalendar.presentation.tabs.calendar.CalendarFragmen
 import com.infinity_coder.divcalendar.presentation.tabs.help.HelpFragment
 import com.infinity_coder.divcalendar.presentation.tabs.portfolio.PortfolioFragment
 import com.infinity_coder.divcalendar.presentation.settings.SettingsFragment
+import com.infinity_coder.divcalendar.presentation.settings.SettingsViewModel
 import kotlinx.android.synthetic.main.fragment_tabs_container.*
 import java.lang.IllegalStateException
 
-class TabsContainerFragment: Fragment(R.layout.fragment_tabs_container), UpdateCallback {
+class TabsContainerFragment: Fragment(R.layout.fragment_tabs_container) {
+
+    private val viewModel: TabsContainerViewModel by lazy {
+        ViewModelProvider(this).get(TabsContainerViewModel::class.java)
+    }
 
     private val menuIdToFragment = mutableMapOf<Int, Fragment>()
 
@@ -45,35 +53,29 @@ class TabsContainerFragment: Fragment(R.layout.fragment_tabs_container), UpdateC
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (savedInstanceState == null) {
-            switchFragment(getFragment(R.id.portfolioItem))
-        } else {
+
+        viewModel.itemMenuId.observe(viewLifecycleOwner, Observer(this::switchFragment))
+
+        if (savedInstanceState != null) {
             restoreFragments()
         }
-        initUI()
-    }
 
-    override fun onUpdate() {
-        val itemId = bottomNavigationView.selectedItemId
-        val fragment = getFragment(itemId)
-        updateFragment(fragment)
+        initUI()
     }
 
     private fun initUI() {
         bottomNavigationView.setOnNavigationItemSelectedListener {
-
             if (bottomNavigationView.selectedItemId == it.itemId) {
                 return@setOnNavigationItemSelectedListener false
             }
-
-            val fragment = getFragment(it.itemId)
-            switchFragment(fragment)
+            viewModel.switchScreen(it.itemId)
 
             return@setOnNavigationItemSelectedListener true
         }
     }
 
-    private fun switchFragment(fragment: Fragment) {
+    private fun switchFragment(itemMenuId:Int) {
+        val fragment = getFragment(itemMenuId)
         childFragmentManager.beginTransaction().apply {
             childFragmentManager.hideAllFragments(this)
             if (childFragmentManager.fragments.contains(fragment)) {

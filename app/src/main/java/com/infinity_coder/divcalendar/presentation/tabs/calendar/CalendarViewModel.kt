@@ -61,8 +61,12 @@ class CalendarViewModel : ViewModel() {
     private var cachedPayments: List<MonthlyPayment> = emptyList()
     private var paymentsJob: Job? = null
 
+    init {
+        loadAllPayments()
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun loadAllPayments(context: Context) = viewModelScope.launch {
+    fun loadAllPayments() = viewModelScope.launch {
 
         loadPortfolioName()
 
@@ -74,7 +78,7 @@ class CalendarViewModel : ViewModel() {
         paymentsJob?.cancel()
         paymentsJob = paymentInteractor.getPayments()
             .onEach { cachedPayments = it }
-            .map { paymentsMapper.mapToPresentationModel(context, cachedPayments) }
+            .map { paymentsMapper.mapToPresentationModel(cachedPayments) }
             .flowOn(Dispatchers.IO)
             .onStart {
                 if (_state.value != VIEW_STATE_CALENDAR_CONTENT) {
@@ -139,9 +143,9 @@ class CalendarViewModel : ViewModel() {
         sendFileEvent.postValue(exportFilePath)
     }
 
-    fun setDisplayCurrency(context: Context, currency: String) = viewModelScope.launch {
+    fun setDisplayCurrency(currency: String) = viewModelScope.launch {
         rateInteractor.saveDisplayCurrency(currency)
-        val payments = paymentsMapper.mapToPresentationModel(context, cachedPayments)
+        val payments = paymentsMapper.mapToPresentationModel(cachedPayments)
         _payments.postValue(payments)
     }
 
@@ -149,7 +153,7 @@ class CalendarViewModel : ViewModel() {
         if (_currentYear.value == null || selectedYear != _currentYear.value) {
             paymentInteractor.setSelectedYear(selectedYear)
             _currentYear.value = selectedYear
-            loadAllPayments(context)
+            loadAllPayments()
         }
     }
 
@@ -159,7 +163,7 @@ class CalendarViewModel : ViewModel() {
 
     fun updatePastPayment(context: Context, editPaymentParams: EditPaymentParams) = viewModelScope.launch {
         paymentInteractor.updatePastPayment(editPaymentParams)
-        loadAllPayments(context)
+        loadAllPayments()
     }
 
     fun updateData(context: Context) {
@@ -174,7 +178,7 @@ class CalendarViewModel : ViewModel() {
         _isHideCopecks = newIsHideCopecks
 
         if (hasNewData) {
-            loadAllPayments(context)
+            loadAllPayments()
         }else{
             loadPortfolioName()
         }

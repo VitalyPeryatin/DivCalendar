@@ -14,48 +14,27 @@ import com.infinity_coder.divcalendar.presentation.tabs.TabsContainerFragment
 
 class MainActivity : AbstractSubscriptionActivity() {
 
-    private val backStackFragments = mutableListOf<Fragment>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         if(savedInstanceState == null) {
             startFragment(TabsContainerFragment.newInstance())
-        }else{
-            supportFragmentManager.fragments.forEach {
-                if(it !is SupportRequestManagerFragment)
-                    backStackFragments.add(it)
-            }
         }
     }
 
     fun startFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-        if (backStackFragments.isNotEmpty()) {
-            transaction.hide(backStackFragments.last())
-        }
-        transaction.add(R.id.fragmentContainerView, fragment)
-        backStackFragments.add(fragment)
+        transaction.replace(R.id.fragmentContainerView, fragment)
+        transaction.addToBackStack(fragment.toString())
         transaction.commit()
     }
 
     override fun onBackPressed() {
-        if (backStackFragments.size > 1) {
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.remove(backStackFragments.last())
-            backStackFragments.remove(backStackFragments.last())
-            transaction.show(backStackFragments.last())
-            transaction.commit()
-            updateCurrentFragment()
-        } else {
+        if (supportFragmentManager.backStackEntryCount > 1) {
             super.onBackPressed()
-        }
-    }
-
-    private fun updateCurrentFragment() {
-        if (backStackFragments.isNotEmpty()) {
-            (backStackFragments.last() as UpdateCallback).onUpdate()
+        } else {
+            finish()
         }
     }
 

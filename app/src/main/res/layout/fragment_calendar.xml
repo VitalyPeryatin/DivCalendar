@@ -48,7 +48,9 @@
                     android:layout_alignParentEnd="true"
                     android:orientation="horizontal"
                     android:paddingTop="4dp"
-                    android:paddingBottom="4dp">
+                    android:paddingBottom="4dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <RadioButton
                         android:id="@+id/rubRadioButton"
@@ -90,7 +92,9 @@
                 android:paddingBottom="4dp"
                 android:text="@string/taxes_included"
                 android:textColor="?attr/textColorSecondary"
-                android:textSize="@dimen/font_small_small" />
+                android:textSize="@dimen/font_small_small"
+                android:visibility="gone"
+                tools:visibility="visible"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/calendarPaymentsRecyclerView"

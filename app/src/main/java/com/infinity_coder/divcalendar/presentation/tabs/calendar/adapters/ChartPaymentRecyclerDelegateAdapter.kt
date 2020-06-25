@@ -1,5 +1,6 @@
 package com.infinity_coder.divcalendar.presentation.tabs.calendar.adapters
 
+import android.annotation.SuppressLint
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
@@ -12,6 +13,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation.tabs.calendar.models.ChartPresentationModel
 import com.infinity_coder.divcalendar.presentation.tabs.calendar.models.MonthlyPayment
 import kotlinx.android.synthetic.main.item_chart_calendar.*
@@ -30,6 +32,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         return items[position] is ChartPresentationModel
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBind(item: ChartPresentationModel, viewHolder: KViewHolder) {
         monthlyPayments = item.monthlyPayments
         chart = viewHolder.chart
@@ -38,7 +41,7 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         viewHolder.run {
             chart.onBindChart(item)
 
-            annualIncomeTextView.text = item.annualIncome
+            annualIncomeTextView.text = "${item.annualIncome} ${SecurityCurrencyDelegate.getCurrencyBadge(context, item.currentCurrency)}"
             annualYieldTextView.text = context.getString(R.string.value_percent, item.annualYield)
         }
     }

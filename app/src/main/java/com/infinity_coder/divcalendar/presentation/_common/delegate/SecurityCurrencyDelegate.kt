@@ -21,17 +21,20 @@ object SecurityCurrencyDelegate {
     }
 
     fun getValueWithCurrencyConsiderCopecks(context: Context, value: Double, currency: String): String {
-        val valueStr: String =
-            if (settingsRepository.isHideCopecks())
-                formatterWithoutPoints.format(value).toString()
-            else
-                formatterWithPoints.format(value).toString()
+        val valueStr = getValueConsiderCopecks(value)
         val currencyBadge = getCurrencyBadge(context, currency)
         return "$valueStr $currencyBadge"
     }
 
-    fun getValueWithCurrencyConsiderCopecks(context: Context, value: String, currency: String): String {
-        return getValueWithCurrencyConsiderCopecks(context, value.toDouble(), currency)
+    fun getValueConsiderCopecks(value: String): String {
+        return getValueConsiderCopecks(value.toDouble())
+    }
+
+    fun getValueConsiderCopecks(value: Double): String {
+        return if (settingsRepository.isHideCopecks())
+            formatterWithoutPoints.format(value).toString()
+        else
+            formatterWithPoints.format(value).toString()
     }
 
     fun getCurrencyBadge(context: Context, currency: String): String {
