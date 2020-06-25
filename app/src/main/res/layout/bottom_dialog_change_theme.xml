@@ -10,7 +10,7 @@
         android:layout_width="32dp"
         android:layout_height="4dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/ic_rectangle_for_sorting"
+        android:src="@drawable/ic_corner_rectangle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,7 +24,7 @@
         android:layout_marginEnd="24dp"
         android:fontFamily="@font/roboto"
         android:text="@string/dark_theme"
-        android:textColor="?attr/textColorPrimary"
+        android:textColor="@color/colorTextPrimary"
         android:textSize="@dimen/font_few_big"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +51,7 @@
             android:paddingStart="18dp"
             android:paddingEnd="0dp"
             android:text="@string/dark_theme_off"
-            android:textColor="@color/black"
+            android:textColor="@color/colorTextPrimary"
             android:textSize="@dimen/font_normal"
             android:theme="@style/RadioButton" />
 
@@ -71,7 +71,7 @@
             android:paddingStart="18dp"
             android:paddingEnd="0dp"
             android:text="@string/dark_theme_on"
-            android:textColor="@color/black"
+            android:textColor="@color/colorTextPrimary"
             android:textSize="@dimen/font_normal"
             android:theme="@style/RadioButton" />
 
@@ -91,7 +91,7 @@
             android:paddingStart="18dp"
             android:paddingEnd="0dp"
             android:text="@string/dark_theme_automatically"
-            android:textColor="@color/black"
+            android:textColor="@color/colorTextPrimary"
             android:textSize="@dimen/font_normal"
             android:theme="@style/RadioButton" />
 
@@ -101,7 +101,7 @@
             android:layout_marginStart="50dp"
             android:layout_marginTop="2dp"
             android:fontFamily="@font/roboto"
-            android:textColor="@color/colorSecondary"
+            android:textColor="@color/colorTextSecondary"
             android:textSize="@dimen/font_small"
             android:text="@string/dark_theme_automatically_description"/>
     </RadioGroup>

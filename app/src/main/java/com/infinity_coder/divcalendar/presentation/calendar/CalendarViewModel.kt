@@ -157,7 +157,7 @@ class CalendarViewModel : ViewModel() {
         paymentInteractor.updatePastPayment(editPaymentParams)
         loadAllPayments()
     }
-    
+
     companion object {
         const val VIEW_STATE_CALENDAR_LOADING = 1
         const val VIEW_STATE_CALENDAR_CONTENT = 2

@@ -19,7 +19,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_telegram"/>
+        tools:src="@drawable/ic_telegram"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/itemTextView"
@@ -27,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:fontFamily="@font/roboto"
-        android:textColor="?attr/textColorPrimary"
+        android:textColor="@color/colorTextPrimary"
         android:textSize="@dimen/font_normal"
         app:layout_constraintBottom_toBottomOf="@+id/itemImageView"
         app:layout_constraintStart_toEndOf="@+id/itemImageView"

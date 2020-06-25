@@ -23,27 +23,6 @@ object AppThemeDelegate {
                 AppCompatDelegate.setDefaultNightMode(typeTheme)
             }
         }
-
-        //updateStatusBarColor(activity)
     }
 
-    private fun updateStatusBarColor(activity: AppCompatActivity) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
-            return
-
-        val mode = activity.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)
-
-        val window = activity.window
-        //window.statusBarColor = ContextCompat.getColor(activity, R.color.background)
-
-        when (mode) {
-            Configuration.UI_MODE_NIGHT_YES -> {
-                window.decorView.systemUiVisibility = window.decorView.systemUiVisibility and
-                        View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-            }
-            Configuration.UI_MODE_NIGHT_NO -> {
-                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            }
-        }
-    }
 }

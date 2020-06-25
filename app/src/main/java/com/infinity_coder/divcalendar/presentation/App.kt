@@ -1,6 +1,7 @@
 package com.infinity_coder.divcalendar.presentation
 
 import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDexApplication
 import com.facebook.stetho.Stetho
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
@@ -19,7 +20,6 @@ class App : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
-
         System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl")
         System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl")
         System.setProperty("org.apache.poi.javax.xml.stream.XMLEventFactory", "com.fasterxml.aalto.stax.EventFactoryImpl")

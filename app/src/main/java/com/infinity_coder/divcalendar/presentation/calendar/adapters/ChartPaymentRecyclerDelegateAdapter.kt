@@ -1,6 +1,7 @@
 package com.infinity_coder.divcalendar.presentation.calendar.adapters
 
 import android.annotation.SuppressLint
+import androidx.core.content.ContextCompat
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
@@ -67,12 +68,14 @@ class ChartPaymentRecyclerDelegateAdapter : KDelegateAdapter<ChartPresentationMo
         description.isEnabled = false
         axisLeft.setDrawGridLines(false)
         axisLeft.axisMinimum = 0f
+        axisLeft.textColor = ContextCompat.getColor(context, R.color.colorTextPrimary)
 
         val months = context.resources.getStringArray(R.array.months_first_letter)
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.granularity = 1f
         xAxis.isGranularityEnabled = true
         xAxis.labelCount = 12
+        xAxis.textColor = ContextCompat.getColor(context, R.color.colorTextPrimary)
         xAxis.setDrawGridLines(false)
         xAxis.valueFormatter = object : ValueFormatter() {
             override fun getAxisLabel(value: Float, axis: AxisBase?): String {

@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="8dp"
-                android:textColor="?android:textColorSecondary"
+                android:textColor="@color/colorTextSecondary"
                 tools:text="DivCalendar v1.0.0" />
         </LinearLayout>
     </ScrollView>

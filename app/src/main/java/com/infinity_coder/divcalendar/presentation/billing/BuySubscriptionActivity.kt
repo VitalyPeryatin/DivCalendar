@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.activity_buy_subscription.*
 class BuySubscriptionActivity : AbstractSubscriptionActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AppThemeDelegate.setAppTheme(this)
         isOpenedBuySubscriptionActivity = true
 
         super.onCreate(savedInstanceState)

@@ -11,6 +11,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_medium"
         android:text="@string/no_connection"
-        android:textColor="?android:textColorSecondary"
+        android:textColor="@color/colorTextSecondary"
         android:textSize="@dimen/font_few_big" />
 </LinearLayout>

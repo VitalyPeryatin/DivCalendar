@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:background="@drawable/ripple_background"
     android:clickable="true"
@@ -12,6 +13,7 @@
     android:paddingBottom="8dp"
     android:paddingStart="16dp"
     android:paddingEnd="16dp">
+
     <TextView
         android:id="@+id/nameTextView"
         android:layout_width="0dp"
@@ -22,7 +24,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:textColor="?android:textColorPrimary"
+        android:textColor="@color/colorTextPrimary"
         tools:text="Базовый"/>
 
     <ImageView
@@ -34,7 +36,8 @@
         android:layout_marginEnd="8dp"
         android:src="@drawable/ic_edit"
         android:clickable="true"
-        android:focusable="true"/>
+        android:focusable="true"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/deleteButton"
@@ -44,5 +47,6 @@
         android:background="@drawable/ripple_background_circle"
         android:src="@drawable/ic_delete"
         android:clickable="true"
-        android:focusable="true"/>
+        android:focusable="true"
+        tools:ignore="ContentDescription" />
 </LinearLayout>

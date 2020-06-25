@@ -27,7 +27,7 @@
             android:fontFamily="@font/roboto"
             android:layout_marginTop="24dp"
             android:textSize="@dimen/font_normal"
-            android:textColor="?attr/textColorPrimary"
+            android:textColor="@color/colorTextPrimary"
             android:text="@string/please_wait" />
     </LinearLayout>
 

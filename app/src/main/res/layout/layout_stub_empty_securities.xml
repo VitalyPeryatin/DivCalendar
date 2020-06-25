@@ -14,6 +14,6 @@
         android:fontFamily="@font/roboto_medium"
         android:gravity="center_horizontal"
         android:text="@string/empty_securities"
-        android:textColor="?android:textColorSecondary"
+        android:textColor="@color/colorTextSecondary"
         android:textSize="@dimen/font_few_big" />
 </LinearLayout>

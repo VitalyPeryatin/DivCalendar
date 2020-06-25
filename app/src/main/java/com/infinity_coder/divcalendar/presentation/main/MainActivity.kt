@@ -10,11 +10,13 @@ import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
+import com.infinity_coder.divcalendar.presentation._common.delegate.AppThemeDelegate
 import com.infinity_coder.divcalendar.presentation.tabs.TabsContainerFragment
 
 class MainActivity : AbstractSubscriptionActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppThemeDelegate.setAppTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 

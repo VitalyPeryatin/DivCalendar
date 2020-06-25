@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#E0E0E0</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorAccent">#0075EE</color>
     <color name="colorAccentDark">#2E4467</color>
 
-    <color name="colorBottomNavigation">#EFEFEF</color>
     <color name="colorToast">#FAFAFA</color>
     <color name="colorSecondary">#737373</color>
     <color name="colorActive">#0075EE</color>
@@ -14,17 +13,32 @@
     <color name="black">#202020</color>
     <color name="light_gray">#EFEFEF</color>
     <color name="grey">#6f6f6f</color>
-    <color name="red">#CB2431</color>
     <color name="green">#00B07D</color>
     <color name="redRipple">#44CB2431</color>
-    <color name="separator">#99bfbfbf</color>
     <color name="placeholder">#D3FFFF</color>
-    <color name="blackout">#0F000000</color>
-
+    <color name="red">#CB2431</color>
     <color name="typeStockColor">#1EC8DF</color>
     <color name="typeBondColor">#1D7AD5</color>
 
-    <color name="background">#ffffff</color>
-
     <color name="logo_placeholder">#226F6F6F</color>
+
+
+
+    <color name="colorTextPrimary">#000000</color>
+    <color name="colorTextSecondary">#6f6f6f</color>
+
+    <color name="colorTitleToolbar">#6f6f6f</color>
+
+    <color name="colorIcon">#6f6f6f</color>
+
+    <color name="colorControlNormal">#6f6f6f</color>
+    <color name="colorControlActive">#0075EE</color>
+
+    <color name="colorBottomNavigationBackground">#EFEFEF</color>
+    <color name="colorBottomNavigationItemActive">#0075EE</color>
+    <color name="colorBottomNavigationItemNormal">#737373</color>
+
+    <color name="background">#ffffff</color>
+    <color name="blackout">#0F000000</color>
+    <color name="separator">#99bfbfbf</color>
 </resources>
