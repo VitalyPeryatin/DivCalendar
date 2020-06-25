@@ -38,7 +38,6 @@
                     android:dropDownWidth="wrap_content"
                     android:gravity="center"
                     android:visibility="gone"
-                    android:theme="@style/SpinnerItemStyle"
                     tools:visibility="visible"/>
 
                 <RadioGroup
