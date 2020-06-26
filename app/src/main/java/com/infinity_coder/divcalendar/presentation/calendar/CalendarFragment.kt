@@ -35,7 +35,6 @@ import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 import java.io.File
 import java.util.*
 
-
 class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
     val viewModel: CalendarViewModel by lazy {
@@ -51,7 +50,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         }
     }
 
-   private lateinit var smoothScroller: SmoothScroller
+    private lateinit var smoothScroller: SmoothScroller
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,7 +94,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
     private fun scrollingCalendar(position: Int) {
         smoothScroller.targetPosition = position
         calendarPaymentsRecyclerView.layoutManager?.startSmoothScroll(smoothScroller)
-        //calendarPaymentsRecyclerView.smoothScrollToPosition(position)
+        // calendarPaymentsRecyclerView.smoothScrollToPosition(position)
     }
 
     private fun sendFile(file: File?) {
