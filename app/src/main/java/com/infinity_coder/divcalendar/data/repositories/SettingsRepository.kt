@@ -24,8 +24,8 @@ object SettingsRepository {
     private const val SUBSCRIPTION_PREFERENCES_NAME = "SubscriptionFile"
     private const val PREF_INCLUDE_TAXES = "is_include_taxes"
     private const val PREF_HIDE_COPECKS = "is_hide_copecks"
-    private const val PREF_SCROLLING_CALENDAR_FOR_CURRENT_MONTH = "is_scrolling_calendar_for_current_month"
     private const val PREF_THEME_TYPE = "theme_type"
+    private const val PREF_IS_SCROLLING_CALENDAR_FOR_CURRENT_MONTH = "is_scrolling_calendar_for_current_month"
     private const val PREF_HAS_SUBSCRIPTION = "has_subscription"
 
     @SuppressLint("ConstantLocale")
@@ -61,12 +61,12 @@ object SettingsRepository {
 
     fun saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth: Boolean) {
         optionsPreferences.edit {
-            putBoolean(PREF_SCROLLING_CALENDAR_FOR_CURRENT_MONTH, isScrollingCalendarForCurrentMonth)
+            putBoolean(PREF_IS_SCROLLING_CALENDAR_FOR_CURRENT_MONTH, isScrollingCalendarForCurrentMonth)
         }
     }
 
     fun isScrollingCalendarForCurrentMonth(): Boolean {
-        return optionsPreferences.getBoolean(PREF_SCROLLING_CALENDAR_FOR_CURRENT_MONTH, false)
+        return optionsPreferences.getBoolean(PREF_IS_SCROLLING_CALENDAR_FOR_CURRENT_MONTH, false)
     }
 
     fun saveThemeType(type: Int) {

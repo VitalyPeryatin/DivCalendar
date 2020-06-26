@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.delegateadapter.delegate.diff.DiffUtilCompositeAdapter
 import com.example.delegateadapter.delegate.diff.IComparableItem
@@ -46,6 +48,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         }
     }
 
+    private lateinit var smoothScroller: SmoothScroller
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.settingsItem -> {
@@ -79,7 +83,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
     }
 
     private fun scrollingCalendar(position: Int) {
-        calendarPaymentsRecyclerView.smoothScrollToPosition(position)
+        smoothScroller.targetPosition = position
+        calendarPaymentsRecyclerView.layoutManager?.startSmoothScroll(smoothScroller)
     }
 
     private fun sendFile(file: File?) {
@@ -139,6 +144,12 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
             .add(PaymentRecyclerDelegateAdapter(paymentClickListener))
             .add(FooterPaymentRecyclerDelegateAdapter())
             .build()
+
+        smoothScroller = object : LinearSmoothScroller(requireContext()) {
+            override fun getVerticalSnapPreference(): Int {
+                return SNAP_TO_START
+            }
+        }
 
         emptySecuritiesLayout.emptyTextView.text = resources.getString(R.string.empty_securities)
     }
