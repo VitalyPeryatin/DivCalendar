@@ -94,6 +94,7 @@
                 android:id="@+id/calendarPaymentsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingTop="4dp"
                 android:clipToPadding="false"
                 tools:listitem="@layout/item_payment_calendar" />
 

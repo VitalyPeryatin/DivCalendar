@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.delegateadapter.delegate.diff.DiffUtilCompositeAdapter
 import com.example.delegateadapter.delegate.diff.IComparableItem
@@ -33,6 +35,7 @@ import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 import java.io.File
 import java.util.*
 
+
 class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
     val viewModel: CalendarViewModel by lazy {
@@ -47,6 +50,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
             dialog.show(childFragmentManager, ChangePaymentDialog.TAG)
         }
     }
+
+   private lateinit var smoothScroller: SmoothScroller
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +93,9 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
     }
 
     private fun scrollingCalendar(position: Int) {
-        calendarPaymentsRecyclerView.smoothScrollToPosition(position)
+        smoothScroller.targetPosition = position
+        calendarPaymentsRecyclerView.layoutManager?.startSmoothScroll(smoothScroller)
+        //calendarPaymentsRecyclerView.smoothScrollToPosition(position)
     }
 
     private fun sendFile(file: File?) {
@@ -154,6 +161,12 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
             .add(PaymentRecyclerDelegateAdapter(paymentClickListener))
             .add(FooterPaymentRecyclerDelegateAdapter())
             .build()
+
+        smoothScroller = object : LinearSmoothScroller(requireContext()) {
+            override fun getVerticalSnapPreference(): Int {
+                return SNAP_TO_START
+            }
+        }
 
         emptySecuritiesLayout.emptyTextView.text = resources.getString(R.string.empty_securities)
     }
