@@ -2,6 +2,7 @@ package com.infinity_coder.divcalendar.presentation.onboarding
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -12,7 +13,7 @@ import com.infinity_coder.divcalendar.presentation.onboarding.adapters.Onboardin
 import com.infinity_coder.divcalendar.presentation.onboarding.models.OnboardingPageModel
 import kotlinx.android.synthetic.main.fragment_onboarding.*
 
-class OnBoardingFragment: Fragment(R.layout.fragment_onboarding) {
+class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
 
     val viewModel: OnboardingViewModel by lazy {
         ViewModelProvider(this).get(OnboardingViewModel::class.java)
@@ -27,6 +28,8 @@ class OnBoardingFragment: Fragment(R.layout.fragment_onboarding) {
     }
 
     private fun initUI() {
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.main_background)
+
         initViewPager()
         indicator.attachToPager(onboardingViewPager)
 
@@ -84,7 +87,7 @@ class OnBoardingFragment: Fragment(R.layout.fragment_onboarding) {
             )
         )
 
-        fun newInstance(): OnBoardingFragment{
+        fun newInstance(): OnBoardingFragment {
             return OnBoardingFragment()
         }
     }

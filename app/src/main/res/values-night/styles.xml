@@ -10,6 +10,5 @@
         <item name="toolbarStyle">@style/AppToolbar</item>
         <item name="android:dialogTheme">@style/Base.Dialog</item>
         <item name="colorControlNormal">@color/grey</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
 </resources>

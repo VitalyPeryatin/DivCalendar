@@ -45,7 +45,7 @@ class ChangePaymentDialog : BottomDialog() {
         nameTextView.text = securityName
 
         changePaymentsButton.setOnClickListener {
-            if(countEditText.text.toString().isNotEmpty()) {
+            if (countEditText.text.toString().isNotEmpty()) {
                 val count = countEditText.text.toString().toInt()
                 val editPaymentParams = EditPaymentParams(portfolioId, securityIsin, paymentDate, count)
                 parentViewModel.updatePastPayment(editPaymentParams)

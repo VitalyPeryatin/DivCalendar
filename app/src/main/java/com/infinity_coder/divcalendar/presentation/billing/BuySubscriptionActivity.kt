@@ -15,7 +15,7 @@ class BuySubscriptionActivity : AbstractSubscriptionActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         isOpenedBuySubscriptionActivity = true
-
+        AppThemeDelegate.setAppTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_buy_subscription)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)

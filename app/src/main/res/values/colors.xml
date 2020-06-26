@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#FFFFFF</color>
+    <!--common-->
     <color name="colorAccent">#0075EE</color>
     <color name="colorAccentDark">#2E4467</color>
 
@@ -22,7 +21,9 @@
 
     <color name="logo_placeholder">#226F6F6F</color>
 
-
+    <!--light_theme-->
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#E0E0E0</color>
 
     <color name="colorTextPrimary">#000000</color>
     <color name="colorTextSecondary">#6f6f6f</color>
@@ -38,6 +39,9 @@
     <color name="colorBottomNavigationItemActive">#0075EE</color>
     <color name="colorBottomNavigationItemNormal">#737373</color>
 
+    <color name="color_bg_onboarding_father_button">#EFEFEF</color>
+
+    <color name="main_background">#FAFAFA</color>
     <color name="background">#ffffff</color>
     <color name="blackout">#0F000000</color>
     <color name="separator">#99bfbfbf</color>

@@ -16,7 +16,7 @@ import com.infinity_coder.divcalendar.presentation.settings.SettingsFragment
 import com.infinity_coder.divcalendar.presentation.settings.SettingsViewModel
 import kotlinx.android.synthetic.main.bottom_dialog_change_theme.*
 
-class ChangeThemeBottomDialog: BottomDialog() {
+class ChangeThemeBottomDialog : BottomDialog() {
 
     private lateinit var parentViewModel: SettingsViewModel
 
@@ -61,12 +61,12 @@ class ChangeThemeBottomDialog: BottomDialog() {
         }
     }
 
-    private fun changeThemeType(){
+    private fun changeThemeType() {
         AppThemeDelegate.setAppTheme((requireActivity() as AppCompatActivity))
         dismiss()
     }
 
-    companion object{
+    companion object {
         const val TAG = "ChangePortfolioBottomDialog"
 
         fun newInstance(): ChangeThemeBottomDialog {

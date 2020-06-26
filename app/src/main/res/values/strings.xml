@@ -154,14 +154,10 @@
     <string name="subscription_details">Subscription details</string>
     <string name="current_payout_information">Current regular payout information</string>
     <string name="next_subscription_price">Next 119 rubles per month</string>
-    <string name="follow_the_news">Follow the news of those companies that may affect your earnings</string>
     <string name="multiply_finances">Multiply your finances</string>
     <string name="stay_on_top_of_latest_dividend">Stay on top of the latest dividend and coupon payment news</string>
     <string name="seven_days_free">7 days for free with a Premium subscription</string>
     <string name="first_charge_info">The first charge will be when the free period ends. You can cancel at any time.</string>
     <string name="please_wait">Please wait…</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

@@ -48,7 +48,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.settingsItem ->{
+            R.id.settingsItem -> {
                 val fragment = SettingsFragment.newInstance()
                 (requireActivity() as MainActivity).startFragment(fragment)
             }

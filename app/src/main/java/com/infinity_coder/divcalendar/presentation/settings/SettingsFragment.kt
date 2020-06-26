@@ -16,7 +16,7 @@ import com.infinity_coder.divcalendar.presentation.settings.dialogs.ReportErrorB
 import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.android.synthetic.main.item_settings_switch.view.*
 
-class SettingsFragment:Fragment(R.layout.fragment_settings) {
+class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     val viewModel: SettingsViewModel by lazy {
         ViewModelProvider(this).get(SettingsViewModel::class.java)
@@ -110,7 +110,7 @@ class SettingsFragment:Fragment(R.layout.fragment_settings) {
     }
 
     companion object {
-        fun newInstance(): SettingsFragment{
+        fun newInstance(): SettingsFragment {
             return SettingsFragment()
         }
     }

@@ -1,25 +1,22 @@
 package com.infinity_coder.divcalendar.presentation.tabs
 
+import android.os.Build
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
 import com.infinity_coder.divcalendar.presentation._common.extensions.hideAllFragments
-import com.infinity_coder.divcalendar.presentation.main.MainActivity
 import com.infinity_coder.divcalendar.presentation.calendar.CalendarFragment
 import com.infinity_coder.divcalendar.presentation.help.HelpFragment
 import com.infinity_coder.divcalendar.presentation.portfolio.PortfolioFragment
-import com.infinity_coder.divcalendar.presentation.settings.SettingsFragment
 import kotlinx.android.synthetic.main.fragment_tabs_container.*
 import java.lang.IllegalStateException
 
-class TabsContainerFragment: Fragment(R.layout.fragment_tabs_container) {
+class TabsContainerFragment : Fragment(R.layout.fragment_tabs_container) {
 
     private val viewModel: TabsContainerViewModel by lazy {
         ViewModelProvider(this).get(TabsContainerViewModel::class.java)
@@ -40,6 +37,12 @@ class TabsContainerFragment: Fragment(R.layout.fragment_tabs_container) {
     }
 
     private fun initUI() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+        } else {
+            requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark)
+        }
+
         bottomNavigationView.setOnNavigationItemSelectedListener {
             if (bottomNavigationView.selectedItemId == it.itemId) {
                 return@setOnNavigationItemSelectedListener false
@@ -50,7 +53,7 @@ class TabsContainerFragment: Fragment(R.layout.fragment_tabs_container) {
         }
     }
 
-    private fun switchFragment(itemMenuId:Int) {
+    private fun switchFragment(itemMenuId: Int) {
         val fragment = getFragment(itemMenuId)
         childFragmentManager.beginTransaction().apply {
             childFragmentManager.hideAllFragments(this)
@@ -103,8 +106,8 @@ class TabsContainerFragment: Fragment(R.layout.fragment_tabs_container) {
         }
     }
 
-    companion object{
-        fun newInstance(): TabsContainerFragment{
+    companion object {
+        fun newInstance(): TabsContainerFragment {
             return TabsContainerFragment()
         }
     }

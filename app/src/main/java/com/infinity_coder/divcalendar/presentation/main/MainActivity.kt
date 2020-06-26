@@ -3,13 +3,9 @@ package com.infinity_coder.divcalendar.presentation.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
-import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
 import com.infinity_coder.divcalendar.presentation._common.delegate.AppThemeDelegate
 import com.infinity_coder.divcalendar.presentation.tabs.TabsContainerFragment
 
@@ -19,8 +15,9 @@ class MainActivity : AbstractSubscriptionActivity() {
         AppThemeDelegate.setAppTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        window.setBackgroundDrawableResource(R.color.main_background)
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             startFragment(TabsContainerFragment.newInstance())
         }
     }

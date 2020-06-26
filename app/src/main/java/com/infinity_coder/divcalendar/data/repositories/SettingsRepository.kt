@@ -69,13 +69,13 @@ object SettingsRepository {
         return optionsPreferences.getBoolean(PREF_SCROLLING_CALENDAR_FOR_CURRENT_MONTH, false)
     }
 
-    fun saveThemeType(type: Int){
-        optionsPreferences.edit{
+    fun saveThemeType(type: Int) {
+        optionsPreferences.edit {
             putInt(PREF_THEME_TYPE, type)
         }
     }
 
-    fun getThemeType():Int {
+    fun getThemeType(): Int {
         return optionsPreferences.getInt(PREF_THEME_TYPE, AppCompatDelegate.MODE_NIGHT_NO)
     }
 

@@ -97,8 +97,6 @@
     <string name="send_successful">Сообщение успешно отправлено разработчикам</string>
     <string name="symbol_count">Количество символов: %1$d</string>
 
-    <!--change theme-->
-
     <!-- export file -->
     <string name="title_sheet_portfolio">Портфель</string>
     <string name="title_sheet_payments">Выплаты</string>
@@ -143,7 +141,6 @@
     <string name="subscription_details">Подробнее о подписке</string>
     <string name="current_payout_information">Актуальная информация о регулярных выплатах</string>
     <string name="next_subscription_price">Далее 119 руб в месяц</string>
-    <string name="follow_the_news">Следите за новостями тех компаний, которые могут повлиять на ваши доходы</string>
     <string name="multiply_finances">Умножайте свои финансы</string>
     <string name="stay_on_top_of_latest_dividend">Будьте в курсе последних новостей о дивидендных и купонных выплатах</string>
     <string name="seven_days_free">7 дней бесплатно с подпиской Premium</string>

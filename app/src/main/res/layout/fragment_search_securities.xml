@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -25,7 +27,8 @@
             android:layout_weight="0"
             android:padding="2dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/ic_arrow_back"/>
+            app:srcCompat="@drawable/ic_arrow_back"
+            tools:ignore="ContentDescription" />
 
         <EditText
             android:id="@+id/queryEditText"
@@ -38,6 +41,8 @@
             android:background="@null"
             android:ems="10"
             android:hint="@string/enter_request"
+            android:textColorHint="@color/colorTextSecondary"
+            android:textColor="@color/colorTextPrimary"
             android:inputType="textPersonName">
             <requestFocus/>
         </EditText>
@@ -48,7 +53,6 @@
             android:layout_height="24dp"
             android:layout_marginEnd="16dp"
             android:layout_weight="0"
-            android:tint="@android:color/darker_gray"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_close" />
     </LinearLayout>
@@ -59,8 +63,8 @@
         android:layout_height="wrap_content"
         android:elevation="4dp"
         android:background="@color/background"
-        app:tabSelectedTextColor="@color/colorAccent"
-        app:tabTextColor="?android:textColorSecondary"
+        app:tabSelectedTextColor="@color/colorActive"
+        app:tabTextColor="@color/colorTextSecondary"
         app:tabTextAppearance="@style/BaseTabTextAppearance" />
 
     <com.creageek.segmentedbutton.SegmentedButton
@@ -72,9 +76,10 @@
         app:segmentHeight="36dp"
         app:segmentFont="@font/roboto"
         app:segmentFontChecked="@font/roboto"
-        app:textColor="@color/colorAccent"
-        app:segmentColorChecked="@color/colorAccent"
-        app:borderColor="@color/colorAccent"
+        app:textColor="@color/colorActive"
+        app:segmentColor="@color/background"
+        app:segmentColorChecked="@color/colorActive"
+        app:borderColor="@color/colorActive"
         app:cornerRadius="8dp" />
 
     <androidx.viewpager2.widget.ViewPager2

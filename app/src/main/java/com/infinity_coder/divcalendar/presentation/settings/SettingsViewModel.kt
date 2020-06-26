@@ -41,12 +41,12 @@ class SettingsViewModel : ViewModel() {
         settingsInteractor.saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth)
     }
 
-    fun saveCurrentThemeType(type: Int){
+    fun saveCurrentThemeType(type: Int) {
         settingsInteractor.saveThemeType(type)
         changeThemeTypeEvent.value = null
     }
 
-    fun getCurrentThemeType():Int{
+    fun getCurrentThemeType(): Int {
         return settingsInteractor.getThemeType()
     }
 

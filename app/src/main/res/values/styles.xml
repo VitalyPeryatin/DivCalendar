@@ -35,7 +35,7 @@
     </style>
 
     <style name="AppToolbar" parent="BaseToolbar">
-        <item name="android:background">@color/background</item>
+        <item name="android:background">@color/colorPrimary</item>
         <item name="titleTextColor">@color/colorTitleToolbar</item>
     </style>
 

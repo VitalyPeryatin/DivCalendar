@@ -27,11 +27,11 @@ class SettingsInteractor {
         return SettingsRepository.isScrollingCalendarForCurrentMonth()
     }
 
-    fun saveThemeType(type: Int){
+    fun saveThemeType(type: Int) {
         SettingsRepository.saveThemeType(type)
     }
 
-    fun getThemeType(): Int{
+    fun getThemeType(): Int {
         return SettingsRepository.getThemeType()
     }
 

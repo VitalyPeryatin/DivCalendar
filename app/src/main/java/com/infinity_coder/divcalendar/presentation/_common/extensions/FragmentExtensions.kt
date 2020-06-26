@@ -25,7 +25,7 @@ fun Fragment.executeIfResumed(func: () -> Unit) {
 
 fun FragmentManager.hideAllFragments(transaction: FragmentTransaction) {
     fragments.forEach {
-        Log.d("FragmentManagerLog",it.toString())
+        Log.d("FragmentManagerLog", it.toString())
         transaction.hide(it)
     }
 }

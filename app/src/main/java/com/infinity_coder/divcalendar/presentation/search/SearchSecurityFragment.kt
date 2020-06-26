@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -20,7 +19,7 @@ import com.infinity_coder.divcalendar.presentation._common.text_watchers.OpenTex
 import com.infinity_coder.divcalendar.presentation.search.adapters.SearchSecurityPagerAdapter
 import kotlinx.android.synthetic.main.fragment_search_securities.*
 
-class SearchSecurityFragment: Fragment(R.layout.fragment_search_securities) {
+class SearchSecurityFragment : Fragment(R.layout.fragment_search_securities) {
 
     val viewModel: SearchSecurityViewModel by lazy {
         ViewModelProvider(this).get(SearchSecurityViewModel::class.java)
@@ -86,7 +85,7 @@ class SearchSecurityFragment: Fragment(R.layout.fragment_search_securities) {
     companion object {
         private const val ESTIMATED_CLOSING_TIME_KEYBOARD = 150L
 
-        fun newInstance(): SearchSecurityFragment{
+        fun newInstance(): SearchSecurityFragment {
             return SearchSecurityFragment()
         }
     }

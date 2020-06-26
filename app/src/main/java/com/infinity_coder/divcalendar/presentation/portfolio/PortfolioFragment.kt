@@ -47,7 +47,7 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
                 (requireActivity() as MainActivity).startFragment(fragment)
             }
 
-            R.id.changePortfolioItem -> executeIfSubscribed{
+            R.id.changePortfolioItem -> executeIfSubscribed {
                 val changePortfolioDialog = ChangePortfolioBottomDialog.newInstance()
                 changePortfolioDialog.show(childFragmentManager, ChangePortfolioBottomDialog.TAG)
             }

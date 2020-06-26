@@ -33,7 +33,6 @@ class PortfolioViewModel : ViewModel() {
 
     private var portfolioJob: Job? = null
 
-
     init {
         loadSecurities()
     }

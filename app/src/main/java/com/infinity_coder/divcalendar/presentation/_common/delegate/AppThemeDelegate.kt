@@ -2,11 +2,8 @@ package com.infinity_coder.divcalendar.presentation._common.delegate
 
 import android.content.res.Configuration
 import android.os.Build
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat
-import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.SettingsRepository
 
 object AppThemeDelegate {
@@ -24,5 +21,4 @@ object AppThemeDelegate {
             }
         }
     }
-
 }

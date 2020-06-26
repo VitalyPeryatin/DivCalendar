@@ -51,12 +51,12 @@ fun Context.isAppAvailable(appName: String): Boolean {
 
 fun Context.dpToPx(dp: Float) = dp * resources.displayMetrics.density
 
-fun Context.hideKeyboard(view: View){
+fun Context.hideKeyboard(view: View) {
     val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.hideSoftInputFromWindow(view.windowToken,0)
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
-fun Context.showKeyboard(){
+fun Context.showKeyboard() {
     val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
 }
