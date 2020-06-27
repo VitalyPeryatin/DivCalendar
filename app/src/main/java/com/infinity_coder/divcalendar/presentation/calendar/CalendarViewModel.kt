@@ -14,7 +14,7 @@ import com.infinity_coder.divcalendar.domain.models.EditPaymentParams
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
 import com.infinity_coder.divcalendar.presentation._common.logException
 import com.infinity_coder.divcalendar.presentation.calendar.mappers.PaymentsToPresentationModelMapper
-import com.infinity_coder.divcalendar.presentation.calendar.models.FooterPaymentPresentationModel
+import com.infinity_coder.divcalendar.presentation.calendar.models.HeaderPaymentPresentationModel
 import com.infinity_coder.divcalendar.presentation.calendar.models.MonthlyPayment
 import com.infinity_coder.divcalendar.presentation.export_sheet.PaymentsFileCreator
 import com.infinity_coder.divcalendar.presentation.export_sheet.excel.ExcelPaymentsFileCreator
@@ -51,7 +51,7 @@ class CalendarViewModel : ViewModel() {
         get() = _isIncludeTaxes
 
     val sendFileEvent = LiveEvent<File?>()
-    val scrollingCalendarEvent = LiveEvent<Int>()
+    val scrollCalendarEvent = LiveEvent<Int>()
     val portfolioNameTitleEvent = LiveEvent<String>()
     val showLoadingDialogEvent = LiveEvent<Boolean>()
 
@@ -80,13 +80,13 @@ class CalendarViewModel : ViewModel() {
                 if (_state.value != VIEW_STATE_CALENDAR_CONTENT) {
                     _state.value = VIEW_STATE_CALENDAR_LOADING
                 } else {
-                    scrollingCalendarEvent.value = getFooterPositionByCurrentMonth()
+                    scrollCalendarEvent.value = getPositionByCurrentMonth()
                 }
             }
             .onEach {
                 _payments.value = it
                 if (_state.value == VIEW_STATE_CALENDAR_LOADING) {
-                    scrollingCalendarEvent.value = getFooterPositionByCurrentMonth()
+                    scrollCalendarEvent.value = getPositionByCurrentMonth()
                 }
                 if (it.isNotEmpty()) {
                     _state.value = VIEW_STATE_CALENDAR_CONTENT
@@ -115,18 +115,18 @@ class CalendarViewModel : ViewModel() {
         portfolioNameTitleEvent.value = portfolioName
     }
 
-    private fun getFooterPositionByCurrentMonth(): Int {
+    private fun getPositionByCurrentMonth(): Int {
         return if (settingsInteractor.isScrollingCalendarForCurrentMonth()) {
             val monthNumber = Calendar.getInstance().get(Calendar.MONTH)
-            getFooterPositionByMonthNumber(monthNumber)
+            getPositionByMonthNumber(monthNumber)
         } else {
             0
         }
     }
 
-    fun getFooterPositionByMonthNumber(monthNumber: Int): Int {
+    fun getPositionByMonthNumber(monthNumber: Int): Int {
         val position = _payments.value!!.indexOfFirst {
-            it is FooterPaymentPresentationModel && it.id == monthNumber
+            it is HeaderPaymentPresentationModel && it.month == monthNumber
         }
         return if (position == -1) 0 else position
     }
