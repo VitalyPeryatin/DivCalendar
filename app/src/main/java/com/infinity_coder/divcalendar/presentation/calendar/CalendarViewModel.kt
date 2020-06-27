@@ -111,7 +111,7 @@ class CalendarViewModel : ViewModel() {
         }
     }
 
-    private fun getFooterPositionByCurrentMonth(): Int {
+    private fun getPositionByCurrentMonth(): Int {
         return if (settingsInteractor.isScrollingCalendarForCurrentMonth()) {
             val monthNumber = Calendar.getInstance().get(Calendar.MONTH)
             getPositionByMonthNumber(monthNumber)

@@ -1,7 +1,9 @@
 package com.infinity_coder.divcalendar.presentation.settings
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -33,6 +35,12 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private fun initUI() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+        } else {
+            requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark)
+        }
+
         settingsToolbar.title = resources.getString(R.string.settings)
         settingsToolbar.setOnClickListener { onToolbarClick() }
         settingsToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
