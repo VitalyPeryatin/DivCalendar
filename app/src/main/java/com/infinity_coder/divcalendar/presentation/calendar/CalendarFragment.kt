@@ -69,7 +69,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
         viewModel.state.observe(viewLifecycleOwner, Observer(this::updateState))
         viewModel.payments.observe(viewLifecycleOwner, Observer(this::updatePayments))
-        viewModel.scrollingCalendarEvent.observe(viewLifecycleOwner, Observer(this::scrollingCalendar))
+        viewModel.scrollCalendarEvent.observe(viewLifecycleOwner, Observer(this::scrollingCalendar))
         viewModel.currentYear.observe(viewLifecycleOwner, Observer(this::updateCurrentYear))
         viewModel.isIncludeTaxesEvent.observe(viewLifecycleOwner, Observer(this::setIsIncludedTexes))
         viewModel.sendFileEvent.observe(viewLifecycleOwner, Observer(this::sendFile))
@@ -192,8 +192,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         val adapter = ChartPaymentRecyclerDelegateAdapter()
         adapter.onItemClickListener = object : ChartPaymentRecyclerDelegateAdapter.ChartItemClickListener {
             override fun onClick(numberMonth: Int) {
-                val position = viewModel.getFooterPositionByMonthNumber(numberMonth)
-                calendarPaymentsRecyclerView.smoothScrollToPosition(position)
+                val position = viewModel.getPositionByMonthNumber(numberMonth)
+                scrollingCalendar(position)
             }
         }
         return adapter
