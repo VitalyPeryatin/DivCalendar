@@ -76,7 +76,7 @@ object SettingsRepository {
     }
 
     fun getThemeType(): Int {
-        return optionsPreferences.getInt(PREF_THEME_TYPE, AppCompatDelegate.MODE_NIGHT_NO)
+        return optionsPreferences.getInt(PREF_THEME_TYPE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
     }
 
     fun reportError(message: String) {

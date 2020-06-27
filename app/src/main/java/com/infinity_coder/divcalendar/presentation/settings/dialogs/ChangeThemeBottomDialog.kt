@@ -48,7 +48,7 @@ class ChangeThemeBottomDialog : BottomDialog() {
             AppCompatDelegate.MODE_NIGHT_NO -> darkThemeOffRadioButton
             AppCompatDelegate.MODE_NIGHT_YES -> darkThemeOnRadioButton
             AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> darkThemeAutomaticallyRadioButton
-            else -> darkThemeOffRadioButton
+            else -> darkThemeAutomaticallyRadioButton
         }
         radioButton.isChecked = true
 

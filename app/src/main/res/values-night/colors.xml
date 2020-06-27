@@ -21,6 +21,6 @@
 
     <color name="main_background">#202020</color>
     <color name="background">#333333</color>
-    <color name="blackout">#22FFFFFF</color>
+    <color name="blackout">#44000000</color>
     <color name="separator">#828282</color>
 </resources>
