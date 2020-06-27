@@ -2,12 +2,9 @@ package com.infinity_coder.divcalendar.presentation.calendar
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.CompoundButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -25,11 +22,12 @@ import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.presentation.App
 import com.infinity_coder.divcalendar.presentation._common.SpinnerInteractionListener
 import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
-import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
 import com.infinity_coder.divcalendar.presentation.calendar.adapters.*
 import com.infinity_coder.divcalendar.presentation.calendar.dialogs.ChangePaymentDialog
 import com.infinity_coder.divcalendar.presentation.calendar.dialogs.LoadingDialog
 import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
+import com.infinity_coder.divcalendar.presentation.main.MainActivity
+import com.infinity_coder.divcalendar.presentation.settings.SettingsFragment
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 import java.io.File
@@ -52,10 +50,17 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
     private lateinit var smoothScroller: SmoothScroller
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setHasOptionsMenu(true)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.settingsItem -> {
+                val fragment = SettingsFragment.newInstance()
+                (requireActivity() as MainActivity).startFragment(fragment)
+            }
+            R.id.uploadItem -> {
+                viewModel.exportData(requireContext())
+            }
+        }
+        return true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,29 +71,15 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         viewModel.payments.observe(viewLifecycleOwner, Observer(this::updatePayments))
         viewModel.scrollCalendarEvent.observe(viewLifecycleOwner, Observer(this::scrollingCalendar))
         viewModel.currentYear.observe(viewLifecycleOwner, Observer(this::updateCurrentYear))
-        viewModel.isIncludeTaxes.observe(viewLifecycleOwner, Observer(this::setIsIncludedTexes))
+        viewModel.isIncludeTaxesEvent.observe(viewLifecycleOwner, Observer(this::setIsIncludedTexes))
         viewModel.sendFileEvent.observe(viewLifecycleOwner, Observer(this::sendFile))
         viewModel.portfolioNameTitleEvent.observe(viewLifecycleOwner, Observer(this::setPortfolioName))
         viewModel.showLoadingDialogEvent.observe(viewLifecycleOwner, Observer(this::setIsShowLoadingDialog))
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.updateData(requireContext())
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.calendar, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.uploadItem -> {
-                viewModel.exportData(requireContext())
-            }
-        }
-        return true
+    override fun onUpdate() {
+        initCurrencyRadioButton()
+        viewModel.loadAllPayments()
     }
 
     private fun scrollingCalendar(position: Int) {
@@ -132,16 +123,10 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         dialog?.dismiss()
     }
 
-    override fun onUpdate() {
-        initCurrencyRadioButton()
-        viewModel.loadAllPayments(requireContext())
-    }
-
     private fun initUI() {
-        calendarToolbar.run {
-            setTitle(R.string.calendar)
-            (activity as AppCompatActivity).setActionBar(this)
-        }
+        calendarToolbar.setTitle(R.string.calendar)
+        calendarToolbar.inflateMenu(R.menu.calendar)
+        calendarToolbar.setOnMenuItemClickListener(this::onOptionsItemSelected)
 
         initSpinnerYear()
 
@@ -188,7 +173,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         }
 
         val spinnerInteractionListener = SpinnerInteractionListener {
-            viewModel.selectYear(requireContext(), it as String)
+            viewModel.selectYear(it as String)
         }
         yearSpinner.onItemSelectedListener = spinnerInteractionListener
         yearSpinner.setOnTouchListener(spinnerInteractionListener)
@@ -198,8 +183,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         if (!isChecked) return
 
         when (radioButton) {
-            rubRadioButton -> viewModel.setDisplayCurrency(requireContext(), RateRepository.RUB_RATE)
-            usdRadioButton -> viewModel.setDisplayCurrency(requireContext(), RateRepository.USD_RATE)
+            rubRadioButton -> viewModel.setDisplayCurrency(RateRepository.RUB_RATE)
+            usdRadioButton -> viewModel.setDisplayCurrency(RateRepository.USD_RATE)
         }
     }
 

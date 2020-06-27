@@ -14,7 +14,7 @@
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/roboto_medium"
         tools:text="Северсталь"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorTextPrimary"
         android:textSize="@dimen/font_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,13 +22,14 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/countInputLayout"
+        android:theme="@style/TextInputTheme"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/count"
-        android:theme="@style/TextInputTheme"
+        android:textColorHint="@color/colorTextSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameTextView">
@@ -37,6 +38,7 @@
             android:id="@+id/countEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorTextPrimary"
             android:fontFamily="@font/roboto"
             android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>

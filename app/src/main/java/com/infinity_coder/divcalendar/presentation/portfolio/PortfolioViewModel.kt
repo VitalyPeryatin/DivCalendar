@@ -33,6 +33,10 @@ class PortfolioViewModel : ViewModel() {
 
     private var portfolioJob: Job? = null
 
+    init {
+        loadSecurities()
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     fun loadSecurities() = viewModelScope.launch {
         portfolioJob?.cancel()

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/calendarRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -36,7 +36,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
                     android:dropDownWidth="wrap_content"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
 
                 <RadioGroup
                     android:id="@+id/currencyRadioGroup"
@@ -46,7 +48,9 @@
                     android:layout_alignParentEnd="true"
                     android:orientation="horizontal"
                     android:paddingTop="4dp"
-                    android:paddingBottom="4dp">
+                    android:paddingBottom="4dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <RadioButton
                         android:id="@+id/rubRadioButton"
@@ -87,8 +91,10 @@
                 android:paddingEnd="16dp"
                 android:paddingBottom="4dp"
                 android:text="@string/taxes_included"
-                android:textColor="?attr/textColorSecondary"
-                android:textSize="@dimen/font_small_small" />
+                android:textColor="@color/colorTextSecondary"
+                android:textSize="@dimen/font_small_small"
+                android:visibility="gone"
+                tools:visibility="visible"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/calendarPaymentsRecyclerView"

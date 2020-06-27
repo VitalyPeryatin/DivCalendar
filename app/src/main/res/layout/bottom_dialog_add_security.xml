@@ -14,12 +14,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/roboto_medium"
-        tools:text="Северсталь"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorTextPrimary"
         android:textSize="@dimen/font_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Северсталь"/>
 
     <TextView
         android:id="@+id/totalPriceTextView"
@@ -29,19 +29,21 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/roboto"
-        tools:text="Total price: 122321.45₽"
+        android:textColor="@color/colorTextSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/nameTextView"
+        tools:text="Total price: 122321.45₽"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/countInputLayout"
+        android:theme="@style/TextInputTheme"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:hint="@string/count"
-        android:theme="@style/TextInputTheme"
+        android:textColorHint="@color/colorTextSecondary"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/nameTextView"
@@ -51,18 +53,20 @@
             android:id="@+id/countEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorTextPrimary"
             android:fontFamily="@font/roboto"
             android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/priceInputLayout"
+        android:theme="@style/TextInputTheme"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginStart="8dp"
         android:hint="@string/price"
-        android:theme="@style/TextInputTheme"
+        android:textColorHint="@color/colorTextSecondary"
         app:layout_constraintEnd_toEndOf="@+id/nameTextView"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -72,6 +76,7 @@
             android:id="@+id/priceEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorTextPrimary"
             android:fontFamily="@font/roboto"
             android:inputType="numberDecimal"/>
     </com.google.android.material.textfield.TextInputLayout>

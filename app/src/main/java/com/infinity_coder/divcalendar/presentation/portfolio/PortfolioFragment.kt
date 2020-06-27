@@ -1,12 +1,9 @@
 package com.infinity_coder.divcalendar.presentation.portfolio
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.CompoundButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,11 +16,12 @@ import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
 import com.infinity_coder.divcalendar.presentation._common.extensions.executeIfSubscribed
-import com.infinity_coder.divcalendar.presentation._common.extensions.setActionBar
-import com.infinity_coder.divcalendar.presentation.portfolio.manageportfolio.ChangePortfolioBottomDialog
-import com.infinity_coder.divcalendar.presentation.portfolio.managesecurity.ChangeSecurityBottomDialog
-import com.infinity_coder.divcalendar.presentation.portfolio.sorting.SortingPortfolioBottomDialog
-import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
+import com.infinity_coder.divcalendar.presentation.main.MainActivity
+import com.infinity_coder.divcalendar.presentation.portfolio.dialogs.changeportfolio.ChangePortfolioBottomDialog
+import com.infinity_coder.divcalendar.presentation.portfolio.dialogs.changesecurity.ChangeSecurityBottomDialog
+import com.infinity_coder.divcalendar.presentation.portfolio.dialogs.changesorting.SortingPortfolioBottomDialog
+import com.infinity_coder.divcalendar.presentation.search.SearchSecurityFragment
+import com.infinity_coder.divcalendar.presentation.settings.SettingsFragment
 import kotlinx.android.synthetic.main.fragment_portfolio.*
 import kotlinx.android.synthetic.main.layout_stub_empty.view.*
 
@@ -37,45 +35,29 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
         ViewModelProvider(this).get(PortfolioViewModel::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.loadSecurities()
-    }
-
     override fun onUpdate() {
         initCurrencyRadioGroup()
         viewModel.loadSecurities()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.portfolio, menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.changePortfolioItem -> executeIfSubscribed(this::openChangePortfolioDialog)
+            R.id.settingsItem -> {
+                val fragment = SettingsFragment.newInstance()
+                (requireActivity() as MainActivity).startFragment(fragment)
+            }
 
-            R.id.sortPortfolioItem -> openSortingPortfolioDialog()
+            R.id.changePortfolioItem -> executeIfSubscribed {
+                val changePortfolioDialog = ChangePortfolioBottomDialog.newInstance()
+                changePortfolioDialog.show(childFragmentManager, ChangePortfolioBottomDialog.TAG)
+            }
 
-            else -> return super.onOptionsItemSelected(item)
+            R.id.sortPortfolioItem -> {
+                val sortingPortfolioDialog = SortingPortfolioBottomDialog.newInstance()
+                sortingPortfolioDialog.show(childFragmentManager, SortingPortfolioBottomDialog.TAG)
+            }
         }
         return true
-    }
-
-    private fun openChangePortfolioDialog() {
-        val changePortfolioDialog = ChangePortfolioBottomDialog.newInstance()
-        changePortfolioDialog.show(childFragmentManager, ChangePortfolioBottomDialog.TAG)
-    }
-
-    private fun openSortingPortfolioDialog() {
-        val sortingPortfolioDialog = SortingPortfolioBottomDialog.newInstance()
-        sortingPortfolioDialog.show(childFragmentManager, SortingPortfolioBottomDialog.TAG)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -112,8 +94,9 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     }
 
     private fun initUI() {
-        portfolioToolbar.title = getString(R.string.portfolio)
-        (activity as AppCompatActivity).setActionBar(portfolioToolbar)
+        portfolioToolbar.setTitle(R.string.portfolio)
+        portfolioToolbar.inflateMenu(R.menu.portfolio)
+        portfolioToolbar.setOnMenuItemClickListener(this::onOptionsItemSelected)
 
         initCurrencyRadioGroup()
         rubRadioButton.setOnCheckedChangeListener(this::checkCurrency)
@@ -126,8 +109,8 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
         securitiesRecyclerView.addOnScrollListener(getScrollListener())
 
         addSecurityButton.setOnClickListener {
-            val intent = SearchSecurityActivity.getIntent(requireContext())
-            startActivity(intent)
+            val fragment = SearchSecurityFragment.newInstance()
+            (requireActivity() as MainActivity).startFragment(fragment)
         }
     }
 

@@ -91,6 +91,11 @@
     <string name="account_for_taxes">Account for taxes</string>
     <string name="hide_copecks">Hide copecks</string>
     <string name="scrolling_calendar_for_current_year">Scroll the calendar for the current month</string>
+    <string name="dark_theme">Dark theme</string>
+    <string name="dark_theme_on">On</string>
+    <string name="dark_theme_off">Off</string>
+    <string name="dark_theme_automatically">Automatically</string>
+    <string name="dark_theme_automatically_description">The theme changes automatically depending on your phone settings</string>
     <string name="feedback">Feedback</string>
     <string name="email_developers">Email developers</string>
     <string name="telegram_chat">Telegram chat</string>
@@ -149,14 +154,10 @@
     <string name="subscription_details">Subscription details</string>
     <string name="current_payout_information">Current regular payout information</string>
     <string name="next_subscription_price">Next 119 rubles per month</string>
-    <string name="follow_the_news">Follow the news of those companies that may affect your earnings</string>
     <string name="multiply_finances">Multiply your finances</string>
     <string name="stay_on_top_of_latest_dividend">Stay on top of the latest dividend and coupon payment news</string>
     <string name="seven_days_free">7 days for free with a Premium subscription</string>
     <string name="first_charge_info">The first charge will be when the free period ends. You can cancel at any time.</string>
     <string name="please_wait">Please wait…</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

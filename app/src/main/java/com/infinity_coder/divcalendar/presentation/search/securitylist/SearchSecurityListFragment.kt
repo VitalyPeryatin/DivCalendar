@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.network.model.SecurityNetModel
 import com.infinity_coder.divcalendar.presentation._common.extensions.executeIfResumed
-import com.infinity_coder.divcalendar.presentation.search.SearchSecurityActivity
+import com.infinity_coder.divcalendar.presentation.search.SearchSecurityFragment
 import com.infinity_coder.divcalendar.presentation.search.SearchSecurityViewModel
 import com.infinity_coder.divcalendar.presentation.search.adapters.SecurityRecyclerAdapter
-import com.infinity_coder.divcalendar.presentation.search.addsecurity.AddSecurityBottomDialog
+import com.infinity_coder.divcalendar.presentation.search.dialogs.addsecurity.AddSecurityBottomDialog
 import com.infinity_coder.divcalendar.presentation.search.securitylist.SearchSecurityListViewModel.Companion.VIEW_STATE_SEARCH_SECURITY_CONTENT
 import com.infinity_coder.divcalendar.presentation.search.securitylist.SearchSecurityListViewModel.Companion.VIEW_STATE_SEARCH_SECURITY_LOADING
 import com.infinity_coder.divcalendar.presentation.search.securitylist.SearchSecurityListViewModel.Companion.VIEW_STATE_SEARCH_SECURITY_NO_NETWORK
@@ -32,7 +32,7 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        parentViewModel = (context as SearchSecurityActivity).viewModel
+        parentViewModel = (parentFragment as SearchSecurityFragment).viewModel
 
         viewModel.securityType = requireArguments().getString(SECURITY_TYPE_ARGUMENT, "")
     }

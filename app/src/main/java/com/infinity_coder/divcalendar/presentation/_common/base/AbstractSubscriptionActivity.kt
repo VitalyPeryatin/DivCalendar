@@ -25,7 +25,6 @@ abstract class AbstractSubscriptionActivity : AppCompatActivity(), BillingProces
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         billingProcessor = BillingProcessor(this, LICENSE_KEY, this)
         billingProcessor?.initialize()
     }

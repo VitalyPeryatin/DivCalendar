@@ -14,7 +14,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/onboarding_portfolio_image" />
+        tools:src="@drawable/onboarding_portfolio_image"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/titleTextView"
@@ -22,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:fontFamily="@font/roboto_medium"
-        android:textColor="@color/black"
+        android:textColor="@color/colorTextPrimary"
         android:textSize="@dimen/font_big"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -39,7 +40,7 @@
         android:layout_marginTop="4dp"
         android:fontFamily="@font/roboto_medium"
         android:gravity="center"
-        android:textColor="?android:textColorSecondary"
+        android:textColor="@color/colorTextSecondary"
         android:textSize="@dimen/font_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

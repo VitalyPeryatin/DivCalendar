@@ -2,6 +2,7 @@ package com.infinity_coder.divcalendar.presentation.calendar.adapters
 
 import com.example.delegateadapter.delegate.KDelegateAdapter
 import com.infinity_coder.divcalendar.R
+import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityCurrencyDelegate
 import com.infinity_coder.divcalendar.presentation.calendar.models.FooterPaymentPresentationModel
 import kotlinx.android.synthetic.main.item_footer_payment_calendar.*
 
@@ -15,7 +16,9 @@ class FooterPaymentRecyclerDelegateAdapter : KDelegateAdapter<FooterPaymentPrese
 
     override fun onBind(item: FooterPaymentPresentationModel, viewHolder: KViewHolder) {
         viewHolder.run {
-            footerPaymentMonthlyIncome.text = footerPaymentMonthlyIncome.context.getString(R.string.monthly_income_label, item.income)
+            val context = footerPaymentMonthlyIncome.context
+            val income = "${item.income} ${SecurityCurrencyDelegate.getCurrencyBadge(context, item.currentCurrency)}"
+            footerPaymentMonthlyIncome.text = context.getString(R.string.monthly_income_label, income)
         }
     }
 }

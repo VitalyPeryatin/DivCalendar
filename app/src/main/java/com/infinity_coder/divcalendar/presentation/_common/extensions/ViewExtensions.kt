@@ -2,12 +2,14 @@ package com.infinity_coder.divcalendar.presentation._common.extensions
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.infinity_coder.divcalendar.R
 import kotlinx.android.synthetic.main.toast_successful.view.*
@@ -48,3 +50,13 @@ fun Context.isAppAvailable(appName: String): Boolean {
 }
 
 fun Context.dpToPx(dp: Float) = dp * resources.displayMetrics.density
+
+fun Context.hideKeyboard(view: View) {
+    val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+fun Context.showKeyboard() {
+    val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+}

@@ -10,13 +10,21 @@ import androidx.fragment.app.DialogFragment
 import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation._common.BottomDialog
 import com.infinity_coder.divcalendar.presentation._common.extensions.showSuccessfulToast
-import com.infinity_coder.divcalendar.presentation.settings.SettingsActivity
+import com.infinity_coder.divcalendar.presentation.settings.SettingsFragment
 import com.infinity_coder.divcalendar.presentation.settings.SettingsViewModel
 import kotlinx.android.synthetic.main.bottom_dialog_report_error.*
 
 class ReportErrorBottomDialog : BottomDialog() {
 
     private lateinit var parentViewModel: SettingsViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        if (parentFragment is SettingsFragment) {
+            parentViewModel = (parentFragment as SettingsFragment).viewModel
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,14 +54,6 @@ class ReportErrorBottomDialog : BottomDialog() {
         if (reportMessage.isNotEmpty()) {
             parentViewModel.reportError(reportMessage)
             requireContext().showSuccessfulToast(layoutInflater, R.string.send_successful)
-        }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        if (context is SettingsActivity) {
-            parentViewModel = context.viewModel
         }
     }
 

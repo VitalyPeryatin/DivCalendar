@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#333333</color>
+    <color name="colorPrimaryDark">#333333</color>
+
+    <color name="colorTextPrimary">#FFFFFF</color>
+    <color name="colorTextSecondary">#A1A1A1</color>
+
+    <color name="colorTitleToolbar">#FFFFFF</color>
+
+    <color name="colorIcon">#FFFFFF</color>
+
+    <color name="colorControlNormal">#A1A1A1</color>
+    <color name="colorControlActive">#0075EE</color>
+
+    <color name="colorBottomNavigationBackground">@color/colorPrimary</color>
+    <color name="colorBottomNavigationItemActive">#0075EE</color>
+    <color name="colorBottomNavigationItemNormal">#BFBFBF</color>
+
+    <color name="color_bg_onboarding_father_button">#2e2e2e</color>
+
+    <color name="main_background">#202020</color>
+    <color name="background">#333333</color>
+    <color name="blackout">#44000000</color>
+    <color name="separator">#828282</color>
+</resources>

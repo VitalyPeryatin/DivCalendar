@@ -46,25 +46,26 @@ class CalendarViewModel : ViewModel() {
     val currentYear: LiveData<String>
         get() = _currentYear
 
-    private val _isIncludeTaxes = MutableLiveData<Boolean?>(null)
-    val isIncludeTaxes: LiveData<Boolean?>
-        get() = _isIncludeTaxes
-
     val sendFileEvent = LiveEvent<File?>()
     val scrollCalendarEvent = LiveEvent<Int>()
     val portfolioNameTitleEvent = LiveEvent<String>()
+    val isIncludeTaxesEvent = LiveEvent<Boolean>()
     val showLoadingDialogEvent = LiveEvent<Boolean>()
 
-    private var _isHideCopecks = settingsInteractor.isHideCopecks()
     private val paymentsMapper = PaymentsToPresentationModelMapper()
     private var paymentsFileCreator: PaymentsFileCreator? = null
     private var cachedPayments: List<MonthlyPayment> = emptyList()
     private var paymentsJob: Job? = null
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun loadAllPayments(context: Context) = viewModelScope.launch {
+    init {
+        loadAllPayments()
+    }
 
-        loadPortfolioName()
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun loadAllPayments() = viewModelScope.launch {
+
+        portfolioNameTitleEvent.value = portfolioInteractor.getCurrentPortfolioName()
+        isIncludeTaxesEvent.value = settingsInteractor.isIncludeTaxes()
 
         if (portfolioInteractor.isCurrentPortfolioEmpty()) {
             _state.value = VIEW_STATE_CALENDAR_EMPTY
@@ -74,7 +75,7 @@ class CalendarViewModel : ViewModel() {
         paymentsJob?.cancel()
         paymentsJob = paymentInteractor.getPayments()
             .onEach { cachedPayments = it }
-            .map { paymentsMapper.mapToPresentationModel(context, cachedPayments) }
+            .map { paymentsMapper.mapToPresentationModel(cachedPayments) }
             .flowOn(Dispatchers.IO)
             .onStart {
                 if (_state.value != VIEW_STATE_CALENDAR_CONTENT) {
@@ -110,11 +111,6 @@ class CalendarViewModel : ViewModel() {
         }
     }
 
-    private fun loadPortfolioName() {
-        val portfolioName = portfolioInteractor.getCurrentPortfolioName()
-        portfolioNameTitleEvent.value = portfolioName
-    }
-
     private fun getPositionByCurrentMonth(): Int {
         return if (settingsInteractor.isScrollingCalendarForCurrentMonth()) {
             val monthNumber = Calendar.getInstance().get(Calendar.MONTH)
@@ -139,17 +135,17 @@ class CalendarViewModel : ViewModel() {
         sendFileEvent.postValue(exportFilePath)
     }
 
-    fun setDisplayCurrency(context: Context, currency: String) = viewModelScope.launch {
+    fun setDisplayCurrency(currency: String) = viewModelScope.launch {
         rateInteractor.saveDisplayCurrency(currency)
-        val payments = paymentsMapper.mapToPresentationModel(context, cachedPayments)
+        val payments = paymentsMapper.mapToPresentationModel(cachedPayments)
         _payments.postValue(payments)
     }
 
-    fun selectYear(context: Context, selectedYear: String) {
+    fun selectYear(selectedYear: String) {
         if (_currentYear.value == null || selectedYear != _currentYear.value) {
             paymentInteractor.setSelectedYear(selectedYear)
             _currentYear.value = selectedYear
-            loadAllPayments(context)
+            loadAllPayments()
         }
     }
 
@@ -157,25 +153,9 @@ class CalendarViewModel : ViewModel() {
         return rateInteractor.getDisplayCurrency()
     }
 
-    fun updatePastPayment(context: Context, editPaymentParams: EditPaymentParams) = viewModelScope.launch {
+    fun updatePastPayment(editPaymentParams: EditPaymentParams) = viewModelScope.launch {
         paymentInteractor.updatePastPayment(editPaymentParams)
-        loadAllPayments(context)
-    }
-
-    fun updateData(context: Context) {
-        val newIsIncludedTaxes = settingsInteractor.isIncludeTaxes()
-
-        val newIsHideCopecks = settingsInteractor.isHideCopecks()
-
-        val hasNewData = (newIsIncludedTaxes != isIncludeTaxes.value || newIsHideCopecks != _isHideCopecks)
-
-        _isIncludeTaxes.value = newIsIncludedTaxes
-
-        _isHideCopecks = newIsHideCopecks
-
-        if (hasNewData) {
-            loadAllPayments(context)
-        }
+        loadAllPayments()
     }
 
     companion object {

@@ -16,6 +16,6 @@
         android:fontFamily="@font/roboto_medium"
         android:gravity="center"
         android:text="@string/empty_list"
-        android:textColor="?android:textColorSecondary"
+        android:textColor="@color/colorTextSecondary"
         android:textSize="@dimen/font_few_big" />
 </LinearLayout>

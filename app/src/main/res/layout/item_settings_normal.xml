@@ -17,7 +17,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/roboto"
-        android:textColor="?attr/textColorPrimary"
+        android:textColor="@color/colorTextPrimary"
         android:textSize="@dimen/font_normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

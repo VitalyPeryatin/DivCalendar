@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.os.Build
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.BuildConfig
@@ -23,6 +24,7 @@ object SettingsRepository {
     private const val SUBSCRIPTION_PREFERENCES_NAME = "SubscriptionFile"
     private const val PREF_INCLUDE_TAXES = "is_include_taxes"
     private const val PREF_HIDE_COPECKS = "is_hide_copecks"
+    private const val PREF_THEME_TYPE = "theme_type"
     private const val PREF_IS_SCROLLING_CALENDAR_FOR_CURRENT_MONTH = "is_scrolling_calendar_for_current_month"
     private const val PREF_HAS_SUBSCRIPTION = "has_subscription"
 
@@ -65,6 +67,16 @@ object SettingsRepository {
 
     fun isScrollingCalendarForCurrentMonth(): Boolean {
         return optionsPreferences.getBoolean(PREF_IS_SCROLLING_CALENDAR_FOR_CURRENT_MONTH, false)
+    }
+
+    fun saveThemeType(type: Int) {
+        optionsPreferences.edit {
+            putInt(PREF_THEME_TYPE, type)
+        }
+    }
+
+    fun getThemeType(): Int {
+        return optionsPreferences.getInt(PREF_THEME_TYPE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
     }
 
     fun reportError(message: String) {
