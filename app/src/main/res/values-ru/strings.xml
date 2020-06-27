@@ -80,6 +80,7 @@
     <string name="settings">Настройки</string>
     <string name="account_for_taxes">Учитывать налоги</string>
     <string name="hide_copecks">Скрыть копейки</string>
+    <string name="scrolling_calendar_for_current_year">Пролистывать календарь на текущий месяц</string>
     <string name="feedback">Обратная связь</string>
     <string name="email_developers">Написать разработчикам</string>
     <string name="telegram_chat">Telegram-чат</string>

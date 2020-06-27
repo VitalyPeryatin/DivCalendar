@@ -23,6 +23,7 @@ object SettingsRepository {
     private const val SUBSCRIPTION_PREFERENCES_NAME = "SubscriptionFile"
     private const val PREF_INCLUDE_TAXES = "is_include_taxes"
     private const val PREF_HIDE_COPECKS = "is_hide_copecks"
+    private const val PREF_IS_SCROLLING_CALENDAR_FOR_CURRENT_MONTH = "is_scrolling_calendar_for_current_month"
     private const val PREF_HAS_SUBSCRIPTION = "has_subscription"
 
     @SuppressLint("ConstantLocale")
@@ -42,18 +43,28 @@ object SettingsRepository {
         }
     }
 
+    fun isIncludeTaxes(): Boolean {
+        return optionsPreferences.getBoolean(PREF_INCLUDE_TAXES, false)
+    }
+
     fun saveIsHideCopecks(isHideCopecks: Boolean) {
         optionsPreferences.edit {
             putBoolean(PREF_HIDE_COPECKS, isHideCopecks)
         }
     }
 
-    fun isIncludeTaxes(): Boolean {
-        return optionsPreferences.getBoolean(PREF_INCLUDE_TAXES, false)
-    }
-
     fun isHideCopecks(): Boolean {
         return optionsPreferences.getBoolean(PREF_HIDE_COPECKS, false)
+    }
+
+    fun saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth: Boolean) {
+        optionsPreferences.edit {
+            putBoolean(PREF_IS_SCROLLING_CALENDAR_FOR_CURRENT_MONTH, isScrollingCalendarForCurrentMonth)
+        }
+    }
+
+    fun isScrollingCalendarForCurrentMonth(): Boolean {
+        return optionsPreferences.getBoolean(PREF_IS_SCROLLING_CALENDAR_FOR_CURRENT_MONTH, false)
     }
 
     fun reportError(message: String) {

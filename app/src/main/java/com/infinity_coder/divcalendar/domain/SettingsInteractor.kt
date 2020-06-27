@@ -11,12 +11,20 @@ class SettingsInteractor {
         return SettingsRepository.isIncludeTaxes()
     }
 
+    fun saveIsHideCopecks(isHideCopecks: Boolean) {
+        SettingsRepository.saveIsHideCopecks(isHideCopecks)
+    }
+
     fun isHideCopecks(): Boolean {
         return SettingsRepository.isHideCopecks()
     }
 
-    fun saveIsHideCopecks(ishideCopecks: Boolean) {
-        SettingsRepository.saveIsHideCopecks(ishideCopecks)
+    fun saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth: Boolean) {
+        SettingsRepository.saveIsScrollingCalendarForCurrentMonth(isScrollingCalendarForCurrentMonth)
+    }
+
+    fun isScrollingCalendarForCurrentMonth(): Boolean {
+        return SettingsRepository.isScrollingCalendarForCurrentMonth()
     }
 
     fun reportError(message: String) {

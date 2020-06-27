@@ -14,7 +14,7 @@ import com.infinity_coder.divcalendar.domain.models.EditPaymentParams
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
 import com.infinity_coder.divcalendar.presentation._common.logException
 import com.infinity_coder.divcalendar.presentation.calendar.mappers.PaymentsToPresentationModelMapper
-import com.infinity_coder.divcalendar.presentation.calendar.models.FooterPaymentPresentationModel
+import com.infinity_coder.divcalendar.presentation.calendar.models.HeaderPaymentPresentationModel
 import com.infinity_coder.divcalendar.presentation.calendar.models.MonthlyPayment
 import com.infinity_coder.divcalendar.presentation.export_sheet.PaymentsFileCreator
 import com.infinity_coder.divcalendar.presentation.export_sheet.excel.ExcelPaymentsFileCreator
@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.File
+import java.util.*
 
 class CalendarViewModel : ViewModel() {
 
@@ -32,8 +33,6 @@ class CalendarViewModel : ViewModel() {
     private val rateInteractor = RateInteractor()
     private val settingsInteractor = SettingsInteractor()
     private val portfolioInteractor = PortfolioInteractor()
-
-    private var paymentsFileCreator: PaymentsFileCreator? = null
 
     private val _state = MutableLiveData<Int>()
     val state: LiveData<Int>
@@ -47,19 +46,19 @@ class CalendarViewModel : ViewModel() {
     val currentYear: LiveData<String>
         get() = _currentYear
 
-    private var cachedPayments: List<MonthlyPayment> = emptyList()
-    private val paymentsMapper = PaymentsToPresentationModelMapper()
-
     private val _isIncludeTaxes = MutableLiveData<Boolean?>(null)
     val isIncludeTaxes: LiveData<Boolean?>
         get() = _isIncludeTaxes
 
-    private var _isHideCopecks = settingsInteractor.isHideCopecks()
-
     val sendFileEvent = LiveEvent<File?>()
+    val scrollCalendarEvent = LiveEvent<Int>()
     val portfolioNameTitleEvent = LiveEvent<String>()
     val showLoadingDialogEvent = LiveEvent<Boolean>()
 
+    private var _isHideCopecks = settingsInteractor.isHideCopecks()
+    private val paymentsMapper = PaymentsToPresentationModelMapper()
+    private var paymentsFileCreator: PaymentsFileCreator? = null
+    private var cachedPayments: List<MonthlyPayment> = emptyList()
     private var paymentsJob: Job? = null
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -78,11 +77,17 @@ class CalendarViewModel : ViewModel() {
             .map { paymentsMapper.mapToPresentationModel(context, cachedPayments) }
             .flowOn(Dispatchers.IO)
             .onStart {
-                if (_state.value != VIEW_STATE_CALENDAR_CONTENT)
+                if (_state.value != VIEW_STATE_CALENDAR_CONTENT) {
                     _state.value = VIEW_STATE_CALENDAR_LOADING
+                } else {
+                    scrollCalendarEvent.value = getPositionByCurrentMonth()
+                }
             }
             .onEach {
                 _payments.value = it
+                if (_state.value == VIEW_STATE_CALENDAR_LOADING) {
+                    scrollCalendarEvent.value = getPositionByCurrentMonth()
+                }
                 if (it.isNotEmpty()) {
                     _state.value = VIEW_STATE_CALENDAR_CONTENT
                 }
@@ -110,10 +115,20 @@ class CalendarViewModel : ViewModel() {
         portfolioNameTitleEvent.value = portfolioName
     }
 
-    fun getFooterPositionByMonthNumber(monthNumber: Int): Int {
-        return _payments.value!!.indexOfFirst {
-            it is FooterPaymentPresentationModel && it.id == monthNumber
+    private fun getPositionByCurrentMonth(): Int {
+        return if (settingsInteractor.isScrollingCalendarForCurrentMonth()) {
+            val monthNumber = Calendar.getInstance().get(Calendar.MONTH)
+            getPositionByMonthNumber(monthNumber)
+        } else {
+            0
         }
+    }
+
+    fun getPositionByMonthNumber(monthNumber: Int): Int {
+        val position = _payments.value!!.indexOfFirst {
+            it is HeaderPaymentPresentationModel && it.month == monthNumber
+        }
+        return if (position == -1) 0 else position
     }
 
     fun exportData(context: Context) = viewModelScope.launch(Dispatchers.IO) {
