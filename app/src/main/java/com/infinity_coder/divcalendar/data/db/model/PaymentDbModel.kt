@@ -63,7 +63,7 @@ data class PaymentDbModel(
         const val INDEX_SECURITY = "security_index"
 
         fun from(portfolioId: Long, exchange: String, networkPayments: PaymentNetModel.Response) = PaymentDbModel(
-            dividends = BigDecimal(networkPayments.dividends, MathContext(0, RoundingMode.HALF_DOWN)),
+            dividends = BigDecimal(networkPayments.dividends),
             date = networkPayments.date,
             forecast = networkPayments.forecast,
             isin = if (networkPayments.isin.isBlank()) networkPayments.name else networkPayments.isin,
