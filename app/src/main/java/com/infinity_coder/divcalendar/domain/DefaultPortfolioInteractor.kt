@@ -1,6 +1,7 @@
 package com.infinity_coder.divcalendar.domain
 
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
+import java.math.BigDecimal
 
 class DefaultPortfolioInteractor {
 
@@ -24,8 +25,8 @@ class DefaultPortfolioInteractor {
             name = "Группа ЛСР",
             logo = "https://static.tinkoff.ru/brands/traiding/RU000A0JPFP0x160.png",
             exchange = "MOEX",
-            count = 10,
-            totalPrice = 5914.0,
+            count = BigDecimal(10),
+            totalPrice = BigDecimal(5914.0),
             yearYield = 13.26f,
             currency = "RUB",
             type = "stock",
@@ -39,8 +40,8 @@ class DefaultPortfolioInteractor {
             name = "МТС",
             logo = "https://static.tinkoff.ru/brands/traiding/RU0007775219x160.png",
             exchange = "MOEX",
-            count = 20,
-            totalPrice = 6638.0,
+            count = BigDecimal(20),
+            totalPrice = BigDecimal(6638.0),
             yearYield = 8.72f,
             currency = "RUB",
             type = "stock",
@@ -54,8 +55,8 @@ class DefaultPortfolioInteractor {
             name = "НЛМК",
             logo = "https://static.tinkoff.ru/brands/traiding/RU0009046452x160.png",
             exchange = "MOEX",
-            count = 40,
-            totalPrice = 5412.0,
+            count = BigDecimal(40),
+            totalPrice = BigDecimal(5412.0),
             yearYield = 10.32f,
             currency = "RUB",
             type = "stock",
