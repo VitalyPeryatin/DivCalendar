@@ -24,6 +24,7 @@ import com.infinity_coder.divcalendar.presentation.search.SearchSecurityFragment
 import com.infinity_coder.divcalendar.presentation.settings.SettingsFragment
 import kotlinx.android.synthetic.main.fragment_portfolio.*
 import kotlinx.android.synthetic.main.layout_stub_empty.view.*
+import java.math.BigDecimal
 
 class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
     ChangeSecurityBottomDialog.ChangeSecurityCallback,
@@ -86,7 +87,7 @@ class PortfolioFragment : Fragment(R.layout.fragment_portfolio),
         }
     }
 
-    private fun setTotalPortfolioCost(totalPortfolioCost: Double) {
+    private fun setTotalPortfolioCost(totalPortfolioCost: BigDecimal) {
         val currentCurrency = viewModel.getDisplayCurrency()
         val totalPortfolioCostWithCurrency = SecurityCurrencyDelegate.getValueWithCurrencyConsiderCopecks(requireContext(), totalPortfolioCost, currentCurrency)
         totalPortfolioCostTextView.text = getString(R.string.total_portfolio_cost, totalPortfolioCostWithCurrency)

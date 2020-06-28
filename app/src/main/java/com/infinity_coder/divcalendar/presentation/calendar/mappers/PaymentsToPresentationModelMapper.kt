@@ -7,8 +7,10 @@ import com.infinity_coder.divcalendar.domain.PortfolioInteractor
 import com.infinity_coder.divcalendar.domain.RateInteractor
 import com.infinity_coder.divcalendar.domain._common.isExpiredDate
 import com.infinity_coder.divcalendar.presentation._common.delegate.SecurityCurrencyDelegate
+import com.infinity_coder.divcalendar.presentation._common.extensions.sumByBigDecimal
 import com.infinity_coder.divcalendar.presentation.calendar.models.*
 import kotlinx.coroutines.flow.first
+import java.math.BigDecimal
 
 class PaymentsToPresentationModelMapper {
 
@@ -74,28 +76,28 @@ class PaymentsToPresentationModelMapper {
     private suspend fun mapPaymentsToChartPresentationModel(monthlyPayments: List<MonthlyPayment>): ChartPresentationModel {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val annualIncome = sumMonthPayments(monthlyPayments)
-        val annualYield = (annualIncome / getCosts()) * 100
+        val annualYield = (annualIncome.toPlainString().toDouble() / getCosts().toPlainString().toDouble()) * 100
         val annualIncomeStr = SecurityCurrencyDelegate.getValueConsiderCopecks(annualIncome)
         val allMonthlyPayments = getMonthlyPayments(monthlyPayments)
         val colors = getChartBarColors(allMonthlyPayments)
         return ChartPresentationModel(annualIncomeStr, annualYield, currentCurrency, allMonthlyPayments, colors)
     }
 
-    private fun sumMonthPayments(monthlyPayments: List<MonthlyPayment>): Double {
-        return monthlyPayments.sumByDouble { paymentsForMonth ->
-            paymentsForMonth.payments.sumByDouble { it.dividends }
+    private fun sumMonthPayments(monthlyPayments: List<MonthlyPayment>): BigDecimal {
+        return monthlyPayments.sumByBigDecimal { paymentsForMonth ->
+            paymentsForMonth.payments.sumByBigDecimal { it.dividends }
         }
     }
 
-    private suspend fun getCosts(): Double {
+    private suspend fun getCosts(): BigDecimal {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val securities = portfolioInteractor.getCurrentPortfolioFlow().first().securities
-        return securities.sumByDouble {
+        return securities.sumByBigDecimal {
             getTotalPriceForCurrentCurrency(currentCurrency, it)
         }
     }
 
-    private suspend fun getTotalPriceForCurrentCurrency(currentCurrency: String, securityDbModel: SecurityDbModel): Double {
+    private suspend fun getTotalPriceForCurrentCurrency(currentCurrency: String, securityDbModel: SecurityDbModel): BigDecimal {
         return if (securityDbModel.currency == currentCurrency)
             securityDbModel.totalPrice
         else

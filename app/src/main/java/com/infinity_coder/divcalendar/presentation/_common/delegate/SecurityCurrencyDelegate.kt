@@ -5,6 +5,7 @@ import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
 import com.infinity_coder.divcalendar.data.repositories.SettingsRepository
 import com.infinity_coder.divcalendar.presentation._common.DecimalFormatStorage
+import java.math.BigDecimal
 import java.text.DecimalFormat
 
 object SecurityCurrencyDelegate {
@@ -14,23 +15,23 @@ object SecurityCurrencyDelegate {
 
     private val settingsRepository = SettingsRepository
 
-    fun getValueWithCurrency(context: Context, value: Double, currency: String): String {
+    fun getValueWithCurrency(context: Context, value: BigDecimal, currency: String): String {
         val valueStr: String = formatterWithPoints.format(value).toString()
         val currencyBadge = getCurrencyBadge(context, currency)
         return "$valueStr $currencyBadge"
     }
 
-    fun getValueWithCurrencyConsiderCopecks(context: Context, value: Double, currency: String): String {
+    fun getValueWithCurrencyConsiderCopecks(context: Context, value: BigDecimal, currency: String): String {
         val valueStr = getValueConsiderCopecks(value)
         val currencyBadge = getCurrencyBadge(context, currency)
         return "$valueStr $currencyBadge"
     }
 
     fun getValueConsiderCopecks(value: String): String {
-        return getValueConsiderCopecks(value.toDouble())
+        return getValueConsiderCopecks(value.toBigDecimal())
     }
 
-    fun getValueConsiderCopecks(value: Double): String {
+    fun getValueConsiderCopecks(value: BigDecimal): String {
         return if (settingsRepository.isHideCopecks())
             formatterWithoutPoints.format(value).toString()
         else

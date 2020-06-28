@@ -1,14 +1,15 @@
 package com.infinity_coder.divcalendar.domain
 
 import com.infinity_coder.divcalendar.data.repositories.RateRepository
+import java.math.BigDecimal
 
 class RateInteractor {
-    suspend fun getUsdToRubRate(): Float {
-        return RateRepository.getRates().usdToRub
+    suspend fun getUsdToRubRate(): BigDecimal {
+        return BigDecimal(RateRepository.getRates().usdToRub.toString())
     }
 
-    suspend fun getRubToUsdRate(): Float {
-        return RateRepository.getRates().rubToUsd
+    suspend fun getRubToUsdRate(): BigDecimal {
+        return BigDecimal(RateRepository.getRates().rubToUsd.toString())
     }
 
     fun getDisplayCurrency(): String {
@@ -19,13 +20,13 @@ class RateInteractor {
         RateRepository.saveDisplayCurrency(currency)
     }
 
-    suspend fun convertCurrencies(value: Double, from: String, to: String): Double {
+    suspend fun convertCurrencies(value: BigDecimal, from: String, to: String): BigDecimal {
         return when {
             from == RateRepository.USD_RATE && to == RateRepository.RUB_RATE -> {
-                value / getUsdToRubRate()
+                value.divide(getUsdToRubRate())
             }
             from == RateRepository.RUB_RATE && to == RateRepository.USD_RATE -> {
-                value / getRubToUsdRate()
+                value.divide(getRubToUsdRate())
             }
             else -> value
         }
