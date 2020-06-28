@@ -9,6 +9,9 @@ import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.COL
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.INDEX_SECURITY
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.TABLE_NAME
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetModel
+import java.math.BigDecimal
+import java.math.MathContext
+import java.math.RoundingMode
 
 @Entity(
     tableName = TABLE_NAME,
@@ -23,7 +26,7 @@ import com.infinity_coder.divcalendar.data.network.model.PaymentNetModel
 )
 data class PaymentDbModel(
     @ColumnInfo(name = COLUMN_DIVIDENDS)
-    var dividends: Double,
+    var dividends: BigDecimal,
 
     @ColumnInfo(name = COLUMN_DATE)
     val date: String,
@@ -41,7 +44,7 @@ data class PaymentDbModel(
     var exchange: String = "",
 
     @ColumnInfo(name = COLUMN_COUNT)
-    var count: Int? = null
+    var count: BigDecimal? = null
 ) {
     @Ignore
     var security: SecurityDbModel? = null
@@ -60,7 +63,7 @@ data class PaymentDbModel(
         const val INDEX_SECURITY = "security_index"
 
         fun from(portfolioId: Long, exchange: String, networkPayments: PaymentNetModel.Response) = PaymentDbModel(
-            dividends = networkPayments.dividends,
+            dividends = BigDecimal(networkPayments.dividends, MathContext(0, RoundingMode.HALF_DOWN)),
             date = networkPayments.date,
             forecast = networkPayments.forecast,
             isin = if (networkPayments.isin.isBlank()) networkPayments.name else networkPayments.isin,
