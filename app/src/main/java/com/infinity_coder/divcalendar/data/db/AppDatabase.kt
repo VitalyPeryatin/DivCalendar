@@ -11,7 +11,7 @@ import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.data.db.typeconverter.BigDecimaltypeConverter
 
-@Database(entities = [SecurityDbModel::class, PortfolioDbModel::class, PaymentDbModel::class], version = 4)
+@Database(entities = [SecurityDbModel::class, PortfolioDbModel::class, PaymentDbModel::class], version = 5)
 @TypeConverters(BigDecimaltypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
