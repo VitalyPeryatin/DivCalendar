@@ -9,10 +9,10 @@ import com.infinity_coder.divcalendar.data.db.dao.SecurityDao
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
-import com.infinity_coder.divcalendar.data.db.typeconverter.BigDecimaltypeConverter
+import com.infinity_coder.divcalendar.data.db.typeconverter.BigDecimalTypeConverter
 
 @Database(entities = [SecurityDbModel::class, PortfolioDbModel::class, PaymentDbModel::class], version = 5)
-@TypeConverters(BigDecimaltypeConverter::class)
+@TypeConverters(BigDecimalTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val portfolioDao: PortfolioDao
