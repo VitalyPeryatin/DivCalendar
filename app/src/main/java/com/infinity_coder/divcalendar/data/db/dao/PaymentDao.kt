@@ -36,7 +36,6 @@ abstract class PaymentDao {
 
     @Transaction
     open suspend fun deleteDuplicatePayments(portfolioId: Long) {
-
         val payments = getPayments(portfolioId)
 
         val duplicatePayments = payments.filter{ it.exchange.isEmpty()}.filter {
