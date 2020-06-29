@@ -33,7 +33,7 @@ object SecurityCurrencyDelegate {
 
     fun getValueConsiderCopecks(value: BigDecimal): String {
         return if (settingsRepository.isHideCopecks())
-            formatterWithoutPoints.format(value).toString()
+            formatterWithoutPoints.format(value.toBigInteger()).toString()
         else
             formatterWithPoints.format(value).toString()
     }
