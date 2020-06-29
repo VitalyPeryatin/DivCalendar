@@ -8,7 +8,7 @@ class BigDecimalTypeConverter {
     fun fromBigDecimal(value: BigDecimal?): String? {
         return when (value) {
             null -> null
-            else ->value.toPlainString()
+            else -> value.toPlainString()
         }
     }
 

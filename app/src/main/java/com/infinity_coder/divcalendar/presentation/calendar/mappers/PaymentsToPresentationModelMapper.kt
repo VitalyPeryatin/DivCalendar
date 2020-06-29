@@ -76,7 +76,7 @@ class PaymentsToPresentationModelMapper {
     private suspend fun mapPaymentsToChartPresentationModel(monthlyPayments: List<MonthlyPayment>): ChartPresentationModel {
         val currentCurrency = rateInteractor.getDisplayCurrency()
         val annualIncome = sumMonthPayments(monthlyPayments)
-        val annualYield = ((annualIncome/ getCosts()) * BigDecimal(100)).toPlainString().toDouble()
+        val annualYield = ((annualIncome / getCosts()) * BigDecimal(100)).toPlainString().toDouble()
         val annualIncomeStr = SecurityCurrencyDelegate.getValueConsiderCopecks(annualIncome)
         val allMonthlyPayments = getMonthlyPayments(monthlyPayments)
         val colors = getChartBarColors(allMonthlyPayments)

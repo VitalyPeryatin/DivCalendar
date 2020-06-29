@@ -10,8 +10,6 @@ import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.IND
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.TABLE_NAME
 import com.infinity_coder.divcalendar.data.network.model.PaymentNetModel
 import java.math.BigDecimal
-import java.math.MathContext
-import java.math.RoundingMode
 
 @Entity(
     tableName = TABLE_NAME,
