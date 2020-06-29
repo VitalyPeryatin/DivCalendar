@@ -1,5 +1,6 @@
 package com.infinity_coder.divcalendar.data.db.dao
 
+import android.util.Log
 import androidx.room.*
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
@@ -31,6 +32,28 @@ abstract class PaymentDao {
         }
 
         deletePayments(payments)
+    }
+
+    @Transaction
+    open suspend fun deleteDuplicatePayments(portfolioId: Long) {
+
+        val payments = getPayments(portfolioId)
+
+        val duplicatePayments = payments.filter{ it.exchange.isEmpty()}.filter {
+            val duplicate = getDuplicatePaymentWhichExchangeIsNotEmpty(it, payments)
+            duplicate != null
+        }
+
+        deletePayments(duplicatePayments)
+    }
+
+    private fun getDuplicatePaymentWhichExchangeIsNotEmpty(paymentWithExchangeEmpty: PaymentDbModel, payments: List<PaymentDbModel>): PaymentDbModel?{
+        return payments.find {
+            it.isin == paymentWithExchangeEmpty.isin
+                    && it.date == paymentWithExchangeEmpty.date
+                    && it.portfolioId == paymentWithExchangeEmpty.portfolioId
+                    && it.exchange.isNotEmpty()
+        }
     }
 
     @Delete
