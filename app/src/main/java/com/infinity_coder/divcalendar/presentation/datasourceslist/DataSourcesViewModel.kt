@@ -29,5 +29,4 @@ class DataSourcesViewModel : ViewModel() {
             .onEach { _dataSourceList.value = it }
             .launchIn(viewModelScope)
     }
-
 }

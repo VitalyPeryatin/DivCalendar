@@ -47,7 +47,6 @@ class DataSourcesRecyclerAdapter(
                 onDataSourceClickListener?.onDataSourceClicked(dataSource)
             }
         }
-
     }
 
     interface OnDataSourceClickListener {

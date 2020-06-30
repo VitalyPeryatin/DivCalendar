@@ -20,7 +20,6 @@ import com.infinity_coder.divcalendar.presentation._common.delegate.AppThemeDele
 import com.infinity_coder.divcalendar.presentation._common.setActionBar
 import kotlinx.android.synthetic.main.activity_browser.*
 
-
 class BrowserActivity : AppCompatActivity() {
 
     companion object {
