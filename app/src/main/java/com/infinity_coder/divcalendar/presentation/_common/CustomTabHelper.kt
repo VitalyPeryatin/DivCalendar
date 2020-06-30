@@ -4,11 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import androidx.browser.customtabs.CustomTabsService.ACTION_CUSTOM_TABS_CONNECTION
 
 object CustomTabHelper {
-
-    private const val ACTION_CUSTOM_TABS_CONNECTION =
-        "android.support.customtabs.action.CustomTabsService"
 
     private const val STABLE_PACKAGE = "com.android.chrome"
     private const val BETA_PACKAGE = "com.chrome.beta"

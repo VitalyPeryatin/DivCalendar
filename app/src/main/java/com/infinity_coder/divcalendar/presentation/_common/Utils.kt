@@ -2,13 +2,16 @@ package com.infinity_coder.divcalendar.presentation._common
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.infinity_coder.divcalendar.BuildConfig
+import com.infinity_coder.divcalendar.R
 import com.infinity_coder.divcalendar.presentation.App
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
-import java.lang.StringBuilder
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.text.SimpleDateFormat
@@ -62,4 +65,16 @@ fun md5(str: String): String {
     } catch (e: NoSuchAlgorithmException) {
         ""
     }
+}
+
+fun AppCompatActivity.setActionBar(toolbar: Toolbar, hasBackNavigation: Boolean = false, isShowTitle: Boolean = true) {
+    setSupportActionBar(toolbar)
+    supportActionBar?.setDisplayHomeAsUpEnabled(hasBackNavigation)
+    supportActionBar?.setDisplayShowTitleEnabled(isShowTitle)
+    toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+    toolbar.setNavigationOnClickListener { onBackPressed() }
+}
+
+fun Fragment.setActionBar(toolbar: Toolbar, hasBackNavigation: Boolean = false, isShowTitle: Boolean = true) {
+    (activity as? AppCompatActivity)?.setActionBar(toolbar, hasBackNavigation, isShowTitle)
 }
