@@ -121,18 +121,6 @@ object DivCalendarDatabase {
         }
     }
 
-    private val MIGRATION_5_6 = object : Migration(5, 6) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            database.execSQL("DELETE FROM ${PaymentDbModel.TABLE_NAME} WHERE ${PaymentDbModel.COLUMN_EXCHANGE}='' AND EXISTS " +
-                    "(SELECT ${PaymentDbModel.COLUMN_ISIN}, ${PaymentDbModel.COLUMN_PORTFOLIO_ID}, ${PaymentDbModel.COLUMN_DATE} FROM ${PaymentDbModel.TABLE_NAME} PaymentDuplicate " +
-                    "WHERE ${PaymentDbModel.TABLE_NAME}.${PaymentDbModel.COLUMN_ISIN}=PaymentDuplicate.${PaymentDbModel.COLUMN_ISIN} " +
-                    "AND ${PaymentDbModel.TABLE_NAME}.${PaymentDbModel.COLUMN_PORTFOLIO_ID}=PaymentDuplicate.${PaymentDbModel.COLUMN_PORTFOLIO_ID} " +
-                    "AND ${PaymentDbModel.TABLE_NAME}.${PaymentDbModel.COLUMN_DATE}=PaymentDuplicate.${PaymentDbModel.COLUMN_DATE} " +
-                    "AND PaymentDuplicate.${PaymentDbModel.COLUMN_EXCHANGE} <> '')"
-            )
-        }
-    }
-
     private val MIGRATION_4_5 = object : Migration(4, 5) {
         override fun migrate(database: SupportSQLiteDatabase) {
             database.migrateSecurityTable()
@@ -218,10 +206,28 @@ object DivCalendarDatabase {
                     "${PaymentDbModel.COLUMN_ISIN}, " +
                     "${PaymentDbModel.COLUMN_PORTFOLIO_ID} FROM ${PaymentDbModel.TABLE_NAME} "
             )
+            execSQL("UPDATE ${PaymentDbModel.TABLE_NAME}_copy SET ${PaymentDbModel.COLUMN_EXCHANGE}=(" +
+                    "SELECT ${SecurityDbModel.TABLE_NAME}.${SecurityDbModel.COLUMN_EXCHANGE} " +
+                    "FROM ${SecurityDbModel.TABLE_NAME} WHERE " +
+                    "${SecurityDbModel.TABLE_NAME}.${SecurityDbModel.COLUMN_ISIN}=${PaymentDbModel.TABLE_NAME}_copy.${PaymentDbModel.COLUMN_ISIN} " +
+                    "AND ${SecurityDbModel.TABLE_NAME}.${SecurityDbModel.COLUMN_PORTFOLIO_ID}=${PaymentDbModel.TABLE_NAME}_copy.${PaymentDbModel.COLUMN_PORTFOLIO_ID})"
+            )
             execSQL("DROP TABLE ${PaymentDbModel.TABLE_NAME}")
             execSQL("ALTER TABLE ${PaymentDbModel.TABLE_NAME}_copy RENAME TO ${PaymentDbModel.TABLE_NAME}")
             execSQL("CREATE INDEX IF NOT EXISTS ${PaymentDbModel.INDEX_SECURITY} ON ${PaymentDbModel.TABLE_NAME} " +
                     "(${PaymentDbModel.COLUMN_ISIN}, ${PaymentDbModel.COLUMN_PORTFOLIO_ID}, ${PaymentDbModel.COLUMN_EXCHANGE})"
+            )
+        }
+    }
+
+    private val MIGRATION_5_6 = object : Migration(5, 6) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("DELETE FROM ${PaymentDbModel.TABLE_NAME} WHERE ${PaymentDbModel.COLUMN_EXCHANGE}='' AND EXISTS " +
+                    "(SELECT ${PaymentDbModel.COLUMN_ISIN}, ${PaymentDbModel.COLUMN_PORTFOLIO_ID}, ${PaymentDbModel.COLUMN_DATE} FROM ${PaymentDbModel.TABLE_NAME} PaymentDuplicate " +
+                    "WHERE ${PaymentDbModel.TABLE_NAME}.${PaymentDbModel.COLUMN_ISIN}=PaymentDuplicate.${PaymentDbModel.COLUMN_ISIN} " +
+                    "AND ${PaymentDbModel.TABLE_NAME}.${PaymentDbModel.COLUMN_PORTFOLIO_ID}=PaymentDuplicate.${PaymentDbModel.COLUMN_PORTFOLIO_ID} " +
+                    "AND ${PaymentDbModel.TABLE_NAME}.${PaymentDbModel.COLUMN_DATE}=PaymentDuplicate.${PaymentDbModel.COLUMN_DATE} " +
+                    "AND PaymentDuplicate.${PaymentDbModel.COLUMN_EXCHANGE} <> '')"
             )
         }
     }
