@@ -25,5 +25,9 @@ abstract class BaseAdapter<V> : RecyclerView.Adapter<BaseAdapter.BaseViewHolder<
     abstract class BaseViewHolder<T>(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         abstract fun bind(model: T, position: Int)
+
+        fun setOnClickListener(clickListener: (position: Int) -> Unit) {
+            itemView.setOnClickListener { clickListener(adapterPosition) }
+        }
     }
 }

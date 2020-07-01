@@ -1,7 +1,7 @@
 package com.infinity_coder.divcalendar.domain
 
-import com.infinity_coder.divcalendar.data.repositories.datasources.DataSourcesRepository
-import com.infinity_coder.divcalendar.data.repositories.datasources.models.DataSourceModel
+import com.infinity_coder.divcalendar.data.repositories.DataSourcesRepository
+import com.infinity_coder.divcalendar.domain.models.DataSourceModel
 import kotlinx.coroutines.flow.Flow
 
 class DataSourcesInteractor {

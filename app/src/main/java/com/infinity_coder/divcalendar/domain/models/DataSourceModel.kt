@@ -1,4 +1,4 @@
-package com.infinity_coder.divcalendar.data.repositories.datasources.models
+package com.infinity_coder.divcalendar.domain.models
 
 data class DataSourceModel(
     val iconResId: Int,

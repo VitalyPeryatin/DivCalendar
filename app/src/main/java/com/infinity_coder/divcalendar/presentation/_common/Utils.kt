@@ -67,14 +67,25 @@ fun md5(str: String): String {
     }
 }
 
-fun AppCompatActivity.setActionBar(toolbar: Toolbar, hasBackNavigation: Boolean = false, isShowTitle: Boolean = true) {
-    setSupportActionBar(toolbar)
-    supportActionBar?.setDisplayHomeAsUpEnabled(hasBackNavigation)
-    supportActionBar?.setDisplayShowTitleEnabled(isShowTitle)
-    toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-    toolbar.setNavigationOnClickListener { onBackPressed() }
+fun AppCompatActivity.setActionBar(
+    toolbar: Toolbar,
+    hasBackNavigation: Boolean = false,
+    title: CharSequence? = toolbar.title,
+    subtitle: CharSequence? = toolbar.subtitle
+) {
+    if (hasBackNavigation) {
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        toolbar.setNavigationOnClickListener { onBackPressed() }
+    }
+    toolbar.title = title
+    toolbar.subtitle = subtitle
 }
 
-fun Fragment.setActionBar(toolbar: Toolbar, hasBackNavigation: Boolean = false, isShowTitle: Boolean = true) {
-    (activity as? AppCompatActivity)?.setActionBar(toolbar, hasBackNavigation, isShowTitle)
+fun Fragment.setActionBar(
+    toolbar: Toolbar,
+    hasBackNavigation: Boolean = false,
+    title: CharSequence? = toolbar.title,
+    subtitle: CharSequence? = toolbar.subtitle
+) {
+    (activity as? AppCompatActivity)?.setActionBar(toolbar, hasBackNavigation, title, subtitle)
 }

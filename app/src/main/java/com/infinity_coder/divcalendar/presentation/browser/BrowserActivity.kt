@@ -25,8 +25,9 @@ class BrowserActivity : AppCompatActivity() {
     companion object {
 
         private const val URL_KEY = "url"
+        private const val TITLE_KEY = "title"
 
-        fun openActivity(context: Context, url: String) {
+        fun openActivity(context: Context, title: String, url: String) {
 
             val packageNameToUse = CustomTabHelper.getPackageNameToUse(context)
             if (packageNameToUse != null) {
@@ -42,6 +43,7 @@ class BrowserActivity : AppCompatActivity() {
             } else {
                 val intent = Intent(context, BrowserActivity::class.java)
                 val bundle = Bundle().apply {
+                    putString(TITLE_KEY, title)
                     putString(URL_KEY, url)
                 }
                 intent.putExtras(bundle)
@@ -58,17 +60,18 @@ class BrowserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val bundle = intent.extras!!
+        val title = bundle.getString(TITLE_KEY)
         val url = bundle.getString(URL_KEY)
 
         setContentView(R.layout.activity_browser)
 
-        setActionBar(browserToolbar, hasBackNavigation = true)
-        browserToolbar?.title = url
+        setActionBar(browserToolbar, hasBackNavigation = true, title = title, subtitle = url)
 
-        webView.settings.loadsImagesAutomatically = true
-        webView.settings.javaScriptEnabled = true
-        webView.webViewClient = AppWebViewClient()
-        webView.loadUrl(url)
+        webView.apply {
+            settings.loadsImagesAutomatically = true
+            settings.javaScriptEnabled = true
+            webViewClient = AppWebViewClient()
+        }.loadUrl(url)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
