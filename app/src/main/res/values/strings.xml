@@ -106,6 +106,7 @@
     <string name="send">Send</string>
     <string name="send_successful">Message successfully sent to developers</string>
     <string name="symbol_count">Characters: %1$d</string>
+    <string name="data_sources">Data sources</string>
 
     <!-- export file -->
     <string name="title_sheet_portfolio">Portfolio</string>
