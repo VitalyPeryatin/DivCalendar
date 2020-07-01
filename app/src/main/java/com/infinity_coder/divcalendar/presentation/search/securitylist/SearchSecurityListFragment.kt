@@ -90,7 +90,7 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
     }
 
     private fun sortSecurities(securities: List<SecurityNetModel>): List<SecurityNetModel> {
-        val comparator = compareBy<SecurityNetModel> {it.ticker.length}
+        val comparator = compareBy<SecurityNetModel> { it.ticker.length }
             .thenBy { it.ticker }
             .thenBy { it.name }
         return securities.sortedWith(comparator)
