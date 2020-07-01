@@ -96,6 +96,7 @@
     <string name="send">Отправить</string>
     <string name="send_successful">Сообщение успешно отправлено разработчикам</string>
     <string name="symbol_count">Количество символов: %1$d</string>
+    <string name="data_sources">Источники данных</string>
 
     <!-- export file -->
     <string name="title_sheet_portfolio">Портфель</string>

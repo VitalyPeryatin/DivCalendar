@@ -13,6 +13,8 @@ import com.infinity_coder.divcalendar.presentation._common.SwitchServerVersionDe
 import com.infinity_coder.divcalendar.presentation._common.base.AbstractSubscriptionActivity
 import com.infinity_coder.divcalendar.presentation.billing.dialogs.BuySubscriptionDialog
 import com.infinity_coder.divcalendar.presentation.billing.dialogs.SubscriptionPurchasedDialog
+import com.infinity_coder.divcalendar.presentation.datasourceslist.DataSourcesListFragment
+import com.infinity_coder.divcalendar.presentation.main.MainActivity
 import com.infinity_coder.divcalendar.presentation.settings.dialogs.ChangeThemeBottomDialog
 import com.infinity_coder.divcalendar.presentation.settings.dialogs.ReportErrorBottomDialog
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -93,6 +95,12 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 val dialog = SubscriptionPurchasedDialog.newInstance()
                 dialog.show(childFragmentManager, SubscriptionPurchasedDialog.TAG)
             }
+        }
+
+        dataSourcesItem.itemTextView.text = getString(R.string.data_sources)
+        dataSourcesItem.setOnClickListener {
+            val fragment = DataSourcesListFragment.newInstance()
+            (requireActivity() as MainActivity).startFragment(fragment)
         }
 
         versionTextView.visibility = View.VISIBLE
