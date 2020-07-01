@@ -9,7 +9,7 @@ import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
 import com.infinity_coder.divcalendar.data.db.model.PortfolioDbModel
 import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 
-@Database(entities = [SecurityDbModel::class, PortfolioDbModel::class, PaymentDbModel::class], version = 4)
+@Database(entities = [SecurityDbModel::class, PortfolioDbModel::class, PaymentDbModel::class], version = 5)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val portfolioDao: PortfolioDao

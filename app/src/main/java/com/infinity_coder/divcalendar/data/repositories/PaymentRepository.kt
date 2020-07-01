@@ -53,7 +53,6 @@ object PaymentRepository {
         }
 
         paymentDao.deletePayments(currentPortfolioId, dateLastUpdate, PaymentDao.DeleteType.AFTER)
-        paymentDao.deleteDuplicatePayments(currentPortfolioId)
         paymentDao.insert(payments)
 
         paymentsPreferences.edit {
