@@ -2,6 +2,7 @@ package com.infinity_coder.divcalendar.presentation.calendar.models
 
 import com.example.delegateadapter.delegate.diff.IComparableItem
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel
+import java.math.BigDecimal
 
 data class PaymentPresentationModel(
     val isin: String = "",
@@ -9,7 +10,7 @@ data class PaymentPresentationModel(
     val portfolioId: Long = 0L,
     val databaseFieldDate: String = "",
     val logo: String = "",
-    val count: Int = 0,
+    val count: BigDecimal? = BigDecimal.ZERO,
     var dividends: String = "",
     var presentationDate: String = "",
     val forecast: Boolean = false,
@@ -31,8 +32,8 @@ data class PaymentPresentationModel(
                     portfolioId = security.portfolioId,
                     databaseFieldDate = payment.date,
                     logo = security.logo,
-                    count = payment.count ?: security.count,
-                    dividends = payment.dividends.toString(),
+                    count = payment.count,
+                    dividends = payment.dividends.toPlainString(),
                     presentationDate = payment.date,
                     forecast = payment.forecast,
                     colorLogo = security.color,

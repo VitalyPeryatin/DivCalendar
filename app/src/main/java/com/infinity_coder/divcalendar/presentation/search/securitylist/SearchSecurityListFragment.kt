@@ -63,7 +63,7 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
 
     private fun setSecurities(securities: List<SecurityNetModel>) {
         val adapter = securitiesRecyclerView.adapter as? SecurityRecyclerAdapter
-        adapter?.updateItems(securities)
+        adapter?.updateItems(sortSecurities(securities))
     }
 
     private fun setState(state: Int) {
@@ -87,6 +87,13 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
         }
         securitiesRecyclerView.layoutManager = LinearLayoutManager(context)
         securitiesRecyclerView.adapter = SecurityRecyclerAdapter(securityClickListener)
+    }
+
+    private fun sortSecurities(securities: List<SecurityNetModel>): List<SecurityNetModel> {
+        val comparator = compareBy<SecurityNetModel> { it.ticker.length }
+            .thenBy { it.ticker }
+            .thenBy { it.name }
+        return securities.sortedWith(comparator)
     }
 
     companion object {
