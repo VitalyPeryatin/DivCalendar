@@ -90,12 +90,26 @@ class SearchSecurityListFragment : Fragment(R.layout.fragment_search_security_li
     }
 
     private fun sortSecurities(securities: List<SecurityNetModel>): List<SecurityNetModel> {
-        return with(securities) {
-            sortedWith(compareBy { it.ticker.length })
-            sortedWith(compareBy { it.ticker })
-            sortedWith(compareBy { it.name })
-            sortedWith(compareBy { it.name.length })
-        }
+        return sortSecuritiesByTickerLenght(
+            sortSecuritiesByTicker(
+                sortSecuritiesByNameLength(
+                    sortSecuritiesByName(securities))))
+    }
+
+    private fun sortSecuritiesByTickerLenght(securities: List<SecurityNetModel>): List<SecurityNetModel> {
+        return securities.sortedWith(compareBy { it.ticker.length })
+    }
+
+    private fun sortSecuritiesByTicker(securities: List<SecurityNetModel>): List<SecurityNetModel> {
+        return securities.sortedWith(compareBy { it.ticker })
+    }
+
+    private fun sortSecuritiesByNameLength(securities: List<SecurityNetModel>): List<SecurityNetModel> {
+        return securities.sortedWith(compareBy { it.name.length })
+    }
+
+    private fun sortSecuritiesByName(securities: List<SecurityNetModel>): List<SecurityNetModel> {
+        return securities.sortedWith(compareBy { it.name })
     }
 
     companion object {
