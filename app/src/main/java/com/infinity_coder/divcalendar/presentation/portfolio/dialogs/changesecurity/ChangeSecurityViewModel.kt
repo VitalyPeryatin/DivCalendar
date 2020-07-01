@@ -6,6 +6,7 @@ import com.infinity_coder.divcalendar.data.db.model.SecurityDbModel
 import com.infinity_coder.divcalendar.domain.SecurityInteractor
 import com.infinity_coder.divcalendar.presentation._common.LiveEvent
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 
 class ChangeSecurityViewModel : ViewModel() {
 
@@ -15,23 +16,23 @@ class ChangeSecurityViewModel : ViewModel() {
 
     private val securityInteractor = SecurityInteractor()
 
-    private var cost: Double = 0.0
-    private var count: Int = 0
+    private var cost: BigDecimal = BigDecimal.ZERO
+    private var count: BigDecimal = BigDecimal.ZERO
 
-    fun setPackageCost(price: Double) {
+    fun setPackageCost(price: BigDecimal) {
         this.cost = price
     }
 
-    fun setPackageCount(count: Int) {
+    fun setPackageCount(count: BigDecimal) {
         this.count = count
     }
 
     fun changePackage(securityPackage: SecurityDbModel) = viewModelScope.launch {
         when {
-            cost <= 0 -> {
+            cost <= BigDecimal.ZERO -> {
                 shakePriceEditText.value = null
             }
-            count <= 0 -> {
+            count <= BigDecimal.ZERO -> {
                 shakeCountEditText.value = null
             }
             else -> {

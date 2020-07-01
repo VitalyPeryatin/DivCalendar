@@ -12,6 +12,7 @@ import com.infinity_coder.divcalendar.presentation.calendar.models.MonthlyPaymen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.math.BigDecimal
 import java.util.*
 
 class PaymentInteractor {
@@ -95,6 +96,6 @@ class PaymentInteractor {
     }
 
     companion object {
-        private const val TAX_FACTOR = 0.87
+        private val TAX_FACTOR = BigDecimal(0.87)
     }
 }

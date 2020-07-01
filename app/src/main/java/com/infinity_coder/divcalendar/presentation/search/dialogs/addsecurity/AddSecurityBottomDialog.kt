@@ -21,6 +21,7 @@ import com.infinity_coder.divcalendar.presentation._common.extensions.showSucces
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalCountTextWatcher
 import com.infinity_coder.divcalendar.presentation._common.text_watchers.DecimalPriceTextWatcher
 import kotlinx.android.synthetic.main.bottom_dialog_add_security.*
+import java.math.BigDecimal
 
 class AddSecurityBottomDialog : BottomDialog() {
 
@@ -54,7 +55,7 @@ class AddSecurityBottomDialog : BottomDialog() {
         initUI()
     }
 
-    private fun setTotalPrice(price: Double) {
+    private fun setTotalPrice(price: BigDecimal) {
         val priceWithCurrency = SecurityCurrencyDelegate.getValueWithCurrency(requireContext(), price, security.currency)
         totalPriceTextView.text = resources.getString(R.string.total_price, priceWithCurrency)
     }
@@ -90,7 +91,7 @@ class AddSecurityBottomDialog : BottomDialog() {
                 val price = priceEditText.text.toString()
                     .replace(formatter.decimalFormatSymbols.groupingSeparator.toString(), "")
                     .replace(currentSeparator.toString(), LOCAL_SEPARATOR.toString())
-                    .toDoubleOrNull() ?: 0.0
+                    .toBigDecimalOrNull() ?: BigDecimal.ZERO
                 viewModel.setSecurityPrice(price)
             }
         })
@@ -111,7 +112,7 @@ class AddSecurityBottomDialog : BottomDialog() {
                 val decimalFormat = DecimalFormatStorage.countEditTextDecimalFormat
                 val securitiesCount = countEditText.text.toString()
                     .replace(decimalFormat.decimalFormatSymbols.groupingSeparator.toString(), "")
-                    .toIntOrNull() ?: 0
+                    .toBigDecimalOrNull() ?: BigDecimal.ZERO
                 viewModel.setSecurityCount(securitiesCount)
             }
         })
