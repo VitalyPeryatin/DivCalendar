@@ -107,7 +107,7 @@ class ExcelPaymentsFileCreator(private val context: Context) : PaymentsFileCreat
                 setValueAtCell(workbook, 5, security.logo)
                 setPercentValueAtCell(workbook, 6, security.yearYield / 100.0)
                 setValueAtCell(workbook, 7, security.count.toString())
-                setValueAtCell(workbook, 8, security.totalPrice.toPlainString())
+                setValueAtCell(workbook, 8, security.totalPrice.toDouble())
                 setValueAtCell(workbook, 9, security.currency)
             }
         }
@@ -168,7 +168,7 @@ class ExcelPaymentsFileCreator(private val context: Context) : PaymentsFileCreat
                 setValueAtCell(workbook, 2, payment.security?.count.toString())
                 setValueAtCell(workbook, 3, isApproved)
                 setValueAtCell(workbook, 4, convertStingToDate(payment.date))
-                setValueAtCell(workbook, 5, payment.dividends.toPlainString())
+                setValueAtCell(workbook, 5, payment.dividends.toDouble())
                 setValueAtCell(workbook, 6, payment.security?.currency)
             }
         }
