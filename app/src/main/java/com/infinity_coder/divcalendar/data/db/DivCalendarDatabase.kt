@@ -12,7 +12,7 @@ object DivCalendarDatabase {
 
     val roomDatabase: AppDatabase by lazy {
         Room.databaseBuilder(App.instance.applicationContext, AppDatabase::class.java, "div-calendar-database")
-            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
             .build()
     }
 
@@ -229,6 +229,53 @@ object DivCalendarDatabase {
             execSQL("CREATE INDEX IF NOT EXISTS ${PaymentDbModel.INDEX_SECURITY} ON ${PaymentDbModel.TABLE_NAME} " +
                     "(${PaymentDbModel.COLUMN_ISIN}, ${PaymentDbModel.COLUMN_PORTFOLIO_ID}, ${PaymentDbModel.COLUMN_EXCHANGE})"
             )
+        }
+    }
+
+    private val MIGRATION_6_7 = object : Migration(6,7) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.migratePaymentTable()
+        }
+
+        private fun SupportSQLiteDatabase.migratePaymentTable() {
+            execSQL("CREATE TABLE ${PaymentDbModel.TABLE_NAME}_copy (" +
+                    "${PaymentDbModel.COLUMN_DIVIDENDS} TEXT NOT NULL, " +
+                    "${PaymentDbModel.COLUMN_DATE} TEXT NOT NULL, " +
+                    "${PaymentDbModel.COLUMN_FORECAST} INTEGER NOT NULL, " +
+                    "${PaymentDbModel.COLUMN_IS_SYNCED} INTEGER" +
+                    "${PaymentDbModel.COLUMN_ISIN} TEXT NOT NULL, " +
+                    "${PaymentDbModel.COLUMN_PORTFOLIO_ID} INTEGER NOT NULL, " +
+                    "${PaymentDbModel.COLUMN_PAYMENT_ID} INTEGER" +
+                    "${PaymentDbModel.COLUMN_EXCHANGE} TEXT NOT NULL DEFAULT '', " +
+                    "${PaymentDbModel.COLUMN_COUNT} TEXT, " +
+                    "PRIMARY KEY (${PaymentDbModel.COLUMN_DATE}, ${PaymentDbModel.COLUMN_ISIN}, ${PaymentDbModel.COLUMN_PORTFOLIO_ID}, ${PaymentDbModel.COLUMN_EXCHANGE}), " +
+                    "FOREIGN KEY (${PaymentDbModel.COLUMN_ISIN}, ${PaymentDbModel.COLUMN_PORTFOLIO_ID}, ${PaymentDbModel.COLUMN_EXCHANGE}) " +
+                    "REFERENCES ${SecurityDbModel.TABLE_NAME} (${SecurityDbModel.COLUMN_ISIN}, ${SecurityDbModel.COLUMN_PORTFOLIO_ID}, ${SecurityDbModel.COLUMN_EXCHANGE}) " +
+                    "ON DELETE CASCADE)"
+            )
+            execSQL("INSERT INTO ${PaymentDbModel.TABLE_NAME}_copy (" +
+                    "${PaymentDbModel.COLUMN_DIVIDENDS}, " +
+                    "${PaymentDbModel.COLUMN_DATE}, " +
+                    "${PaymentDbModel.COLUMN_FORECAST}, " +
+                    "${PaymentDbModel.COLUMN_ISIN}, " +
+                    "${PaymentDbModel.COLUMN_PORTFOLIO_ID}) " +
+                    "SELECT " +
+                    "${PaymentDbModel.COLUMN_DIVIDENDS}, " +
+                    "${PaymentDbModel.COLUMN_DATE}, " +
+                    "${PaymentDbModel.COLUMN_FORECAST}, " +
+                    "${PaymentDbModel.COLUMN_ISIN}, " +
+                    "${PaymentDbModel.COLUMN_PORTFOLIO_ID} FROM ${PaymentDbModel.TABLE_NAME} "
+            )
+            execSQL("UPDATE ${PaymentDbModel.TABLE_NAME}_copy SET ${PaymentDbModel.COLUMN_EXCHANGE}=(" +
+                    "SELECT ${SecurityDbModel.TABLE_NAME}.${SecurityDbModel.COLUMN_EXCHANGE} " +
+                    "FROM ${SecurityDbModel.TABLE_NAME} WHERE " +
+                    "${SecurityDbModel.TABLE_NAME}.${SecurityDbModel.COLUMN_ISIN}=${PaymentDbModel.TABLE_NAME}_copy.${PaymentDbModel.COLUMN_ISIN} " +
+                    "AND ${SecurityDbModel.TABLE_NAME}.${SecurityDbModel.COLUMN_PORTFOLIO_ID}=${PaymentDbModel.TABLE_NAME}_copy.${PaymentDbModel.COLUMN_PORTFOLIO_ID})"
+            )
+            execSQL("DROP TABLE ${PaymentDbModel.TABLE_NAME}")
+            execSQL("ALTER TABLE ${PaymentDbModel.TABLE_NAME}_copy RENAME TO ${PaymentDbModel.TABLE_NAME}")
+            execSQL("CREATE INDEX IF NOT EXISTS ${PaymentDbModel.INDEX_SECURITY} ON ${PaymentDbModel.TABLE_NAME} " +
+                    "(${PaymentDbModel.COLUMN_ISIN}, ${PaymentDbModel.COLUMN_PORTFOLIO_ID}, ${PaymentDbModel.COLUMN_EXCHANGE})")
         }
     }
 }
