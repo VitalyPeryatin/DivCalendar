@@ -22,8 +22,8 @@ android {
         applicationId "com.infinity_coder.divcalendar"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 18
-        versionName "v1.0.7"
+        versionCode 19
+        versionName "v1.0.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
