@@ -242,10 +242,10 @@ object DivCalendarDatabase {
                     "${PaymentDbModel.COLUMN_DIVIDENDS} TEXT NOT NULL, " +
                     "${PaymentDbModel.COLUMN_DATE} TEXT NOT NULL, " +
                     "${PaymentDbModel.COLUMN_FORECAST} INTEGER NOT NULL, " +
-                    "${PaymentDbModel.COLUMN_IS_SYNCED} INTEGER" +
+                    "${PaymentDbModel.COLUMN_IS_SYNCED} INTEGER," +
                     "${PaymentDbModel.COLUMN_ISIN} TEXT NOT NULL, " +
                     "${PaymentDbModel.COLUMN_PORTFOLIO_ID} INTEGER NOT NULL, " +
-                    "${PaymentDbModel.COLUMN_PAYMENT_ID} INTEGER" +
+                    "${PaymentDbModel.COLUMN_PAYMENT_ID} INTEGER," +
                     "${PaymentDbModel.COLUMN_EXCHANGE} TEXT NOT NULL DEFAULT '', " +
                     "${PaymentDbModel.COLUMN_COUNT} TEXT, " +
                     "PRIMARY KEY (${PaymentDbModel.COLUMN_DATE}, ${PaymentDbModel.COLUMN_ISIN}, ${PaymentDbModel.COLUMN_PORTFOLIO_ID}, ${PaymentDbModel.COLUMN_EXCHANGE}), " +
