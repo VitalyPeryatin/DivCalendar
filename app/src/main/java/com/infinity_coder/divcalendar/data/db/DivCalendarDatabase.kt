@@ -232,7 +232,7 @@ object DivCalendarDatabase {
         }
     }
 
-    private val MIGRATION_6_7 = object : Migration(6,7) {
+    private val MIGRATION_6_7 = object : Migration(6, 7) {
         override fun migrate(database: SupportSQLiteDatabase) {
             database.migratePaymentTable()
         }
