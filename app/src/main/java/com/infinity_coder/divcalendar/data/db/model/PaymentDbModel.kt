@@ -42,8 +42,8 @@ data class PaymentDbModel(
     @ColumnInfo(name = COLUMN_PORTFOLIO_ID)
     val portfolioId: Long,
 
-    @ColumnInfo(name = COLUMN_PAYMENT_UUID)
-    val paymentId: Long? = null,
+    @ColumnInfo(name = COLUMN_PAYMENT_UUID, defaultValue = "")
+    val paymentUuid: String = "",
 
     @ColumnInfo(name = COLUMN_EXCHANGE, defaultValue = "")
     var exchange: String = "",
