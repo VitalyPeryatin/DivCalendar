@@ -248,7 +248,7 @@ object DivCalendarDatabase {
                     "${PaymentDbModel.COLUMN_PAYMENT_UUID} INTEGER," +
                     "${PaymentDbModel.COLUMN_EXCHANGE} TEXT NOT NULL DEFAULT '', " +
                     "${PaymentDbModel.COLUMN_COUNT} TEXT, " +
-                    "PRIMARY KEY (${PaymentDbModel.COLUMN_DATE}, ${PaymentDbModel.COLUMN_ISIN}, ${PaymentDbModel.COLUMN_PORTFOLIO_ID}, ${PaymentDbModel.COLUMN_EXCHANGE}), " +
+                    "PRIMARY KEY (${PaymentDbModel.COLUMN_DATE}, ${PaymentDbModel.COLUMN_ISIN}, ${PaymentDbModel.COLUMN_PORTFOLIO_ID}, ${PaymentDbModel.COLUMN_EXCHANGE}, ${PaymentDbModel.COLUMN_PAYMENT_UUID}), " +
                     "FOREIGN KEY (${PaymentDbModel.COLUMN_ISIN}, ${PaymentDbModel.COLUMN_PORTFOLIO_ID}, ${PaymentDbModel.COLUMN_EXCHANGE}) " +
                     "REFERENCES ${SecurityDbModel.TABLE_NAME} (${SecurityDbModel.COLUMN_ISIN}, ${SecurityDbModel.COLUMN_PORTFOLIO_ID}, ${SecurityDbModel.COLUMN_EXCHANGE}) " +
                     "ON DELETE CASCADE)"
@@ -265,12 +265,6 @@ object DivCalendarDatabase {
                     "${PaymentDbModel.COLUMN_FORECAST}, " +
                     "${PaymentDbModel.COLUMN_ISIN}, " +
                     "${PaymentDbModel.COLUMN_PORTFOLIO_ID} FROM ${PaymentDbModel.TABLE_NAME} "
-            )
-            execSQL("UPDATE ${PaymentDbModel.TABLE_NAME}_copy SET ${PaymentDbModel.COLUMN_EXCHANGE}=(" +
-                    "SELECT ${SecurityDbModel.TABLE_NAME}.${SecurityDbModel.COLUMN_EXCHANGE} " +
-                    "FROM ${SecurityDbModel.TABLE_NAME} WHERE " +
-                    "${SecurityDbModel.TABLE_NAME}.${SecurityDbModel.COLUMN_ISIN}=${PaymentDbModel.TABLE_NAME}_copy.${PaymentDbModel.COLUMN_ISIN} " +
-                    "AND ${SecurityDbModel.TABLE_NAME}.${SecurityDbModel.COLUMN_PORTFOLIO_ID}=${PaymentDbModel.TABLE_NAME}_copy.${PaymentDbModel.COLUMN_PORTFOLIO_ID})"
             )
             execSQL("DROP TABLE ${PaymentDbModel.TABLE_NAME}")
             execSQL("ALTER TABLE ${PaymentDbModel.TABLE_NAME}_copy RENAME TO ${PaymentDbModel.TABLE_NAME}")
