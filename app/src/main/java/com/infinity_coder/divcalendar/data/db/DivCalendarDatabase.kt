@@ -245,7 +245,7 @@ object DivCalendarDatabase {
                     "${PaymentDbModel.COLUMN_IS_SYNCED} INTEGER," +
                     "${PaymentDbModel.COLUMN_ISIN} TEXT NOT NULL, " +
                     "${PaymentDbModel.COLUMN_PORTFOLIO_ID} INTEGER NOT NULL, " +
-                    "${PaymentDbModel.COLUMN_PAYMENT_UUID} TEXT," +
+                    "${PaymentDbModel.COLUMN_PAYMENT_UUID} TEXT NOT NULL DEFAULT ''," +
                     "${PaymentDbModel.COLUMN_EXCHANGE} TEXT NOT NULL DEFAULT '', " +
                     "${PaymentDbModel.COLUMN_COUNT} TEXT, " +
                     "PRIMARY KEY (${PaymentDbModel.COLUMN_DATE}, ${PaymentDbModel.COLUMN_ISIN}, ${PaymentDbModel.COLUMN_PORTFOLIO_ID}, ${PaymentDbModel.COLUMN_EXCHANGE}, ${PaymentDbModel.COLUMN_PAYMENT_UUID}), " +
