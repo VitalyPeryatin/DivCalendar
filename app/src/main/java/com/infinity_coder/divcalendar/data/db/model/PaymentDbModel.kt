@@ -41,7 +41,7 @@ data class PaymentDbModel(
     @ColumnInfo(name = COLUMN_PORTFOLIO_ID)
     val portfolioId: Long,
 
-    @ColumnInfo(name = COLUMN_PAYMENT_ID)
+    @ColumnInfo(name = COLUMN_PAYMENT_UUID)
     val paymentId: Long? = null,
 
     @ColumnInfo(name = COLUMN_EXCHANGE, defaultValue = "")
@@ -62,7 +62,7 @@ data class PaymentDbModel(
         const val COLUMN_IS_SYNCED = "is_synced"
         const val COLUMN_ISIN = "isin"
         const val COLUMN_PORTFOLIO_ID = "portfolio_id"
-        const val COLUMN_PAYMENT_ID = "payment_id"
+        const val COLUMN_PAYMENT_UUID = "payment_uuid"
         const val COLUMN_COUNT = "count"
         const val COLUMN_EXCHANGE = "exchange"
 
