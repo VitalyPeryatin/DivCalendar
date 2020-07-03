@@ -5,6 +5,7 @@ import androidx.room.ForeignKey.CASCADE
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.COLUMN_DATE
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.COLUMN_EXCHANGE
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.COLUMN_ISIN
+import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.COLUMN_PAYMENT_UUID
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.COLUMN_PORTFOLIO_ID
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.INDEX_SECURITY
 import com.infinity_coder.divcalendar.data.db.model.PaymentDbModel.Companion.TABLE_NAME
@@ -13,7 +14,7 @@ import java.math.BigDecimal
 
 @Entity(
     tableName = TABLE_NAME,
-    primaryKeys = [COLUMN_DATE, COLUMN_ISIN, COLUMN_PORTFOLIO_ID, COLUMN_EXCHANGE],
+    primaryKeys = [COLUMN_DATE, COLUMN_ISIN, COLUMN_PORTFOLIO_ID, COLUMN_EXCHANGE, COLUMN_PAYMENT_UUID],
     foreignKeys = [ForeignKey(
         entity = SecurityDbModel::class,
         parentColumns = arrayOf(SecurityDbModel.COLUMN_ISIN, SecurityDbModel.COLUMN_PORTFOLIO_ID, SecurityDbModel.COLUMN_EXCHANGE),
