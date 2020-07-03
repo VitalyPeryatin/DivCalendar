@@ -266,6 +266,13 @@ object DivCalendarDatabase {
                     "${PaymentDbModel.COLUMN_ISIN}, " +
                     "${PaymentDbModel.COLUMN_PORTFOLIO_ID} FROM ${PaymentDbModel.TABLE_NAME} "
             )
+
+            execSQL("UPDATE ${PaymentDbModel.TABLE_NAME}_copy SET ${PaymentDbModel.COLUMN_EXCHANGE}=(" +
+                    "SELECT ${SecurityDbModel.TABLE_NAME}.${SecurityDbModel.COLUMN_EXCHANGE} " +
+                    "FROM ${SecurityDbModel.TABLE_NAME} WHERE " +
+                    "${SecurityDbModel.TABLE_NAME}.${SecurityDbModel.COLUMN_ISIN}=${PaymentDbModel.TABLE_NAME}_copy.${PaymentDbModel.COLUMN_ISIN} " +
+                    "AND ${SecurityDbModel.TABLE_NAME}.${SecurityDbModel.COLUMN_PORTFOLIO_ID}=${PaymentDbModel.TABLE_NAME}_copy.${PaymentDbModel.COLUMN_PORTFOLIO_ID})")
+
             execSQL("DROP TABLE ${PaymentDbModel.TABLE_NAME}")
             execSQL("ALTER TABLE ${PaymentDbModel.TABLE_NAME}_copy RENAME TO ${PaymentDbModel.TABLE_NAME}")
             execSQL("CREATE INDEX IF NOT EXISTS ${PaymentDbModel.INDEX_SECURITY} ON ${PaymentDbModel.TABLE_NAME} " +
