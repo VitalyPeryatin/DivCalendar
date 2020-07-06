@@ -1,6 +1,5 @@
 package com.infinity_coder.divcalendar.presentation._common.extensions
 
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -25,7 +24,6 @@ fun Fragment.executeIfResumed(func: () -> Unit) {
 
 fun FragmentManager.hideAllFragments(transaction: FragmentTransaction) {
     fragments.forEach {
-        Log.d("FragmentManagerLog", it.toString())
         transaction.hide(it)
     }
 }
