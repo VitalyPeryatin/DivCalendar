@@ -125,6 +125,10 @@
 
     <string name="final_file_name">DivCalendar - Выплаты</string>
 
+    <!--import file-->
+    <string name="select_excel_file_to_import">Выберите Excel файл для импорта</string>
+    <string name="invalid_data">Невалидные данные</string>
+
     <!-- billing -->
     <string name="purchase">Приобрести</string>
     <string name="purchase_subscription_title">Хотите приобрести подписку? </string>

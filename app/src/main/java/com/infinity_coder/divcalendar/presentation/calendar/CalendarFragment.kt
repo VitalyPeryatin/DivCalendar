@@ -1,5 +1,6 @@
 package com.infinity_coder.divcalendar.presentation.calendar
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -24,6 +25,7 @@ import com.infinity_coder.divcalendar.presentation._common.SpinnerInteractionLis
 import com.infinity_coder.divcalendar.presentation._common.base.UpdateCallback
 import com.infinity_coder.divcalendar.presentation.calendar.adapters.*
 import com.infinity_coder.divcalendar.presentation.calendar.dialogs.ChangePaymentDialog
+import com.infinity_coder.divcalendar.presentation.calendar.dialogs.ErrorDialog
 import com.infinity_coder.divcalendar.presentation.calendar.dialogs.LoadingDialog
 import com.infinity_coder.divcalendar.presentation.calendar.models.PaymentPresentationModel
 import com.infinity_coder.divcalendar.presentation.main.MainActivity
@@ -59,8 +61,22 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
             R.id.uploadItem -> {
                 viewModel.exportData(requireContext())
             }
+            R.id.downloadItem -> {
+                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                intent.type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                intent.addCategory(Intent.CATEGORY_OPENABLE)
+                startActivityForResult(Intent.createChooser(intent, getString(R.string.select_excel_file_to_import)), REQUEST_CODE_FOR_SELECT_EXCEL)
+            }
         }
         return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_FOR_SELECT_EXCEL) {
+            if (data != null) {
+                viewModel.importData(requireContext(), data.data!!)
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,6 +91,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
         viewModel.sendFileEvent.observe(viewLifecycleOwner, Observer(this::sendFile))
         viewModel.portfolioNameTitleEvent.observe(viewLifecycleOwner, Observer(this::setPortfolioName))
         viewModel.showLoadingDialogEvent.observe(viewLifecycleOwner, Observer(this::setIsShowLoadingDialog))
+        viewModel.showErrorDialogEvent.observe(viewLifecycleOwner, Observer(this::showErrorDialog))
     }
 
     override fun onUpdate() {
@@ -121,6 +138,11 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
     private fun hideLoadingDialog() {
         val dialog = childFragmentManager.findFragmentByTag(LoadingDialog.TAG) as? LoadingDialog
         dialog?.dismiss()
+    }
+
+    private fun showErrorDialog(messageCode: String) {
+        val dialog = ErrorDialog.newInstance(messageCode)
+        dialog.show(childFragmentManager, ErrorDialog.TAG)
     }
 
     private fun initUI() {
@@ -267,5 +289,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), UpdateCallback {
 
     companion object {
         private const val MAX_YEARS_CHOICE = 2
+
+        private const val REQUEST_CODE_FOR_SELECT_EXCEL = 2
     }
 }

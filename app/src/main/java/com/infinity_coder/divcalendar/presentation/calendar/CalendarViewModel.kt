@@ -1,6 +1,7 @@
 package com.infinity_coder.divcalendar.presentation.calendar
 
 import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,6 +19,8 @@ import com.infinity_coder.divcalendar.presentation.calendar.models.HeaderPayment
 import com.infinity_coder.divcalendar.presentation.calendar.models.MonthlyPayment
 import com.infinity_coder.divcalendar.presentation.export_sheet.PaymentsFileCreator
 import com.infinity_coder.divcalendar.presentation.export_sheet.excel.ExcelPaymentsFileCreator
+import com.infinity_coder.divcalendar.presentation.import_sheet.SecuritiesFileReader
+import com.infinity_coder.divcalendar.presentation.import_sheet.excel.ExcelSecuritiesFileReader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -51,9 +54,11 @@ class CalendarViewModel : ViewModel() {
     val portfolioNameTitleEvent = LiveEvent<String>()
     val isIncludeTaxesEvent = LiveEvent<Boolean>()
     val showLoadingDialogEvent = LiveEvent<Boolean>()
+    val showErrorDialogEvent = LiveEvent<String>()
 
     private val paymentsMapper = PaymentsToPresentationModelMapper()
     private var paymentsFileCreator: PaymentsFileCreator? = null
+    private var securitiesFileReader: SecuritiesFileReader? = null
     private var cachedPayments: List<MonthlyPayment> = emptyList()
     private var paymentsJob: Job? = null
 
@@ -133,6 +138,19 @@ class CalendarViewModel : ViewModel() {
         val exportFilePath = paymentsFileCreator?.create() ?: return@launch
         showLoadingDialogEvent.postValue(false)
         sendFileEvent.postValue(exportFilePath)
+    }
+
+    fun importData(context: Context, uri: Uri) = viewModelScope.launch(Dispatchers.IO) {
+        try {
+            showLoadingDialogEvent.postValue(true)
+            securitiesFileReader = ExcelSecuritiesFileReader()
+            securitiesFileReader?.readFile(context, uri)
+            loadAllPayments()
+        } catch (e: Exception) {
+            showErrorDialogEvent.postValue(e.message.toString())
+        } finally {
+            showLoadingDialogEvent.postValue(false)
+        }
     }
 
     fun setDisplayCurrency(currency: String) = viewModelScope.launch {

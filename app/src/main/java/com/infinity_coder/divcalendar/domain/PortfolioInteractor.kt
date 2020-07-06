@@ -7,7 +7,10 @@ import com.infinity_coder.divcalendar.data.repositories.PaymentRepository
 import com.infinity_coder.divcalendar.data.repositories.PortfolioRepository
 import com.infinity_coder.divcalendar.domain._common.convertStingToDate
 import com.infinity_coder.divcalendar.domain.models.SortType
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 class PortfolioInteractor {
 
@@ -33,6 +36,10 @@ class PortfolioInteractor {
 
     fun getCurrentPortfolioName(): String {
         return PortfolioRepository.getCurrentPortfolioName()
+    }
+
+    suspend fun getPortfolioId(portfolioName: String): Long {
+        return PortfolioRepository.getPortfolioId(portfolioName)
     }
 
     suspend fun getCurrentPortfolioId(): Long {

@@ -12,9 +12,16 @@
         android:title=""
         android:orderInCategory="0"/>
 
+    <item
+        android:id="@+id/downloadItem"
+        android:icon="@drawable/ic_cloud_download"
+        app:showAsAction="always"
+        android:title=""
+        android:orderInCategory="0"/>
+
     <item android:id="@+id/settingsItem"
         android:icon="@drawable/ic_settings"
         app:showAsAction="always"
         android:title=""
-        android:orderInCategory="10"/>
+        android:orderInCategory="0"/>
 </menu>

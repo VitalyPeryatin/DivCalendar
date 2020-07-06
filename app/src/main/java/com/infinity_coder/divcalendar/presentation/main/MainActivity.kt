@@ -38,6 +38,8 @@ class MainActivity : AbstractSubscriptionActivity() {
     }
 
     companion object {
+        private const val REQUEST_CODE_EXTERNAL_STORAGE_PERMISSIONS = 1
+
         fun getIntent(context: Context): Intent {
             return Intent(context, MainActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

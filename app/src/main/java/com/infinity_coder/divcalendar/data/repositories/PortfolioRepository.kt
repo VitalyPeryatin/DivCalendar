@@ -11,7 +11,10 @@ import com.infinity_coder.divcalendar.presentation.App
 import com.infinity_coder.divcalendar.presentation._common.extensions.getNotNullString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -52,6 +55,10 @@ object PortfolioRepository {
 
     fun getCurrentPortfolioName(): String {
         return portfolioPreferences.getString(PREF_CURRENT_PORTFOLIO, "")!!
+    }
+
+    suspend fun getPortfolioId(portfolioName: String): Long {
+        return portfolioDao.getPortfolioId(portfolioName)
     }
 
     suspend fun getCurrentPortfolioId(): Long {

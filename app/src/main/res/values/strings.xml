@@ -138,6 +138,10 @@
 
     <string name="final_file_name">DivCalendar - Payments</string>
 
+    <!--import file-->
+    <string name="select_excel_file_to_import">Select Excel file to import</string>
+    <string name="invalid_data">Invalid data</string>
+
     <!-- billing -->
     <string name="purchase">Purchase</string>
     <string name="purchase_subscription_title">Want to purchase a subscription?</string>
